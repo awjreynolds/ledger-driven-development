@@ -110,19 +110,22 @@ The progression: scope sets boundaries; elaborate produces first-draft content; 
 Every LDD skill follows this shape:
 
 ```
-┌───────────────────────────────────────────────────────────┐
-│  Skill execution                                          │
-├───────────────────────────────────────────────────────────┤
-│  1. Preflight checks (refuse if invalid; suggest fix)     │
-│  2. Body (the actual work)                                │
-│  3. Postcondition verification (was the work durable?)    │
-│  4. Audit record (frontmatter / ticket comment)           │
-└───────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│  Skill execution                                                      │
+├───────────────────────────────────────────────────────────────────────┤
+│  1. Preflight checks   (refuse if invalid; suggest fix)               │
+│  2. Body               (the actual work)                              │
+│  3. Phase-local self-review   (skill-specific quality checks; see §6) │
+│  4. Postcondition verification   (was the work durable?)              │
+│  5. Audit record   (frontmatter / ticket comment)                     │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 Preflight refusals are bypassed with `--override="<reason>"`. The override is captured durably in artifact frontmatter and mirrored as a ticket comment. Overrides are always allowed; they are never silent.
 
-`--dry-run` runs only preflight checks and reports what would happen — useful for CI gates and ticket-readiness queries.
+**Phase-local self-review** runs *before* commit/PR for any writing skill. Each writing skill defines its own checks (see Section 6 — for example, `/ldd:elaborate` checks no scope expansion; `/ldd:refine` checks AC are testable; `/ldd:design` checks no scope smuggling and risk-appropriate concerns). Self-review failures halt the skill and surface the specific violation rather than silently weakening checks. Self-review is the answer to "how do we keep each phase honest without external review at every step?" — commit timing stays aggressive (ledger-driven model), but each phase polices itself before committing.
+
+`--dry-run` runs preflight + self-review reporting only, without committing — useful for CI gates and "what would `/ldd:refine` complain about if I ran it now?" queries.
 
 ### 4.5 Subagent dispatch and model tiers
 
@@ -276,6 +279,13 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
 - Outputs: N new ledger child tickets with `kind:feature`, `phase:scoping`, `parent: PROJ-100`, frontmatter inheriting parent context; each child's `ticket.md` has the Out-of-scope section pre-populated from the slice boundary; parent epic gets `decomposed:true` + child links
 - **Opens a decomposition-PR** (`ldd/decompose/PROJ-100` branch) with the new child tickets' `ticket.md` files for reviewer sign-off before children enter their own workflows
 
+**Pre-commit self-review** (every branch runs this before commit/PR):
+- Branch A: are goals measurable? Are non-goals concrete (not "general improvements")? Are the goals + non-goals together a complete envelope (no obvious adjacent areas left ambiguous)?
+- Branch B: is out-of-scope concrete (specific things, not vague categories)? Is sizing realistic?
+- Branch C: does each child have a minimum-viable scope envelope? Does any child duplicate another's scope? Does the union of child scopes equal the PRD scope minus explicitly-deferred items?
+
+Failures halt the skill and surface the issue; the engineer either fixes the input or invokes `--override="<reason>"`.
+
 **Why scope is its own skill:** boundary decisions get made *cleanly*, without bleed-over into detail-filling. A reviewer of a decomposition-PR is asked exactly one question — "are these the right boundaries?" — not also "are the AC well-formed?". Each gate reviews one concern.
 
 ### 6.4 `/ldd:elaborate` — first-pass content
@@ -286,6 +296,15 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
 1. Read the scoped artifact (PRD or ticket) — Goals/Non-goals or Out-of-scope already present
 2. Bounded grill at *content* scope (`balanced` tier): asks the questions that produce first-draft content for the remaining sections. Crucially, the grill *cannot* propose changes to scope sections — they're locked.
 3. Generate first-draft content for each unfilled section
+
+**Pre-commit self-review** (runs before committing the elaborated artifact):
+- All new content lies *outside* scope-locked regions
+- Any placeholders left in are intentional (e.g., awaiting human input on a decision) and explicitly flagged in the section
+- No new tickets were created (decomposition is scope's job)
+- No content implicitly expands scope (e.g., a user story that requires a goal not in the locked Goals section)
+- All required sections for this artifact kind have at least a first-draft entry (no silently empty sections)
+
+Failure of any check halts the skill and surfaces the specific violation. Common remediation: re-run `/ldd:scope` to address a scope gap, then re-run `/ldd:elaborate`.
 
 **Outputs (PRD):** `prd.md` with Problem, User stories, Success metrics, Open questions sections filled (first draft); status `phase:elaboration` → `phase:refinement`
 
@@ -312,6 +331,16 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
    - **Open questions** → either resolve via codebase research or escalate explicitly
 3. Edge case sweep (`balanced` tier): for each AC, propose 2–3 edge cases worth testing; add to AC or to a separate Edge cases section
 
+**Pre-commit self-review** (runs before committing the refined artifact / opening the PRD-PR):
+- Every acceptance criterion is testable — concrete subject, concrete verb, concrete expected outcome, no subjective qualifiers
+- Every success metric has units, a measurement method, and a baseline value
+- Every "affected module" path was verified to exist in the codebase (or explicitly marked as new)
+- Every open question is either resolved (with the resolution captured) or explicitly escalated (with the owner named)
+- Scope-locked sections were not modified
+- No new content was added beyond polish — only sharpening of elaboration output
+
+Failure surfaces the specific violation. Common remediation: escalate an unresolved question to a human rather than inventing an answer.
+
 **Outputs:**
 - Updated `prd.md` or `ticket.md` with polished content; status `phase:refinement` → `phase:design` on completion
 - For PRDs: **PRD-PR opened** (`ldd/prd/PROJ-100` branch) containing the polished `prd.md` for PM/EM/stakeholder sign-off; PRD-PR merge sets `gate:prd-approved` and unblocks `/ldd:scope` Branch C (decomposition)
@@ -334,6 +363,16 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
    - **Decisions** — chosen architectural approach with alternatives considered
    - **Structure** — proposed interface shape (signatures, types, module boundaries)
 
+**Pre-commit self-review** (runs before committing `design.md` / opening any design-PR):
+- The design satisfies every acceptance criterion in the refined ticket — for each AC, the design's Structure section either provides a code path that meets it or explicitly notes where it will (deferred to plan)
+- Error handling is addressed — what happens on bad input, partial failure, timeout, retry; not just the happy path
+- Test surface is addressed — what's unit-testable, what needs integration tests, what relies on external systems
+- Data flow is traced — for each significant change in state, who writes, who reads, in what order
+- No scope smuggling — the design does not introduce capabilities or modules not implied by the ticket's scope envelope; if scope expansion is genuinely needed, the skill halts and recommends re-running `/ldd:scope`
+- For `risk:high` tickets: migration / backward-compat strategy, rollout/revert plan, and observability requirements are explicitly addressed
+
+Failure surfaces the specific violation. The skill does not silently weaken a check.
+
 **Outputs:**
 - `docs/tickets/PROJ-NNN/design.md` → `design.html` (collapsible sections, diagrams, file pills)
 - `phase:design` → `phase:plan` on completion
@@ -348,12 +387,23 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
 **Process:**
 1. Read design.md
 2. Generate ordered vertical slices (`balanced` tier) — each slice with name, files touched, red-test description, acceptance for that slice
-3. Plan-review pass (`reasoning` tier) — catches plan-reading illusions before commit
+3. **Plan-review pass (built-in self-review)** (`reasoning` tier) — catches plan-reading illusions before commit:
+   - Does each slice end with a green test that's traceable to an AC from the ticket?
+   - Are slice file lists disjoint enough that slices can land independently?
+   - Are slice dependencies acyclic and explicit (`blocked_by:` on each slice)?
+   - Does the union of slices cover every AC from the refined ticket? No AC silently dropped?
+   - Does the union of slices stay within the design's Structure section — no slices smuggling in unspecified components?
+   - For `risk:high` tickets: does the plan include a slice for migration steps and a slice for revert verification?
+
+Failure halts before commit. Plan-review is unique among writing skills in running its self-review at `reasoning` tier — plan flaws are expensive to discover at code-review time.
 
 **Outputs:**
 - `docs/tickets/PROJ-NNN/plan.md` → `plan.html`
 - Branch `ldd/plan/PROJ-NNN` created
-- Plan-PR opened against main with `plan.md` (and, for story-level work, the previously-committed `design.md` is included in the diff so reviewers see both)
+- **Plan-PR description includes the accumulated artifact package**, not just the plan diff:
+  - Links and short summaries of `ticket.md` (scope + elaboration + refinement) and `design.md` (research + decisions + structure)
+  - The plan diff is the diff under review, but reviewers are explicitly directed to evaluate coherence of the whole package — does the plan honour the design, does the design satisfy the refined ticket, does the ticket sit cleanly inside its scope envelope
+  - PR template includes a "package coherence" checklist alongside the slice-by-slice checklist
 - Ticket: `plan:in-review` set when PR opens
 - On plan-PR merge: `plan:approved`, `gate:plan-approved`, `phase:implement`
 
@@ -369,7 +419,18 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
    - Refactor pass (`balanced` tier)
 3. Append progress per slice to `progress.md`
 4. Post progress comment on ticket per completed slice
-5. On all slices complete: open code-PR
+5. On all slices complete: code-PR self-review (see below)
+6. On self-review pass: open code-PR
+
+**Pre-PR self-review** (runs after all slices complete, before opening code-PR):
+- Every slice in the plan has corresponding commits on the implementation branch
+- Every plan-listed test file exists and passes
+- No files were modified outside the plan's "files touched" list (any deviation → halt and request `--override` with reason)
+- All ACs from the ticket have a passing test that maps to them (verified via test name matching or explicit traceability comments)
+- For `risk:high` tickets: migration steps from the plan executed; revert steps documented in PR description
+- `git status` clean on the implementation branch (no unstaged or untracked changes)
+
+Failure halts and surfaces the violation. Common remediation: add a missing test, or invoke `--override` if the deviation is intentional (deviation is logged in code-PR description).
 
 **Outputs:**
 - Code commits on branch `ldd/impl/PROJ-NNN`
