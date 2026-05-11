@@ -211,9 +211,41 @@ phase:close       → "Done"
 
 Many teams collapse scoping/elaboration/refinement into a single "Backlog" or "Ready" column on the visible board, with the phase label distinguishing them internally. The default mapping above keeps them separate; collapse via the override at setup time if your team prefers fewer columns.
 
+### 5.4 Ceremony controls
+
+LDD keeps the cognitive phases, but scales the ceremony around them. The rule is: **do not collapse the thinking boundaries; collapse unnecessary handoffs, questions, and artifact bulk.**
+
+**Risk-tiered depth.**
+
+| Risk | Workflow depth | Default review posture |
+|---|---|---|
+| `risk:low` | Compressed artifacts; ticket-blind research off unless brown-field; one design option acceptable; `plan.md` usually 1-2 slices | `/ldd:prepare` may run scope → elaborate → refine → design → plan in one invocation; plan-PR optional by team config |
+| `risk:med` | Normal LDD path; bounded questions; 2-3 design alternatives where useful | Plan-PR required; package review by PR description/checklist |
+| `risk:high` | Full research; alternatives mandatory; migration/backward-compat, rollout/revert, observability required | Plan-PR required; stricter self-review; no compressed wrapper unless `--override-preflight` records why |
+
+**Question budgets.** Skills ask only the questions needed for their phase. When a budget is exhausted, the skill must proceed with an explicit assumption, capture an open question with an owner, or halt if the missing answer is a halt-only invariant.
+
+| Skill | Default budget |
+|---|---|
+| `/ldd:scope` | 3 questions |
+| `/ldd:elaborate` | 5 questions |
+| `/ldd:refine` | 2 questions; mostly self-review/research |
+| `/ldd:design` | 2 questions after codebase research |
+| `/ldd:plan` | 0 questions unless a contradiction is found |
+
+**Artifact budgets.** The rendered artifact should be deep enough to review, not large enough to become a second project.
+
+- `risk:low` ticket scope: 3-5 bullets; AC: 1-4 criteria; design: one screen/page; plan: 1-2 slices.
+- `risk:med` ticket scope: 3-7 bullets; AC: 3-8 criteria; design: up to three screens/pages unless complexity demands more; plan: enough slices that each lands a green test.
+- `risk:high` has no fixed size limit, but every extra section must map to a concrete risk trigger.
+
+**Escalation triggers.** Extra ceremony requires a reason. Full treatment is triggered by `risk:high`, external dependencies, data migration, security/auth/payment/privacy impact, cross-team ownership, production-path changes, previous incident/regression area, or ambiguous ownership. If none apply, the skill should default to the lightest artifact that satisfies its self-review.
+
+**Ceremony metrics.** `audit.yml` records question count, artifacts touched, PRs opened, elapsed time before implementation, override flags used, and whether `/ldd:prepare` was used. These are reviewable at retro time. If low-risk tickets regularly require many questions or multiple PRs, the process is too heavy and setup defaults should be adjusted.
+
 ## 6. Skill Inventory
 
-Eight macro skills. Each is a single user-facing verb that orchestrates internal sub-steps and subagent dispatches.
+Eight macro skills plus one convenience wrapper. Each macro skill is a single user-facing verb that orchestrates internal sub-steps and subagent dispatches. The wrapper reduces handoffs for low-risk work without changing the underlying artifacts.
 
 ### 6.0 Skill ↔ phase mapping at a glance
 
@@ -227,10 +259,13 @@ Eight macro skills. Each is a single user-facing verb that orchestrates internal
 | `/ldd:design` | any ticket with `phase:design` | `phase:design` → `phase:plan` | Subagent-driven ticket-blind research by default |
 | `/ldd:plan` | any ticket with `phase:plan` | `phase:plan` → (via plan-PR merge) `phase:implement` | Opens plan-PR |
 | `/ldd:implement` | any ticket with `phase:implement` + `gate:plan-approved` | `phase:implement` → `phase:verify` → (on code-PR merge) `phase:close` | Opens code-PR; TDD-driven |
+| `/ldd:prepare` | `risk:low` ticket by default | Runs scope → elaborate → refine → design → plan in one invocation | Convenience wrapper; writes the same artifacts, respects self-review and budgets, records `prepared_by_wrapper:true` |
 
 Verify and close are not skills — they happen via PR review + CI + automated label flips on merge.
 
 **Why scope, elaborate, and refine are three skills:** these are three distinct cognitive activities. **Scope** sets boundaries — a high-stakes decision that's costly to reverse. **Elaborate** produces first-draft content within boundaries — generative, low-stakes. **Refine** polishes the draft for testability and clarity — convergent, low-stakes but high-precision. Conflating them lets scope creep in via "while I'm refining I might as well also expand…"; separating them forces explicit boundary decisions that elaboration and refinement honour.
+
+**Why `/ldd:prepare` exists:** low-risk work should not require five manual handoffs to preserve five thinking boundaries. The wrapper executes the same sequence, runs each phase-local self-review, writes the same artifact set, and stops at the first failed check. It is disabled by default for `risk:high`; teams can also disable it entirely in setup if they want every phase manually invoked.
 
 ### 6.1 `/ldd:setup` — bootstrap
 
@@ -425,7 +460,29 @@ Failure halts before commit. Plan-review is unique among writing skills in runni
 - Ticket: `plan:in-review` set when PR opens
 - On plan-PR merge: `plan:approved`, `gate:plan-approved`, `phase:implement`
 
-### 6.8 `/ldd:implement`
+### 6.8 `/ldd:prepare` — low-risk wrapper
+
+**Inputs:** a ticket with `risk:low` and no unresolved halt-only preflight failures. Teams may allow `risk:med` via config; `risk:high` refuses unless `--override-preflight="<reason>"` is supplied.
+
+**Process:**
+1. Runs `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, and `/ldd:plan` in sequence inside one invocation.
+2. Applies the question and artifact budgets from §5.4 at each phase.
+3. Runs each phase-local self-review before moving to the next phase.
+4. Stops immediately on any halt-only failure or exhausted question budget that cannot be converted into an explicit assumption/open question.
+
+**Outputs:**
+- The same `ticket.md`, `design.md`, and `plan.md` artifacts the macro skills would have written
+- `audit.yml` records `prepared_by_wrapper:true`, per-phase question counts, per-phase elapsed time, and any assumptions made
+- If team config has `low_risk_plan_pr: required`, opens the normal plan-PR
+- If team config has `low_risk_plan_pr: auto_approve`, does not open a plan-PR; instead marks `plan:approved`, sets `gate:plan-approved`, moves to `phase:implement`, and writes `plan_auto_approved:true` plus the config reason into `plan.md` frontmatter and `audit.yml`
+
+**Constraints:**
+- The wrapper cannot skip phase-local self-review.
+- The wrapper cannot create fewer artifacts; it can only keep them terse.
+- The wrapper cannot auto-approve `risk:high`.
+- Any scope expansion discovered after `/ldd:scope` still halts and recommends rerunning `/ldd:scope`; the wrapper does not blur scope boundaries.
+
+### 6.9 `/ldd:implement`
 
 **Inputs:** a ticket with `phase:implement` and `gate:plan-approved`.
 
@@ -558,6 +615,34 @@ original ticket remains phase:close; retrofit ticket closes when retrofit artifa
 - Retroactive artifacts use `retrofit: true` frontmatter and append to the original ticket's `docs/tickets/<KEY>/` directory; they do not change the original ticket's `phase:close` state
 
 The retroactive pass produces the full pre-design artifact set so future engineers see the same trail of decisions a non-hotfix ticket would carry. The retrofit ticket is the audit gate; the original is not reopened.
+
+### 7.4 Low-risk compressed path
+
+```
+ticket accepted (kind:feature|refactor|bug, risk:low)
+       │
+       ▼
+/ldd:prepare
+       │
+       ├─ writes terse ticket.md, design.md, plan.md
+       ├─ runs every phase-local self-review
+       └─ records question/artifact budgets in audit.yml
+       │
+       ▼
+if low_risk_plan_pr: required       if low_risk_plan_pr: auto_approve
+       │                                      │
+       ▼                                      ▼
+[Plan PR review]                    gate:plan-approved set by self-review
+       │                                      │
+       └──────────────────────┬───────────────┘
+                              ▼
+                       /ldd:implement
+                              │
+                              ▼
+                       [Code PR review]
+```
+
+This is the anti-ceremony path. It preserves the artifact trail and phase-local checks, but removes manual phase invocation and, if configured, the separate plan-PR. If an escalation trigger appears mid-run, `/ldd:prepare` stops and hands the ticket back to the normal macro-skill path.
 
 ## 8. Artifact Schemas
 
@@ -696,6 +781,8 @@ created: 2026-05-11
 updated: 2026-05-11
 status: phase:implement                       # current phase after this artifact lands
 plan_pr: null                                 # set when /ldd:plan opens plan-PR
+plan_auto_approved: false                     # true only when /ldd:prepare uses low_risk_plan_pr:auto_approve
+prepared_by_wrapper: false                    # true when generated by /ldd:prepare
 gate_plan_approved_at: null                   # set on plan-PR merge
 code_pr: null                                 # set when /ldd:implement opens code-PR
 gate_tests_green_at: null                     # set on code-PR merge
@@ -743,6 +830,7 @@ The setup skill asks the user a sequence of questions and writes `.ldd/config.ym
 8. **Agent platform** — Claude Code | Codex CLI | Gemini CLI | Cursor | Continue.dev | Generic. (Determines skill install location and subagent primitive.)
 9. **Subagent capability** — auto-detect; user can force off if their platform lacks support.
 10. **Model tier resolution** — for each of `fast`, `balanced`, `reasoning`, what's the concrete model ID on your platform?
+11. **Ceremony controls** — allow `/ldd:prepare`? Should low-risk plans require PR review or auto-approve after plan self-review? Override default question/artifact budgets?
 
 ### 9.2 Output
 
@@ -800,6 +888,36 @@ tier_resolution:
 
 cost_ceilings:
   per_skill_invocation_usd: null   # optional
+
+ceremony:
+  prepare_enabled: true
+  prepare_allowed_risks: ["low"]
+  low_risk_plan_pr: auto_approve    # required | auto_approve
+  question_budgets:
+    scope: 3
+    elaborate: 5
+    refine: 2
+    design: 2
+    plan: 0
+  artifact_budgets:
+    low:
+      scope_bullets: [3, 5]
+      acceptance_criteria: [1, 4]
+      design_pages: 1
+      plan_slices: [1, 2]
+    med:
+      scope_bullets: [3, 7]
+      acceptance_criteria: [3, 8]
+      design_pages: 3
+      plan_slices: null
+  escalation_triggers:
+    - risk:high
+    - external_dependency
+    - data_migration
+    - security_auth_payment_privacy
+    - cross_team_ownership
+    - production_path
+    - previous_incident_area
 ```
 
 ## 10. Platform Adapters
