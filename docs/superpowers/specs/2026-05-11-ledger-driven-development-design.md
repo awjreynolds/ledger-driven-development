@@ -30,7 +30,7 @@ LDD exists because the existing approaches each leave concrete gaps when applied
 | 6 | PRD-in-issue doesn't scale to JIRA | Walls-of-text in ticket descriptions | Ticket-as-index + repo-committed artifacts decouples ledger UX from artifact depth |
 | 7 | None reconcile stakeholder vs engineer views | Engineers want depth; TPMs want summary | Macro × micro phases + label namespaces give both audiences a view of the same ticket |
 | 8 | Cognitive overload at code review | Plan and code reviewed together, late | Shift review to plan-PR; code-PR becomes a spot-check |
-| 9 | None handle epic → ticket decomposition with carried context | Pocock's `/to-issues` is one-shot, loses parent framing | `/ldd:refine` decomposition preserves parent PRD context as inherited frontmatter |
+| 9 | None handle epic → ticket decomposition with carried context | Pocock's `/to-issues` is one-shot, loses parent framing | `/ldd:scope` Branch C (decomposition) preserves parent PRD context as inherited frontmatter and scope envelope |
 | 10 | None offer a clean trunk of traceability | Spec ↔ plan ↔ PR ↔ release links are manual | Labels + frontmatter create a graph: ticket ↔ design.md commit ↔ plan-PR ↔ code-PR |
 
 ## 3. What LDD is *not*
@@ -121,7 +121,22 @@ Every LDD skill follows this shape:
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-Preflight refusals are bypassed with `--override="<reason>"`. The override is captured durably in artifact frontmatter and mirrored as a ticket comment. Overrides are always allowed; they are never silent.
+**Override classes.** Not all checks are equally negotiable. LDD distinguishes three override surfaces:
+
+| Class | Flag | What it bypasses | Audit weight |
+|---|---|---|---|
+| **Preflight override** | `--override-preflight="<reason>"` | Preflight check refusals (e.g., wrong phase label, missing parent artifact) | Logged in audit + ticket comment |
+| **Self-review override** | `--override-review="<reason>"` | Phase-local self-review failures (e.g., an AC the skill judged non-testable) | Logged in audit + ticket comment + explicit `review-overridden:true` flag in artifact frontmatter |
+| **Hotfix override** | `--hotfix="<incident-ref>"` | Multiple preconditions across the workflow (skips phases entirely; see §7.3); requires an incident reference | Logged + opens a follow-up "retroactive artifact" ticket linked to the original |
+
+Some checks are **halt-only** — no override class accepts them. These cover invariants that must not be violated for the workflow to remain coherent:
+
+- Tests fail in `/ldd:implement` (red tests must be green before code-PR; no override produces green CI on broken tests)
+- Worktree contains uncommitted unrelated changes (override `--allow-dirty="<reason>"` exists but applies *only* to specific known files; can't blanket-skip)
+- Scope-locked region modified without `/ldd:scope` invocation (mechanical guard; halts unconditionally)
+- Postcondition verification failure (the work didn't durably land — fix the underlying issue, don't override)
+
+Overrides of any class are captured durably in artifact frontmatter and mirrored as a ticket comment. **Overrides of the right class are always allowed; they are never silent. Halt-only checks have no override path.**
 
 **Phase-local self-review** runs *before* commit/PR for any writing skill. Each writing skill defines its own checks (see Section 6 — for example, `/ldd:elaborate` checks no scope expansion; `/ldd:refine` checks AC are testable; `/ldd:design` checks no scope smuggling and risk-appropriate concerns). Self-review failures halt the skill and surface the specific violation rather than silently weakening checks. Self-review is the answer to "how do we keep each phase honest without external review at every step?" — commit timing stays aggressive (ledger-driven model), but each phase polices itself before committing.
 
@@ -243,7 +258,7 @@ Verify and close are not skills — they happen via PR review + CI + automated l
 
 **Outputs:**
 - Ticket labels: `kind:bug`, `risk:*`, one of `triage:accepted` | `triage:needs-info` | `triage:duplicate-of:#N` | `triage:wontfix`
-- If accepted: also sets `phase:refinement`, creates `docs/tickets/PROJ-NNN/` skeleton
+- If accepted: also sets `phase:scoping` (the bug then walks through scope → elaborate → refine like any other ticket; triage only assesses validity and severity, not scope), creates `docs/tickets/PROJ-NNN/` skeleton
 - Ticket comment with triage notes (repro outcome, severity reasoning, duplicate links)
 - Audit record
 
@@ -275,16 +290,18 @@ Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
 - Sets `phase:scoping` → `phase:elaboration` on completion
 
 **Branch C: Decomposition** (input: epic with `gate:prd-approved`)
-- Slices the approved PRD into child tickets (`reasoning` tier — bad decomposition costs days)
-- Outputs: N new ledger child tickets with `kind:feature`, `phase:scoping`, `parent: PROJ-100`, frontmatter inheriting parent context; each child's `ticket.md` has the Out-of-scope section pre-populated from the slice boundary; parent epic gets `decomposed:true` + child links
-- **Opens a decomposition-PR** (`ldd/decompose/PROJ-100` branch) with the new child tickets' `ticket.md` files for reviewer sign-off before children enter their own workflows
+- Slices the approved PRD into proposed child tickets (`reasoning` tier — bad decomposition costs days)
+- **Does not create ledger child tickets immediately.** Instead, creates each proposed child as a `docs/tickets/PROJ-NNN/ticket.md` file on a `ldd/decompose/PROJ-100` branch, with `kind:feature`, `parent: PROJ-100`, frontmatter inheriting parent context, and the Out-of-scope section pre-populated from the slice boundary
+- **Opens the decomposition-PR** with all proposed child `ticket.md` files for reviewer sign-off
+- On decomposition-PR merge: ledger child tickets are created (via the merge webhook or a post-merge CI job), each labelled `kind:feature`, `parent: PROJ-100`, **`phase:elaboration`** (scope already inherited from decomposition — children skip `/ldd:scope` and start at `/ldd:elaborate`); parent epic gets `decomposed:true` + child links
+- This create-on-merge sequencing prevents the "ticket exists in ledger but scope envelope rejected by reviewer" race condition
 
 **Pre-commit self-review** (every branch runs this before commit/PR):
 - Branch A: are goals measurable? Are non-goals concrete (not "general improvements")? Are the goals + non-goals together a complete envelope (no obvious adjacent areas left ambiguous)?
 - Branch B: is out-of-scope concrete (specific things, not vague categories)? Is sizing realistic?
 - Branch C: does each child have a minimum-viable scope envelope? Does any child duplicate another's scope? Does the union of child scopes equal the PRD scope minus explicitly-deferred items?
 
-Failures halt the skill and surface the issue; the engineer either fixes the input or invokes `--override="<reason>"`.
+Failures halt the skill and surface the issue; the engineer either fixes the input or, for non-halt-only review failures, invokes `--override-review="<reason>"`.
 
 **Why scope is its own skill:** boundary decisions get made *cleanly*, without bleed-over into detail-filling. A reviewer of a decomposition-PR is asked exactly one question — "are these the right boundaries?" — not also "are the AC well-formed?". Each gate reviews one concern.
 
@@ -377,7 +394,7 @@ Failure surfaces the specific violation. The skill does not silently weaken a ch
 - `docs/tickets/PROJ-NNN/design.md` → `design.html` (collapsible sections, diagrams, file pills)
 - `phase:design` → `phase:plan` on completion
 - For `kind:epic`: separate design-PR opened (`ldd/design/PROJ-NNN` branch) with `design.md`
-- For story-level work (`kind:feature|refactor|bug`): no separate PR; `design.md` commits to main and is reviewed inline as part of the upcoming plan-PR
+- For story-level work (`kind:feature|refactor|bug`): no separate PR; `design.md` commits to main and is referenced (via link and summary in the plan-PR description) for reviewer awareness at the upcoming plan-PR gate. The plan-PR diff itself contains only `plan.md` — package review at the plan-PR is description-and-checklist-driven, not GitHub-diff-driven (see §6.7)
 - On design-PR merge (epics only): `gate:design-approved`
 
 ### 6.7 `/ldd:plan`
@@ -400,10 +417,11 @@ Failure halts before commit. Plan-review is unique among writing skills in runni
 **Outputs:**
 - `docs/tickets/PROJ-NNN/plan.md` → `plan.html`
 - Branch `ldd/plan/PROJ-NNN` created
-- **Plan-PR description includes the accumulated artifact package**, not just the plan diff:
-  - Links and short summaries of `ticket.md` (scope + elaboration + refinement) and `design.md` (research + decisions + structure)
-  - The plan diff is the diff under review, but reviewers are explicitly directed to evaluate coherence of the whole package — does the plan honour the design, does the design satisfy the refined ticket, does the ticket sit cleanly inside its scope envelope
-  - PR template includes a "package coherence" checklist alongside the slice-by-slice checklist
+- **Plan-PR is description-and-checklist-driven for package review** (not GitHub-diff-driven):
+  - The PR diff contains only `plan.md` — that's all GitHub will display in the Files tab
+  - The PR description carries links and short summaries of the prior artifacts (`ticket.md` with scope+elaboration+refinement; `design.md` with research+decisions+structure) and is the primary surface for package evaluation
+  - PR template includes two checklists: a "slice-by-slice" checklist (one box per plan slice) AND a "package coherence" checklist asking reviewers to confirm: does the plan honour the design; does the design satisfy the refined ticket; does the ticket sit cleanly inside its scope envelope; were any scope-locked regions touched
+  - Reviewers click through the description links to read prior artifacts at their `@<sha>` commits; the description anchors the package, not the diff
 - Ticket: `plan:in-review` set when PR opens
 - On plan-PR merge: `plan:approved`, `gate:plan-approved`, `phase:implement`
 
@@ -425,12 +443,12 @@ Failure halts before commit. Plan-review is unique among writing skills in runni
 **Pre-PR self-review** (runs after all slices complete, before opening code-PR):
 - Every slice in the plan has corresponding commits on the implementation branch
 - Every plan-listed test file exists and passes
-- No files were modified outside the plan's "files touched" list (any deviation → halt and request `--override` with reason)
+- No files were modified outside the plan's "files touched" list (any deviation → halt and request `--override-review="<reason>"`; unrelated dirty files remain halt-only unless explicitly covered by `--allow-dirty="<reason>"`)
 - All ACs from the ticket have a passing test that maps to them (verified via test name matching or explicit traceability comments)
 - For `risk:high` tickets: migration steps from the plan executed; revert steps documented in PR description
 - `git status` clean on the implementation branch (no unstaged or untracked changes)
 
-Failure halts and surfaces the violation. Common remediation: add a missing test, or invoke `--override` if the deviation is intentional (deviation is logged in code-PR description).
+Failure halts and surfaces the violation. Common remediation: add a missing test, or invoke `--override-review="<reason>"` if the deviation is intentional and not halt-only (deviation is logged in the code-PR description).
 
 **Outputs:**
 - Code commits on branch `ldd/impl/PROJ-NNN`
@@ -507,19 +525,39 @@ Sibling children proceed in parallel after decomposition. Only explicit `depends
 ticket created (kind:bug, risk:high)
        │
        ▼
-/ldd:triage --override="hotfix:incident:INC-42"
+/ldd:triage --hotfix="INC-42"          # admits without normal scope phase
        │
        ▼
-/ldd:implement --override="hotfix:incident:INC-42"
+/ldd:implement --hotfix="INC-42"       # bypasses phase:implement and gate:plan-approved preconditions
+       │
+       │  produces minimum required artifacts before any code:
+       │   - one-line ticket.md with problem framing only
+       │   - one-line plan.md with a single slice describing the fix + a red test
+       │  (these are mandatory; --hotfix does not waive them, only the gates)
        │
        ▼
-[Code PR, fast-track review]
+[Code PR, fast-track review with hotfix-incident label]
+       │
+       ▼ (post-merge)
+auto-creates retroactive ticket: "Retrofit artifacts for INC-42"
        │
        ▼
-(retrospectively) /ldd:scope + /ldd:elaborate + /ldd:refine + /ldd:design + /ldd:plan committed post-merge for audit
+/ldd:scope + /ldd:elaborate + /ldd:refine + /ldd:design (with research and full design.md)
+       │
+       ▼ committed to original ticket directory with retrofit:true frontmatter
+       │
+       ▼
+original ticket remains phase:close; retrofit ticket closes when retrofit artifacts merged
 ```
 
-Overrides logged on both ticket and code-PR; the gap between hotfix and retroactive design is visible at retro time. The retrospective pass produces the full pre-design artifact set so future engineers see the same trail of decisions a non-hotfix ticket would carry.
+**Hotfix override semantics:**
+- `--hotfix="<incident-ref>"` is the only flag that bypasses `gate:plan-approved` and the `phase:implement` precondition on `/ldd:implement`
+- Requires an incident reference (e.g., `INC-42`); refuses without one
+- Does **not** waive the minimum artifact requirement: one-line ticket.md (problem) and one-line plan.md (single slice + red test) must be produced before any code commits. These are halt-only checks
+- Auto-creates a retrofit ticket on code-PR merge; the original incident ticket can close for production bookkeeping, while the retrofit ticket remains open as the audit obligation until retrofit artifacts land
+- Retroactive artifacts use `retrofit: true` frontmatter and append to the original ticket's `docs/tickets/<KEY>/` directory; they do not change the original ticket's `phase:close` state
+
+The retroactive pass produces the full pre-design artifact set so future engineers see the same trail of decisions a non-hotfix ticket would carry. The retrofit ticket is the audit gate; the original is not reopened.
 
 ## 8. Artifact Schemas
 
@@ -604,8 +642,15 @@ Edge cases worth testing — added during refinement when AC are sharpened.
 ```yaml
 ---
 ticket: PROJ-101
+parent_prd: PROJ-100                          # if decomposed from epic; null otherwise
+refined_ticket_sha: <sha of ticket.md at start of design>
 created: 2026-05-11
-research_mode: blind        # blind | sighted | skip
+updated: 2026-05-11
+status: phase:plan                            # current phase after this artifact completes
+research_mode: blind                          # blind | sighted | skip
+design_pr: null                               # set for epics when /ldd:design opens design-PR
+gate_design_approved_at: null                 # set on design-PR merge (epics only)
+review_overrides: []                          # populated if --override-review used during design
 ---
 
 # Design — <Ticket title>
@@ -625,6 +670,18 @@ Chosen architectural approach. Components, relationships, data flow.
 ## Structure
 Proposed interface shape — signatures, types, module boundaries.
 Reads like a C header file or .d.ts before implementation.
+
+## Migration / Backward-compat            (required for risk:high)
+What existing behaviour changes, how callers are affected, what bridge code is needed.
+
+## Rollout / Revert                       (required for risk:high)
+How the change is deployed (feature flag? gradual?); how to revert if it goes wrong.
+
+## Observability                          (required for risk:high or touching prod paths)
+What logs/metrics/alerts must exist before this lands.
+
+## Security / Dependencies                (required for new deps or auth/data changes)
+New attack surface; new dependencies and their supply-chain status.
 ```
 
 ### 8.4 Plan (`plan.md`)
@@ -632,8 +689,17 @@ Reads like a C header file or .d.ts before implementation.
 ```yaml
 ---
 ticket: PROJ-101
-design: design.md@<sha>
+parent_prd: PROJ-100                          # inherited; null for top-level tickets
+refined_ticket_sha: <sha of ticket.md>        # version of ticket the plan was built from
+design_sha: <sha of design.md>                # version of design the plan was built from
 created: 2026-05-11
+updated: 2026-05-11
+status: phase:implement                       # current phase after this artifact lands
+plan_pr: null                                 # set when /ldd:plan opens plan-PR
+gate_plan_approved_at: null                   # set on plan-PR merge
+code_pr: null                                 # set when /ldd:implement opens code-PR
+gate_tests_green_at: null                     # set on code-PR merge
+review_overrides: []                          # populated if --override-review used during plan
 ---
 
 # Plan — <Ticket title>
@@ -641,11 +707,25 @@ created: 2026-05-11
 ## Slice 1: <name>
 - Files touched: src/auth/oauth_config.ts (new), src/auth/oauth_config.test.ts (new)
 - Red test: "OAuth config rejects missing client_id"
-- Acceptance: test passes; config type exported
+- AC traced: PROJ-101 AC #1 ("config must require client_id")
+- Blocked by: none
+- Acceptance: red test green; config type exported
 
 ## Slice 2: <name>
 ...
 ```
+
+### 8.5 What lives where
+
+Three storage tiers per ticket; each has a defined responsibility:
+
+| Where | Lifecycle | What lives there |
+|---|---|---|
+| **Artifact frontmatter** (per file) | Stable, occasionally updated | Identity (ticket, parent), referential SHAs (design_sha, refined_ticket_sha), gate timestamps, status, list of review-override summaries |
+| **`audit.yml`** (per ticket, append-only) | Event log; never edited | Every skill invocation with timestamp, actor, model tier used, override flags used, before/after labels, time taken. The full history of decisions on this ticket. |
+| **Ledger ticket** (canonical) | Live state | Current `phase:*` and other labels, comments (which include short audit summaries), links to PRs |
+
+When a frontmatter field and a ledger label disagree, the **ledger wins for status; the repo wins for content**. Audit.yml is authoritative for "what happened when."
 
 ## 9. Configuration (`/ldd:setup`)
 
@@ -767,7 +847,7 @@ The structured markdown is the source of truth. HTML is regenerated deterministi
 
 ## 13. Open Questions / Future Work
 
-- **PRD-PR review mechanics for PM-heavy orgs.** PMs unfamiliar with PRs may resist. Mitigation: `--override="pm-workflow-exception"` exists; `prd:review-skipped` label visible at retro time. Worth revisiting after first team adoption.
+- **PRD-PR review mechanics for PM-heavy orgs.** PMs unfamiliar with PRs may resist. Mitigation: `--override-preflight="pm-workflow-exception"` exists for teams that explicitly bypass PRD-PR review; `prd:review-skipped` label visible at retro time. Worth revisiting after first team adoption.
 - **Cost ceilings as hard limits vs. warnings.** Configured as warnings initially; revisit if teams hit unexpected bills.
 - **Verify-skill candidacy.** A future `/ldd:verify` skill could summarise acceptance-criteria checks, coverage deltas, and security scan outputs as a single readable verification report. Not in v1.
 - **Cross-ticket dependency graph visualisation.** The frontmatter `depends_on:` + `parent:` data is queryable; a visualisation tool could render a project-wide DAG. Out of scope for v1; possible future companion.
@@ -786,4 +866,4 @@ The structured markdown is the source of truth. HTML is regenerated deterministi
 - **Slice** (in Pocock) — note that Pocock uses this term to mean *ticket-sized* deliverables; in LDD it means *intra-ticket* execution steps. Vocabulary collision.
 - **Ticket-blind research** — codebase investigation performed by a subagent with the ticket reference hidden, to prevent biased "find evidence supporting the proposed direction" patterns.
 - **Tier** — a logical capability bucket (`fast`, `balanced`, `reasoning`) mapped to concrete model IDs at setup time. Skills only reference tiers.
-- **Override** — a `--override="<reason>"` flag that bypasses a preflight check. Always allowed; always logged.
+- **Override** — one of LDD's explicit bypass flags: `--override-preflight="<reason>"`, `--override-review="<reason>"`, or `--hotfix="<incident-ref>"`. Overrides are classed by what they bypass, always logged, and unavailable for halt-only invariants.
