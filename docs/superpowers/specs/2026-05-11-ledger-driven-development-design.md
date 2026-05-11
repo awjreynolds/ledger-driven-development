@@ -75,28 +75,35 @@ LDD models software work as a directed graph of artifacts anchored to ledger tic
 
 The ledger holds *status*; the repo holds *content*. Conflicts resolve to repo for content, ledger for state.
 
-### 4.3 The two-PR pattern (plus optional design-PR)
+### 4.3 The two-PR pattern (plus PRs for epic-scale events)
 
 ```
-ticket created ──► /ldd:triage (bugs only) ──► /ldd:refine ──► /ldd:design ──► /ldd:plan
-                                                                                 │
-                                                                                 ▼
-                                                                          ┌──────────────┐
-                                                                          │  Plan PR     │  ← engineer reviews
-                                                                          │  (plan.md)   │     before any code
-                                                                          └──────┬───────┘
-                                                                                 │ merged
-                                                                                 ▼
-                                                                          /ldd:implement
-                                                                                 │
-                                                                          opens  ▼
-                                                                          ┌──────────────┐
-                                                                          │  Code PR     │  ← spot-check
-                                                                          │  (impl+tests)│     (alignment already done)
-                                                                          └──────────────┘
+ticket created ──► /ldd:triage (bugs only) ──► /ldd:scope ──► /ldd:elaborate ──► /ldd:refine ──► /ldd:design ──► /ldd:plan
+                                                                                                                    │
+                                                                                                                    ▼
+                                                                                                             ┌──────────────┐
+                                                                                                             │  Plan PR     │  ← engineer reviews
+                                                                                                             │  (plan.md)   │     before any code
+                                                                                                             └──────┬───────┘
+                                                                                                                    │ merged
+                                                                                                                    ▼
+                                                                                                             /ldd:implement
+                                                                                                                    │
+                                                                                                             opens  ▼
+                                                                                                             ┌──────────────┐
+                                                                                                             │  Code PR     │  ← spot-check
+                                                                                                             │  (impl+tests)│     (alignment already done)
+                                                                                                             └──────────────┘
 ```
 
-For epic-level work, an additional **design-PR** is opened from `/ldd:design` so architectural decisions are reviewed before the execution plan is written.
+Story-level tickets: two PRs (plan-PR, code-PR). Scope, elaborate, and refine commit to main; their effects are visible at the plan-PR review gate.
+
+Epic-level work involves additional PRs:
+- **PRD-PR** — opened when `/ldd:refine` completes PRD polishing; reviewed by PM/EM/stakeholders before decomposition
+- **Decomposition-PR** — opened by `/ldd:scope` when it slices an approved PRD into child tickets; reviewed before child tickets enter the workflow
+- **Design-PR** (optional per-child) — opened by `/ldd:design` so architectural decisions are reviewed before the execution plan is written
+
+The progression: scope sets boundaries; elaborate produces first-draft content; refine sharpens it. Then design and plan create the technical contract; implement turns the contract into code. Each gate reviews a different concern at a different cognitive scale.
 
 ### 4.4 Health checks with overrides (cross-cutting)
 
@@ -139,18 +146,22 @@ For platforms without subagent primitives, LDD falls back to **phased prompting*
 
 ## 5. Phase Model
 
-### 5.1 Six macro phases
+### 5.1 Eight macro phases
 
 Tickets move through these phases. Each is represented by a `phase:*` label.
 
 | Phase | Label | What happens | When |
 |---|---|---|---|
-| Refinement | `phase:refinement` | Ticket gets contextually complete (PRD, role-owned sections, decomposition if epic) | Pre-sprint (during backlog refinement) |
+| Scoping | `phase:scoping` | Boundary decisions — PRD goals/non-goals, ticket out-of-scope, epic decomposition into children | Pre-sprint |
+| Elaboration | `phase:elaboration` | First-pass detail — drafts of problem framing, user stories, AC, success metrics, affected modules | Pre-sprint |
+| Refinement | `phase:refinement` | Polish and sharpen — testable AC, measurable metrics, resolved ambiguities, edge cases, verified module pointers | Pre-sprint |
 | Design | `phase:design` | Codebase research + architectural decisions + structure outline → `design.md` | In-sprint |
 | Plan | `phase:plan` | Ordered execution slices → `plan.md`, plan-PR opened | In-sprint |
 | Implement | `phase:implement` | TDD execution following the merged plan, code-PR opened | In-sprint |
 | Verify | `phase:verify` | PR review + CI + acceptance-criteria validation | In-sprint |
 | Close | `phase:close` | Ticket closed, traceability complete | In-sprint |
+
+**Why three pre-design phases:** scoping (boundary), elaboration (first draft), and refinement (polish) are distinct cognitive activities. Scoping decisions are costly to reverse; elaboration produces content within boundaries; refinement sharpens content for testability. Conflating them into one skill loses the separation of concerns and re-introduces scope creep risk.
 
 ### 5.2 Label namespaces
 
@@ -170,6 +181,8 @@ Setup maps these canonical labels to ledger-specific strings (since JIRA labels 
 `/ldd:setup` writes a default mapping that users override to match their existing board:
 
 ```
+phase:scoping     → "Scoping"
+phase:elaboration → "Elaboration"
 phase:refinement  → "Ready"
 phase:design      → "Design"
 phase:plan        → "Plan in Review"
@@ -178,22 +191,28 @@ phase:verify      → "In Review"
 phase:close       → "Done"
 ```
 
+Many teams collapse scoping/elaboration/refinement into a single "Backlog" or "Ready" column on the visible board, with the phase label distinguishing them internally. The default mapping above keeps them separate; collapse via the override at setup time if your team prefers fewer columns.
+
 ## 6. Skill Inventory
 
-Six macro skills. Each is a single user-facing verb that orchestrates internal sub-steps and subagent dispatches.
+Eight macro skills. Each is a single user-facing verb that orchestrates internal sub-steps and subagent dispatches.
 
 ### 6.0 Skill ↔ phase mapping at a glance
 
 | Skill | Applies to | Phase transition produced | Notes |
 |---|---|---|---|
 | `/ldd:setup` | repo, one-time | — | Bootstrap; not part of any ticket's phase flow |
-| `/ldd:triage` | `kind:bug` only | (unlabelled) → `phase:refinement` | Continuous; not sprint-bound |
-| `/ldd:refine` | any ticket | `phase:refinement` → `phase:design` (for stories); also creates child tickets (for epics) | Three internal branches: PRD, ticket, decompose |
+| `/ldd:triage` | `kind:bug` only | (unlabelled) → `phase:scoping` | Continuous; not sprint-bound |
+| `/ldd:scope` | any artifact | `phase:scoping` → `phase:elaboration` (for stories); also produces decomposition (for epics) | Sets boundaries: PRD goals/non-goals, ticket out-of-scope, epic→child decomposition |
+| `/ldd:elaborate` | any ticket | `phase:elaboration` → `phase:refinement` | First-pass detail-filling within scoped envelope |
+| `/ldd:refine` | any ticket | `phase:refinement` → `phase:design` | Polishes drafts — makes AC testable, metrics measurable, ambiguities resolved |
 | `/ldd:design` | any ticket with `phase:design` | `phase:design` → `phase:plan` | Subagent-driven ticket-blind research by default |
 | `/ldd:plan` | any ticket with `phase:plan` | `phase:plan` → (via plan-PR merge) `phase:implement` | Opens plan-PR |
 | `/ldd:implement` | any ticket with `phase:implement` + `gate:plan-approved` | `phase:implement` → `phase:verify` → (on code-PR merge) `phase:close` | Opens code-PR; TDD-driven |
 
 Verify and close are not skills — they happen via PR review + CI + automated label flips on merge.
+
+**Why scope, elaborate, and refine are three skills:** these are three distinct cognitive activities. **Scope** sets boundaries — a high-stakes decision that's costly to reverse. **Elaborate** produces first-draft content within boundaries — generative, low-stakes. **Refine** polishes the draft for testability and clarity — convergent, low-stakes but high-precision. Conflating them lets scope creep in via "while I'm refining I might as well also expand…"; separating them forces explicit boundary decisions that elaboration and refinement honour.
 
 ### 6.1 `/ldd:setup` — bootstrap
 
@@ -227,36 +246,83 @@ Verify and close are not skills — they happen via PR review + CI + automated l
 
 **Continuous, not sprint-bound.** Bugs arrive on their own schedule.
 
-### 6.3 `/ldd:refine` — refinement (three internal branches)
+### 6.3 `/ldd:scope` — boundary-setting (three internal branches)
 
-The skill detects input type and branches internally according to this decision tree:
+The skill detects input type and branches internally:
 
 ```
-input is conversation context only (no ticket reference)        → Branch A (PRD)
-input is a ticket with kind:epic AND no prd.md                  → Branch A (PRD)
-input is a ticket with kind:epic AND gate:prd-approved set      → Branch C (decompose)
-input is a ticket with kind:feature|refactor|bug                → Branch B (ticket)
-none of the above                                                → refuse with helpful error
+input is conversation context only (no ticket reference)              → Branch A (new PRD scope)
+input is a ticket with kind:epic AND no prd.md                        → Branch A (new PRD scope)
+input is a ticket with kind:epic AND gate:prd-approved set            → Branch C (decompose)
+input is a ticket with kind:feature|refactor|bug AND no scope set     → Branch B (ticket scope)
+input is an already-scoped ticket needing scope adjustment            → Branch B (re-scope)
+none of the above                                                      → refuse with helpful error
 ```
 
-Users can force a specific branch with `--as=prd|ticket|decompose` (e.g., to run PRD production on a `kind:feature` ticket that was misclassified).
+Users can force a specific branch with `--as=prd-scope|ticket-scope|decompose`.
 
-**Branch A: PRD production** (input: idea/chat OR epic ticket without PRD)
-- Bounded grill at PRD scope (`balanced` tier)
-- Outputs: `docs/tickets/PROJ-NNN/prd.md` → `prd.html`; new epic ticket if absent; `kind:epic`, `phase:refinement`, `prd:in-review`; PRD-PR opened
+**Branch A: PRD scope** (input: idea/chat OR epic ticket without PRD)
+- Bounded grill at PRD-boundary scope (`balanced` tier): asks only about goals, non-goals, success criteria envelope. Does *not* ask about user stories, AC, or detail — those are elaboration's job.
+- Outputs: `docs/tickets/PROJ-NNN/prd.md` with **only the Goals and Non-goals sections filled**; remaining sections marked as placeholders for `/ldd:elaborate`; new epic ticket if absent; `kind:epic`, `phase:scoping`
+- Sets `phase:scoping` → `phase:elaboration` on completion
 
-**Branch B: Ticket refinement** (input: thin ticket with `kind:feature|refactor|bug`)
-- Bounded grill at ticket scope (`balanced` tier); fills role-owned sections (problem, acceptance criteria, affected modules, out-of-scope)
-- Outputs: `ticket.md` → `ticket.html`; ledger description synced; `phase:refinement` → `phase:design` on completion
-- No PR (committed directly to main; reviewed implicitly at the next phase's gate)
+**Branch B: Ticket scope** (input: ticket with `kind:feature|refactor|bug`)
+- Bounded grill at ticket-boundary scope (`balanced` tier): asks only about out-of-scope, sizing, dependencies. Does *not* ask about problem framing, AC, or affected modules.
+- Outputs: `ticket.md` with **only the Out-of-scope section filled** (plus optional `risk:` and `depends_on:` frontmatter)
+- Sets `phase:scoping` → `phase:elaboration` on completion
 
 **Branch C: Decomposition** (input: epic with `gate:prd-approved`)
-- Decomposes PRD into child tickets with inherited frontmatter (`reasoning` tier — bad decomposition costs days)
-- Outputs: N new ledger child tickets with `kind:feature`, `phase:refinement`, `parent: PROJ-100`; each child gets `ticket.md` with inherited PRD context; parent epic gets `decomposed:true` + child links
+- Slices the approved PRD into child tickets (`reasoning` tier — bad decomposition costs days)
+- Outputs: N new ledger child tickets with `kind:feature`, `phase:scoping`, `parent: PROJ-100`, frontmatter inheriting parent context; each child's `ticket.md` has the Out-of-scope section pre-populated from the slice boundary; parent epic gets `decomposed:true` + child links
+- **Opens a decomposition-PR** (`ldd/decompose/PROJ-100` branch) with the new child tickets' `ticket.md` files for reviewer sign-off before children enter their own workflows
 
-**Bounded grilling is the anti-scope-creep mechanism** — each branch grills only against the artifact's surface, not against the whole project.
+**Why scope is its own skill:** boundary decisions get made *cleanly*, without bleed-over into detail-filling. A reviewer of a decomposition-PR is asked exactly one question — "are these the right boundaries?" — not also "are the AC well-formed?". Each gate reviews one concern.
 
-### 6.4 `/ldd:design`
+### 6.4 `/ldd:elaborate` — first-pass content
+
+**Inputs:** an artifact with `phase:elaboration` (scope already set).
+
+**Process:**
+1. Read the scoped artifact (PRD or ticket) — Goals/Non-goals or Out-of-scope already present
+2. Bounded grill at *content* scope (`balanced` tier): asks the questions that produce first-draft content for the remaining sections. Crucially, the grill *cannot* propose changes to scope sections — they're locked.
+3. Generate first-draft content for each unfilled section
+
+**Outputs (PRD):** `prd.md` with Problem, User stories, Success metrics, Open questions sections filled (first draft); status `phase:elaboration` → `phase:refinement`
+
+**Outputs (ticket):** `ticket.md` with Problem framing, Acceptance criteria, Affected modules sections filled (first draft); status `phase:elaboration` → `phase:refinement`
+
+**No PR.** First-draft content commits to main; reviewers see it polished by `/ldd:refine` before any review gate.
+
+**Constraints:**
+- Cannot modify scope sections (Goals/Non-goals/Out-of-scope) — those are locked as `# scope-locked` regions; if elaboration surfaces a scope problem, the skill halts and recommends re-running `/ldd:scope` with the discovered issue
+- Cannot create new tickets (decomposition is scope's job, not elaboration's)
+
+### 6.5 `/ldd:refine` — polish and sharpen
+
+**Inputs:** an artifact with `phase:refinement` (scope and elaboration already done).
+
+**Process:**
+1. Read the elaborated artifact
+2. Pass through each non-scope section and apply polish:
+   - **Acceptance criteria** → make each criterion testable; flag any with subjective language ("intuitive", "fast")
+   - **Success metrics** → make each measurable; require units and a baseline
+   - **User stories** → tighten to "As X I want Y so Z" form; remove vague qualifiers
+   - **Problem framing** → ensure it's user-facing, not solution-facing
+   - **Affected modules** → verify against the codebase (subagent pass, `fast` tier); flag any that don't exist or have moved
+   - **Open questions** → either resolve via codebase research or escalate explicitly
+3. Edge case sweep (`balanced` tier): for each AC, propose 2–3 edge cases worth testing; add to AC or to a separate Edge cases section
+
+**Outputs:**
+- Updated `prd.md` or `ticket.md` with polished content; status `phase:refinement` → `phase:design` on completion
+- For PRDs: **PRD-PR opened** (`ldd/prd/PROJ-100` branch) containing the polished `prd.md` for PM/EM/stakeholder sign-off; PRD-PR merge sets `gate:prd-approved` and unblocks `/ldd:scope` Branch C (decomposition)
+- For tickets: no PR — polished ticket.md commits to main; reviewed implicitly at design-PR or plan-PR
+
+**Constraints:**
+- Cannot modify scope sections (those are locked)
+- Cannot add new high-level content (that's elaboration's job)
+- Can surface ambiguities for human resolution but cannot resolve them by inventing answers
+
+### 6.6 `/ldd:design`
 
 **Inputs:** a ticket with `phase:design`.
 
@@ -275,7 +341,7 @@ Users can force a specific branch with `--as=prd|ticket|decompose` (e.g., to run
 - For story-level work (`kind:feature|refactor|bug`): no separate PR; `design.md` commits to main and is reviewed inline as part of the upcoming plan-PR
 - On design-PR merge (epics only): `gate:design-approved`
 
-### 6.5 `/ldd:plan`
+### 6.7 `/ldd:plan`
 
 **Inputs:** a ticket with `phase:plan` and `design.md` present.
 
@@ -291,7 +357,7 @@ Users can force a specific branch with `--as=prd|ticket|decompose` (e.g., to run
 - Ticket: `plan:in-review` set when PR opens
 - On plan-PR merge: `plan:approved`, `gate:plan-approved`, `phase:implement`
 
-### 6.6 `/ldd:implement`
+### 6.8 `/ldd:implement`
 
 **Inputs:** a ticket with `phase:implement` and `gate:plan-approved`.
 
@@ -324,38 +390,55 @@ Users can force a specific branch with `--as=prd|ticket|decompose` (e.g., to run
 ### 7.1 Direct ticket (bug / feature / refactor without epic parent)
 
 ```
-/ldd:triage (bugs only) ──► /ldd:refine ──► /ldd:design ──► /ldd:plan
-                                                                 │
-                                                                 ▼
-                                                          [Plan PR review]
-                                                                 │
-                                                                 ▼
-                                                          /ldd:implement
-                                                                 │
-                                                                 ▼
-                                                          [Code PR review]
-                                                                 │
-                                                                 ▼
-                                                              [Close]
+/ldd:triage (bugs only) ──► /ldd:scope ──► /ldd:elaborate ──► /ldd:refine ──► /ldd:design ──► /ldd:plan
+                                                                                                  │
+                                                                                                  ▼
+                                                                                           [Plan PR review]
+                                                                                                  │
+                                                                                                  ▼
+                                                                                           /ldd:implement
+                                                                                                  │
+                                                                                                  ▼
+                                                                                           [Code PR review]
+                                                                                                  │
+                                                                                                  ▼
+                                                                                               [Close]
 ```
 
 ### 7.2 PRD-initiated work (epic with decomposition)
 
 ```
-/ldd:refine (PRD branch) ──► [PRD PR review] ──► /ldd:refine (decompose branch)
-                                                          │
-                          ┌───────────────────────────────┼───────────────────────────┐
-                          ▼                               ▼                           ▼
-                   child PROJ-101                  child PROJ-102               child PROJ-103
-                  /ldd:refine                   /ldd:refine                /ldd:refine
-                  /ldd:design                   /ldd:design                /ldd:design
-                  /ldd:plan                     /ldd:plan                  /ldd:plan
-                  [plan-PR]                     [plan-PR]                  [plan-PR]
-                  /ldd:implement                /ldd:implement             /ldd:implement
-                  [code-PR]                     [code-PR]                  [code-PR]
+/ldd:scope (PRD scope branch)             # sets Goals + Non-goals only
+       │
+       ▼
+/ldd:elaborate                             # fills Problem, User stories, Success metrics, Open questions (draft)
+       │
+       ▼
+/ldd:refine                                # polishes; opens PRD-PR
+       │
+       ▼
+[PRD-PR review]                            # PM/EM/stakeholder sign-off → gate:prd-approved
+       │
+       ▼
+/ldd:scope (decompose branch)              # slices PRD into child tickets with scope envelopes; opens decomposition-PR
+       │
+       ▼
+[Decomposition-PR review]                  # boundary-only review → children admitted
+       │
+       ▼
+┌────────────────────────────┼────────────────────────────┐
+▼                            ▼                            ▼
+child PROJ-101         child PROJ-102               child PROJ-103
+/ldd:elaborate         /ldd:elaborate         /ldd:elaborate     # scope inherited from decomposition
+/ldd:refine            /ldd:refine            /ldd:refine
+/ldd:design            /ldd:design            /ldd:design
+/ldd:plan              /ldd:plan              /ldd:plan
+[plan-PR]              [plan-PR]              [plan-PR]
+/ldd:implement         /ldd:implement         /ldd:implement
+[code-PR]              [code-PR]              [code-PR]
 ```
 
-Sibling children proceed in parallel after decomposition. Only explicit `depends_on:` frontmatter imposes ordering.
+Sibling children proceed in parallel after decomposition. Only explicit `depends_on:` frontmatter imposes ordering. Each child inherits its scope envelope from the decomposition; no separate `/ldd:scope` invocation per child unless scope changes mid-flight.
 
 ### 7.3 Hotfix override (production incident)
 
@@ -372,10 +455,10 @@ ticket created (kind:bug, risk:high)
 [Code PR, fast-track review]
        │
        ▼
-(retrospectively) /ldd:design + /ldd:plan committed post-merge for audit
+(retrospectively) /ldd:scope + /ldd:elaborate + /ldd:refine + /ldd:design + /ldd:plan committed post-merge for audit
 ```
 
-Overrides logged on both ticket and code-PR; the gap between hotfix and retroactive design is visible at retro time.
+Overrides logged on both ticket and code-PR; the gap between hotfix and retroactive design is visible at retro time. The retrospective pass produces the full pre-design artifact set so future engineers see the same trail of decisions a non-hotfix ticket would carry.
 
 ## 8. Artifact Schemas
 
@@ -383,35 +466,42 @@ All artifacts are structured markdown with YAML frontmatter. HTML companions are
 
 ### 8.1 PRD (`prd.md`)
 
+Sections are owned by specific skills (annotation in parens):
+
 ```yaml
 ---
 ticket: PROJ-100
 kind: epic
 created: 2026-05-11
 authors: [pm-name]
-status: in-review
+status: phase:refinement
+scope_locked_at: 2026-05-11T10:00:00Z   # set when /ldd:scope completes Branch A
 ---
 
 # <Product feature name>
 
-## Problem
-Who is affected, what they currently can't do, why it matters now.
-
-## Goals
+<!-- # scope-locked -->
+## Goals                          (filled by /ldd:scope)
 Business outcomes this enables (metrics, OKR ties).
 
-## Non-goals
+## Non-goals                      (filled by /ldd:scope)
 Explicitly out of scope; what this PRD is *not* trying to solve.
+<!-- # end scope-locked -->
 
-## User stories
+## Problem                        (drafted by /ldd:elaborate, polished by /ldd:refine)
+Who is affected, what they currently can't do, why it matters now.
+
+## User stories                   (drafted by /ldd:elaborate, polished by /ldd:refine)
 - As X, I want Y, so that Z.
 
-## Success metrics
-How we'll know it worked.
+## Success metrics                (drafted by /ldd:elaborate, polished by /ldd:refine)
+How we'll know it worked. Each metric measurable with units and a baseline (refine enforces).
 
-## Open questions
+## Open questions                 (surfaced by /ldd:elaborate, resolved or escalated by /ldd:refine)
 Unresolved items that need PM/EM/stakeholder input.
 ```
+
+The `scope-locked` HTML-comment markers are mechanical guards: `/ldd:elaborate` and `/ldd:refine` refuse to modify content between those markers. To change scope, re-invoke `/ldd:scope`.
 
 ### 8.2 Ticket (`ticket.md`)
 
@@ -423,22 +513,29 @@ kind: feature
 risk: med
 created: 2026-05-11
 status: phase:refinement
+scope_locked_at: 2026-05-11T10:30:00Z   # set when /ldd:scope Branch B completes
+depends_on: []           # set by /ldd:scope when relevant
 ---
 
 # <Ticket title>
 
-## Problem framing
+<!-- # scope-locked -->
+## Out of scope                   (filled by /ldd:scope)
+What this ticket is *not* doing. Future work split into new tickets.
+<!-- # end scope-locked -->
+
+## Problem framing                (drafted by /ldd:elaborate, polished by /ldd:refine)
 User-facing problem. Why this ticket exists.
 
-## Acceptance criteria
+## Acceptance criteria            (drafted by /ldd:elaborate, polished by /ldd:refine)
 - [ ] Testable condition 1
 - [ ] Testable condition 2
 
-## Affected modules
-File/module pointers populated during refinement.
+## Affected modules               (drafted by /ldd:elaborate, verified by /ldd:refine)
+File/module pointers, verified to exist in the codebase during refinement.
 
-## Out of scope
-What this ticket is *not* doing. Future work split into new tickets.
+## Edge cases                     (surfaced by /ldd:refine)
+Edge cases worth testing — added during refinement when AC are sharpened.
 ```
 
 ### 8.3 Design (`design.md`)
@@ -501,7 +598,7 @@ The setup skill asks the user a sequence of questions and writes `.ldd/config.ym
 4. **Render target** — GitHub Pages | none (raw markdown only) | custom URL | Confluence push
 5. **Label vocabulary mapping** — for each canonical LDD label, what's the ledger-specific string? (Default mapping provided for each backend.)
 6. **Board column mapping** — for each `phase:*`, which board column does it correspond to? (Default mapping provided.)
-7. **Role definitions** — does your team have a PM/PO? An EM separate from senior engineers? (Affects default ownership of refine branches.)
+7. **Role definitions** — does your team have a PM/PO? An EM separate from senior engineers? (Affects default ownership of scope/elaborate/refine.)
 8. **Agent platform** — Claude Code | Codex CLI | Gemini CLI | Cursor | Continue.dev | Generic. (Determines skill install location and subagent primitive.)
 9. **Subagent capability** — auto-detect; user can force off if their platform lacks support.
 10. **Model tier resolution** — for each of `fast`, `balanced`, `reasoning`, what's the concrete model ID on your platform?
@@ -619,7 +716,11 @@ The structured markdown is the source of truth. HTML is regenerated deterministi
 
 - **Ledger** — the ticket tracker (JIRA, GitHub Issues, Linear, or local files) holding ticket status.
 - **Artifact** — a structured markdown file committed to `docs/tickets/<KEY>/` carrying ticket content (PRD, ticket-detail, design, plan, progress).
-- **Phase** — one of six macro states a ticket passes through (refinement → design → plan → implement → verify → close).
+- **Phase** — one of eight macro states a ticket passes through (scoping → elaboration → refinement → design → plan → implement → verify → close).
+- **Scoping** — the activity of setting boundaries: what's in/out of a PRD (Goals/Non-goals), out-of-scope of a ticket, or how an epic decomposes into children. High-stakes, costly to reverse. Owned by `/ldd:scope`.
+- **Elaboration** — first-pass content generation within already-scoped boundaries: drafting problem framing, user stories, AC, success metrics, affected modules. Generative, low-stakes. Owned by `/ldd:elaborate`.
+- **Refinement** — polishing and sharpening of elaborated content: making AC testable, metrics measurable, ambiguities resolved, edge cases surfaced. Convergent, high-precision. Owned by `/ldd:refine`.
+- **Scope-locked region** — a section of an artifact (marked with `<!-- # scope-locked -->`) that `/ldd:elaborate` and `/ldd:refine` refuse to modify. To change scope, re-invoke `/ldd:scope`.
 - **Slice** (in LDD) — one step inside `plan.md`; the unit of execution within a single ticket. Minutes–hours of work. TDD red-test-first.
 - **Slice** (in Pocock) — note that Pocock uses this term to mean *ticket-sized* deliverables; in LDD it means *intra-ticket* execution steps. Vocabulary collision.
 - **Ticket-blind research** — codebase investigation performed by a subagent with the ticket reference hidden, to prevent biased "find evidence supporting the proposed direction" patterns.
