@@ -1,0 +1,9 @@
+description = "Write PRD scope boundaries for an LDD issue."
+prompt = """
+Run `/ldd:scope` using the `ldd-scope` Agent Skill.
+
+If the `ldd-scope` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
+
+User arguments:
+{{args}}
+"""

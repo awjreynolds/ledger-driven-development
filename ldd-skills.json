@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0",
+  "name": "ledger-driven-development",
+  "displayName": "Ledger-Driven Development",
+  "version": "0.1.0",
+  "description": "Agent-agnostic skills for GitHub-ledger product, design, planning, and implementation handoffs.",
+  "license": "MIT",
+  "repository": "https://github.com/awjreynolds/ledger-driven-development",
+  "canonicalSkillRoot": "skills",
+  "ledger": {
+    "type": "github",
+    "stateSource": "issues-and-pull-requests"
+  },
+  "commands": [
+    {
+      "command": "/ldd:setup",
+      "skill": "ldd-setup",
+      "path": "skills/ldd-setup",
+      "purpose": "Bootstrap LDD files in a target GitHub repository."
+    },
+    {
+      "command": "/ldd:next",
+      "skill": "ldd-next",
+      "path": "skills/ldd-next",
+      "purpose": "Read GitHub state for one issue and report the next LDD command."
+    },
+    {
+      "command": "/ldd:scope",
+      "skill": "ldd-scope",
+      "path": "skills/ldd-scope",
+      "purpose": "Write PRD goals, non-goals, and initial constraints."
+    },
+    {
+      "command": "/ldd:elaborate",
+      "skill": "ldd-elaborate",
+      "path": "skills/ldd-elaborate",
+      "purpose": "Fill product detail inside the approved scope."
+    },
+    {
+      "command": "/ldd:refine",
+      "skill": "ldd-refine",
+      "path": "skills/ldd-refine",
+      "purpose": "Make the PRD testable and ready for engineering design review."
+    },
+    {
+      "command": "/ldd:design",
+      "skill": "ldd-design",
+      "path": "skills/ldd-design",
+      "purpose": "Write the SDD and apply the ADR threshold."
+    },
+    {
+      "command": "/ldd:plan",
+      "skill": "ldd-plan",
+      "path": "skills/ldd-plan",
+      "purpose": "Write the implementation plan and generated HTML review copy."
+    },
+    {
+      "command": "/ldd:implement",
+      "skill": "ldd-implement",
+      "path": "skills/ldd-implement",
+      "purpose": "Execute the approved plan with code and tests."
+    }
+  ],
+  "adapters": {
+    "codex": {
+      "type": "agent-skills",
+      "install": "Use $skill-installer with the canonical skill paths in this manifest."
+    },
+    "claude": {
+      "type": "claude-code-plugin",
+      "pluginManifest": ".claude-plugin/plugin.json",
+      "marketplaceManifest": ".claude-plugin/marketplace.json",
+      "commands": "commands/ldd/*.md"
+    },
+    "gemini": {
+      "type": "gemini-cli-extension",
+      "extensionManifest": "gemini-extension.json",
+      "context": "GEMINI.md",
+      "commands": "commands/ldd/*.toml"
+    }
+  }
+}

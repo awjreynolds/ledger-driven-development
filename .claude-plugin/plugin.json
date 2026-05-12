@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "ldd",
+  "version": "0.1.0",
+  "description": "Ledger-Driven Development workflow skills for GitHub Issues and Pull Requests.",
+  "author": {
+    "name": "awjreynolds"
+  },
+  "homepage": "https://github.com/awjreynolds/ledger-driven-development",
+  "repository": "https://github.com/awjreynolds/ledger-driven-development",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "ledger-driven-development",
+    "github",
+    "prd",
+    "sdd",
+    "planning"
+  ],
+  "commands": [
+    "./commands/ldd/setup.md",
+    "./commands/ldd/next.md",
+    "./commands/ldd/scope.md",
+    "./commands/ldd/elaborate.md",
+    "./commands/ldd/refine.md",
+    "./commands/ldd/design.md",
+    "./commands/ldd/plan.md",
+    "./commands/ldd/implement.md"
+  ]
+}

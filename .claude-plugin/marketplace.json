@@ -1,0 +1,30 @@
+{
+  "name": "ledger-driven-development",
+  "description": "Ledger-Driven Development plugin marketplace.",
+  "version": "0.1.0",
+  "owner": {
+    "name": "awjreynolds"
+  },
+  "plugins": [
+    {
+      "name": "ldd",
+      "source": "./",
+      "description": "Ledger-Driven Development workflow skills for GitHub Issues and Pull Requests.",
+      "version": "0.1.0",
+      "author": {
+        "name": "awjreynolds"
+      },
+      "homepage": "https://github.com/awjreynolds/ledger-driven-development",
+      "repository": "https://github.com/awjreynolds/ledger-driven-development",
+      "license": "MIT",
+      "category": "development",
+      "tags": [
+        "agent-skills",
+        "github",
+        "planning",
+        "prd",
+        "sdd"
+      ]
+    }
+  ]
+}

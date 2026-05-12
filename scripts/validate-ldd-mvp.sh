@@ -4,6 +4,12 @@ set -eu
 commands='setup next scope elaborate refine design plan implement'
 
 required_files='
+ldd-skills.json
+README.md
+.claude-plugin/plugin.json
+.claude-plugin/marketplace.json
+gemini-extension.json
+GEMINI.md
 skills/ldd-setup/assets/templates/config.yml
 skills/ldd-setup/assets/templates/prd.md
 skills/ldd-setup/assets/templates/sdd.md
@@ -16,6 +22,8 @@ skills/ldd-setup/assets/templates/pr-body-implementation.md
 
 for command in $commands; do
   required_files="$required_files
+commands/ldd/$command.md
+commands/ldd/$command.toml
 skills/ldd-$command/SKILL.md
 skills/ldd-$command/agents/openai.yaml"
 done
@@ -27,11 +35,41 @@ for file in $required_files; do
   fi
 done
 
+for json_file in ldd-skills.json .claude-plugin/plugin.json .claude-plugin/marketplace.json gemini-extension.json; do
+  python3 -m json.tool "$json_file" >/dev/null
+done
+
+grep -q '"canonicalSkillRoot": "skills"' ldd-skills.json
+grep -q '"command": "/ldd:setup"' ldd-skills.json
+grep -q '"command": "/ldd:implement"' ldd-skills.json
+grep -q '"pluginManifest": ".claude-plugin/plugin.json"' ldd-skills.json
+grep -q '"extensionManifest": "gemini-extension.json"' ldd-skills.json
+
+grep -q '"name": "ldd"' .claude-plugin/plugin.json
+grep -q '"commands":' .claude-plugin/plugin.json
+grep -q './commands/ldd/setup.md' .claude-plugin/plugin.json
+grep -q './commands/ldd/implement.md' .claude-plugin/plugin.json
+grep -q '"name": "ledger-driven-development"' .claude-plugin/marketplace.json
+grep -q '"name": "ldd"' .claude-plugin/marketplace.json
+grep -q '"source": "./"' .claude-plugin/marketplace.json
+
+grep -q '"name": "ledger-driven-development"' gemini-extension.json
+grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
+grep -q 'GitHub is the ledger' GEMINI.md
+
 for command in $commands; do
   grep -q "/ldd:$command" "skills/ldd-$command/SKILL.md"
   grep -q 'GitHub is the ledger' "skills/ldd-$command/SKILL.md"
   grep -q 'GitHub mutations require human confirmation' "skills/ldd-$command/SKILL.md"
   grep -q 'display_name: "LDD ' "skills/ldd-$command/agents/openai.yaml"
+  grep -q "ldd-$command" "commands/ldd/$command.md"
+  grep -q 'canonical' "commands/ldd/$command.md"
+  grep -q "description =" "commands/ldd/$command.toml"
+  grep -q "prompt =" "commands/ldd/$command.toml"
+  grep -q "/ldd:$command" "commands/ldd/$command.toml"
+  grep -q "ldd-$command" "commands/ldd/$command.toml"
+  grep -q 'Agent Skill' "commands/ldd/$command.toml"
+  grep -q 'canonical' "commands/ldd/$command.toml"
 done
 
 grep -q 'Verify the repo has a GitHub remote' skills/ldd-setup/SKILL.md

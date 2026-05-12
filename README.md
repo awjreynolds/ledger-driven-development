@@ -1,29 +1,30 @@
 # Ledger-Driven Development Skills
 
-Installable Codex skills for the Ledger-Driven Development MVP.
+Agent-agnostic skills for the Ledger-Driven Development MVP.
 
-LDD uses GitHub Issues and Pull Requests as the workflow ledger. It separates product scope, engineering design, implementation planning, and implementation so AI-assisted work has explicit reviewable handoffs.
+LDD uses GitHub Issues and Pull Requests as the workflow ledger. It separates product scope, engineering design, implementation planning, and implementation so AI-assisted work has explicit, reviewable handoffs.
 
-## Install
+## Package Model
 
-Install all MVP skills into Codex:
+The canonical source is the Agent Skills layout:
 
-```sh
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo awjreynolds/ledger-driven-development \
-  --path skills/ldd-setup \
-  --path skills/ldd-next \
-  --path skills/ldd-scope \
-  --path skills/ldd-elaborate \
-  --path skills/ldd-refine \
-  --path skills/ldd-design \
-  --path skills/ldd-plan \
-  --path skills/ldd-implement
+```text
+skills/<skill-name>/SKILL.md
+skills/<skill-name>/assets/
+skills/<skill-name>/agents/openai.yaml
 ```
 
-Restart Codex after installing.
+Adapter manifests make the same skills installable in specific agents:
 
-There is no `ldd-core` skill to install. The shared LDD rules are intentionally embedded in each command-shaped skill so users install and invoke the same surface:
+| Agent | Adapter files |
+| --- | --- |
+| Codex | `skills/ldd-*`, `agents/openai.yaml`, `ldd-skills.json` |
+| Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `skills/ldd-*` |
+| Gemini CLI | `gemini-extension.json`, `GEMINI.md`, `commands/ldd/*.toml`, `skills/ldd-*` |
+
+There is no `ldd-core` skill to install. Shared LDD rules are intentionally embedded in each command-shaped skill so every agent sees the same command contract.
+
+## Commands
 
 ```text
 /ldd:setup
@@ -35,6 +36,43 @@ There is no `ldd-core` skill to install. The shared LDD rules are intentionally 
 /ldd:plan
 /ldd:implement
 ```
+
+## Install
+
+### Codex
+
+Use `$skill-installer` from inside Codex and ask it to install all skills from this repository:
+
+```text
+Use $skill-installer to install all LDD skills from
+https://github.com/awjreynolds/ledger-driven-development:
+skills/ldd-setup, skills/ldd-next, skills/ldd-scope,
+skills/ldd-elaborate, skills/ldd-refine, skills/ldd-design,
+skills/ldd-plan, and skills/ldd-implement.
+```
+
+Restart Codex after installing.
+
+### Claude Code
+
+Add this repository as a plugin marketplace, then install the plugin:
+
+```text
+/plugin marketplace add awjreynolds/ledger-driven-development
+/plugin install ldd@ledger-driven-development
+```
+
+Restart Claude Code after installing.
+
+### Gemini CLI
+
+Install this repository as a Gemini CLI extension:
+
+```sh
+gemini extensions install https://github.com/awjreynolds/ledger-driven-development
+```
+
+Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, and `/ldd:implement`.
 
 ## MVP Workflow
 
@@ -70,19 +108,6 @@ The templates are quality contracts, not blank forms:
 - SDDs translate approved PRDs into designs grounded in code and ADRs.
 - Plans trace acceptance criteria to implementation slices and verification.
 - PR bodies focus reviewers on the correct handoff question.
-
-## Command Summary
-
-| Skill | Purpose |
-| --- | --- |
-| `ldd-setup` | Bootstrap LDD files in a target GitHub repo. |
-| `ldd-next` | Read GitHub state for one issue and report the next LDD command. |
-| `ldd-scope` | Write PRD goals, non-goals, and initial constraints. |
-| `ldd-elaborate` | Fill product detail inside the approved scope. |
-| `ldd-refine` | Make the PRD testable and ready for engineering design review. |
-| `ldd-design` | Write the SDD and apply the ADR threshold. |
-| `ldd-plan` | Write the implementation plan and generated HTML review copy. |
-| `ldd-implement` | Execute the approved plan with code and tests. |
 
 ## Validate This Repo
 
