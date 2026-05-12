@@ -64,6 +64,14 @@ _Avoid_: planning, implementation, auto-decomposition
 The read-only act of identifying the next LDD command from the current **Ledger** state.
 _Avoid_: orchestration, dispatch, execution
 
+**Agent Skills Manifest**:
+The repo-root `agent-skills.json` file that lists the installable LDD skills and adapter manifests.
+_Avoid_: LDD-specific manifest, command registry, package lock
+
+**Installed Skill Copy**:
+A copy of an LDD skill installed into an agent-specific local skills directory.
+_Avoid_: live link, source of truth
+
 **Active Ticket Tree**:
 The repo-local ticket directories that contain current work visible to normal LDD commands.
 _Avoid_: archive
@@ -96,6 +104,8 @@ _Avoid_: active ticket tree, deletion
 - **Workflow Navigation** identifies the next step but does not perform it.
 - Completed **Child Work Items** move from the **Active Ticket Tree** to the **Ticket Archive**.
 - **Workflow Navigation** ignores the **Ticket Archive** by default.
+- The **Agent Skills Manifest** is the package source of truth for installable LDD skills.
+- An **Installed Skill Copy** can become stale and must be updated from the **Agent Skills Manifest**.
 
 ## Example dialogue
 
@@ -106,3 +116,4 @@ _Avoid_: active ticket tree, deletion
 
 - "Ledger" previously meant GitHub Issues and Pull Requests. Resolved: **Ledger** now means repo-local canonical workflow state; GitHub, Linear, and Jira are external sync targets.
 - "ticket", "epic", "story", and "subtask" were used interchangeably. Resolved: **Product Requirement** is the parent review unit; **Child Work Item** is the implementation/decomposition unit that rolls up to it.
+- "`ldd-core`" previously meant a shared installed skill. Resolved: there is no installed core skill; shared rules live in each command-shaped skill and package discovery lives in the **Agent Skills Manifest**.

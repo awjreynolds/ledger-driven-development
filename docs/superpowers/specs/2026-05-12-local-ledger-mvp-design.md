@@ -9,6 +9,14 @@ Ledger-Driven Development uses a repo-local ledger as canonical workflow state. 
 
 The MVP keeps this deliberately narrow: one Product Requirement moves through the full SDLC flow, then decomposes into child vertical-slice tickets for implementation. Sync engines, deep child lifecycle management, and swarm orchestration are out of scope.
 
+## Package Source Of Truth
+
+This repository publishes command-shaped agent skills. The repo-root `agent-skills.json` file is the package manifest for installable skills and adapter manifests.
+
+Installed skills are copies in an agent-specific local directory. They are not live-linked to this repository. Updating an installed LDD skill set means reinstalling the skills listed in `agent-skills.json` and restarting the agent.
+
+There is no installed `ldd-core` skill in the MVP. Shared LDD rules live inside each command-shaped skill so `/ldd:*` commands remain self-contained across Codex, Claude, Gemini, and other agents.
+
 ## Canonical Terms
 
 See `CONTEXT.md` for the glossary. The key terms are:
@@ -135,6 +143,8 @@ External trackers are configured through `.ldd/config.yml`. The MVP supports the
 - `github`, `linear`, `jira`: promotion may bind to an externally assigned ID.
 
 External mutations require human confirmation. If local ledger state and external tracker state diverge, commands report drift and stop rather than silently reconciling.
+
+The MVP supports the state model for external IDs, but does not promise a full sync engine. A GitHub, Linear, or Jira integration can be tested as a thin promotion/binding path without making that tracker canonical.
 
 ## Out of Scope
 

@@ -6,13 +6,17 @@ LDD uses a repo-local ledger as canonical workflow state. External trackers such
 
 ## Package Model
 
-The canonical source is the Agent Skills layout:
+The canonical package manifest is `agent-skills.json`.
+
+The canonical skill source is the Agent Skills layout:
 
 ```text
 skills/<skill-name>/SKILL.md
 skills/<skill-name>/assets/
 skills/<skill-name>/agents/openai.yaml
 ```
+
+`agent-skills.json` lists every installable skill path and adapter manifest. Adapter-specific files point back to the matching skill. They are not a second source of truth.
 
 Adapter manifests make the same skills installable in specific agents:
 
@@ -23,6 +27,8 @@ Adapter manifests make the same skills installable in specific agents:
 | Gemini CLI | `gemini-extension.json`, `GEMINI.md`, `commands/ldd/*.toml`, `skills/ldd-*` |
 
 There is no `ldd-core` skill to install. Shared LDD rules are intentionally embedded in each command-shaped skill so every agent sees the same command contract.
+
+The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md`. Older GitHub-ledger specs remain as historical context only.
 
 ## Commands
 
@@ -42,17 +48,29 @@ There is no `ldd-core` skill to install. Shared LDD rules are intentionally embe
 
 ### Codex
 
-Use `$skill-installer` from inside Codex and ask it to install all skills from this repository:
+Use `$skill-installer` from inside Codex and ask it to install the skills listed by `agent-skills.json`:
 
 ```text
-Use $skill-installer to install all LDD skills from
-https://github.com/awjreynolds/ledger-driven-development:
-skills/ldd-setup, skills/ldd-next, skills/ldd-scope,
-skills/ldd-elaborate, skills/ldd-refine, skills/ldd-design,
-skills/ldd-plan, skills/ldd-decompose, and skills/ldd-implement.
+Use $skill-installer to install all skills from
+https://github.com/awjreynolds/ledger-driven-development
+using agent-skills.json.
 ```
 
-Restart Codex after installing.
+Until the stock installer reads `agent-skills.json` directly, install the paths in that manifest:
+
+```text
+skills/ldd-setup
+skills/ldd-next
+skills/ldd-scope
+skills/ldd-elaborate
+skills/ldd-refine
+skills/ldd-design
+skills/ldd-plan
+skills/ldd-decompose
+skills/ldd-implement
+```
+
+Installed Codex skills are local copies under `~/.codex/skills`. They are not live-linked to this repository. To update, remove the installed `ldd-*` skills, reinstall from the current `agent-skills.json`, and restart Codex.
 
 ### Claude Code
 
@@ -74,6 +92,16 @@ gemini extensions install https://github.com/awjreynolds/ledger-driven-developme
 ```
 
 Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, and `/ldd:implement`.
+
+## Source Of Truth
+
+- Workflow state: repo-local `ledger.yml` files in the target project.
+- Skill package: `agent-skills.json`.
+- Command behavior: `skills/ldd-*/SKILL.md`.
+- Claude adapters: `commands/ldd/*.md`.
+- Gemini adapters: `commands/ldd/*.toml` plus `GEMINI.md`.
+
+External trackers are optional review and sync surfaces. They are not canonical LDD state.
 
 ## MVP Workflow
 

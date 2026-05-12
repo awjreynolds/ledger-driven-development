@@ -42,15 +42,24 @@ for json_file in agent-skills.json .claude-plugin/plugin.json .claude-plugin/mar
   python3 -m json.tool "$json_file" >/dev/null
 done
 
+if [ -f ldd-skills.json ]; then
+  echo "ldd-skills.json must not exist; use agent-skills.json" >&2
+  exit 1
+fi
+
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/ldd:setup"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
+grep -q 'agent-skills.json' README.md
+grep -q 'Installed Codex skills are local copies' README.md
+grep -q 'Package Source Of Truth' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Ticket Promotion' CONTEXT.md
 grep -q 'Vertical Slice' CONTEXT.md
+grep -q 'Agent Skills Manifest' CONTEXT.md
 
 grep -q '"name": "ldd"' .claude-plugin/plugin.json
 grep -q '"commands":' .claude-plugin/plugin.json
