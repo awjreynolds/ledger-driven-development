@@ -28,6 +28,8 @@ Bootstrap the current target repository for the LDD MVP workflow.
 
 Use bundled templates from `assets/templates/`.
 
+Copy templates exactly unless the user explicitly asks to customize them. The templates include artifact quality guidance and are part of the LDD workflow contract, not just blank markdown scaffolds.
+
 ## Rules
 
 - GitHub is the ledger. Do not create LDD labels, GitHub Actions, progress logs, or audit event files.

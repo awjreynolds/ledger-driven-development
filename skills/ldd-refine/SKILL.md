@@ -20,6 +20,7 @@ Polish `docs/tickets/<issue>/prd.md` on `ldd/prd/<issue>` for the PM-to-SE hando
 - GitHub is the ledger. Do not create LDD labels, GitHub Actions, progress logs, or audit event files.
 - GitHub mutations require human confirmation.
 - PM-hat command: do not read the codebase as a design input.
+- Use the PRD template's quality bar and handoff checklist before proposing a PRD PR.
 - Do not expand scope or add technical design.
 - Commit locally after refinement.
 - After human approval, push/open/update the PRD PR with `references #<issue>`.

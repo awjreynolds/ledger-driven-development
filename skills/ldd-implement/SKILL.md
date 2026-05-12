@@ -24,6 +24,7 @@ Execute the merged plan on `ldd/impl/<issue>`.
 - If the plan is wrong, stop and return to the earliest affected `/ldd:design` or `/ldd:plan` step.
 - The implementation PR contains product code and tests only. Do not write `progress.md`.
 - Run configured checks before PR.
+- Use the implementation PR body template to summarize plan adherence, tests/checks, and any approved deviations.
 - After human approval, push/open/update the Implementation PR with `Closes #<issue>`.
 - Implementation PR reviewer prompt: "Does this implementation follow the approved plan?"
 

@@ -60,7 +60,7 @@ Avoid: generic "user" when a more precise actor exists.
 <!--
 Use "As a <persona>, I want <capability>, so that <benefit>".
 Good: covers the main path, edge cases users can observe, and permission/role differences.
-Avoid: stories about components, services, data models, or implementation steps.
+Avoid: Gherkin/Cucumber syntax here, stories about components, services, data models, or implementation steps.
 -->
 
 1. TODO: As a ..., I want ..., so that ...
@@ -71,10 +71,18 @@ Avoid: stories about components, services, data models, or implementation steps.
 Define the product behavior that must be true before engineering can call the work done.
 Good: concrete, externally observable, unambiguous, includes important negative cases.
 Avoid: "works correctly", file-level checks, framework-specific behavior, or test instructions.
+Use checklist bullets for simple criteria. Use Gherkin-style Given/When/Then scenarios when state, roles, or edge cases need precision.
 -->
 
 - [ ] TODO: Observable behavior
 - [ ] TODO: Important constraint or negative case
+
+```gherkin
+Scenario: TODO observable behavior
+  Given TODO precondition
+  When TODO user action or event
+  Then TODO user-visible outcome
+```
 
 ## Success Metrics
 

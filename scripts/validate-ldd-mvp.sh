@@ -48,8 +48,29 @@ grep -q 'do not read the codebase as a design input' skills/ldd-refine/SKILL.md
 
 grep -q 'docs/tickets' skills/ldd-setup/assets/templates/config.yml
 grep -q '# PRD:' skills/ldd-setup/assets/templates/prd.md
+grep -q 'PM-hat artifact' skills/ldd-setup/assets/templates/prd.md
+grep -q 'PRD Handoff Checklist' skills/ldd-setup/assets/templates/prd.md
+grep -q 'No implementation decisions' skills/ldd-setup/assets/templates/prd.md
+grep -q 'Avoid: Gherkin/Cucumber syntax here' skills/ldd-setup/assets/templates/prd.md
+grep -q 'Given/When/Then' skills/ldd-setup/assets/templates/prd.md
 grep -q '# Software Design Document:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Quality bar:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'ADR threshold:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Review Checklist' skills/ldd-setup/assets/templates/sdd.md
 grep -q '# Implementation Plan:' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Acceptance Criteria Traceability' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Slice quality bar:' skills/ldd-setup/assets/templates/plan.md
+grep -q 'must not introduce new architecture decisions' skills/ldd-setup/assets/templates/plan.md
+grep -q 'PM Boundary' skills/ldd-setup/assets/templates/pr-body-prd.md
+grep -q 'Handoff Checklist' skills/ldd-setup/assets/templates/pr-body-prd.md
+grep -q 'Traceability Checks' skills/ldd-setup/assets/templates/pr-body-sdd-plan.md
 grep -q 'Does this implementation follow the approved plan?' skills/ldd-setup/assets/templates/pr-body-implementation.md
+grep -q 'Plan Conformance' skills/ldd-setup/assets/templates/pr-body-implementation.md
+grep -q 'Treat <code>plan.md</code> as the source of truth' skills/ldd-setup/assets/templates/plan.html
+
+grep -q 'artifact quality guidance' skills/ldd-setup/SKILL.md
+grep -q 'PRD template as a quality contract' skills/ldd-scope/SKILL.md
+grep -q "SDD template's quality bar" skills/ldd-design/SKILL.md
+grep -q "plan template's traceability" skills/ldd-plan/SKILL.md
 
 echo "LDD MVP installable skills validated"

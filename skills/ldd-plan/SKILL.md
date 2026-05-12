@@ -28,6 +28,7 @@ Create or update `docs/tickets/<issue>/plan.md` and generated `plan.html` on `ld
 
 - GitHub is the ledger. Do not create LDD labels, GitHub Actions, progress logs, or audit event files.
 - GitHub mutations require human confirmation.
+- Use the plan template's traceability and review checklist as mandatory completion criteria.
 - Do not introduce new architectural decisions. If planning discovers one, stop and return to `/ldd:design`.
 - `plan.md` is the durable source; `plan.html` is generated from it.
 - Commit locally after planning.

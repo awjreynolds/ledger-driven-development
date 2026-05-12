@@ -23,6 +23,7 @@ Create or update `docs/tickets/<issue>/sdd.md` on `ldd/sdd-plan/<issue>`.
 - GitHub is the ledger. Do not create LDD labels, GitHub Actions, progress logs, or audit event files.
 - GitHub mutations require human confirmation.
 - SE-hat command: existing code and ADRs may shape implementation design.
+- Use the SDD template's quality bar before committing design output.
 - The PRD still owns product scope. If code reality contradicts the PRD, stop and return to the earliest affected PM step.
 - ADR threshold: hard to reverse, surprising without context, and the result of a real trade-off.
 - Mandatory ADR support does not mean mandatory ADR creation.

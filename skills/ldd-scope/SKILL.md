@@ -18,6 +18,7 @@ Create or update `docs/tickets/<issue>/prd.md` on `ldd/prd/<issue>`.
 - GitHub is the ledger. Do not create LDD labels, GitHub Actions, progress logs, or audit event files.
 - GitHub mutations require human confirmation.
 - PM-hat command: preserve product intent and do not read the codebase as a design input.
+- Use the PRD template as a quality contract. Fill only the sections owned by this command; leave later-stage sections blank or marked as not yet addressed.
 - Do not fill implementation detail, acceptance criteria, success metrics, or user stories.
 - If code facts appear during discussion, capture them only as constraints, dependencies, or open questions.
 - Make a local commit after writing scope. Ask before pushing the branch.
