@@ -4,7 +4,7 @@ set -eu
 commands='setup next scope elaborate refine design plan decompose implement'
 
 required_files='
-ldd-skills.json
+agent-skills.json
 README.md
 CONTEXT.md
 docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
@@ -38,16 +38,16 @@ for file in $required_files; do
   fi
 done
 
-for json_file in ldd-skills.json .claude-plugin/plugin.json .claude-plugin/marketplace.json gemini-extension.json; do
+for json_file in agent-skills.json .claude-plugin/plugin.json .claude-plugin/marketplace.json gemini-extension.json; do
   python3 -m json.tool "$json_file" >/dev/null
 done
 
-grep -q '"canonicalSkillRoot": "skills"' ldd-skills.json
-grep -q '"command": "/ldd:setup"' ldd-skills.json
-grep -q '"command": "/ldd:decompose"' ldd-skills.json
-grep -q '"command": "/ldd:implement"' ldd-skills.json
-grep -q '"pluginManifest": ".claude-plugin/plugin.json"' ldd-skills.json
-grep -q '"extensionManifest": "gemini-extension.json"' ldd-skills.json
+grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
+grep -q '"command": "/ldd:setup"' agent-skills.json
+grep -q '"command": "/ldd:decompose"' agent-skills.json
+grep -q '"command": "/ldd:implement"' agent-skills.json
+grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
+grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Ticket Promotion' CONTEXT.md
 grep -q 'Vertical Slice' CONTEXT.md

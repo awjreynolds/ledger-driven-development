@@ -18,7 +18,7 @@ Adapter manifests make the same skills installable in specific agents:
 
 | Agent | Adapter files |
 | --- | --- |
-| Codex | `skills/ldd-*`, `agents/openai.yaml`, `ldd-skills.json` |
+| Codex | `skills/ldd-*`, `agents/openai.yaml`, `agent-skills.json` |
 | Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `skills/ldd-*` |
 | Gemini CLI | `gemini-extension.json`, `GEMINI.md`, `commands/ldd/*.toml`, `skills/ldd-*` |
 
