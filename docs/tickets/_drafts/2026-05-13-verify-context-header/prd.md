@@ -54,19 +54,37 @@ Implementation closure is also underspecified. `/ldd:implement` can produce code
 
 ## Acceptance Criteria
 
-- Draft: A ticket exposes enough compact context for an agent or maintainer to understand the current phase, approved inputs, boundaries, and next required gate.
-- Draft: Implementation completion and ticket closure are treated as separate workflow states.
-- Draft: A verification gate can produce a clear recommendation about whether child work is ready to mark done, archive, and close externally.
-- Draft: Closure is blocked when required evidence is missing, checks fail, scope/design drift is detected, or external ticket drift is unresolved.
-- Draft: When implementation evidence exists but closure has not been approved, LDD can indicate that verification is the next required gate.
-- Draft: The workflow remains local-ledger-first and does not require external skills, agent-specific orchestration, or a broad repository healthcheck.
+- [ ] For an active ticket, LDD exposes compact context that lets an agent or maintainer identify the ticket's current phase, approved inputs, product/design/plan boundaries, and next required gate without relying on chat history.
+- [ ] LDD treats implementation completion and ticket closure as separate workflow states.
+- [ ] LDD provides a verification gate that reports whether child work is ready to mark done, archive, and close externally.
+- [ ] LDD blocks closure when required evidence is missing, checks have not passed, scope/design drift is detected, or external ticket drift is unresolved.
+- [ ] When implementation evidence exists but closure has not been approved, LDD indicates that verification is the next required gate.
+- [ ] The verification gate is specific to LDD child-ticket closure and is not presented as a general repository healthcheck.
+- [ ] The workflow remains local-ledger-first and does not require external skills, agent-specific orchestration, or a broad repository healthcheck.
+
+```gherkin
+Scenario: Implemented child work is not closed before verification
+  Given a child work item has implementation evidence
+  And closure has not been verified
+  When a maintainer asks for the next LDD action
+  Then LDD indicates that verification is required before archive or external close
+```
+
+```gherkin
+Scenario: Verification blocks closure when evidence is incomplete
+  Given a child work item is ready for closure review
+  And required implementation evidence is missing or drift is unresolved
+  When verification is performed
+  Then LDD reports the blocking reason
+  And the child work item remains unclosed
+```
 
 ## Success Metrics
 
-- A maintainer can identify the active ticket's current phase and next gate from LDD artifacts without relying on chat history.
-- A child ticket cannot be archived or externally closed in the documented workflow until verification has passed or a human explicitly overrides the finding.
-- Generated verification output is understandable to product and engineering reviewers without reading every source artifact end to end.
-- Hostile tests cover attempted gate bypasses, including implementing without verification and closing with missing evidence.
+- A maintainer can identify the active ticket's current phase and next gate from LDD artifacts in under two minutes without relying on chat history.
+- Child work is not archived or externally closed in the documented workflow until verification has passed or a human explicitly overrides the finding.
+- Verification output is understandable to product and engineering reviewers without reading every source artifact end to end.
+- Hostile tests cover attempted gate bypasses, including implementation without verification and closure with missing evidence.
 
 ## Dependencies
 
@@ -78,17 +96,17 @@ Implementation closure is also underspecified. `/ldd:implement` can produce code
 ## Open Questions
 
 - Should the execution context be a separate per-ticket file or a section inside the existing ledger? Owner: engineering design.
-- What minimum evidence is required before `/ldd:verify` can recommend closure? Owner: refinement.
-- Does verification close only child tickets in MVP, or can it also verify a parent Product Requirement once all children are done? Owner: refinement.
+- What minimum evidence is required before the verification gate can recommend closure? Owner: engineering design.
+- Parent Product Requirement closure is out of scope for this MVP unless engineering design identifies a minimal roll-up state needed to support child-ticket verification.
 
 ## PRD Handoff Checklist
 
 <!-- Complete before opening the PRD PR. -->
 
-- [ ] Problem is expressed from the user's perspective.
+- [x] Problem is expressed from the user's perspective.
 - [x] Goals and non-goals make the scope boundary clear.
 - [x] User stories cover the main workflow and meaningful user-visible edge cases.
-- [ ] Acceptance criteria are observable without reading code.
+- [x] Acceptance criteria are observable without reading code.
 - [x] Metrics define how product success will be judged.
 - [x] Dependencies and open questions are explicit.
 - [x] No implementation decisions, architecture, file paths, APIs, schemas, libraries, test strategy, or code snippets are present.
