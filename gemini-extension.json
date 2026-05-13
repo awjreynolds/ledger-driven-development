@@ -12,6 +12,7 @@
     "/ldd:plan",
     "/ldd:decompose",
     "/ldd:implement",
-    "/ldd:verify"
+    "/ldd:verify",
+    "/ldd:close"
   ]
 }

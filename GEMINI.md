@@ -24,3 +24,4 @@ Command mapping:
 - `/ldd:decompose` -> `skills/ldd-decompose/SKILL.md`
 - `/ldd:implement` -> `skills/ldd-implement/SKILL.md`
 - `/ldd:verify` -> `skills/ldd-verify/SKILL.md`
+- `/ldd:close` -> `skills/ldd-close/SKILL.md`

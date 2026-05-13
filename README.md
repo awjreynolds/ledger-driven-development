@@ -45,6 +45,7 @@ The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-m
 /ldd:decompose
 /ldd:implement
 /ldd:verify
+/ldd:close
 ```
 
 ## Install
@@ -72,6 +73,7 @@ skills/ldd-plan
 skills/ldd-decompose
 skills/ldd-implement
 skills/ldd-verify
+skills/ldd-close
 ```
 
 Installed Codex skills are local copies under `~/.codex/skills`. They are not live-linked to this repository. To update, remove the installed `ldd-*` skills, reinstall from the current `agent-skills.json`, and restart Codex.
@@ -95,7 +97,7 @@ Install this repository as a Gemini CLI extension:
 gemini extensions install https://github.com/awjreynolds/ledger-driven-development
 ```
 
-Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, and `/ldd:verify`.
+Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, and `/ldd:close`.
 
 ## Source Of Truth
 
@@ -152,6 +154,7 @@ The templates are quality contracts, not blank forms:
 - Decomposition turns approved plan slices into child vertical-slice tickets.
 - Implementation completes child work but does not close it.
 - Verification checks child-ticket closure readiness before archive or external close.
+- Close applies verified closure, archives child work locally, and optionally syncs external closure after explicit human approval.
 - External issue bodies are rich projections of the ledger and artifacts, readable without opening the repo.
 - Child tickets follow LDD's standalone independently-grabbable shape: parent, what to build, acceptance criteria, blockers, user stories covered, and LDD traceability.
 - PR bodies focus reviewers on the correct handoff question.

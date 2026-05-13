@@ -80,6 +80,10 @@ _Avoid_: repository healthcheck, implementation, archive
 The post-verification decision to mark child work done, archive it locally, or close its external tracker projection after human approval.
 _Avoid_: implementation completion, verification pass, automatic close
 
+**Close Command**:
+The LDD command that applies **Closure** after **Verification** has passed.
+_Avoid_: verification, implementation, automatic archive
+
 **Verified Child Work**:
 A **Child Work Item** with passing **Verification** recorded in its **Ledger** and a readable `verification.md` report.
 _Avoid_: closed ticket, archived work, merged code
@@ -142,6 +146,7 @@ _Avoid_: active ticket tree, deletion
 - **Verification** writes a readable report and machine-readable **Ledger** state.
 - **Verified Child Work** is eligible for human closure review.
 - **Closure** remains separate from **Verification** and external tracker mutation.
+- The **Close Command** requires passed **Verification** before archiving or external close.
 - If implementation finds no **Vertical Slices**, it reports that there are no tickets to implement.
 - If implementation finds an approved plan without **Vertical Slices**, it reports that **Decomposition** is required.
 - **Workflow Navigation** identifies the next step but does not perform it.

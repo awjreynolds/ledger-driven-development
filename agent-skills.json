@@ -71,6 +71,12 @@
       "skill": "ldd-verify",
       "path": "skills/ldd-verify",
       "purpose": "Verify one implemented child ticket is ready for human-approved closure."
+    },
+    {
+      "command": "/ldd:close",
+      "skill": "ldd-close",
+      "path": "skills/ldd-close",
+      "purpose": "Apply human-approved closure for one verified child ticket."
     }
   ],
   "adapters": {

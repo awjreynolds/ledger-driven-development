@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-commands='setup next scope elaborate refine design plan decompose implement verify'
+commands='setup next scope elaborate refine design plan decompose implement verify close'
 
 required_files='
 agent-skills.json
@@ -55,6 +55,7 @@ grep -q '"command": "/ldd:setup"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
 grep -q '"command": "/ldd:verify"' agent-skills.json
+grep -q '"command": "/ldd:close"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'agent-skills.json' README.md
@@ -78,6 +79,7 @@ grep -q './commands/ldd/setup.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/decompose.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/implement.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/verify.md' .claude-plugin/plugin.json
+grep -q './commands/ldd/close.md' .claude-plugin/plugin.json
 grep -q '"name": "ledger-driven-development"' .claude-plugin/marketplace.json
 grep -q '"name": "ldd"' .claude-plugin/marketplace.json
 grep -q '"source": "./"' .claude-plugin/marketplace.json
@@ -85,6 +87,7 @@ grep -q '"source": "./"' .claude-plugin/marketplace.json
 grep -q '"name": "ledger-driven-development"' gemini-extension.json
 grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
 grep -q '"/ldd:verify"' gemini-extension.json
+grep -q '"/ldd:close"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
 
 for command in $commands; do
@@ -112,6 +115,7 @@ grep -q 'next: /ldd:decompose' skills/ldd-next/SKILL.md
 grep -q 'execution_context' skills/ldd-next/SKILL.md
 grep -q 'derive equivalent state' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:verify <child-ticket-id>' skills/ldd-next/SKILL.md
+grep -q 'next: /ldd:close <child-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'closure.status' skills/ldd-next/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
@@ -172,6 +176,12 @@ grep -q 'scope/design/plan drift' skills/ldd-verify/SKILL.md
 grep -q 'external ticket drift is unresolved' skills/ldd-verify/SKILL.md
 grep -q 'verification.md' skills/ldd-verify/SKILL.md
 grep -q 'Do not mutate external trackers' skills/ldd-verify/SKILL.md
+grep -q 'Apply closure for one verified child work item' skills/ldd-close/SKILL.md
+grep -q 'artifacts.verification.status: passed' skills/ldd-close/SKILL.md
+grep -q 'closure.status: verified' skills/ldd-close/SKILL.md
+grep -q 'archive_directory' skills/ldd-close/SKILL.md
+grep -q 'External mutations require human confirmation' skills/ldd-close/SKILL.md
+grep -q 'archive child tickets' skills/ldd-close/SKILL.md
 grep -q 'Verification status: pending | passed | failed | override_required' skills/ldd-setup/assets/templates/verification.md
 grep -q 'Boundary: child-ticket closure only, not repository health' skills/ldd-setup/assets/templates/verification.md
 grep -q 'External tracker drift: pending' skills/ldd-setup/assets/templates/verification.md

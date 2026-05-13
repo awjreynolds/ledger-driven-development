@@ -31,6 +31,7 @@ Read repo-local ledger state and report the next explicit LDD command.
 - Prefer `execution_context` when present, but verify it against ledger artifact state before reporting the next command.
 - If `execution_context` is absent, derive equivalent state from ticket status, artifact statuses, child ledgers, `closure.status`, sync metadata, and archived-child location.
 - Preserve approved PRD, SDD, and plan boundaries. If the next step would change those boundaries, report the earliest affected `/ldd:scope`, `/ldd:design`, or `/ldd:plan` gate instead of routing implementation or verification.
+- Prioritize verified but unclosed child work before verification and implementation.
 - Prioritize child work with completed implementation evidence and unverified closure before starting additional child implementation.
 
 ## Decision Tree
@@ -42,6 +43,8 @@ Else if draft PRD exists:
   inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or PRD approval/promotion
 Else if parent ticket is done:
   done
+Else if any active child is verified but not closed or archived:
+  next: /ldd:close <child-ticket-id>
 Else if any active child has completed implementation evidence and unverified closure:
   next: /ldd:verify <child-ticket-id>
 Else if ready child vertical slices exist:
@@ -68,6 +71,17 @@ Treat an active child as needing verification when either of these is true:
 Derived state means implementation evidence exists, for example `artifacts.implementation.status: completed`, `artifacts.implementation.evidence`, a recorded implementation completion event, or equivalent local changed-file/check evidence in the child ledger; and closure is unverified, for example missing `closure`, `closure.status: open`, `closure.status: verification_required`, missing `artifacts.verification`, or `artifacts.verification.status: missing | pending | failed`.
 
 Do not route archived children, externally closed children, or children with `closure.status: verified | archived | externally_closed` to `/ldd:verify`.
+
+## Closure Gate Detection
+
+Treat an active child as ready to close when either of these is true:
+
+- `execution_context.current_gate: closure` or `execution_context.next_command` is `/ldd:close <child-ticket-id>`.
+- Derived state shows verification passed while closure has not been applied.
+
+Derived state means `artifacts.verification.status: passed`, `closure.status: verified`, and the child directory is still in the active ticket tree rather than `_archive/`.
+
+Do not route children with `closure.status: archived | externally_closed` to `/ldd:close`.
 
 ## Stop Conditions
 
