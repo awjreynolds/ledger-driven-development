@@ -4,7 +4,7 @@
 
 - Parent Product Requirement: {parent_ticket_id}
 - Child Work Item: {ticket_id}
-- Verification status: pending
+- Verification status: pending | passed | failed | override_required
 - Closure recommendation: not_ready
 - Verified at: null
 - Verified by: null
@@ -19,7 +19,7 @@
 ## Execution Context
 
 - Current gate: verification
-- Boundary: child-ticket closure only
+- Boundary: child-ticket closure only, not repository health
 - Next command: null
 - Next human action: review verification findings before archive or external close
 - Reason: Verification must pass before closure can be recommended.
@@ -29,28 +29,41 @@
 - Changed files: pending
 - Implementation notes: pending
 - Traceability to acceptance criteria: pending
+- Evidence complete: pending
 
 ## Check Evidence
 
 - Automated checks: pending
 - Manual checks: pending
 - Failed or skipped checks: pending
+- Check evidence complete: pending
 
 ## Drift Review
 
 - Ledger drift: pending
 - Approved artifact drift: pending
+- Scope/design/plan drift: pending
 - External tracker drift: pending
 
 ## Findings
 
-No findings recorded yet.
+### Blockers
+
+- Verification has not run.
+
+### Warnings
+
+- None recorded.
+
+### Notes
+
+- None recorded.
 
 ## Closure Decision
 
 - Ready to mark done: no
 - Ready to archive locally: no
 - Ready for external close: no
+- Human confirmation required before external mutation: yes
 - Blocking reasons:
   - Verification has not run.
-

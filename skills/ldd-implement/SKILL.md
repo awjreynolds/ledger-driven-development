@@ -19,13 +19,18 @@ Execute one ready child vertical-slice ticket.
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- Follow the approved child ticket and parent plan. Do not silently update `plan.md` from implementation.
+- Follow the approved child ticket and parent plan, and preserve approved PRD, SDD, and plan boundaries. Do not silently update `plan.md` from implementation.
 - Do not auto-decompose. If no ready child tickets exist, report that there are no tickets to implement. If the plan is approved but no child tickets exist, report that `/ldd:decompose` is required.
 - If the plan is wrong, stop and return to the earliest affected `/ldd:design` or `/ldd:plan` step.
 - The implementation PR contains product code and tests only. Do not write `progress.md`.
 - Run configured checks before PR.
 - Use the implementation PR body template to summarize plan adherence, tests/checks, and any approved deviations.
-- After human approval, update the child ticket and parent ledger according to `.ldd/config.yml`.
+- Record implementation completion evidence in the child ledger, including changed-file summary, check evidence, and any implementation PR or local diff reference available.
+- Mark the child as implemented but not closed by setting `artifacts.implementation.status: completed`, `ticket.status: verification_required`, `closure.status: verification_required`, and `execution_context.next_command: /ldd:verify <child-ticket-id>` when those fields are available.
+- If the ledger lacks verification or closure fields, record equivalent implementation completion evidence and state that `/ldd:verify <child-ticket-id>` is the next gate so `/ldd:next` can derive the same state.
+- Do not archive child tickets.
+- Do not close external child work items.
+- Do not mark child work done, archived, externally closed, or verified from this command; `/ldd:verify` decides closure readiness after implementation completion.
 - Implementation PR reviewer prompt: "Does this implementation follow the approved plan?"
 
 ## Built-in TDD Loop

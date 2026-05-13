@@ -23,6 +23,7 @@ skills/ldd-setup/assets/templates/issue-body-child.md
 skills/ldd-setup/assets/templates/pr-body-prd.md
 skills/ldd-setup/assets/templates/pr-body-sdd-plan.md
 skills/ldd-setup/assets/templates/pr-body-implementation.md
+skills/ldd-setup/assets/templates/verification.md
 '
 
 for command in $commands; do
@@ -102,6 +103,10 @@ grep -q 'docs/tickets/_archive/' skills/ldd-setup/SKILL.md
 grep -q 'Read-only' skills/ldd-next/SKILL.md
 grep -q 'It never mutates GitHub or local files' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:decompose' skills/ldd-next/SKILL.md
+grep -q 'execution_context' skills/ldd-next/SKILL.md
+grep -q 'derive equivalent state' skills/ldd-next/SKILL.md
+grep -q 'next: /ldd:verify <child-ticket-id>' skills/ldd-next/SKILL.md
+grep -q 'closure.status' skills/ldd-next/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
 grep -q 'do not read the codebase as a design input' skills/ldd-elaborate/SKILL.md
@@ -144,11 +149,24 @@ grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/ldd-implement/SKILL.md
 grep -q 'Run the focused test and confirm it fails' skills/ldd-implement/SKILL.md
+grep -q 'approved PRD, SDD, and plan boundaries' skills/ldd-implement/SKILL.md
+grep -q 'closure.status: verification_required' skills/ldd-implement/SKILL.md
+grep -q 'Do not archive child tickets' skills/ldd-implement/SKILL.md
+grep -q 'Do not close external child work items' skills/ldd-implement/SKILL.md
 grep -q 'child-ticket closure' skills/ldd-verify/SKILL.md
+grep -q 'not a general repository healthcheck' skills/ldd-verify/SKILL.md
 grep -q 'implementation completion' skills/ldd-verify/SKILL.md
 grep -q 'closure.status' skills/ldd-verify/SKILL.md
+grep -q 'passed | failed | override_required' skills/ldd-verify/SKILL.md
+grep -q 'approved parent PRD, approved parent SDD, approved parent plan' skills/ldd-verify/SKILL.md
+grep -q 'scope/design/plan drift' skills/ldd-verify/SKILL.md
+grep -q 'external ticket drift is unresolved' skills/ldd-verify/SKILL.md
 grep -q 'verification.md' skills/ldd-verify/SKILL.md
 grep -q 'Do not mutate external trackers' skills/ldd-verify/SKILL.md
+grep -q 'Verification status: pending | passed | failed | override_required' skills/ldd-setup/assets/templates/verification.md
+grep -q 'Boundary: child-ticket closure only, not repository health' skills/ldd-setup/assets/templates/verification.md
+grep -q 'External tracker drift: pending' skills/ldd-setup/assets/templates/verification.md
+grep -q 'Human confirmation required before external mutation: yes' skills/ldd-setup/assets/templates/verification.md
 grep -q 'Product Boundary' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Handoff Checklist' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Traceability Checks' skills/ldd-setup/assets/templates/pr-body-sdd-plan.md

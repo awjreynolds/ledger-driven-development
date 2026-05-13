@@ -14,9 +14,11 @@ Read repo-local ledger state and report the next explicit LDD command.
 ## Reads
 
 - active `docs/tickets/**/ledger.yml`
+- `execution_context` when present
 - draft directories under `docs/tickets/_drafts/`
 - parent ticket artifacts
 - child vertical-slice ticket state
+- child implementation, verification, and closure state
 - external tracker sync state and body drift when configured
 
 ## Rules
@@ -26,6 +28,10 @@ Read repo-local ledger state and report the next explicit LDD command.
 - External mutations require human confirmation, and this command does not request mutations.
 - Ignore `docs/tickets/_archive/` unless the user explicitly asks to inspect archived tickets.
 - Use `.ldd/config.yml` when present.
+- Prefer `execution_context` when present, but verify it against ledger artifact state before reporting the next command.
+- If `execution_context` is absent, derive equivalent state from ticket status, artifact statuses, child ledgers, `closure.status`, sync metadata, and archived-child location.
+- Preserve approved PRD, SDD, and plan boundaries. If the next step would change those boundaries, report the earliest affected `/ldd:scope`, `/ldd:design`, or `/ldd:plan` gate instead of routing implementation or verification.
+- Prioritize child work with completed implementation evidence and unverified closure before starting additional child implementation.
 
 ## Decision Tree
 
@@ -36,6 +42,8 @@ Else if draft PRD exists:
   inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or PRD approval/promotion
 Else if parent ticket is done:
   done
+Else if any active child has completed implementation evidence and unverified closure:
+  next: /ldd:verify <child-ticket-id>
 Else if ready child vertical slices exist:
   next: /ldd:implement <child-ticket-id>
 Else if plan is approved and no child tickets exist:
@@ -49,6 +57,17 @@ Else if PRD is approved:
 Else:
   next: /ldd:scope
 ```
+
+## Verification Gate Detection
+
+Treat an active child as needing verification when either of these is true:
+
+- `execution_context.current_gate: verification` or `execution_context.next_command` is `/ldd:verify <child-ticket-id>`.
+- Derived state shows implementation completed while closure is not verified.
+
+Derived state means implementation evidence exists, for example `artifacts.implementation.status: completed`, `artifacts.implementation.evidence`, a recorded implementation completion event, or equivalent local changed-file/check evidence in the child ledger; and closure is unverified, for example missing `closure`, `closure.status: open`, `closure.status: verification_required`, missing `artifacts.verification`, or `artifacts.verification.status: missing | pending | failed`.
+
+Do not route archived children, externally closed children, or children with `closure.status: verified | archived | externally_closed` to `/ldd:verify`.
 
 ## Stop Conditions
 

@@ -6,7 +6,7 @@ ticket:
   title: Define /ldd:verify workflow and report contract
   kind: child_work_item
   type: autonomous
-  status: blocked
+  status: verification_required
 
 parent:
   id: LDD-0001
@@ -25,13 +25,21 @@ artifacts:
     path: docs/tickets/LDD-0001-verify-context-header/children/LDD-0001-004-verify-workflow-contract/ticket.md
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: 2026-05-13T11:05:28Z
+    evidence:
+      - Expanded skills/ldd-verify/SKILL.md with the standalone child-ticket closure verification workflow.
+      - Defined verification status outcomes passed, failed, and override_required plus closure.status updates.
+      - Updated source and copied verification.md templates with evidence, drift, finding, and human-confirmation fields.
+      - Extended validate-ldd-mvp.sh checks for verify report and closure contract wording.
+      - ./scripts/validate-ldd-mvp.sh passed.
+      - git diff --check passed.
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -42,11 +50,11 @@ user_stories_covered: [2, 4, 5]
 plan_slice: "4. Define /ldd:verify workflow and report contract"
 
 execution_context:
-  phase: implement
-  current_gate: blocked
-  next_command: null
+  phase: verify
+  current_gate: verification
+  next_command: /ldd:verify LDD-0001-004
   next_human_action: null
-  next_reason: Child ticket is blocked by LDD-0001-001 and LDD-0001-002.
+  next_reason: Verify workflow contract implementation is complete and ready for verification.
   approved_artifacts:
     prd: docs/tickets/LDD-0001-verify-context-header/prd.md
     sdd: docs/tickets/LDD-0001-verify-context-header/sdd.md
@@ -55,7 +63,7 @@ execution_context:
     product: docs/tickets/LDD-0001-verify-context-header/prd.md
     design: docs/tickets/LDD-0001-verify-context-header/sdd.md
     plan: docs/tickets/LDD-0001-verify-context-header/plan.md
-  updated_at: 2026-05-13T00:00:00Z
+  updated_at: 2026-05-13T11:05:28Z
 
 sync:
   status: local_only
@@ -67,4 +75,7 @@ sync:
 events:
   - at: 2026-05-13T00:00:00Z
     type: child_created
+    actor: agent
+  - at: 2026-05-13T11:05:28Z
+    type: implementation_completed
     actor: agent
