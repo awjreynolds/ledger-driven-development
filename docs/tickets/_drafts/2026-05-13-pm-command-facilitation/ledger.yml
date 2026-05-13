@@ -1,0 +1,69 @@
+schema_version: 1
+
+ticket:
+  id: null
+  draft_id: 2026-05-13-pm-command-facilitation
+  title: Strengthen LDD PM command facilitation
+  kind: product_requirement
+  status: draft
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  prd:
+    path: docs/tickets/_drafts/2026-05-13-pm-command-facilitation/prd.md
+    status: draft
+  sdd:
+    path: null
+    status: missing
+  plan:
+    path: null
+    status: missing
+  implementation:
+    status: not_started
+  verification:
+    path: null
+    status: missing
+
+children: []
+
+closure:
+  status: open
+  verified_at: null
+  archived_at: null
+  external_closed_at: null
+  override_reason: null
+
+execution_context:
+  phase: scope
+  current_gate: prd_approval
+  next_command: /ldd:elaborate
+  next_human_action: null
+  next_reason: Draft Product Requirement has scoped goals and non-goals; product detail still needs elaboration.
+  approved_artifacts:
+    prd: null
+    sdd: null
+    plan: null
+  boundaries:
+    product: docs/tickets/_drafts/2026-05-13-pm-command-facilitation/prd.md
+    design: null
+    plan: null
+  updated_at: 2026-05-13T11:16:34Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T11:16:34Z
+    type: draft_created
+    actor: human
+  - at: 2026-05-13T11:16:34Z
+    type: scope_written
+    actor: agent
