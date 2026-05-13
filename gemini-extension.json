@@ -1,5 +1,17 @@
 {
   "name": "ledger-driven-development",
   "version": "0.1.0",
-  "contextFileName": "GEMINI.md"
+  "contextFileName": "GEMINI.md",
+  "commands": [
+    "/ldd:setup",
+    "/ldd:next",
+    "/ldd:scope",
+    "/ldd:elaborate",
+    "/ldd:refine",
+    "/ldd:design",
+    "/ldd:plan",
+    "/ldd:decompose",
+    "/ldd:implement",
+    "/ldd:verify"
+  ]
 }

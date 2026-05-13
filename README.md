@@ -44,6 +44,7 @@ The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-m
 /ldd:plan
 /ldd:decompose
 /ldd:implement
+/ldd:verify
 ```
 
 ## Install
@@ -70,6 +71,7 @@ skills/ldd-design
 skills/ldd-plan
 skills/ldd-decompose
 skills/ldd-implement
+skills/ldd-verify
 ```
 
 Installed Codex skills are local copies under `~/.codex/skills`. They are not live-linked to this repository. To update, remove the installed `ldd-*` skills, reinstall from the current `agent-skills.json`, and restart Codex.
@@ -93,7 +95,7 @@ Install this repository as a Gemini CLI extension:
 gemini extensions install https://github.com/awjreynolds/ledger-driven-development
 ```
 
-Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, and `/ldd:implement`.
+Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, and `/ldd:verify`.
 
 ## Source Of Truth
 

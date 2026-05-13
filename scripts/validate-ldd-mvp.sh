@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-commands='setup next scope elaborate refine design plan decompose implement'
+commands='setup next scope elaborate refine design plan decompose implement verify'
 
 required_files='
 agent-skills.json
@@ -53,6 +53,7 @@ grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/ldd:setup"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
+grep -q '"command": "/ldd:verify"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'agent-skills.json' README.md
@@ -69,12 +70,14 @@ grep -q '"commands":' .claude-plugin/plugin.json
 grep -q './commands/ldd/setup.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/decompose.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/implement.md' .claude-plugin/plugin.json
+grep -q './commands/ldd/verify.md' .claude-plugin/plugin.json
 grep -q '"name": "ledger-driven-development"' .claude-plugin/marketplace.json
 grep -q '"name": "ldd"' .claude-plugin/marketplace.json
 grep -q '"source": "./"' .claude-plugin/marketplace.json
 
 grep -q '"name": "ledger-driven-development"' gemini-extension.json
 grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
+grep -q '"/ldd:verify"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
 
 for command in $commands; do
@@ -141,6 +144,11 @@ grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/ldd-implement/SKILL.md
 grep -q 'Run the focused test and confirm it fails' skills/ldd-implement/SKILL.md
+grep -q 'child-ticket closure' skills/ldd-verify/SKILL.md
+grep -q 'implementation completion' skills/ldd-verify/SKILL.md
+grep -q 'closure.status' skills/ldd-verify/SKILL.md
+grep -q 'verification.md' skills/ldd-verify/SKILL.md
+grep -q 'Do not mutate external trackers' skills/ldd-verify/SKILL.md
 grep -q 'Product Boundary' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Handoff Checklist' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Traceability Checks' skills/ldd-setup/assets/templates/pr-body-sdd-plan.md

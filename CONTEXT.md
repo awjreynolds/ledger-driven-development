@@ -40,6 +40,10 @@ _Avoid_: publish, sync, submit
 A compact append-only record of an important workflow transition for one **Ticket**.
 _Avoid_: progress update, audit trail, session log
 
+**Execution Context**:
+A compact section in a **Ledger** that records the current phase, gate, approved inputs, work boundaries, and next command or human action for one **Ticket**.
+_Avoid_: global status, progress file, chat summary
+
 **External Tracker**:
 A configured system outside the repository that can host the reviewable tracker record for a **Product Requirement**.
 _Avoid_: ledger, source of truth
@@ -63,6 +67,18 @@ _Avoid_: planning, implementation, auto-decomposition
 **Workflow Navigation**:
 The read-only act of identifying the next LDD command from the current **Ledger** state.
 _Avoid_: orchestration, dispatch, execution
+
+**Verification**:
+The child-work gate that checks implementation evidence, required checks, traceability, and drift before recommending closure.
+_Avoid_: repository healthcheck, implementation, archive
+
+**Closure**:
+The post-verification decision to mark child work done, archive it locally, or close its external tracker projection after human approval.
+_Avoid_: implementation completion, verification pass, automatic close
+
+**Verified Child Work**:
+A **Child Work Item** with passing **Verification** recorded in its **Ledger** and a readable `verification.md` report.
+_Avoid_: closed ticket, archived work, merged code
 
 **Agent Skills Manifest**:
 The repo-root `agent-skills.json` file that lists the installable LDD skills and adapter manifests.
@@ -106,11 +122,18 @@ _Avoid_: active ticket tree, deletion
 - A **Ticket Promotion** moves the **Draft Ticket Directory** to a **Promoted Ticket Directory**.
 - A **Promoted Ticket Directory** name is stable after review starts.
 - A **Ledger** contains current state and a small history of **Ledger Events**.
+- A **Ledger** may contain **Execution Context** for exactly its own **Ticket**.
+- **Execution Context** never creates global workflow state.
 - A **Child Work Item** belongs to exactly one parent **Product Requirement**.
 - A **Vertical Slice** is the preferred form of **Child Work Item** for implementation.
 - A **Vertical Slice** may be independent or may depend on other **Vertical Slices**.
 - A **Decomposition** produces **Vertical Slices** that reference their parent **Product Requirement** and approved plan.
 - Implementation never performs **Decomposition** automatically.
+- Implementation completion does not imply **Verification** or **Closure**.
+- **Verification** applies to **Child Work Items**, not general repository health.
+- **Verification** writes a readable report and machine-readable **Ledger** state.
+- **Verified Child Work** is eligible for human closure review.
+- **Closure** remains separate from **Verification** and external tracker mutation.
 - If implementation finds no **Vertical Slices**, it reports that there are no tickets to implement.
 - If implementation finds an approved plan without **Vertical Slices**, it reports that **Decomposition** is required.
 - **Workflow Navigation** identifies the next step but does not perform it.

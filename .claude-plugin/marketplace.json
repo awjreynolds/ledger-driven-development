@@ -9,7 +9,7 @@
     {
       "name": "ldd",
       "source": "./",
-      "description": "Ledger-Driven Development workflow skills for repo-local ledgers and optional external trackers.",
+      "description": "Ledger-Driven Development workflow skills for repo-local ledgers, verification gates, and optional external trackers.",
       "version": "0.1.0",
       "author": {
         "name": "awjreynolds"
@@ -23,7 +23,8 @@
         "github",
         "planning",
         "prd",
-        "sdd"
+        "sdd",
+        "verification"
       ]
     }
   ]

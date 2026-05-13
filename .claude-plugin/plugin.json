@@ -26,6 +26,7 @@
     "./commands/ldd/design.md",
     "./commands/ldd/plan.md",
     "./commands/ldd/decompose.md",
-    "./commands/ldd/implement.md"
+    "./commands/ldd/implement.md",
+    "./commands/ldd/verify.md"
   ]
 }

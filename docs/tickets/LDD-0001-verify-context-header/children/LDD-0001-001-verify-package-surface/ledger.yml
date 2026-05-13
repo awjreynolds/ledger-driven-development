@@ -6,7 +6,7 @@ ticket:
   title: Add /ldd:verify package surface
   kind: child_work_item
   type: autonomous
-  status: ready
+  status: verification_required
 
 parent:
   id: LDD-0001
@@ -25,13 +25,20 @@ artifacts:
     path: docs/tickets/LDD-0001-verify-context-header/children/LDD-0001-001-verify-package-surface/ticket.md
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: 2026-05-13T10:59:37Z
+    evidence:
+      - Added /ldd:verify package manifest entries and adapters.
+      - Added canonical skills/ldd-verify/SKILL.md and OpenAI metadata.
+      - Extended validate-ldd-mvp.sh to require verify package files and contracts.
+      - ./scripts/validate-ldd-mvp.sh passed.
+      - git diff --check passed.
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -42,11 +49,11 @@ user_stories_covered: [1, 2, 3, 5]
 plan_slice: "1. Add /ldd:verify package surface"
 
 execution_context:
-  phase: implement
-  current_gate: implementation
-  next_command: /ldd:implement LDD-0001-001
+  phase: verify
+  current_gate: verification
+  next_command: /ldd:verify LDD-0001-001
   next_human_action: null
-  next_reason: Child ticket is ready and unimplemented.
+  next_reason: Package surface implementation is complete and ready for verification.
   approved_artifacts:
     prd: docs/tickets/LDD-0001-verify-context-header/prd.md
     sdd: docs/tickets/LDD-0001-verify-context-header/sdd.md
@@ -55,7 +62,7 @@ execution_context:
     product: docs/tickets/LDD-0001-verify-context-header/prd.md
     design: docs/tickets/LDD-0001-verify-context-header/sdd.md
     plan: docs/tickets/LDD-0001-verify-context-header/plan.md
-  updated_at: 2026-05-13T00:00:00Z
+  updated_at: 2026-05-13T10:59:37Z
 
 sync:
   status: local_only
@@ -67,4 +74,7 @@ sync:
 events:
   - at: 2026-05-13T00:00:00Z
     type: child_created
+    actor: agent
+  - at: 2026-05-13T10:59:37Z
+    type: implementation_completed
     actor: agent

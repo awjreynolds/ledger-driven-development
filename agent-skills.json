@@ -65,6 +65,12 @@
       "skill": "ldd-implement",
       "path": "skills/ldd-implement",
       "purpose": "Implement one ready child vertical-slice ticket with code and tests."
+    },
+    {
+      "command": "/ldd:verify",
+      "skill": "ldd-verify",
+      "path": "skills/ldd-verify",
+      "purpose": "Verify one implemented child ticket is ready for human-approved closure."
     }
   ],
   "adapters": {

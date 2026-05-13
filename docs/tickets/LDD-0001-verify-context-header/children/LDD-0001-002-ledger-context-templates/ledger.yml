@@ -6,7 +6,7 @@ ticket:
   title: Add ledger execution context and verification templates
   kind: child_work_item
   type: autonomous
-  status: ready
+  status: verification_required
 
 parent:
   id: LDD-0001
@@ -25,13 +25,21 @@ artifacts:
     path: docs/tickets/LDD-0001-verify-context-header/children/LDD-0001-002-ledger-context-templates/ticket.md
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: 2026-05-13T11:00:35Z
+    evidence:
+      - Added execution_context, verification artifact state, and closure state to source and copied ledger templates.
+      - Added source and copied verification.md templates.
+      - Updated /ldd:setup installed artifact list to include verification.md.
+      - Added glossary and relationship language for Execution Context, Verification, Closure, and Verified Child Work.
+      - ./scripts/validate-ldd-mvp.sh passed.
+      - git diff --check passed.
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -42,11 +50,11 @@ user_stories_covered: [1, 3, 4]
 plan_slice: "2. Add ledger execution context and verification templates"
 
 execution_context:
-  phase: implement
-  current_gate: implementation
-  next_command: /ldd:implement LDD-0001-002
+  phase: verify
+  current_gate: verification
+  next_command: /ldd:verify LDD-0001-002
   next_human_action: null
-  next_reason: Child ticket is ready and unimplemented.
+  next_reason: Template implementation is complete and ready for verification.
   approved_artifacts:
     prd: docs/tickets/LDD-0001-verify-context-header/prd.md
     sdd: docs/tickets/LDD-0001-verify-context-header/sdd.md
@@ -55,7 +63,7 @@ execution_context:
     product: docs/tickets/LDD-0001-verify-context-header/prd.md
     design: docs/tickets/LDD-0001-verify-context-header/sdd.md
     plan: docs/tickets/LDD-0001-verify-context-header/plan.md
-  updated_at: 2026-05-13T00:00:00Z
+  updated_at: 2026-05-13T11:00:35Z
 
 sync:
   status: local_only
@@ -67,4 +75,7 @@ sync:
 events:
   - at: 2026-05-13T00:00:00Z
     type: child_created
+    actor: agent
+  - at: 2026-05-13T11:00:35Z
+    type: implementation_completed
     actor: agent

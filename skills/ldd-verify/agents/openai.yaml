@@ -1,0 +1,7 @@
+interface:
+  display_name: "LDD Verify"
+  short_description: "Verify child ticket closure readiness"
+  default_prompt: "Use $ldd-verify to run /ldd:verify for issue #1."
+
+policy:
+  allow_implicit_invocation: true
