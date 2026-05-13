@@ -3,7 +3,7 @@ ticket: 2026-05-13-pm-command-facilitation
 title: "Strengthen LDD PM command facilitation"
 created: 2026-05-13
 updated: 2026-05-13
-status: elaborated
+status: refined
 ---
 
 # PRD: Strengthen LDD PM command facilitation
@@ -56,20 +56,47 @@ This creates friction during dogfooding. Product work can stall when `/ldd:scope
 
 ## Acceptance Criteria
 
-- Draft: A user can start new scoping work from source context when no active draft exists, even if an unrelated promoted ticket is incomplete.
-- Draft: New scoping work does not mutate a promoted ticket unless the user explicitly identifies that ticket.
-- Draft: The PM commands provide a self-contained guided interaction pattern that does not require external PM, facilitation, grill, or orchestration skills.
-- Draft: The PM commands preserve their ownership boundaries: `/ldd:scope` owns goals and non-goals, `/ldd:elaborate` owns product detail, and `/ldd:refine` owns handoff quality.
-- Draft: Product-facing acceptance criteria avoid prescribing technical design, implementation sequence, internal schemas, or command mechanics unless those details are explicitly part of the product requirement.
-- Draft: Each PM command ends by stating whether the artifact is ready for the next LDD command, whether a return to an earlier PM command is required, or whether a human decision blocks progress.
-- Draft: LDD continues to use repo-local ledgers as canonical workflow state and does not introduce duplicate progress logs or global workflow state.
+- [ ] A user can start new scoping work from source context when no active draft exists, even if an unrelated promoted ticket is incomplete.
+- [ ] New scoping work does not mutate a promoted ticket unless the user explicitly identifies that ticket.
+- [ ] If a user tries to start new scoping work while an active draft already exists, LDD asks the user to continue, promote, rename, or discard the existing draft before creating another draft.
+- [ ] The PM commands provide a self-contained guided interaction pattern that does not require external PM, facilitation, grill, or orchestration skills.
+- [ ] The PM commands offer guided, context-dump, and best-guess modes, and make assumptions visible when best-guess mode is used.
+- [ ] The PM commands preserve their ownership boundaries: `/ldd:scope` owns goals and non-goals, `/ldd:elaborate` owns product detail, and `/ldd:refine` owns handoff quality.
+- [ ] Product-facing acceptance criteria avoid prescribing technical design, implementation sequence, internal schemas, or command mechanics unless those details are explicitly part of the product requirement.
+- [ ] Each PM command ends by stating whether the artifact is ready for the next LDD command, whether a return to an earlier PM command is required, or whether a human decision blocks progress.
+- [ ] LDD continues to use repo-local ledgers as canonical workflow state and does not introduce duplicate progress logs, session logs, or global workflow state.
+
+```gherkin
+Scenario: New scope starts while another promoted ticket is incomplete
+  Given an unrelated promoted Product Requirement is still active
+  And no draft Product Requirement is active
+  When a user starts new scoping work from source context
+  Then LDD creates a new draft Product Requirement
+  And the unrelated promoted ticket remains unchanged
+```
+
+```gherkin
+Scenario: Existing active draft blocks accidental duplicate scoping
+  Given an active draft Product Requirement already exists
+  When a user starts another new scope without identifying a different target
+  Then LDD asks the user to resolve the existing draft first
+  And no second active draft is created automatically
+```
+
+```gherkin
+Scenario: Product Manager command reaches a handoff gate
+  Given a Product Manager command updates its owned PRD sections
+  When the command finishes
+  Then it states the updated artifact, unresolved product questions, recommended next LDD command, and required human decision
+```
 
 ## Success Metrics
 
-- Draft: A maintainer can start a new PM-command Product Requirement while `LDD-0001` remains in verification, without modifying `LDD-0001`.
-- Draft: A reviewer can identify the next recommended LDD command from the draft ledger and PRD without relying on chat history.
-- Draft: The PM command PRD contains no product-scope acceptance criteria that require codebase inspection to understand.
-- Draft: Dogfooding sessions for `/ldd:scope`, `/ldd:elaborate`, and `/ldd:refine` surface fewer blocking process questions after the command updates are installed.
+- A maintainer can start a new PM-command Product Requirement while another promoted ticket remains in verification, without modifying the promoted ticket.
+- A reviewer can identify the next recommended LDD command and required human decision from the draft ledger and PRD in under two minutes without relying on chat history.
+- The refined Product Requirement contains zero acceptance criteria that require codebase inspection to understand.
+- Dogfooding sessions for `/ldd:scope`, `/ldd:elaborate`, and `/ldd:refine` have no recurring confusion about whether incomplete promoted tickets block new draft scoping.
+- Product reviewers can answer "Is this ready for engineering design?" from the PRD without asking which PM command owns each remaining question.
 
 ## Dependencies
 
@@ -81,11 +108,11 @@ This creates friction during dogfooding. Product work can stall when `/ldd:scope
 
 ## Open Questions
 
-- What minimum facilitation protocol belongs in every PM command without making the skills too verbose? Owner: refinement.
-- Should `Guided`, `Context dump`, and `Best guess` modes be exposed identically across all three PM commands? Owner: refinement.
-- How should `/ldd:scope` name and de-duplicate new drafts created from source documents? Owner: refinement.
-- Should each PM command use identical exit-gate wording, or should wording differ by phase? Owner: refinement.
-- What counts as a blocking product ambiguity versus an acceptable assumption in best-guess mode? Owner: refinement.
+- Resolved: The minimum facilitation protocol should include command boundary, guided/context-dump/best-guess entry modes, one-question-at-a-time ambiguity handling, visible assumptions, phase-appropriate anti-pattern checks, and an explicit exit gate.
+- Resolved: `Guided`, `Context dump`, and `Best guess` should be exposed consistently across all three PM commands, while each command keeps phase-specific questions and quality checks.
+- Resolved: `/ldd:scope` should create a human-readable draft slug from the source context and block duplicate active drafts by asking the user to resolve the existing draft first.
+- Resolved: PM commands should share the same exit-gate shape, but the wording should name the phase-specific next command or return path.
+- Resolved: A blocking product ambiguity is one that changes goals, non-goals, users, acceptance boundary, rollout confidence, or whether the work belongs in the current PM command. Other missing detail may be labeled as an assumption or passed to the next LDD phase with an owner.
 
 ## PRD Handoff Checklist
 
@@ -94,7 +121,7 @@ This creates friction during dogfooding. Product work can stall when `/ldd:scope
 - [x] Problem is expressed from the user's perspective.
 - [x] Goals and non-goals make the scope boundary clear.
 - [x] User stories cover the main workflow and meaningful user-visible edge cases.
-- [ ] Acceptance criteria are observable without reading code.
-- [ ] Metrics define how product success will be judged.
+- [x] Acceptance criteria are observable without reading code.
+- [x] Metrics define how product success will be judged.
 - [x] Dependencies and open questions are explicit.
 - [x] No implementation decisions, architecture, file paths, APIs, schemas, libraries, test strategy, or code snippets are present.
