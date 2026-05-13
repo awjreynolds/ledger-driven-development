@@ -35,12 +35,12 @@ artifacts:
       - git diff --check passed for the changed PM skill files.
       - ./scripts/validate-ldd-mvp.sh passed.
   verification:
-    path: null
-    status: missing
+    path: docs/tickets/LDD-0002-pm-command-facilitation/children/LDD-0002-003-refine-facilitation-contract/verification.md
+    status: passed
 
 closure:
-  status: verification_required
-  verified_at: null
+  status: verified
+  verified_at: 2026-05-13T11:33:00Z
   archived_at: null
   external_closed_at: null
   override_reason: null
@@ -50,11 +50,11 @@ user_stories_covered: [2, 3, 4, 5]
 plan_slice: "3. Refine facilitation and handoff contract"
 
 execution_context:
-  phase: verify
-  current_gate: verification
-  next_command: /ldd:verify LDD-0002-003
+  phase: close
+  current_gate: closure
+  next_command: /ldd:close LDD-0002-003
   next_human_action: null
-  next_reason: Refine facilitation implementation is complete and ready for verification.
+  next_reason: Refine facilitation verification passed and is ready for human-approved closure.
   approved_artifacts:
     prd: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     sdd: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
@@ -63,7 +63,7 @@ execution_context:
     product: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     design: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
     plan: docs/tickets/LDD-0002-pm-command-facilitation/plan.md
-  updated_at: 2026-05-13T11:31:26Z
+  updated_at: 2026-05-13T11:33:00Z
 
 sync:
   status: local_only
@@ -78,4 +78,7 @@ events:
     actor: agent
   - at: 2026-05-13T11:31:26Z
     type: implementation_completed
+    actor: agent
+  - at: 2026-05-13T11:33:00Z
+    type: verification_passed
     actor: agent
