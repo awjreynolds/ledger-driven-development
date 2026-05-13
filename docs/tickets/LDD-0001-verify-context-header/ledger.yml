@@ -5,7 +5,7 @@ ticket:
   draft_id: 2026-05-13-verify-context-header
   title: Add LDD execution context and verification gate
   kind: product_requirement
-  status: approved
+  status: design_draft
 
 tracker:
   mode: local
@@ -17,8 +17,8 @@ artifacts:
     path: docs/tickets/LDD-0001-verify-context-header/prd.md
     status: approved
   sdd:
-    path: null
-    status: missing
+    path: docs/tickets/LDD-0001-verify-context-header/sdd.md
+    status: draft
   plan:
     path: null
     status: missing
@@ -26,6 +26,22 @@ artifacts:
     status: not_started
 
 children: []
+
+execution_context:
+  phase: design
+  current_gate: design_review
+  next_command: null
+  next_human_action: approve SDD or request design changes
+  next_reason: SDD is drafted and needs human approval before planning.
+  approved_artifacts:
+    prd: docs/tickets/LDD-0001-verify-context-header/prd.md
+    sdd: null
+    plan: null
+  boundaries:
+    product: docs/tickets/LDD-0001-verify-context-header/prd.md
+    design: docs/tickets/LDD-0001-verify-context-header/sdd.md
+    plan: null
+  updated_at: 2026-05-13T00:00:00Z
 
 sync:
   status: local_only
@@ -52,4 +68,7 @@ events:
     actor: human
   - at: 2026-05-13T00:00:00Z
     type: draft_promoted
+    actor: agent
+  - at: 2026-05-13T00:00:00Z
+    type: design_written
     actor: agent
