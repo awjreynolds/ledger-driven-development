@@ -5,7 +5,7 @@ ticket:
   draft_id: 2026-05-13-pm-command-facilitation
   title: Strengthen LDD PM command facilitation
   kind: product_requirement
-  status: planned
+  status: decomposed
 
 tracker:
   mode: local
@@ -28,7 +28,28 @@ artifacts:
     path: null
     status: missing
 
-children: []
+children:
+  - id: LDD-0002-001
+    title: Add scope facilitation contract
+    type: autonomous
+    status: ready
+    path: docs/tickets/LDD-0002-pm-command-facilitation/children/LDD-0002-001-scope-facilitation-contract/ledger.yml
+    blocked_by: []
+    user_stories_covered: [1, 2, 3, 5, 6]
+  - id: LDD-0002-002
+    title: Add elaborate facilitation contract
+    type: autonomous
+    status: ready
+    path: docs/tickets/LDD-0002-pm-command-facilitation/children/LDD-0002-002-elaborate-facilitation-contract/ledger.yml
+    blocked_by: [LDD-0002-001]
+    user_stories_covered: [2, 3, 4, 5]
+  - id: LDD-0002-003
+    title: Add refine facilitation contract and evidence checks
+    type: autonomous
+    status: ready
+    path: docs/tickets/LDD-0002-pm-command-facilitation/children/LDD-0002-003-refine-facilitation-contract/ledger.yml
+    blocked_by: [LDD-0002-001, LDD-0002-002]
+    user_stories_covered: [2, 3, 4, 5]
 
 closure:
   status: open
@@ -38,11 +59,11 @@ closure:
   override_reason: null
 
 execution_context:
-  phase: decompose
-  current_gate: decomposition_review
-  next_command: /ldd:decompose
+  phase: implement
+  current_gate: implementation
+  next_command: /ldd:implement LDD-0002-001
   next_human_action: null
-  next_reason: Implementation plan is approved and ready for decomposition into child work items.
+  next_reason: Child tickets are created. Implement LDD-0002-001 first.
   approved_artifacts:
     prd: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     sdd: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
@@ -51,7 +72,7 @@ execution_context:
     product: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     design: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
     plan: docs/tickets/LDD-0002-pm-command-facilitation/plan.md
-  updated_at: 2026-05-13T11:27:08Z
+  updated_at: 2026-05-13T11:28:43Z
 
 sync:
   status: local_only
@@ -91,3 +112,9 @@ events:
   - at: 2026-05-13T11:27:08Z
     type: plan_approved
     actor: human
+  - at: 2026-05-13T11:28:43Z
+    type: decomposition_approved
+    actor: human
+  - at: 2026-05-13T11:28:43Z
+    type: child_tickets_created
+    actor: agent
