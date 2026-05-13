@@ -59,13 +59,14 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 ## Acceptance Criteria
 
 - [ ] A maintainer can identify the user-visible gaps that prevent LDD from being used as a normal project workflow with external tracker participation.
-- [ ] LDD distinguishes mandatory tracker capabilities from optional tracker enhancements.
-- [ ] GitHub, Linear, and Jira are treated as external collaboration surfaces while the repo-local ledger remains the canonical workflow record.
-- [ ] GitHub is the first external-tracker dogfooding path.
-- [ ] A user can understand which tracker path is ready for use, which is partially supported, and which is not yet supported.
+- [ ] LDD distinguishes mandatory tracker capabilities from optional tracker enhancements, with mandatory capabilities limited to work visibility, phase/status visibility, review participation, and safe handoff back to the canonical local workflow.
+- [ ] GitHub is the first external-tracker dogfooding path, and Linear and Jira are clearly presented as follow-on collaboration surfaces.
+- [ ] A maintainer can understand whether each tracker path is ready for use, partially supported, or not yet supported.
+- [ ] GitHub-visible LDD work gives reviewers enough context to understand product intent, current LDD phase, required review or human action, and where canonical local context lives.
 - [ ] External tracker participation preserves LDD phase boundaries, including product scope, design, planning, implementation, verification, and closure.
 - [ ] External tracker mutations require explicit human confirmation.
-- [ ] `/ldd:next` reports the next LDD action and offers to continue when the next action is available and not blocked by unresolved drift or a missing human decision.
+- [ ] `/ldd:next` reports the next LDD action and offers to continue when the next command is available and not blocked by unresolved drift or a missing human decision.
+- [ ] `/ldd:next` asks for the relevant human decision when the next step is artifact approval, drift resolution, external mutation confirmation, or a choice between blocked options.
 - [ ] `/ldd:next` does not perform durable local changes or external tracker changes without explicit human approval.
 - [ ] When the next action is blocked, `/ldd:next` states the blocking reason and the human decision needed instead of offering unsafe continuation.
 
@@ -73,7 +74,7 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 Scenario: Maintainer assesses whether LDD is usable with their tracker
   Given a maintainer wants to use LDD for real project work
   When they review LDD's tracker readiness
-  Then they can see the required capabilities, optional enhancements, and unsupported tracker gaps
+  Then they can see the required capabilities, optional enhancements, unsupported tracker gaps, and which tracker is first for dogfooding
 ```
 
 ```gherkin
@@ -92,6 +93,14 @@ Scenario: Next action is offered after workflow diagnosis
 ```
 
 ```gherkin
+Scenario: Human review action is requested instead of automated
+  Given the next workflow step is a product, design, plan, verification, or closure approval
+  When a maintainer runs `/ldd:next`
+  Then LDD asks for the required human decision
+  And waits for confirmation before changing durable workflow state
+```
+
+```gherkin
 Scenario: Blocked next action is not automated
   Given the next workflow action requires a human decision or external mutation
   When a maintainer runs `/ldd:next`
@@ -101,27 +110,27 @@ Scenario: Blocked next action is not automated
 
 ## Success Metrics
 
-- A maintainer can classify LDD's functional gaps into required-for-use and optional-enhancement categories without reading implementation files.
-- A reviewer can understand an LDD item's product intent, current phase, and required review action from the external collaboration surface plus the linked local artifact context.
-- The GitHub-first tracker path is clear enough for day-to-day dogfooding without requiring Linear and Jira to reach feature parity first.
-- `/ldd:next` reduces manual workflow stitching by offering a safe continuation path when the next action is unblocked.
-- No normal LDD workflow requires an external tracker to become the canonical source of phase state.
+- Maintainer gap classification: a maintainer can classify each identified gap as required-for-use or optional-enhancement from the PRD and follow-on design artifacts, without reading implementation files.
+- Reviewer comprehension: a reviewer can identify product intent, current LDD phase, required review action, and canonical local context from the GitHub-visible surface plus linked local artifact context.
+- GitHub-first dogfooding readiness: the GitHub path is usable for day-to-day dogfooding before Linear or Jira feature parity is required.
+- `/ldd:next` continuation quality: when the next workflow action is unblocked, `/ldd:next` offers either to run the next command or to collect the required human decision.
+- Canonical-state protection: normal LDD workflow state remains understandable from repo-local artifacts even when external tracker surfaces are present.
 
 ## Dependencies
 
-- LDD must remain local-ledger-first; external trackers are review, collaboration, and notification surfaces unless a later approved requirement explicitly changes that boundary.
-- GitHub, Linear, and Jira have different workflow concepts, permission models, and API limits, so scope must allow a common LDD product model without assuming identical tracker behavior.
-- GitHub is the first external-tracker dogfooding path; Linear and Jira remain follow-on collaboration surfaces.
-- External tracker changes require human confirmation.
-- `/ldd:next` must continue to diagnose workflow state accurately before it offers to continue with the next action.
-- The functional-gap assessment should distinguish required MVP gaps from useful enhancements so the resulting work can be decomposed safely.
+- Local-ledger-first workflow. Status: required product boundary. Owner: maintainer.
+- GitHub-first external tracker dogfooding. Status: resolved product decision. Owner: maintainer.
+- Linear and Jira follow-on compatibility. Status: non-blocking for GitHub-first delivery. Owner: future product refinement.
+- Human confirmation for external tracker changes. Status: required product boundary. Owner: maintainer.
+- Accurate `/ldd:next` state diagnosis before continuation offers. Status: required product boundary. Owner: engineering design.
+- Functional-gap classification into required MVP gaps and optional enhancements. Status: required handoff outcome. Owner: engineering design.
 
 ## Open Questions
 
 - Resolved: the first external-tracker path should prioritize GitHub because it is closest to code review and repo-local workflow review.
-- What is the minimum tracker behavior required for LDD to be considered "usable" rather than merely "sync-capable"?
-- Should `/ldd:next` offer to run only the next LDD command, or should it also offer specific human-review actions such as approving an artifact, resolving drift, or choosing between blocked options? Owner: product refinement.
-- What external-tracker information must be visible to reviewers versus available only through linked local artifacts? Owner: product refinement.
+- Resolved: minimum usable tracker behavior means work visibility, phase/status visibility, review participation, and safe handoff back to the canonical local workflow. Broader bidirectional sync is optional.
+- Resolved: `/ldd:next` should offer to run the next unblocked LDD command, and should ask for human-review decisions when the next step is approval, drift resolution, external mutation confirmation, or a blocked-option choice.
+- Resolved: external tracker surfaces should show product intent, current LDD phase, required review or human action, and where canonical local context lives. Detailed artifacts may remain linked rather than fully duplicated when the tracker surface stays readable.
 - Resolved: GitHub should be used for the first dogfooding path.
 
 ## PRD Handoff Checklist
