@@ -24,7 +24,7 @@ Create or update `sdd.md` in the promoted ticket directory.
 - External mutations require human confirmation.
 - SE-hat command: existing code and ADRs may shape implementation design.
 - Use the SDD template's quality bar before committing design output.
-- The PRD still owns product scope. If code reality contradicts the PRD, stop and return to the earliest affected PM step.
+- The PRD still owns product scope. If code reality contradicts the PRD, stop and return to the earliest affected Product Manager step.
 - ADR threshold: hard to reverse, surprising without context, and the result of a real trade-off.
 - Mandatory ADR support does not mean mandatory ADR creation.
 - Commit locally after design. Do not push/update PRs unless explicitly approved.

@@ -5,7 +5,7 @@ description: Run /ldd:refine for an LDD ticket. Use when the user says /ldd:refi
 
 # /ldd:refine
 
-Polish `prd.md` in the active draft or promoted ticket directory for the PM-to-SE handoff.
+Polish `prd.md` in the active draft or promoted ticket directory for the Product-to-engineering handoff.
 
 ## Owns
 
@@ -19,7 +19,7 @@ Polish `prd.md` in the active draft or promoted ticket directory for the PM-to-S
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- PM-hat command: do not read the codebase as a design input.
+- Product Manager command: do not read the codebase as a design input.
 - Use the PRD template's quality bar and handoff checklist before proposing a PRD PR.
 - Do not expand scope or add technical design.
 - Commit locally after refinement.

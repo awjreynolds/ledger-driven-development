@@ -10,7 +10,7 @@ References {ticket}
 
 {summary}
 
-## PM Boundary
+## Product Boundary
 
 This PR should be reviewed as product scope, not technical design.
 

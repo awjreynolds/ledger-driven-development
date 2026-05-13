@@ -19,11 +19,11 @@
   - Read-only workflow diagnosis for a single GitHub issue.
   - Reads GitHub-native issue and PR state and reports the next LDD command.
 - `skills/ldd-scope/SKILL.md`
-  - PM-hat PRD scoping.
+  - Product Manager PRD scoping.
 - `skills/ldd-elaborate/SKILL.md`
-  - PM-hat PRD elaboration.
+  - Product Manager PRD elaboration.
 - `skills/ldd-refine/SKILL.md`
-  - PM-hat PRD handoff refinement and PRD PR prompt.
+  - Product Manager PRD handoff refinement and PRD PR prompt.
 - `skills/ldd-design/SKILL.md`
   - SE-hat SDD creation and ADR threshold check.
 - `skills/ldd-plan/SKILL.md`
@@ -48,7 +48,7 @@ The validation script must fail if:
 - any command skill omits its `/ldd:<command>` invocation
 - any command skill omits the repo-local ledger invariant
 - any command skill omits human confirmation for external tracker mutations
-- PM-hat commands can read the codebase as design input
+- Product Manager commands can read the codebase as design input
 - setup templates are missing or lose their expected headings/prompts
 
 Run:

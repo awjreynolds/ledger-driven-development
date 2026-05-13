@@ -111,7 +111,7 @@ grep -q 'children: \[\]' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'external_body_hash:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'managed_body_version:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q '# PRD:' skills/ldd-setup/assets/templates/prd.md
-grep -q 'PM-hat artifact' skills/ldd-setup/assets/templates/prd.md
+grep -q 'Product Manager artifact' skills/ldd-setup/assets/templates/prd.md
 grep -q 'PRD Handoff Checklist' skills/ldd-setup/assets/templates/prd.md
 grep -q 'No implementation decisions' skills/ldd-setup/assets/templates/prd.md
 grep -q 'Avoid: Gherkin/Cucumber syntax here' skills/ldd-setup/assets/templates/prd.md
@@ -140,7 +140,7 @@ grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/ldd-implement/SKILL.md
 grep -q 'Run the focused test and confirm it fails' skills/ldd-implement/SKILL.md
-grep -q 'PM Boundary' skills/ldd-setup/assets/templates/pr-body-prd.md
+grep -q 'Product Boundary' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Handoff Checklist' skills/ldd-setup/assets/templates/pr-body-prd.md
 grep -q 'Traceability Checks' skills/ldd-setup/assets/templates/pr-body-sdd-plan.md
 grep -q 'Does this implementation follow the approved plan?' skills/ldd-setup/assets/templates/pr-body-implementation.md

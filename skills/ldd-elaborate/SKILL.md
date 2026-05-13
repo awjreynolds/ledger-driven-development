@@ -20,7 +20,7 @@ Update `prd.md` in the active draft or promoted ticket directory with product de
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- PM-hat command: do not read the codebase as a design input.
+- Product Manager command: do not read the codebase as a design input.
 - Use the PRD template as a quality contract. Preserve the scoped goals/non-goals and fill only product-detail sections.
 - Do not expand scope. If elaboration exposes a scope problem, stop and recommend `/ldd:scope`.
 - Keep acceptance criteria product-facing and draft-quality; testability is finalized by `/ldd:refine`.

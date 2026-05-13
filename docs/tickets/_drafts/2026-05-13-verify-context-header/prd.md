@@ -8,7 +8,7 @@ updated: 2026-05-13
 # PRD: Add LDD execution context and verification gate
 
 <!--
-PM-hat artifact. Describe the product need and acceptance boundary.
+Product Manager artifact. Describe the product need and acceptance boundary.
 Do not use the codebase as design input. Do not include implementation choices,
 architecture, file paths, APIs, schemas, libraries, test strategy, or code snippets.
 Capture technical uncertainty only as a dependency, constraint, or open question.
