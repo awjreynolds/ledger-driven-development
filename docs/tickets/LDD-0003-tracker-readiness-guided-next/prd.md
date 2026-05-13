@@ -3,7 +3,7 @@ ticket: LDD-0003
 title: "Make LDD ready for external trackers and guided next actions"
 created: 2026-05-13
 updated: 2026-05-13
-status: approved
+status: draft
 ---
 
 # PRD: Make LDD ready for external trackers and guided next actions
@@ -52,6 +52,7 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 
 - Required for use: LDD needs a GitHub-first visibility path for PRDs, design and plan review, implementation PRs, and closure state. Without this, real work remains hidden from the place where code review and project discussion already happen.
 - Required for use: `/ldd:next` needs to move beyond diagnosis by offering to continue with the next safe command or collect the required human decision. Without this, resuming LDD work still requires manual command stitching.
+- Required for use: LDD needs an explicit `/ldd:approve` command for PRD and SDD approval so human approval is durable, commandable, and understandable outside the current conversation. Without this, shorthand such as "approve" is ambiguous across PRD, SDD, plan, closure, and external mutation decisions.
 - Required for use: LDD PM commands need to prove shared understanding of the core product gap before treating a PRD as ready. Without this, agents can produce plausible artifacts that miss the maintainer's actual blocker.
 - Optional enhancement: Linear and Jira should remain follow-on collaboration surfaces once the GitHub-first path proves the common tracker model.
 
@@ -63,10 +64,11 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 4. As a maintainer, I want LDD to distinguish required tracker behavior from optional enhancement, so that GitHub, Linear, and Jira support can ship incrementally without weakening the common workflow.
 5. As a contributor or implementation agent, I want `/ldd:next` to offer to continue with the next appropriate action, so that I can move from workflow diagnosis to execution with less manual command stitching.
 6. As a maintainer, I want LDD to ask before durable local or external changes, so that helpful continuation does not become surprising automation.
+7. As a maintainer, I want `/ldd:approve` to approve the current PRD or SDD from ledger state, so that approvals are explicit and not dependent on conversational shorthand.
 
 ## Acceptance Criteria
 
-- [ ] The PRD includes a functional gap inventory that names the GitHub-first visibility path, `/ldd:next` safe continuation, and PM shared-understanding gate as required-for-use gaps.
+- [ ] The PRD includes a functional gap inventory that names the GitHub-first visibility path, `/ldd:next` safe continuation, `/ldd:approve` for PRD/SDD approval, and PM shared-understanding gate as required-for-use gaps.
 - [ ] The functional gap inventory classifies Linear and Jira support as a follow-on optional enhancement until the GitHub-first tracker model is proven.
 - [ ] Each listed functional gap explains why it blocks or does not block normal LDD use.
 - [ ] LDD distinguishes mandatory tracker capabilities from optional tracker enhancements, with mandatory capabilities limited to work visibility, phase/status visibility, review participation, and safe handoff back to the canonical local workflow.
@@ -77,6 +79,9 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 - [ ] External tracker mutations require explicit human confirmation.
 - [ ] `/ldd:next` reports the next LDD action and offers to continue when the next command is available and not blocked by unresolved drift or a missing human decision.
 - [ ] `/ldd:next` asks for the relevant human decision when the next step is artifact approval, drift resolution, external mutation confirmation, or a choice between blocked options.
+- [ ] When PRD or SDD approval is the next required human decision, `/ldd:next` names `/ldd:approve <ticket-id>` as the next action.
+- [ ] `/ldd:approve <ticket-id>` can infer whether it is approving the PRD or SDD from ledger state when exactly one of those approval gates is active.
+- [ ] `/ldd:approve` does not approve plans, decomposition, closure, or external mutations as part of this PRD.
 - [ ] `/ldd:next` does not perform durable local changes or external tracker changes without explicit human approval.
 - [ ] When the next action is blocked, `/ldd:next` states the blocking reason and the human decision needed instead of offering unsafe continuation.
 
@@ -111,6 +116,14 @@ Scenario: Human review action is requested instead of automated
 ```
 
 ```gherkin
+Scenario: PRD or SDD approval uses an explicit command
+  Given a PRD or SDD is waiting for human approval
+  When a maintainer runs `/ldd:next`
+  Then LDD identifies `/ldd:approve <ticket-id>` as the next human action
+  And `/ldd:approve` approves the artifact indicated by the ledger state
+```
+
+```gherkin
 Scenario: Blocked next action is not automated
   Given the next workflow action requires a human decision or external mutation
   When a maintainer runs `/ldd:next`
@@ -124,6 +137,7 @@ Scenario: Blocked next action is not automated
 - Reviewer comprehension: a reviewer can identify product intent, current LDD phase, required review action, and canonical local context from the GitHub-visible surface plus linked local artifact context.
 - GitHub-first dogfooding readiness: the GitHub path is usable for day-to-day dogfooding before Linear or Jira feature parity is required.
 - `/ldd:next` continuation quality: when the next workflow action is unblocked, `/ldd:next` offers either to run the next command or to collect the required human decision.
+- Approval clarity: PRD and SDD approvals are performed through `/ldd:approve <ticket-id>` rather than conversation-only shorthand.
 - Canonical-state protection: normal LDD workflow state remains understandable from repo-local artifacts even when external tracker surfaces are present.
 
 ## Dependencies
@@ -133,6 +147,7 @@ Scenario: Blocked next action is not automated
 - Linear and Jira follow-on compatibility. Status: non-blocking for GitHub-first delivery. Owner: future product refinement.
 - Human confirmation for external tracker changes. Status: required product boundary. Owner: maintainer.
 - Accurate `/ldd:next` state diagnosis before continuation offers. Status: required product boundary. Owner: engineering design.
+- Explicit `/ldd:approve` behavior for PRD and SDD approval. Status: required product boundary. Owner: engineering design.
 - Functional-gap classification into required MVP gaps and optional enhancements. Status: required handoff outcome. Owner: engineering design.
 
 ## Open Questions
@@ -140,6 +155,7 @@ Scenario: Blocked next action is not automated
 - Resolved: the first external-tracker path should prioritize GitHub because it is closest to code review and repo-local workflow review.
 - Resolved: minimum usable tracker behavior means work visibility, phase/status visibility, review participation, and safe handoff back to the canonical local workflow. Broader bidirectional sync is optional.
 - Resolved: `/ldd:next` should offer to run the next unblocked LDD command, and should ask for human-review decisions when the next step is approval, drift resolution, external mutation confirmation, or a blocked-option choice.
+- Resolved: PRD and SDD approval should use `/ldd:approve <ticket-id>`, inferring the artifact from ledger state when exactly one PRD or SDD approval gate is active. Plan, decomposition, closure, and external mutation approvals remain follow-on scope.
 - Resolved: external tracker surfaces should show product intent, current LDD phase, required review or human action, and where canonical local context lives. Detailed artifacts may remain linked rather than fully duplicated when the tracker surface stays readable.
 - Resolved: GitHub should be used for the first dogfooding path.
 
