@@ -30,6 +30,8 @@ See `CONTEXT.md` for the glossary. The key terms are:
 - **Decomposition**: conscious post-plan step that turns an approved plan into vertical slices.
 - **Workflow Navigation**: read-only identification of the next LDD command.
 - **Verification**: child-work closure gate after implementation.
+- **Bounded Shared Understanding Gate**: Product Manager checkpoint that proves shared understanding without expanding the current PRD.
+- **GitHub-first Projection**: GitHub issues and PRs as the first external tracker visibility path, while the repo-local ledger remains canonical.
 
 ## Directory Model
 
@@ -135,10 +137,15 @@ Events are important workflow transitions only. They are not progress logs or se
 /ldd:elaborate
 /ldd:refine
   -> build the PRD in a draft directory
-  -> refine promotes the draft to a stable ticket ID when approved
+  -> refine routes PRD approval to /ldd:approve
+
+/ldd:approve
+  -> approves a PRD or SDD gate when exactly one approval gate is active
+  -> does not approve plans, decomposition, closure, or external mutations
 
 /ldd:design
   -> writes SDD for the promoted Product Requirement
+  -> routes SDD approval to /ldd:approve
 
 /ldd:plan
   -> writes reviewed implementation plan and plan.html
@@ -158,7 +165,7 @@ Events are important workflow transitions only. They are not progress logs or se
   -> archives locally and syncs external close only with explicit human approval
 ```
 
-`/ldd:next` is read-only. It inspects active ledgers, identifies the next command, explains why, and stops.
+`/ldd:next` is read-only. It inspects active ledgers, identifies the next command and next human action, explains why, and stops. For PRD and SDD approval gates, it names `/ldd:approve <ticket-id>`.
 
 `/ldd:scope` is the draft entry point for new Product Requirements. If no active draft exists, it creates a new draft in `docs/tickets/_drafts/`. Existing promoted tickets do not block new scoping work. If an active draft already exists, `/ldd:scope` updates that draft or asks the human to continue, rename, promote, or discard it before starting another one.
 
@@ -173,11 +180,12 @@ Events are important workflow transitions only. They are not progress logs or se
 External trackers are configured through `.ldd/config.yml`. The MVP supports the model, not full sync engines:
 
 - `local`: use `LDD-0001` style local IDs.
-- `github`, `linear`, `jira`: promotion may bind to an externally assigned ID.
+- `github`: first external tracker dogfooding path, using GitHub issues for PRD/child work and GitHub PRs for SDD/plan and implementation review.
+- `linear`, `jira`: follow-on optional collaboration surfaces after the GitHub-first projection model is proven.
 
 External mutations require human confirmation. If local ledger state and external tracker state diverge, commands report drift and stop rather than silently reconciling.
 
-The MVP supports the state model for external IDs, but does not promise a full sync engine. A GitHub, Linear, or Jira integration can be tested as a thin promotion/binding path without making that tracker canonical.
+The MVP supports the state model for external IDs, but does not promise a full sync engine. GitHub projections can be dogfooded first without making GitHub canonical; Linear and Jira should not be treated as parity requirements yet.
 
 External tracker tickets are rich projections, not thin placeholders. A TPM, PM, Director, or implementation agent must be able to read the external ticket without opening the repository and understand the product requirement or child work item.
 

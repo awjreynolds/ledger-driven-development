@@ -67,7 +67,9 @@ grep -q 'GitHub is the first external-tracker dogfooding path' README.md
 grep -q 'Linear and Jira remain follow-on optional collaboration surfaces' README.md
 grep -q 'bounded shared-understanding gate' README.md
 grep -q 'Package Source Of Truth' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
+grep -q '/ldd:approve' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:verify' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
+grep -q 'GitHub-first Projection' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Execution Context' CONTEXT.md
 grep -q 'Bounded Shared Understanding Gate' CONTEXT.md
