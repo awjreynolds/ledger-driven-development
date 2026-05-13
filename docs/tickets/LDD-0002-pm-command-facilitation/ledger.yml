@@ -32,8 +32,8 @@ children:
   - id: LDD-0002-001
     title: Add scope facilitation contract
     type: autonomous
-    status: verified
-    path: docs/tickets/LDD-0002-pm-command-facilitation/children/LDD-0002-001-scope-facilitation-contract/ledger.yml
+    status: archived
+    path: docs/tickets/_archive/LDD-0002-001-scope-facilitation-contract/ledger.yml
     blocked_by: []
     user_stories_covered: [1, 2, 3, 5, 6]
   - id: LDD-0002-002
@@ -61,9 +61,9 @@ closure:
 execution_context:
   phase: close
   current_gate: closure
-  next_command: /ldd:close LDD-0002-001
+  next_command: /ldd:close LDD-0002-002
   next_human_action: null
-  next_reason: All child tickets are verified and ready for human-approved closure/archive. Close LDD-0002-001 first.
+  next_reason: LDD-0002-001 is archived. Close LDD-0002-002 next.
   approved_artifacts:
     prd: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     sdd: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
@@ -72,7 +72,7 @@ execution_context:
     product: docs/tickets/LDD-0002-pm-command-facilitation/prd.md
     design: docs/tickets/LDD-0002-pm-command-facilitation/sdd.md
     plan: docs/tickets/LDD-0002-pm-command-facilitation/plan.md
-  updated_at: 2026-05-13T11:33:00Z
+  updated_at: 2026-05-13T14:04:36Z
 
 sync:
   status: local_only
@@ -126,4 +126,7 @@ events:
     actor: agent
   - at: 2026-05-13T11:33:00Z
     type: all_child_verifications_passed
+    actor: agent
+  - at: 2026-05-13T14:04:36Z
+    type: child_archived
     actor: agent
