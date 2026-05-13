@@ -19,6 +19,7 @@ Command mapping:
 - `/ldd:scope` -> `skills/ldd-scope/SKILL.md`
 - `/ldd:elaborate` -> `skills/ldd-elaborate/SKILL.md`
 - `/ldd:refine` -> `skills/ldd-refine/SKILL.md`
+- `/ldd:approve` -> `skills/ldd-approve/SKILL.md`
 - `/ldd:design` -> `skills/ldd-design/SKILL.md`
 - `/ldd:plan` -> `skills/ldd-plan/SKILL.md`
 - `/ldd:decompose` -> `skills/ldd-decompose/SKILL.md`

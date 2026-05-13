@@ -40,6 +40,7 @@ The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-m
 /ldd:scope
 /ldd:elaborate
 /ldd:refine
+/ldd:approve
 /ldd:design
 /ldd:plan
 /ldd:decompose
@@ -68,6 +69,7 @@ skills/ldd-next
 skills/ldd-scope
 skills/ldd-elaborate
 skills/ldd-refine
+skills/ldd-approve
 skills/ldd-design
 skills/ldd-plan
 skills/ldd-decompose
@@ -97,7 +99,7 @@ Install this repository as a Gemini CLI extension:
 gemini extensions install https://github.com/awjreynolds/ledger-driven-development
 ```
 
-Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, and `/ldd:close`.
+Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, and `/ldd:close`.
 
 ## Source Of Truth
 
@@ -114,6 +116,7 @@ External trackers are optional review and sync surfaces. They are not canonical 
 ```text
 draft PRD ledger
   -> promoted Product Requirement ticket
+  -> PRD approval with /ldd:approve
   -> SDD/Plan
   -> child vertical-slice tickets
   -> implementation
@@ -121,7 +124,7 @@ draft PRD ledger
   -> human-approved closure/archive
 ```
 
-The repo-local `ledger.yml` is canonical. `/ldd:refine` commits the final PRD and, once the human approves it, promotes the draft to a real Product Requirement ticket. In local tracker mode, a promoted stable ticket directory such as `docs/tickets/LDD-0001-short-slug/` is the real ticket. External trackers are synchronized only when configured and approved by the human.
+The repo-local `ledger.yml` is canonical. `/ldd:refine` commits the final PRD and routes PRD approval to `/ldd:approve <ticket-id>`. In local tracker mode, a promoted stable ticket directory such as `docs/tickets/LDD-0001-short-slug/` is the real ticket. External trackers are synchronized only when configured and approved by the human.
 
 New Product Requirements can be scoped while other promoted tickets are still in progress. `/ldd:scope` creates or updates the local draft ticket directory; incomplete promoted tickets do not block new draft PRDs. Local mode keeps one active draft, so starting another draft first requires continuing, renaming, promoting, or discarding the existing draft.
 
@@ -149,6 +152,7 @@ docs/tickets/_archive/
 The templates are quality contracts, not blank forms:
 
 - PRDs keep product scope separate from technical design.
+- `/ldd:approve` records explicit human approval for PRD and SDD gates. It does not approve plans, decomposition, closure, or external mutations.
 - SDDs translate approved PRDs into designs grounded in code and ADRs.
 - Plans trace acceptance criteria to implementation slices and verification.
 - Decomposition turns approved plan slices into child vertical-slice tickets.

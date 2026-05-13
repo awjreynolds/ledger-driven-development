@@ -43,6 +43,12 @@
       "purpose": "Make the PRD testable and ready for engineering design review."
     },
     {
+      "command": "/ldd:approve",
+      "skill": "ldd-approve",
+      "path": "skills/ldd-approve",
+      "purpose": "Approve a PRD or SDD gate from repo-local ledger state."
+    },
+    {
       "command": "/ldd:design",
       "skill": "ldd-design",
       "path": "skills/ldd-design",

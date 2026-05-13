@@ -32,7 +32,7 @@ children:
   - id: LDD-0003-001
     title: Add /ldd:approve command surface
     type: autonomous
-    status: ready
+    status: verification_required
     path: docs/tickets/LDD-0003-tracker-readiness-guided-next/children/LDD-0003-001-approve-command-surface/ledger.yml
     blocked_by: []
     user_stories_covered: [5, 6, 7]
@@ -77,7 +77,7 @@ execution_context:
   current_gate: implementation
   next_command: /ldd:implement LDD-0003-001
   next_human_action: null
-  next_reason: Child tickets are created and ready for implementation. Start with LDD-0003-001.
+  next_reason: LDD-0003-001 is implemented and awaits verification; continuing implementation with LDD-0003-002.
   approved_artifacts:
     prd: "docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md"
     sdd: "docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md"
@@ -86,7 +86,7 @@ execution_context:
     product: "docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md"
     design: "docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md"
     plan: "docs/tickets/LDD-0003-tracker-readiness-guided-next/plan.md"
-  updated_at: "2026-05-13T17:15:00Z"
+  updated_at: "2026-05-13T17:25:00Z"
 
 sync:
   status: local_only
@@ -162,3 +162,7 @@ events:
   - at: "2026-05-13T17:15:00Z"
     type: child_tickets_created
     actor: agent
+  - at: "2026-05-13T17:25:00Z"
+    type: child_implementation_completed
+    actor: agent
+    child: LDD-0003-001

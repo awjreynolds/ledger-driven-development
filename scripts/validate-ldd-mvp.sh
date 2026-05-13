@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-commands='setup next scope elaborate refine design plan decompose implement verify close'
+commands='setup next scope elaborate refine approve design plan decompose implement verify close'
 
 required_files='
 agent-skills.json
@@ -52,6 +52,7 @@ fi
 
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/ldd:setup"' agent-skills.json
+grep -q '"command": "/ldd:approve"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
 grep -q '"command": "/ldd:verify"' agent-skills.json
@@ -77,6 +78,7 @@ grep -q 'Parent Roll-up Closure' CONTEXT.md
 grep -q '"name": "ldd"' .claude-plugin/plugin.json
 grep -q '"commands":' .claude-plugin/plugin.json
 grep -q './commands/ldd/setup.md' .claude-plugin/plugin.json
+grep -q './commands/ldd/approve.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/decompose.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/implement.md' .claude-plugin/plugin.json
 grep -q './commands/ldd/verify.md' .claude-plugin/plugin.json
@@ -88,6 +90,7 @@ grep -q '"source": "./"' .claude-plugin/marketplace.json
 grep -q '"name": "ledger-driven-development"' gemini-extension.json
 grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
 grep -q '"/ldd:verify"' gemini-extension.json
+grep -q '"/ldd:approve"' gemini-extension.json
 grep -q '"/ldd:close"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
 
@@ -119,6 +122,11 @@ grep -q 'next: /ldd:verify <child-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:close <child-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:close <parent-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'closure.status' skills/ldd-next/SKILL.md
+
+grep -q 'Approve exactly one PRD or SDD gate' skills/ldd-approve/SKILL.md
+grep -q 'does not approve implementation plans' skills/ldd-approve/SKILL.md
+grep -q 'exactly one approval gate is active' skills/ldd-approve/SKILL.md
+grep -q 'GitHub is the first external tracker dogfooding path' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
 grep -q 'Existing promoted Product Requirement tickets do not block new scoping work' skills/ldd-scope/SKILL.md

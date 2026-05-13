@@ -8,6 +8,7 @@
     "/ldd:scope",
     "/ldd:elaborate",
     "/ldd:refine",
+    "/ldd:approve",
     "/ldd:design",
     "/ldd:plan",
     "/ldd:decompose",

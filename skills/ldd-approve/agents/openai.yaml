@@ -1,0 +1,8 @@
+interface:
+  display_name: "LDD Approve"
+  short_description: "Approve PRD or SDD gates"
+  default_prompt: "Use $ldd-approve to run /ldd:approve for issue #1."
+
+policy:
+  allow_implicit_invocation: true
+

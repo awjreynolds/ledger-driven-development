@@ -23,6 +23,7 @@
     "./commands/ldd/scope.md",
     "./commands/ldd/elaborate.md",
     "./commands/ldd/refine.md",
+    "./commands/ldd/approve.md",
     "./commands/ldd/design.md",
     "./commands/ldd/plan.md",
     "./commands/ldd/decompose.md",
