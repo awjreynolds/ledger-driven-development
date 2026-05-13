@@ -25,7 +25,7 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 
 ## Goals
 
-- Identify the functional gaps that prevent a maintainer from using LDD as the normal workflow for real project work.
+- Produce a functional gap inventory that names what prevents a maintainer from using LDD as the normal workflow for real project work, and classifies each gap as required-for-use or optional enhancement.
 - Make LDD usable with external planning and review surfaces, especially GitHub, Linear, and Jira, while preserving the repo-local ledger as the canonical workflow record.
 - Let a maintainer understand which tracker capabilities are required for basic LDD use, which are optional, and which should remain out of scope for the near term.
 - Improve `/ldd:next` so it not only reports the next LDD command, but also offers to perform the next action when that action is appropriate for the current workflow state.
@@ -39,6 +39,7 @@ There is also a handoff gap in `/ldd:next`. It can tell a maintainer what the ne
 - Do not make `/ldd:next` perform external mutations or local artifact changes without an explicit human go-ahead.
 - Do not collapse the existing LDD phases into a single automatic command that bypasses product, design, planning, implementation, verification, or closure gates.
 - Do not make tracker-specific authentication, permissions, or hosting choices part of product scope unless they directly change the user-facing workflow boundary.
+- Do not solve every functional gap identified by the inventory inside this PRD; follow-on gaps may become separate PRDs.
 
 ## Users / Personas
 
