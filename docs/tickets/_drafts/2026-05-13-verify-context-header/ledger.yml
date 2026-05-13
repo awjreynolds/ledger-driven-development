@@ -1,0 +1,43 @@
+schema_version: 1
+
+ticket:
+  id: null
+  draft_id: 2026-05-13-verify-context-header
+  title: Add LDD execution context and verification gate
+  kind: product_requirement
+  status: draft
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  prd:
+    path: docs/tickets/_drafts/2026-05-13-verify-context-header/prd.md
+    status: scoped
+  sdd:
+    path: null
+    status: missing
+  plan:
+    path: null
+    status: missing
+  implementation:
+    status: not_started
+
+children: []
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T00:00:00Z
+    type: draft_created
+    actor: human
+  - at: 2026-05-13T00:00:00Z
+    type: scope_written
+    actor: agent
