@@ -17,8 +17,8 @@ artifacts:
     path: "docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md"
     status: approved
   sdd:
-    path: null
-    status: missing
+    path: "docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md"
+    status: draft
   plan:
     path: null
     status: missing
@@ -39,19 +39,19 @@ closure:
 
 execution_context:
   phase: design
-  current_gate: design
-  next_command: /ldd:design LDD-0003
-  next_human_action: null
-  next_reason: Product Requirement is approved and ready for engineering design.
+  current_gate: design_review
+  next_command: /ldd:approve LDD-0003
+  next_human_action: /ldd:approve LDD-0003
+  next_reason: Software Design Document is drafted and needs human approval before planning.
   approved_artifacts:
     prd: "docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md"
     sdd: null
     plan: null
   boundaries:
     product: "docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md"
-    design: null
+    design: "docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md"
     plan: null
-  updated_at: "2026-05-13T17:03:21Z"
+  updated_at: "2026-05-13T17:05:21Z"
 
 sync:
   status: local_only
@@ -109,3 +109,6 @@ events:
   - at: "2026-05-13T17:03:21Z"
     type: prd_approved
     actor: human
+  - at: "2026-05-13T17:05:21Z"
+    type: design_written
+    actor: agent
