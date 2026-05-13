@@ -1,9 +1,9 @@
 ---
-ticket: 2026-05-13-pm-command-facilitation
+ticket: LDD-0002
 title: "Strengthen LDD PM command facilitation"
 created: 2026-05-13
 updated: 2026-05-13
-status: refined
+status: approved
 ---
 
 # PRD: Strengthen LDD PM command facilitation
