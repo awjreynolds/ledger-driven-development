@@ -54,11 +54,11 @@ Implementation closure is also underspecified. `/ldd:implement` can produce code
 
 ## Acceptance Criteria
 
-- Draft: A ticket can expose compact execution context that identifies the current phase, approved artifacts, source-of-truth boundaries, and next required gate.
-- Draft: Implementation completion and ticket closure are separate states in the LDD workflow.
-- Draft: Verification can produce a clear recommendation about whether a child ticket is ready to mark done, archive, and close externally.
-- Draft: Verification blocks closure when required evidence is missing, tests/checks fail, scope/design drift is detected, or external ticket drift is unresolved.
-- Draft: `/ldd:next` can identify verification as the next action when implementation evidence exists but closure has not been approved.
+- Draft: A ticket exposes enough compact context for an agent or maintainer to understand the current phase, approved inputs, boundaries, and next required gate.
+- Draft: Implementation completion and ticket closure are treated as separate workflow states.
+- Draft: A verification gate can produce a clear recommendation about whether child work is ready to mark done, archive, and close externally.
+- Draft: Closure is blocked when required evidence is missing, checks fail, scope/design drift is detected, or external ticket drift is unresolved.
+- Draft: When implementation evidence exists but closure has not been approved, LDD can indicate that verification is the next required gate.
 - Draft: The workflow remains local-ledger-first and does not require external skills, agent-specific orchestration, or a broad repository healthcheck.
 
 ## Success Metrics

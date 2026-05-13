@@ -114,6 +114,7 @@ grep -q '# PRD:' skills/ldd-setup/assets/templates/prd.md
 grep -q 'Product Manager artifact' skills/ldd-setup/assets/templates/prd.md
 grep -q 'PRD Handoff Checklist' skills/ldd-setup/assets/templates/prd.md
 grep -q 'No implementation decisions' skills/ldd-setup/assets/templates/prd.md
+grep -q 'avoid prescribing command mechanics' skills/ldd-setup/assets/templates/prd.md
 grep -q 'Avoid: Gherkin/Cucumber syntax here' skills/ldd-setup/assets/templates/prd.md
 grep -q 'Given/When/Then' skills/ldd-setup/assets/templates/prd.md
 grep -q '# Software Design Document:' skills/ldd-setup/assets/templates/sdd.md
@@ -149,6 +150,8 @@ grep -q 'Treat <code>plan.md</code> as the source of truth' skills/ldd-setup/ass
 
 grep -q 'artifact quality guidance' skills/ldd-setup/SKILL.md
 grep -q 'PRD template as a quality contract' skills/ldd-scope/SKILL.md
+grep -q 'should not prescribe exact command behavior' skills/ldd-elaborate/SKILL.md
+grep -q 'Preserve the Product Manager boundary' skills/ldd-refine/SKILL.md
 grep -q "SDD template's quality bar" skills/ldd-design/SKILL.md
 grep -q "plan template's traceability" skills/ldd-plan/SKILL.md
 grep -q 'repo-local ledger as canonical workflow state' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md

@@ -24,6 +24,8 @@ Update `prd.md` in the active draft or promoted ticket directory with product de
 - Use the PRD template as a quality contract. Preserve the scoped goals/non-goals and fill only product-detail sections.
 - Do not expand scope. If elaboration exposes a scope problem, stop and recommend `/ldd:scope`.
 - Keep acceptance criteria product-facing and draft-quality; testability is finalized by `/ldd:refine`.
+- Draft acceptance criteria may name LDD workflow concepts, but should not prescribe exact command behavior, file names, schemas, state-machine transitions, algorithms, or verification mechanics unless the user explicitly made them part of the product requirement.
+- If elaboration starts defining how the system should be implemented, capture that as a dependency, constraint, or open question for engineering design instead of acceptance criteria.
 - Make a local commit after writing. Do not mutate GitHub unless explicitly approved for branch push/update.
 
 ## Stop Conditions

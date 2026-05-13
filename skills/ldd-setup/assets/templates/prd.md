@@ -71,6 +71,7 @@ Avoid: Gherkin/Cucumber syntax here, stories about components, services, data mo
 Define the product behavior that must be true before engineering can call the work done.
 Good: concrete, externally observable, unambiguous, includes important negative cases.
 Avoid: "works correctly", file-level checks, framework-specific behavior, or test instructions.
+Also avoid prescribing command mechanics, schemas, file placement, algorithms, or implementation sequence.
 Use checklist bullets for simple criteria. Use Gherkin-style Given/When/Then scenarios when state, roles, or edge cases need precision.
 -->
 
