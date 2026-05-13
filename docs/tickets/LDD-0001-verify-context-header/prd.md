@@ -1,8 +1,9 @@
 ---
-ticket: 2026-05-13-verify-context-header
+ticket: LDD-0001
 title: "Add LDD execution context and verification gate"
 created: 2026-05-13
 updated: 2026-05-13
+status: approved
 ---
 
 # PRD: Add LDD execution context and verification gate

@@ -116,7 +116,7 @@ draft PRD ledger
   -> completed children archived
 ```
 
-The repo-local `ledger.yml` is canonical. External trackers are synchronized only when configured and approved by the human.
+The repo-local `ledger.yml` is canonical. `/ldd:refine` commits the final PRD and, once the human approves it, promotes the draft to a real Product Requirement ticket. In local tracker mode, a promoted stable ticket directory such as `docs/tickets/LDD-0001-short-slug/` is the real ticket. External trackers are synchronized only when configured and approved by the human.
 
 ## Handoff Artifacts
 

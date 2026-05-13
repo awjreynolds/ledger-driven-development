@@ -1,11 +1,11 @@
 schema_version: 1
 
 ticket:
-  id: null
+  id: LDD-0001
   draft_id: 2026-05-13-verify-context-header
   title: Add LDD execution context and verification gate
   kind: product_requirement
-  status: draft
+  status: approved
 
 tracker:
   mode: local
@@ -14,8 +14,8 @@ tracker:
 
 artifacts:
   prd:
-    path: docs/tickets/_drafts/2026-05-13-verify-context-header/prd.md
-    status: refined
+    path: docs/tickets/LDD-0001-verify-context-header/prd.md
+    status: approved
   sdd:
     path: null
     status: missing
@@ -46,4 +46,10 @@ events:
     actor: agent
   - at: 2026-05-13T00:00:00Z
     type: refinement_written
+    actor: agent
+  - at: 2026-05-13T00:00:00Z
+    type: prd_approved
+    actor: human
+  - at: 2026-05-13T00:00:00Z
+    type: draft_promoted
     actor: agent

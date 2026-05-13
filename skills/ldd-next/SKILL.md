@@ -33,7 +33,7 @@ Read repo-local ledger state and report the next explicit LDD command.
 If no ledger exists:
   next: /ldd:setup
 Else if draft PRD exists:
-  inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, or /ldd:refine
+  inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or PRD approval/promotion
 Else if parent ticket is done:
   done
 Else if ready child vertical slices exist:
