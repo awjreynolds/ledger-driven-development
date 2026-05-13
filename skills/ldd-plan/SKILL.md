@@ -34,7 +34,8 @@ Create or update `plan.md` and generated `plan.html` in the promoted ticket dire
 - Do not introduce new architectural decisions. If planning discovers one, stop and return to `/ldd:design`.
 - `plan.md` is the durable source; `plan.html` is generated from it.
 - Commit locally after planning.
-- After human approval, promote/sync review state according to `.ldd/config.yml`.
+- After human approval of the plan, promote/sync review state according to `.ldd/config.yml`. `/ldd:approve` does not approve plans.
+- When stopping for plan approval, set `execution_context.next_human_action` to the required plan review decision rather than `/ldd:approve`.
 - SDD/Plan PR reviewer prompt: "Does this design and plan correctly implement the PRD?"
 
 ## Stop Conditions

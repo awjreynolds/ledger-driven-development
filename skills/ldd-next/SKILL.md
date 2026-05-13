@@ -5,7 +5,7 @@ description: Run /ldd:next for an LDD ticket. Use when the user says /ldd:next, 
 
 # /ldd:next
 
-Read repo-local ledger state and report the next explicit LDD command.
+Read repo-local ledger state and report the next explicit LDD command and next human action.
 
 ## Input
 
@@ -25,15 +25,56 @@ Read repo-local ledger state and report the next explicit LDD command.
 
 - Read-only. It never mutates GitHub or local files.
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
-- External mutations require human confirmation, and this command does not request mutations.
+- External mutations require human confirmation, and this command does not perform mutations.
 - Ignore `docs/tickets/_archive/` unless the user explicitly asks to inspect archived tickets.
 - Use `.ldd/config.yml` when present.
 - Prefer `execution_context` when present, but verify it against ledger artifact state before reporting the next command.
+- Report both `execution_context.next_command` and `execution_context.next_human_action` when present. If `next_human_action` is missing, derive it from the active gate.
 - If `execution_context` is absent, derive equivalent state from ticket status, artifact statuses, child ledgers, `closure.status`, sync metadata, and archived-child location.
 - Preserve approved PRD, SDD, and plan boundaries. If the next step would change those boundaries, report the earliest affected `/ldd:scope`, `/ldd:design`, or `/ldd:plan` gate instead of routing implementation or verification.
 - Prioritize parent roll-up closure when all children are verified and closeable.
 - Prioritize verified but unclosed child work before verification and implementation.
 - Prioritize child work with completed implementation evidence and unverified closure before starting additional child implementation.
+- When continuation is safe and commandable, name the exact command the user can run next.
+- When continuation requires human review, approval, drift reconciliation, external mutation confirmation, or a blocked choice, name the human decision instead of offering unsafe automation.
+- PRD and SDD approval gates must route to `/ldd:approve <ticket-id>`.
+
+## Report Contract
+
+Always report:
+
+- ticket ID and current phase/gate
+- `next_command`, if available or derivable
+- `next_human_action`, if available or derivable
+- reason
+- blocking decision, if blocked
+
+Use this shape:
+
+```text
+Next command: /ldd:plan LDD-0003
+Next human action: none
+Reason: SDD is approved and ready for implementation planning.
+Offer: Run /ldd:plan LDD-0003 when ready.
+```
+
+For approval gates:
+
+```text
+Next command: /ldd:approve LDD-0003
+Next human action: /ldd:approve LDD-0003
+Reason: The PRD or SDD is waiting for explicit approval.
+Offer: Run /ldd:approve LDD-0003 when ready.
+```
+
+For blocked gates:
+
+```text
+Next command: blocked
+Next human action: reconcile external tracker drift
+Reason: The external body changed since the last recorded sync hash.
+Offer: no automatic continuation
+```
 
 ## Decision Tree
 
@@ -41,7 +82,7 @@ Read repo-local ledger state and report the next explicit LDD command.
 If no ledger exists:
   next: /ldd:setup
 Else if draft PRD exists:
-  inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or PRD approval/promotion
+  inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or /ldd:approve <ticket-id> for PRD approval
 Else if parent ticket is done:
   done
 Else if parent has children and every child is verified and closeable or already closed:
@@ -58,11 +99,45 @@ Else if plan exists but is not approved:
   inspect plan state
 Else if SDD is approved:
   next: /ldd:plan
+Else if SDD exists but is not approved:
+  next: /ldd:approve <ticket-id>
+  next_human_action: /ldd:approve <ticket-id>
 Else if PRD is approved:
   next: /ldd:design
+Else if PRD exists but is not approved:
+  next: /ldd:approve <ticket-id>
+  next_human_action: /ldd:approve <ticket-id>
 Else:
   next: /ldd:scope
 ```
+
+## Approval Gate Detection
+
+Treat a PRD as waiting for approval when either:
+
+- `execution_context.current_gate: prd_approval`
+- `artifacts.prd.status: draft` and `approved_artifacts.prd` is empty or null
+
+Report:
+
+```text
+next_command: /ldd:approve <ticket-id>
+next_human_action: /ldd:approve <ticket-id>
+```
+
+Treat an SDD as waiting for approval when either:
+
+- `execution_context.current_gate: design_review`
+- `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`
+
+Report:
+
+```text
+next_command: /ldd:approve <ticket-id>
+next_human_action: /ldd:approve <ticket-id>
+```
+
+If both PRD and SDD approval appear active, report the ambiguity and route to human reconciliation. Do not choose one silently.
 
 ## Verification Gate Detection
 

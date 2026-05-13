@@ -18,6 +18,16 @@ Create or update `sdd.md` in the promoted ticket directory.
 - Software Design Document
 - ADR creates/updates only when the strict ADR threshold is met
 
+## Exit Gate
+
+After writing the SDD, stop at explicit SDD approval:
+
+- Set `artifacts.sdd.status: draft`.
+- Set `execution_context.current_gate: design_review`.
+- Set `execution_context.next_command: /ldd:approve <ticket-id>`.
+- Set `execution_context.next_human_action: /ldd:approve <ticket-id>`.
+- Use this reviewer prompt: "Is this design ready for implementation planning? If yes, run `/ldd:approve <ticket-id>`."
+
 ## Rules
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
@@ -28,6 +38,8 @@ Create or update `sdd.md` in the promoted ticket directory.
 - ADR threshold: hard to reverse, surprising without context, and the result of a real trade-off.
 - Mandatory ADR support does not mean mandatory ADR creation.
 - Commit locally after design. Do not push/update PRs unless explicitly approved.
+- SDD approval must be recorded through `/ldd:approve <ticket-id>`, not conversational shorthand.
+- In GitHub tracker mode, prepare SDD/plan review PR content only as a managed projection and ask for explicit human confirmation before any PR create or update.
 
 ## Stop Conditions
 

@@ -73,10 +73,10 @@ End with:
 - artifact updated,
 - expected ledger transition or event,
 - remaining non-blocking questions,
-- approval prompt,
+- approval prompt using `/ldd:approve <ticket-id>`,
 - recommended next command after approval, usually `/ldd:design`.
 
-Use this reviewer prompt exactly: "Is this ready for engineering design?"
+Use this reviewer prompt exactly: "Is this ready for engineering design? If yes, run `/ldd:approve <ticket-id>`."
 
 ## Rules
 
@@ -88,14 +88,15 @@ Use this reviewer prompt exactly: "Is this ready for engineering design?"
 - Do not expand scope or add technical design.
 - Preserve the Product Manager boundary: acceptance criteria describe required product/workflow outcomes, not the engineering solution that will satisfy them.
 - Commit locally after refinement.
-- End refinement with an explicit approval prompt: `Reply approve PRD to promote the committed PRD to a stable ticket and create or sync the external Product Requirement ticket when a tracker is configured.`
+- End refinement with an explicit approval prompt: `Run /ldd:approve <ticket-id> to approve this PRD and create or sync the external Product Requirement ticket only when a tracker is configured and you explicitly confirm that mutation.`
 - If the human has already approved the refined PRD in the current turn, do not stop at a refined draft. Promote it immediately.
 - Promotion assigns the stable ticket ID, moves the draft directory out of `_drafts`, updates `ledger.yml` and PRD frontmatter links/IDs, marks the PRD approved, and commits the promotion.
 - In `local` tracker mode, the promoted repo-local ledger directory is the real Product Requirement ticket.
 - In an external tracker mode, promotion creates or binds the external Product Requirement ticket and records its ID/URL in `ledger.yml`.
 - External Product Requirement tickets must be readable without opening the repo. Use `.ldd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and LDD links.
 - Before updating an existing external ticket, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.
-- PRD PR reviewer prompt: "Is this ready for engineering design?"
+- Before approval, set `execution_context.current_gate: prd_approval`, `execution_context.next_command: /ldd:approve <ticket-id>`, and `execution_context.next_human_action: /ldd:approve <ticket-id>` when those fields are available.
+- PRD PR reviewer prompt: "Is this ready for engineering design? If yes, run `/ldd:approve <ticket-id>`."
 
 ## Stop Conditions
 

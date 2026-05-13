@@ -22,7 +22,7 @@ Turn an approved `plan.md` into child vertical-slice tickets.
 
 ## Preview Before Creation
 
-Before creating or updating any child ticket, present the proposed ticket set and stop for human approval.
+Before creating or updating any child ticket, present the proposed ticket set and stop for human approval. This approval is not handled by `/ldd:approve`; it is a decomposition review decision.
 
 Use this review shape:
 
@@ -42,7 +42,7 @@ Ask:
 - Should any tickets be merged or split?
 ```
 
-Only after approval may the command create child ledgers or external child tickets.
+Only after approval may the command create child ledgers or external child tickets. When stopping before approval, set `execution_context.next_human_action` to the decomposition review decision.
 
 ## Rules
 

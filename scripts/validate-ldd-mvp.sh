@@ -122,6 +122,10 @@ grep -q 'next: /ldd:verify <child-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:close <child-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'next: /ldd:close <parent-ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'closure.status' skills/ldd-next/SKILL.md
+grep -q 'next_human_action' skills/ldd-next/SKILL.md
+grep -q '/ldd:approve <ticket-id>' skills/ldd-next/SKILL.md
+grep -q 'does not perform mutations' skills/ldd-next/SKILL.md
+grep -q 'Approval Gate Detection' skills/ldd-next/SKILL.md
 
 grep -q 'Approve exactly one PRD or SDD gate' skills/ldd-approve/SKILL.md
 grep -q 'does not approve implementation plans' skills/ldd-approve/SKILL.md
@@ -211,8 +215,11 @@ grep -q 'artifact quality guidance' skills/ldd-setup/SKILL.md
 grep -q 'PRD template as a quality contract' skills/ldd-scope/SKILL.md
 grep -q 'should not prescribe exact command behavior' skills/ldd-elaborate/SKILL.md
 grep -q 'Preserve the Product Manager boundary' skills/ldd-refine/SKILL.md
+grep -q 'Run /ldd:approve <ticket-id> to approve this PRD' skills/ldd-refine/SKILL.md
 grep -q "SDD template's quality bar" skills/ldd-design/SKILL.md
+grep -q 'SDD approval must be recorded through `/ldd:approve <ticket-id>`' skills/ldd-design/SKILL.md
 grep -q "plan template's traceability" skills/ldd-plan/SKILL.md
+grep -q '/ldd:approve` does not approve plans' skills/ldd-plan/SKILL.md
 grep -q 'repo-local ledger as canonical workflow state' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then
