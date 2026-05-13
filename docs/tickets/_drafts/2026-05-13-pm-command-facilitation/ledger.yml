@@ -5,7 +5,7 @@ ticket:
   draft_id: 2026-05-13-pm-command-facilitation
   title: Strengthen LDD PM command facilitation
   kind: product_requirement
-  status: draft
+  status: elaborated
 
 tracker:
   mode: local
@@ -15,7 +15,7 @@ tracker:
 artifacts:
   prd:
     path: docs/tickets/_drafts/2026-05-13-pm-command-facilitation/prd.md
-    status: draft
+    status: elaborated
   sdd:
     path: null
     status: missing
@@ -38,11 +38,11 @@ closure:
   override_reason: null
 
 execution_context:
-  phase: scope
+  phase: elaborate
   current_gate: prd_approval
-  next_command: /ldd:elaborate
+  next_command: /ldd:refine
   next_human_action: null
-  next_reason: Draft Product Requirement has scoped goals and non-goals; product detail still needs elaboration.
+  next_reason: Draft Product Requirement has product detail and needs refinement before approval.
   approved_artifacts:
     prd: null
     sdd: null
@@ -51,7 +51,7 @@ execution_context:
     product: docs/tickets/_drafts/2026-05-13-pm-command-facilitation/prd.md
     design: null
     plan: null
-  updated_at: 2026-05-13T11:16:34Z
+  updated_at: 2026-05-13T11:19:01Z
 
 sync:
   status: local_only
@@ -66,4 +66,7 @@ events:
     actor: human
   - at: 2026-05-13T11:16:34Z
     type: scope_written
+    actor: agent
+  - at: 2026-05-13T11:19:01Z
+    type: elaboration_written
     actor: agent

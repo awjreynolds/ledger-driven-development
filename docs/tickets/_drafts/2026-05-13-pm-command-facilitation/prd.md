@@ -3,7 +3,7 @@ ticket: 2026-05-13-pm-command-facilitation
 title: "Strengthen LDD PM command facilitation"
 created: 2026-05-13
 updated: 2026-05-13
-status: draft
+status: elaborated
 ---
 
 # PRD: Strengthen LDD PM command facilitation
@@ -17,7 +17,9 @@ Capture technical uncertainty only as a dependency, constraint, or open question
 
 ## Problem
 
-Not yet addressed. Owned by `/ldd:elaborate`.
+The LDD Product Manager commands currently express the right ownership boundaries, but they do not yet give agents enough operating guidance to run a dependable PM conversation. A user can ask for scope, elaboration, or refinement, but the command may behave like a static checklist instead of guiding the user through ambiguity, preserving assumptions, and ending with a clear handoff decision.
+
+This creates friction during dogfooding. Product work can stall when `/ldd:scope` cannot start a new Product Requirement from source context, or drift when an agent tries to fill missing product detail by smuggling in technical design. It also makes handoffs weaker because the next command, unresolved questions, and required human decision are not always explicit.
 
 ## Goals
 
@@ -38,19 +40,36 @@ Not yet addressed. Owned by `/ldd:elaborate`.
 
 ## Users / Personas
 
-Not yet addressed. Owned by `/ldd:elaborate`.
+- Product author - needs the PM commands to turn rough context into a clean Product Requirement without forcing them to know the LDD workflow internals.
+- Product reviewer - needs confidence that scope, elaboration, and refinement preserve product intent without adding hidden design or implementation decisions.
+- Agent running an LDD PM command - needs enough self-contained guidance to ask focused questions, label assumptions, and stop at the correct handoff boundary.
+- Maintainer dogfooding LDD - needs new Product Requirement drafts to start cleanly while other promoted tickets continue through later workflow phases.
 
 ## User Stories
 
-Not yet addressed. Owned by `/ldd:elaborate`.
+1. As a product author, I want `/ldd:scope` to start a new draft Product Requirement from source context when no active draft exists, so that new product work is not blocked by unrelated promoted tickets.
+2. As a product author, I want the PM commands to offer guided, context-dump, and best-guess modes, so that I can choose the right level of interaction for the situation.
+3. As an agent running an LDD PM command, I want a self-contained facilitation protocol, so that I can ask focused questions, preserve assumptions, and avoid relying on external skills.
+4. As a product reviewer, I want scope, elaboration, and refinement to reject solution-smuggling language, so that engineering design starts from product outcomes rather than hidden implementation choices.
+5. As a maintainer, I want each PM command to end with an explicit handoff gate, so that the next LDD action and required human decision are visible from the artifact state.
+6. As a maintainer dogfooding LDD, I want incomplete promoted tickets to remain separate from new draft Product Requirements, so that parallel product discovery does not corrupt active workflow records.
 
 ## Acceptance Criteria
 
-Not yet addressed. Draft criteria are owned by `/ldd:elaborate`; testable criteria are owned by `/ldd:refine`.
+- Draft: A user can start new scoping work from source context when no active draft exists, even if an unrelated promoted ticket is incomplete.
+- Draft: New scoping work does not mutate a promoted ticket unless the user explicitly identifies that ticket.
+- Draft: The PM commands provide a self-contained guided interaction pattern that does not require external PM, facilitation, grill, or orchestration skills.
+- Draft: The PM commands preserve their ownership boundaries: `/ldd:scope` owns goals and non-goals, `/ldd:elaborate` owns product detail, and `/ldd:refine` owns handoff quality.
+- Draft: Product-facing acceptance criteria avoid prescribing technical design, implementation sequence, internal schemas, or command mechanics unless those details are explicitly part of the product requirement.
+- Draft: Each PM command ends by stating whether the artifact is ready for the next LDD command, whether a return to an earlier PM command is required, or whether a human decision blocks progress.
+- Draft: LDD continues to use repo-local ledgers as canonical workflow state and does not introduce duplicate progress logs or global workflow state.
 
 ## Success Metrics
 
-Not yet addressed. Draft metrics are owned by `/ldd:elaborate`; measurable metrics are owned by `/ldd:refine`.
+- Draft: A maintainer can start a new PM-command Product Requirement while `LDD-0001` remains in verification, without modifying `LDD-0001`.
+- Draft: A reviewer can identify the next recommended LDD command from the draft ledger and PRD without relying on chat history.
+- Draft: The PM command PRD contains no product-scope acceptance criteria that require codebase inspection to understand.
+- Draft: Dogfooding sessions for `/ldd:scope`, `/ldd:elaborate`, and `/ldd:refine` surface fewer blocking process questions after the command updates are installed.
 
 ## Dependencies
 
@@ -62,17 +81,19 @@ Not yet addressed. Draft metrics are owned by `/ldd:elaborate`; measurable metri
 
 ## Open Questions
 
-- What minimum facilitation protocol belongs in every PM command without making the skills too verbose? Owner: elaboration.
-- Should `Guided`, `Context dump`, and `Best guess` modes be exposed identically across all three PM commands? Owner: elaboration.
+- What minimum facilitation protocol belongs in every PM command without making the skills too verbose? Owner: refinement.
+- Should `Guided`, `Context dump`, and `Best guess` modes be exposed identically across all three PM commands? Owner: refinement.
 - How should `/ldd:scope` name and de-duplicate new drafts created from source documents? Owner: refinement.
+- Should each PM command use identical exit-gate wording, or should wording differ by phase? Owner: refinement.
+- What counts as a blocking product ambiguity versus an acceptable assumption in best-guess mode? Owner: refinement.
 
 ## PRD Handoff Checklist
 
 <!-- Complete before opening the PRD PR. -->
 
-- [ ] Problem is expressed from the user's perspective.
+- [x] Problem is expressed from the user's perspective.
 - [x] Goals and non-goals make the scope boundary clear.
-- [ ] User stories cover the main workflow and meaningful user-visible edge cases.
+- [x] User stories cover the main workflow and meaningful user-visible edge cases.
 - [ ] Acceptance criteria are observable without reading code.
 - [ ] Metrics define how product success will be judged.
 - [x] Dependencies and open questions are explicit.
