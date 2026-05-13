@@ -3,6 +3,7 @@ ticket: LDD-0003
 prd: docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md
 created: 2026-05-13
 updated: 2026-05-13
+status: approved
 adrs: []
 ---
 
