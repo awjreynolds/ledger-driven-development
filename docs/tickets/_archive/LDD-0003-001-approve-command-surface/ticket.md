@@ -40,9 +40,9 @@ None.
 
 ## LDD Traceability
 
-- Parent PRD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md`
-- Parent SDD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md`
-- Plan: `docs/tickets/LDD-0003-tracker-readiness-guided-next/plan.md`
+- Parent PRD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md`
+- Parent SDD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md`
+- Plan: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/plan.md`
 - Plan slice: `Slice 1: /ldd:approve command surface`
-- Ledger: `docs/tickets/LDD-0003-tracker-readiness-guided-next/children/LDD-0003-001-approve-command-surface/ledger.yml`
+- Ledger: `docs/tickets/_archive/LDD-0003-001-approve-command-surface/ledger.yml`
 

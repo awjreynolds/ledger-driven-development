@@ -12,10 +12,10 @@ Verification status: passed
 
 ## Approved Inputs
 
-- PRD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md` approved
-- SDD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md` approved
-- Plan: `docs/tickets/LDD-0003-tracker-readiness-guided-next/plan.md` approved
-- Child ticket: `docs/tickets/LDD-0003-tracker-readiness-guided-next/children/LDD-0003-002-next-and-approval-routing/ticket.md`
+- PRD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md` approved
+- SDD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md` approved
+- Plan: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/plan.md` approved
+- Child ticket: `docs/tickets/_archive/LDD-0003-002-next-and-approval-routing/ticket.md`
 
 ## Execution Context
 

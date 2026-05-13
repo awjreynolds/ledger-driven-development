@@ -39,9 +39,9 @@ LDD-0003-001.
 
 ## LDD Traceability
 
-- Parent PRD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md`
-- Parent SDD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md`
-- Plan: `docs/tickets/LDD-0003-tracker-readiness-guided-next/plan.md`
+- Parent PRD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md`
+- Parent SDD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md`
+- Plan: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/plan.md`
 - Plan slice: `Slice 2: Guided /ldd:next and approval-routing gates`
-- Ledger: `docs/tickets/LDD-0003-tracker-readiness-guided-next/children/LDD-0003-002-next-and-approval-routing/ledger.yml`
+- Ledger: `docs/tickets/_archive/LDD-0003-002-next-and-approval-routing/ledger.yml`
 

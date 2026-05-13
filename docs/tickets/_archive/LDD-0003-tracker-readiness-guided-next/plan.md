@@ -1,7 +1,7 @@
 ---
 ticket: LDD-0003
-prd: docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md
-sdd: docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md
+prd: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md
+sdd: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md
 created: 2026-05-13
 updated: 2026-05-13
 status: approved
@@ -124,7 +124,7 @@ Files and modules:
 - `GEMINI.md`
 - `CONTEXT.md`
 - `scripts/validate-ldd-mvp.sh`
-- `docs/tickets/LDD-0003-tracker-readiness-guided-next/verification.md`
+- `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/verification.md`
 
 Acceptance coverage:
 

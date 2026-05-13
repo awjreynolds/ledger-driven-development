@@ -1,6 +1,6 @@
 ---
 ticket: LDD-0003
-prd: docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md
+prd: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md
 created: 2026-05-13
 updated: 2026-05-13
 status: approved
@@ -13,7 +13,7 @@ adrs: []
 
 This design implements the approved PRD for `LDD-0003`. LDD already has command-shaped skills, thin command adapters, package manifests, repo-local ledgers, rich issue/PR templates, verification, closure, and a validation script that enforces the installable package surface. The remaining gaps are about making the workflow usable as a normal day-to-day loop: external visibility, explicit approval commands, safer continuation from `/ldd:next`, and preventing PM artifacts from passing gates without shared understanding.
 
-- PRD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md`
+- PRD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md`
 - Existing entry points:
   - `skills/ldd-*/SKILL.md`
   - `commands/ldd/*.md`
@@ -150,10 +150,10 @@ No new top-level ledger section is required. `/ldd:approve` uses existing fields
 ```yaml
 artifacts:
   prd:
-    path: docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md
+    path: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md
     status: approved
   sdd:
-    path: docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md
+    path: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md
     status: draft
 
 execution_context:
@@ -163,7 +163,7 @@ execution_context:
   next_human_action: /ldd:approve LDD-0003
   next_reason: SDD is drafted and needs human approval before planning.
   approved_artifacts:
-    prd: docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md
+    prd: docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md
     sdd: null
     plan: null
 ```

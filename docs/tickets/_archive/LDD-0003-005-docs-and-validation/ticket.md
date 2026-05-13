@@ -14,7 +14,7 @@ Expected touch points:
 - `GEMINI.md`
 - `CONTEXT.md`
 - `scripts/validate-ldd-mvp.sh`
-- `docs/tickets/LDD-0003-tracker-readiness-guided-next/verification.md`
+- `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/verification.md`
 
 ## Acceptance criteria
 
@@ -35,9 +35,9 @@ LDD-0003-001, LDD-0003-002, LDD-0003-003, LDD-0003-004.
 
 ## LDD Traceability
 
-- Parent PRD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/prd.md`
-- Parent SDD: `docs/tickets/LDD-0003-tracker-readiness-guided-next/sdd.md`
-- Plan: `docs/tickets/LDD-0003-tracker-readiness-guided-next/plan.md`
+- Parent PRD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/prd.md`
+- Parent SDD: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/sdd.md`
+- Plan: `docs/tickets/_archive/LDD-0003-tracker-readiness-guided-next/plan.md`
 - Plan slice: `Slice 5: End-to-end docs and package verification`
-- Ledger: `docs/tickets/LDD-0003-tracker-readiness-guided-next/children/LDD-0003-005-docs-and-validation/ledger.yml`
+- Ledger: `docs/tickets/_archive/LDD-0003-005-docs-and-validation/ledger.yml`
 
