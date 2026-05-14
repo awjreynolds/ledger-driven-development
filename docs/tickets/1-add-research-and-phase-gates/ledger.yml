@@ -26,6 +26,11 @@ artifacts:
     status: approved
   implementation:
     status: completed
+    pr:
+      number: 9
+      url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+      mode: aggregate
+      addresses: ["3", "4", "5", "6", "7", "8"]
   verification:
     path: null
     status: missing
@@ -167,4 +172,7 @@ events:
     actor: agent
   - at: "2026-05-14T22:51:10Z"
     type: child_implementations_completed
+    actor: agent
+  - at: "2026-05-14T23:09:22Z"
+    type: implementation_pr_created
     actor: agent
