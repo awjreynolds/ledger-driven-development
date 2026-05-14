@@ -17,8 +17,8 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     status: approved
   sdd:
-    path: null
-    status: missing
+    path: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
+    status: draft
   plan:
     path: null
     status: missing
@@ -39,10 +39,10 @@ closure:
 
 execution_context:
   phase: design
-  current_gate: design
-  next_command: /ldd:design 1
-  next_human_action: null
-  next_reason: PRD is approved and ready for engineering design.
+  current_gate: design_review
+  next_command: /ldd:approve 1
+  next_human_action: /ldd:approve 1
+  next_reason: Software Design Document is drafted and awaiting explicit approval.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: null
@@ -51,7 +51,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: null
     plan: null
-  updated_at: "2026-05-14T16:57:49Z"
+  updated_at: "2026-05-14T21:57:42Z"
 
 sync:
   status: synced
@@ -79,3 +79,6 @@ events:
   - at: "2026-05-14T16:57:49Z"
     type: prd_approved
     actor: human
+  - at: "2026-05-14T21:57:42Z"
+    type: sdd_drafted
+    actor: agent
