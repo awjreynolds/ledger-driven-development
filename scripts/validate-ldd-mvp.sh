@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-commands='setup next scope elaborate refine approve design plan decompose implement verify close'
+commands='setup next research scope elaborate refine approve design plan decompose implement verify close'
 
 required_files='
 agent-skills.json
@@ -14,6 +14,7 @@ gemini-extension.json
 GEMINI.md
 skills/ldd-setup/assets/templates/config.yml
 skills/ldd-setup/assets/templates/ledger.yml
+skills/ldd-setup/assets/templates/research.md
 skills/ldd-setup/assets/templates/prd.md
 skills/ldd-setup/assets/templates/sdd.md
 skills/ldd-setup/assets/templates/plan.md
@@ -53,6 +54,7 @@ fi
 
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/ldd:setup"' agent-skills.json
+grep -q '"command": "/ldd:research"' agent-skills.json
 grep -q '"command": "/ldd:approve"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
@@ -98,6 +100,7 @@ grep -q '"source": "./"' .claude-plugin/marketplace.json
 grep -q '"name": "ledger-driven-development"' gemini-extension.json
 grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
 grep -q '"/ldd:verify"' gemini-extension.json
+grep -q '"/ldd:research"' gemini-extension.json
 grep -q '"/ldd:approve"' gemini-extension.json
 grep -q '"/ldd:close"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
@@ -169,6 +172,10 @@ grep -q 'GitHub-first managed projections' skills/ldd-setup/assets/templates/con
 grep -q 'Linear and Jira are follow-on collaboration surfaces' skills/ldd-setup/assets/templates/config.yml
 grep -q 'schema_version: 1' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'children: \[\]' skills/ldd-setup/assets/templates/ledger.yml
+grep -q 'research:' skills/ldd-setup/assets/templates/ledger.yml
+grep -q '# LDD Research' skills/ldd-setup/assets/templates/research.md
+grep -q 'Readiness Decision' skills/ldd-setup/assets/templates/research.md
+grep -q 'Sensitivity Handling' skills/ldd-setup/assets/templates/research.md
 grep -q 'external_body_hash:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'managed_body_version:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'current_gate: scope' skills/ldd-setup/assets/templates/ledger.yml
@@ -248,6 +255,17 @@ grep -q 'GitHub issue or PR closure is an external mutation' skills/ldd-close/SK
 grep -q 'every child is verified and closeable' skills/ldd-close/SKILL.md
 grep -q 'Move the parent directory' skills/ldd-close/SKILL.md
 grep -q 'parent close requested while any child is not verified and closeable' skills/ldd-close/SKILL.md
+grep -q 'standard PM inputs' skills/ldd-research/SKILL.md
+grep -q 'full read-only' skills/ldd-research/SKILL.md
+grep -q 'ready_for_scope' skills/ldd-research/SKILL.md
+grep -q 'blocked_on_more_input' skills/ldd-research/SKILL.md
+grep -q 'split_recommended' skills/ldd-research/SKILL.md
+grep -q 'not_a_product_requirement' skills/ldd-research/SKILL.md
+grep -q 'financially sensitive' skills/ldd-research/SKILL.md
+for command in $commands; do
+  grep -q 'Input Quality Gate' "skills/ldd-$command/SKILL.md"
+  grep -q 'earliest LDD command' "skills/ldd-$command/SKILL.md"
+done
 grep -q 'Verification status: pending | passed | failed | override_required' skills/ldd-setup/assets/templates/verification.md
 grep -q 'Boundary: child-ticket closure only, not repository health' skills/ldd-setup/assets/templates/verification.md
 grep -q 'External tracker drift: pending' skills/ldd-setup/assets/templates/verification.md

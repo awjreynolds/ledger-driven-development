@@ -16,6 +16,7 @@ Command mapping:
 
 - `/ldd:setup` -> `skills/ldd-setup/SKILL.md`
 - `/ldd:next` -> `skills/ldd-next/SKILL.md`
+- `/ldd:research` -> `skills/ldd-research/SKILL.md`
 - `/ldd:scope` -> `skills/ldd-scope/SKILL.md`
 - `/ldd:elaborate` -> `skills/ldd-elaborate/SKILL.md`
 - `/ldd:refine` -> `skills/ldd-refine/SKILL.md`

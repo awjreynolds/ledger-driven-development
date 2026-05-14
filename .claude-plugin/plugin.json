@@ -20,6 +20,7 @@
   "commands": [
     "./commands/ldd/setup.md",
     "./commands/ldd/next.md",
+    "./commands/ldd/research.md",
     "./commands/ldd/scope.md",
     "./commands/ldd/elaborate.md",
     "./commands/ldd/refine.md",

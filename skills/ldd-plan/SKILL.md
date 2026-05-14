@@ -25,6 +25,17 @@ Create or update `plan.md` and generated `plan.html` in the promoted ticket dire
 - review checklist
 - planned vertical slices for later `/ldd:decompose`
 
+## Input Quality Gate
+
+Required input standard before writing a plan:
+
+- approved PRD and approved SDD in the ledger
+- SDD decisions trace to PRD acceptance criteria
+- no new architecture decision discovered during planning
+- enough design detail to create traceable vertical slices
+
+If inputs fail this standard, write nothing and name the blocking gap. The earliest LDD command that can repair missing or wrong design input is `/ldd:design`; missing product approval routes to `/ldd:approve <ticket-id>` or the owning Product Manager command.
+
 ## Rules
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.

@@ -16,6 +16,14 @@ _Avoid_: GitHub issue, task, story
 The product-scope artifact that defines what should be built and why before engineering design begins.
 _Avoid_: implementation ticket, design brief, GitHub issue body
 
+**Research Artifact**:
+A sanitized pre-scope artifact that gathers PM-grade inputs, codebase facts, assumptions, risks, sensitivity handling, and open questions before a Product Requirement boundary is written.
+_Avoid_: PRD, design brief, raw private notes
+
+**Input Quality Gate**:
+A command-local standard that validates whether the current phase has enough approved or source input before writing or mutating its artifact.
+_Avoid_: best-effort guess, implicit assumption, silent artifact mutation
+
 **Local Ticket ID**:
 A repo-assigned identifier for a **Ticket** that has no configured external tracker identity.
 _Avoid_: GitHub issue number, Linear issue key, Jira issue key
@@ -137,6 +145,9 @@ _Avoid_: active ticket tree, deletion
 - A **Local Ticket ID** is used only when a **Ticket** has no configured **External Tracker** identity.
 - A **Draft Ticket Directory** exists before a **Product Requirement** is ready for review in an **External Tracker**.
 - Every **Product Requirement** starts in a **Draft Ticket Directory**.
+- A **Research Artifact** may exist before a **Product Requirement** is scoped, but it does not define scope.
+- A **Research Artifact** may use full read-only repository and private/local context visibility, while committed output contains only sanitized conclusions.
+- An **Input Quality Gate** belongs to one command and must name the missing input and earliest repairing LDD command when it rejects work.
 - A **Draft Ticket Directory** uses a date and **Draft Slug** for human context.
 - An incomplete **Promoted Ticket Directory** does not block creating a new **Draft Ticket Directory**.
 - Multiple **Promoted Ticket Directories** may be active at different LDD phases.

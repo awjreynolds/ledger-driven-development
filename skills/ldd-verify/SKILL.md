@@ -33,6 +33,17 @@ If no child ticket ID is provided, stop and ask for one. Do not infer a target f
 
 Read the child ledger before reading broader repo state. Use the child ledger and parent ledger to locate the approved artifacts and expected evidence paths.
 
+## Input Quality Gate
+
+Required input standard before writing verification:
+
+- exactly one implemented child ticket
+- child ledger implementation evidence and check evidence
+- approved parent PRD, approved parent SDD, approved parent plan, and child ticket body
+- no unresolved external tracker drift when a tracker projection exists
+
+If inputs fail this standard, write only a failed or override-required verification report when enough child context exists; otherwise stop without mutation. The earliest LDD command that can repair missing implementation evidence is `/ldd:implement`; parent artifact drift routes to the owning `/ldd:scope`, `/ldd:design`, or `/ldd:plan` command.
+
 Required evidence:
 
 - child ledger `artifacts.ticket.path`, child acceptance criteria, parent link, blocked-by state, covered user stories, and plan slice

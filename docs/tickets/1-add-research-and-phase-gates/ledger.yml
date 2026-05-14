@@ -25,7 +25,7 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/plan.md"
     status: approved
   implementation:
-    status: not_started
+    status: completed
   verification:
     path: null
     status: missing
@@ -34,7 +34,7 @@ children:
   - id: "3"
     title: "SDD #2 Slice 1: Research command surface"
     type: autonomous
-    status: ready
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/3-research-command-surface/ledger.yml"
     external_id: "3"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/3"
@@ -43,7 +43,7 @@ children:
   - id: "4"
     title: "SDD #2 Slice 2: Research artifact, ledger, and setup templates"
     type: autonomous
-    status: ready
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/4-research-artifact-ledger-and-setup-templates/ledger.yml"
     external_id: "4"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/4"
@@ -52,7 +52,7 @@ children:
   - id: "5"
     title: "SDD #2 Slice 3: Research workflow and privacy contract"
     type: autonomous
-    status: blocked
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/5-research-workflow-and-privacy-contract/ledger.yml"
     external_id: "5"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/5"
@@ -61,7 +61,7 @@ children:
   - id: "6"
     title: "SDD #2 Slice 4: Scope adequacy gate and PM command gates"
     type: autonomous
-    status: blocked
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/6-scope-adequacy-gate-and-pm-command-gates/ledger.yml"
     external_id: "6"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/6"
@@ -70,7 +70,7 @@ children:
   - id: "7"
     title: "SDD #2 Slice 5: Downstream phase gates and GitHub hierarchy safeguards"
     type: autonomous
-    status: blocked
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/ledger.yml"
     external_id: "7"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/7"
@@ -79,7 +79,7 @@ children:
   - id: "8"
     title: "SDD #2 Slice 6: Documentation and package validation"
     type: human_review
-    status: blocked
+    status: verification_required
     path: "docs/tickets/1-add-research-and-phase-gates/children/8-documentation-and-package-validation/ledger.yml"
     external_id: "8"
     external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/8"
@@ -94,11 +94,11 @@ closure:
   override_reason: null
 
 execution_context:
-  phase: implementation
-  current_gate: implementation
-  next_command: /ldd:implement 3
+  phase: verification
+  current_gate: verification
+  next_command: /ldd:verify 3
   next_human_action: null
-  next_reason: Child work items were created and the first unblocked implementation slice is ready.
+  next_reason: All child implementations are complete; verification should start with the first child work item.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
@@ -107,7 +107,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
-  updated_at: "2026-05-14T22:37:34Z"
+  updated_at: "2026-05-14T22:51:10Z"
 
 sync:
   status: synced
@@ -164,4 +164,7 @@ events:
     actor: agent
   - at: "2026-05-14T22:37:34Z"
     type: child_tickets_created
+    actor: agent
+  - at: "2026-05-14T22:51:10Z"
+    type: child_implementations_completed
     actor: agent

@@ -6,7 +6,7 @@ ticket:
   title: "SDD #2 Slice 1: Research command surface"
   kind: child_work_item
   type: autonomous
-  status: ready
+  status: verification_required
 
 parent:
   id: "1"
@@ -28,13 +28,33 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/children/3-research-command-surface/ticket.md"
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: "2026-05-14T22:51:10Z"
+    evidence:
+      changed_files:
+        - "skills/ldd-research/SKILL.md"
+        - "skills/ldd-research/agents/openai.yaml"
+        - "commands/ldd/research.md"
+        - "commands/ldd/research.toml"
+        - "agent-skills.json"
+        - ".claude-plugin/plugin.json"
+        - "gemini-extension.json"
+        - "GEMINI.md"
+        - "README.md"
+        - "scripts/validate-ldd-mvp.sh"
+      checks:
+        - command: "./scripts/validate-ldd-mvp.sh"
+          result: passed
+        - command: "git diff --check"
+          result: passed
+        - command: "python3 -m json.tool agent-skills.json >/dev/null && python3 -m json.tool .claude-plugin/plugin.json >/dev/null && python3 -m json.tool gemini-extension.json >/dev/null"
+          result: passed
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -45,11 +65,11 @@ user_stories_covered: [1, 2]
 plan_slice: "1. Research command surface"
 
 execution_context:
-  phase: implementation
-  current_gate: implementation
-  next_command: /ldd:implement 3
+  phase: verification
+  current_gate: verification
+  next_command: /ldd:verify 3
   next_human_action: null
-  next_reason: Child work item is ready for implementation.
+  next_reason: Implementation completed and needs verification.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
@@ -58,7 +78,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
-  updated_at: "2026-05-14T22:37:34Z"
+  updated_at: "2026-05-14T22:51:10Z"
 
 sync:
   status: synced
@@ -76,4 +96,7 @@ events:
     actor: agent
   - at: "2026-05-14T22:37:34Z"
     type: external_sub_issue_attached
+    actor: agent
+  - at: "2026-05-14T22:51:10Z"
+    type: implementation_completed
     actor: agent

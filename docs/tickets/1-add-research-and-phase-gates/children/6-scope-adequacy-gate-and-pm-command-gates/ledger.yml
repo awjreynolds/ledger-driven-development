@@ -6,7 +6,7 @@ ticket:
   title: "SDD #2 Slice 4: Scope adequacy gate and PM command gates"
   kind: child_work_item
   type: autonomous
-  status: blocked
+  status: verification_required
 
 parent:
   id: "1"
@@ -28,13 +28,25 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/children/6-scope-adequacy-gate-and-pm-command-gates/ticket.md"
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: "2026-05-14T22:51:10Z"
+    evidence:
+      changed_files:
+        - "skills/ldd-scope/SKILL.md"
+        - "skills/ldd-elaborate/SKILL.md"
+        - "skills/ldd-refine/SKILL.md"
+        - "scripts/validate-ldd-mvp.sh"
+      checks:
+        - command: "./scripts/validate-ldd-mvp.sh"
+          result: passed
+        - command: "git diff --check"
+          result: passed
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -45,11 +57,11 @@ user_stories_covered: [1, 4]
 plan_slice: "4. Scope adequacy gate and PM command gates"
 
 execution_context:
-  phase: blocked
-  current_gate: blocked
-  next_command: null
+  phase: verification
+  current_gate: verification
+  next_command: /ldd:verify 6
   next_human_action: null
-  next_reason: Waiting for child work item 5.
+  next_reason: Dependency was implemented in this run; implementation completed and needs verification.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
@@ -58,7 +70,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
-  updated_at: "2026-05-14T22:37:34Z"
+  updated_at: "2026-05-14T22:51:10Z"
 
 sync:
   status: synced
@@ -76,4 +88,7 @@ events:
     actor: agent
   - at: "2026-05-14T22:37:34Z"
     type: external_sub_issue_attached
+    actor: agent
+  - at: "2026-05-14T22:51:10Z"
+    type: implementation_completed
     actor: agent

@@ -21,6 +21,17 @@ Read repo-local ledger state and report the next explicit LDD command and next h
 - child implementation, verification, and closure state
 - external tracker sync state and body drift when configured
 
+## Input Quality Gate
+
+Required input standard before reporting workflow navigation:
+
+- readable active ledger state, or enough artifact state to derive equivalent phase state
+- no ambiguous multiple active drafts unless the user selected one
+- child ledger paths are readable when parent state depends on children
+- external tracker drift metadata is either clean or reported as a blocker
+
+If inputs fail this standard, do not mutate anything and report the ambiguity or missing state. The earliest LDD command that can repair missing setup is `/ldd:setup`; missing decomposition routes to `/ldd:decompose`; ambiguous or drifted state requires human reconciliation before another command runs.
+
 ## Rules
 
 - Read-only. It never mutates GitHub or local files.

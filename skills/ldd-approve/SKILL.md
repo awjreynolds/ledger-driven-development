@@ -30,6 +30,17 @@ If no ticket ID is provided, stop and ask for the target ticket ID. Do not infer
 
 Read the ledger first. Use the ledger to locate the PRD, SDD, and plan paths, artifact statuses, current gate, approved artifact boundaries, and next action.
 
+## Input Quality Gate
+
+Required input standard before approval:
+
+- exactly one active PRD, SDD, or plan approval gate
+- the artifact for that gate exists and passes its checklist
+- all prerequisite artifacts for that gate are approved
+- external tracker state is reachable and not drifted when GitHub projection is configured
+
+If inputs fail this standard, do not approve and do not mutate local or external state. Name the blocking gate or artifact gap. The earliest LDD command that can repair the gap is the owning phase command: `/ldd:refine` for PRD approval, `/ldd:design` for SDD approval, `/ldd:plan` for plan approval, or human external-drift reconciliation when tracker state changed.
+
 ## Writes
 
 - PRD frontmatter/status when approving the PRD

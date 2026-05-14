@@ -20,6 +20,17 @@ Turn an approved `plan.md` into child vertical-slice tickets.
 - child ticket ledgers under the parent ticket directory
 - external child work items only when a tracker is configured and the human approves
 
+## Input Quality Gate
+
+Required input standard before previewing or creating child tickets:
+
+- approved PRD, approved SDD, and approved plan in the parent ledger
+- plan slices are traceable to acceptance criteria and dependency-safe
+- in GitHub tracker mode, the SDD issue is approved or bound and has a known issue number
+- enough slice detail for independently grabbable child tickets
+
+If inputs fail this standard, write nothing and name the blocking gap. The earliest LDD command that can repair missing slices is `/ldd:plan`; missing approval routes to `/ldd:approve <ticket-id>`; missing SDD issue linkage routes to `/ldd:approve <ticket-id>` for SDD approval or tracker reconciliation.
+
 ## Preview Before Creation
 
 Before creating or updating any child ticket, present the proposed ticket set and stop for human approval. This approval is not handled by `/ldd:approve`; it is a decomposition review decision.

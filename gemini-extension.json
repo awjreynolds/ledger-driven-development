@@ -5,6 +5,7 @@
   "commands": [
     "/ldd:setup",
     "/ldd:next",
+    "/ldd:research",
     "/ldd:scope",
     "/ldd:elaborate",
     "/ldd:refine",

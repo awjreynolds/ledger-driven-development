@@ -34,6 +34,17 @@ Core scope questions:
 3. What tempting work is explicitly out of scope?
 4. What known constraints or dependencies affect scope?
 
+## Input Quality Gate
+
+Required input standard before writing or updating scope:
+
+- a clear product problem or desired product outcome
+- a target user, persona, stakeholder, or workflow affected by the problem
+- enough evidence, current-workflow context, constraints, or research readiness to avoid inventing the boundary
+- candidate non-goals or enough context to identify likely scope creep
+
+If `artifacts.research.status` is present, proceed only when it is `ready_for_scope`. If research is `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`, reject scope and report that readiness decision. If no research exists but the supplied context meets this standard, scope may proceed and record assumptions. If the standard is not met, write nothing and route to `/ldd:research` or ask one decisive missing-context question. The earliest LDD command that can repair weak source inputs is `/ldd:research`.
+
 ## Bounded Shared Understanding Gate
 
 Before writing scope or declaring scope ready, reach shared understanding of the product boundary.

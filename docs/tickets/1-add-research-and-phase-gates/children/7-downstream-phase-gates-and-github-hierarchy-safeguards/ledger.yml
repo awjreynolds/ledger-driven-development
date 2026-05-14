@@ -6,7 +6,7 @@ ticket:
   title: "SDD #2 Slice 5: Downstream phase gates and GitHub hierarchy safeguards"
   kind: child_work_item
   type: autonomous
-  status: blocked
+  status: verification_required
 
 parent:
   id: "1"
@@ -28,13 +28,31 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/ticket.md"
     status: ready
   implementation:
-    status: not_started
+    status: completed
+    completed_at: "2026-05-14T22:51:10Z"
+    evidence:
+      changed_files:
+        - "skills/ldd-approve/SKILL.md"
+        - "skills/ldd-design/SKILL.md"
+        - "skills/ldd-plan/SKILL.md"
+        - "skills/ldd-decompose/SKILL.md"
+        - "skills/ldd-implement/SKILL.md"
+        - "skills/ldd-verify/SKILL.md"
+        - "skills/ldd-close/SKILL.md"
+        - "skills/ldd-next/SKILL.md"
+        - "skills/ldd-setup/SKILL.md"
+        - "scripts/validate-ldd-mvp.sh"
+      checks:
+        - command: "./scripts/validate-ldd-mvp.sh"
+          result: passed
+        - command: "git diff --check"
+          result: passed
   verification:
     path: null
     status: missing
 
 closure:
-  status: open
+  status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
@@ -45,11 +63,11 @@ user_stories_covered: [4, 5]
 plan_slice: "5. Downstream phase gates and GitHub hierarchy safeguards"
 
 execution_context:
-  phase: blocked
-  current_gate: blocked
-  next_command: null
+  phase: verification
+  current_gate: verification
+  next_command: /ldd:verify 7
   next_human_action: null
-  next_reason: Waiting for child work item 6.
+  next_reason: Dependency was implemented in this run; implementation completed and needs verification.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
@@ -58,7 +76,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
-  updated_at: "2026-05-14T22:37:34Z"
+  updated_at: "2026-05-14T22:51:10Z"
 
 sync:
   status: synced
@@ -76,4 +94,7 @@ events:
     actor: agent
   - at: "2026-05-14T22:37:34Z"
     type: external_sub_issue_attached
+    actor: agent
+  - at: "2026-05-14T22:51:10Z"
+    type: implementation_completed
     actor: agent

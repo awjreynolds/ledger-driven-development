@@ -15,6 +15,17 @@ Execute one ready child vertical-slice ticket.
 - approved SDD
 - approved `plan.md`
 
+## Input Quality Gate
+
+Required input standard before implementation:
+
+- a ready child ticket that is not blocked by unfinished dependencies
+- readable child ticket body and child ledger
+- approved parent PRD, SDD, and plan boundaries
+- acceptance criteria and plan slice specific enough to implement and test
+
+If inputs fail this standard, do not edit product code or package artifacts. The earliest LDD command that can repair missing child work is `/ldd:decompose`; missing or wrong plan/design/product boundaries route to `/ldd:plan`, `/ldd:design`, `/ldd:refine`, `/ldd:scope`, or `/ldd:research` depending on the gap.
+
 ## Rules
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
