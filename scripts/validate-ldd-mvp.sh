@@ -207,6 +207,7 @@ grep -q 'Decompose only from an approved plan' skills/ldd-decompose/SKILL.md
 grep -q 'vertical slices' skills/ldd-decompose/SKILL.md
 grep -q 'Preview Before Creation' skills/ldd-decompose/SKILL.md
 grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
+grep -q 'SDD #<sdd_issue_number> Slice <slice-number>:' skills/ldd-decompose/SKILL.md
 grep -q "LDD's standalone child issue shape" skills/ldd-decompose/SKILL.md
 grep -q 'external contribution' skills/ldd-decompose/SKILL.md
 grep -q 'projected as GitHub issues' skills/ldd-decompose/SKILL.md

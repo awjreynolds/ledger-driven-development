@@ -1,0 +1,79 @@
+schema_version: 1
+
+ticket:
+  id: "5"
+  parent_id: "1"
+  title: "SDD #2 Slice 3: Research workflow and privacy contract"
+  kind: child_work_item
+  type: autonomous
+  status: blocked
+
+parent:
+  id: "1"
+  ledger: "docs/tickets/1-add-research-and-phase-gates/ledger.yml"
+  prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
+  sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
+  plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
+
+tracker:
+  mode: github
+  external_id: "5"
+  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/5"
+  parent_external_id: "2"
+  parent_external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+  relationship: native_sub_issue
+
+artifacts:
+  ticket:
+    path: "docs/tickets/1-add-research-and-phase-gates/children/5-research-workflow-and-privacy-contract/ticket.md"
+    status: ready
+  implementation:
+    status: not_started
+  verification:
+    path: null
+    status: missing
+
+closure:
+  status: open
+  verified_at: null
+  archived_at: null
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: ["3", "4"]
+user_stories_covered: [1, 2, 3]
+plan_slice: "3. Research workflow and privacy contract"
+
+execution_context:
+  phase: blocked
+  current_gate: blocked
+  next_command: null
+  next_human_action: null
+  next_reason: Waiting for child work items 3 and 4.
+  approved_artifacts:
+    prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
+    sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
+    plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
+  boundaries:
+    product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
+    design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
+    plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
+  updated_at: "2026-05-14T22:37:34Z"
+
+sync:
+  status: synced
+  last_checked_at: "2026-05-14T22:37:34Z"
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: "2026-05-14T22:37:34Z"
+    type: child_created
+    actor: agent
+  - at: "2026-05-14T22:37:34Z"
+    type: external_child_issue_created
+    actor: agent
+  - at: "2026-05-14T22:37:34Z"
+    type: external_sub_issue_attached
+    actor: agent

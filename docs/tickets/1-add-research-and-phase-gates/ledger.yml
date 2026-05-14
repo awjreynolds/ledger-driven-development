@@ -30,7 +30,61 @@ artifacts:
     path: null
     status: missing
 
-children: []
+children:
+  - id: "3"
+    title: "SDD #2 Slice 1: Research command surface"
+    type: autonomous
+    status: ready
+    path: "docs/tickets/1-add-research-and-phase-gates/children/3-research-command-surface/ledger.yml"
+    external_id: "3"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/3"
+    blocked_by: []
+    user_stories_covered: [1, 2]
+  - id: "4"
+    title: "SDD #2 Slice 2: Research artifact, ledger, and setup templates"
+    type: autonomous
+    status: ready
+    path: "docs/tickets/1-add-research-and-phase-gates/children/4-research-artifact-ledger-and-setup-templates/ledger.yml"
+    external_id: "4"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/4"
+    blocked_by: []
+    user_stories_covered: [1, 2, 3, 4]
+  - id: "5"
+    title: "SDD #2 Slice 3: Research workflow and privacy contract"
+    type: autonomous
+    status: blocked
+    path: "docs/tickets/1-add-research-and-phase-gates/children/5-research-workflow-and-privacy-contract/ledger.yml"
+    external_id: "5"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/5"
+    blocked_by: ["3", "4"]
+    user_stories_covered: [1, 2, 3]
+  - id: "6"
+    title: "SDD #2 Slice 4: Scope adequacy gate and PM command gates"
+    type: autonomous
+    status: blocked
+    path: "docs/tickets/1-add-research-and-phase-gates/children/6-scope-adequacy-gate-and-pm-command-gates/ledger.yml"
+    external_id: "6"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/6"
+    blocked_by: ["5"]
+    user_stories_covered: [1, 4]
+  - id: "7"
+    title: "SDD #2 Slice 5: Downstream phase gates and GitHub hierarchy safeguards"
+    type: autonomous
+    status: blocked
+    path: "docs/tickets/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/ledger.yml"
+    external_id: "7"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/7"
+    blocked_by: ["6"]
+    user_stories_covered: [4, 5]
+  - id: "8"
+    title: "SDD #2 Slice 6: Documentation and package validation"
+    type: human_review
+    status: blocked
+    path: "docs/tickets/1-add-research-and-phase-gates/children/8-documentation-and-package-validation/ledger.yml"
+    external_id: "8"
+    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/8"
+    blocked_by: ["3", "4", "5", "6", "7"]
+    user_stories_covered: [1, 2, 3, 4, 5]
 
 closure:
   status: open
@@ -40,11 +94,11 @@ closure:
   override_reason: null
 
 execution_context:
-  phase: decompose
-  current_gate: decompose
-  next_command: /ldd:decompose 1
+  phase: implementation
+  current_gate: implementation
+  next_command: /ldd:implement 3
   next_human_action: null
-  next_reason: Implementation plan is approved and ready for decomposition preview.
+  next_reason: Child work items were created and the first unblocked implementation slice is ready.
   approved_artifacts:
     prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
@@ -53,7 +107,7 @@ execution_context:
     product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     plan: "docs/tickets/1-add-research-and-phase-gates/plan.md"
-  updated_at: "2026-05-14T22:20:51Z"
+  updated_at: "2026-05-14T22:37:34Z"
 
 sync:
   status: synced
@@ -102,3 +156,12 @@ events:
   - at: "2026-05-14T22:20:51Z"
     type: plan_approved
     actor: human
+  - at: "2026-05-14T22:37:34Z"
+    type: decomposition_approved
+    actor: human
+  - at: "2026-05-14T22:37:34Z"
+    type: external_child_sub_issues_created
+    actor: agent
+  - at: "2026-05-14T22:37:34Z"
+    type: child_tickets_created
+    actor: agent

@@ -29,7 +29,7 @@ Use this review shape:
 ```text
 Proposed child tickets:
 
-1. <title>
+1. SDD #<sdd-issue-number> Slice <slice-number>: <short outcome title>
    Type: Autonomous | Human-review
    Blocked by: None | <ticket title/id>
    User stories covered: <PRD story numbers>
@@ -50,6 +50,8 @@ Only after approval may the command create child ledgers or external child work 
 - External mutations require human confirmation.
 - Decompose only from an approved plan. Do not invent scope or architecture.
 - Child tickets are vertical slices derived from plan slices, not layer tasks.
+- In GitHub tracker mode, each child issue title must start with `SDD #<sdd_issue_number> Slice <slice-number>:` followed by a concise outcome title. This keeps issue lists readable and makes each implementation slice visibly traceable to its SDD parent without opening the issue body.
+- In local-only tracker mode, use the equivalent approved SDD identifier in the child title, for example `SDD <ticket-id> Slice <slice-number>: <short outcome title>`.
 - Each child ticket must be independently grabbable: an implementation agent can read the ticket, follow links as needed, and understand what end-to-end behavior to build, what acceptance criteria must pass, what it is blocked by, and which user stories or PRD criteria it covers.
 - Each child ticket must reference the parent Product Requirement and approved plan slice.
 - In GitHub tracker mode, each child work item must be created as a native GitHub sub-issue of the approved SDD issue. Body traceability to the SDD issue is required, but body links alone are not enough when GitHub sub-issues are available.
