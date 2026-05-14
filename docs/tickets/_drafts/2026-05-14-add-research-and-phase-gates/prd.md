@@ -16,7 +16,12 @@ Capture technical uncertainty only as a dependency, constraint, or open question
 
 ## Problem
 
-Not yet elaborated. `/ldd:scope` only defines the product boundary for this draft.
+LDD can currently create plausible PRD drafts from thin context, but it does not have a first-class way to decide whether the source inputs are good enough before scoping starts. This creates two product risks for maintainers and product authors:
+
+- weak or ambiguous input can be turned into confident-looking product scope;
+- sensitive private context, including financial or commercial detail, can be mixed into repo or GitHub-visible artifacts without an explicit sanitization boundary.
+
+The problem is sharper now that LDD is being configured for GitHub projection. External visibility is useful for review and collaboration, but only if LDD validates input quality, preserves repo-local canonical state, and keeps private PM intake material out of shareable artifacts.
 
 ## Goals
 
@@ -38,19 +43,38 @@ Not yet elaborated. `/ldd:scope` only defines the product boundary for this draf
 
 ## Users / Personas
 
-Not yet elaborated.
+- LDD maintainer - needs each command to reject weak upstream inputs instead of silently inventing missing context.
+- Product author - needs a guided way to gather standard PRD inputs before deciding product scope.
+- Implementation agent - needs downstream artifacts that clearly identify which prior inputs were approved and which gaps must route backward.
+- GitHub reviewer - needs enough shareable context to review LDD work without seeing private financial or commercial source material.
 
 ## User Stories
 
-Not yet elaborated.
+1. As an LDD maintainer, I want a research phase before scoping when inputs are weak or sensitive, so that PRD scope is based on explicit evidence rather than agent invention.
+2. As a product author, I want research to prompt for standard PRD inputs, so that problem, users, evidence, current workflow, desired outcome, constraints, and open questions are gathered before scoping.
+3. As a product author handling sensitive inputs, I want private PM context to remain outside committed and GitHub-visible artifacts, so that financial or commercial detail does not leak during LDD workflow projection.
+4. As an LDD maintainer, I want each phase to validate its inputs before writing its artifact, so that bad upstream artifacts are rejected and routed to the earliest phase that can fix them.
+5. As a GitHub reviewer, I want projected LDD artifacts to be sanitized and clearly tied back to repo-local canonical state, so that GitHub review validates integration without becoming the workflow source of truth.
 
 ## Acceptance Criteria
 
-Not yet refined.
+- [ ] LDD provides a research phase that can gather and classify standard PM inputs before PRD scoping.
+- [ ] Research can use full read-only visibility into the repo and relevant local/private context, while its shareable artifact separates evidence, constraints, assumptions, risks, open questions, and sensitivity handling.
+- [ ] Research output makes clear whether the work is ready for scope, blocked on more input, should be split, or is not a Product Requirement.
+- [ ] Scope rejects insufficient inputs when the agent cannot identify a useful product boundary without inventing intent.
+- [ ] Scope routes insufficient inputs to research or asks for missing source context, instead of filling goals and non-goals from weak assumptions.
+- [ ] LDD phases validate the quality and approval state of their required inputs before producing or mutating phase artifacts.
+- [ ] A phase with poor inputs names the blocking input gap and recommends the earliest LDD command that can fix it.
+- [ ] Sensitive private inputs are not copied into committed artifacts or GitHub-visible projections; only sanitized conclusions are shared.
+- [ ] GitHub projection validation shows that external visibility can use sanitized artifacts while the repo-local ledger remains canonical.
 
 ## Success Metrics
 
-Not yet refined.
+- Research readiness clarity: a maintainer can tell from the research output whether scoping should proceed, stop for more input, split, or abandon the Product Requirement.
+- Scope quality: `/ldd:scope` no longer creates or updates product boundaries when the input lacks a clear problem or desired product outcome.
+- Sensitivity protection: financially sensitive raw inputs are excluded from committed and GitHub-visible artifacts.
+- Phase routing clarity: when a phase rejects poor inputs, the next recommended LDD command and blocking reason are explicit.
+- GitHub projection confidence: the first GitHub-visible projection for this Product Requirement can be reviewed without exposing private input material or making GitHub canonical.
 
 ## Dependencies
 
@@ -62,19 +86,19 @@ Not yet refined.
 
 ## Open Questions
 
-- Non-blocking for scope: What exact readiness labels should `/ldd:research` use for input quality and next routing?
-- Non-blocking for scope: Should private research intake live only in project context/pasted notes, or should LDD also define a gitignored local private folder convention?
-- Non-blocking for scope: Which downstream phase gates need full behavior changes in the first implementation slice versus a shared contract update?
-- Non-blocking for scope: What GitHub projection action should validate the integration after PRD approval: creating the Product Requirement issue, opening a PRD PR, or both?
+- Resolved for draft acceptance: Research readiness should distinguish at least ready for scope, blocked on more input, split recommended, and not a Product Requirement. `/ldd:refine` should make the exact labels final.
+- Open, owner maintainer: Should private research intake live only in project context/pasted notes, or should LDD also define a gitignored local private folder convention?
+- Open, owner maintainer: Which downstream phase gates need full behavior changes in the first implementation slice versus a shared contract update?
+- Open, owner maintainer: What GitHub projection action should validate the integration after PRD approval: creating the Product Requirement issue, opening a PRD PR, or both?
 
 ## PRD Handoff Checklist
 
 <!-- Complete before opening the PRD PR. -->
 
-- [ ] Problem is expressed from the user's perspective.
+- [x] Problem is expressed from the user's perspective.
 - [x] Goals and non-goals make the scope boundary clear.
-- [ ] User stories cover the main workflow and meaningful user-visible edge cases.
-- [ ] Acceptance criteria are observable without reading code.
-- [ ] Metrics define how product success will be judged.
+- [x] User stories cover the main workflow and meaningful user-visible edge cases.
+- [x] Acceptance criteria are observable without reading code.
+- [x] Metrics define how product success will be judged.
 - [x] Dependencies and open questions are explicit.
 - [x] No implementation decisions, architecture, file paths, APIs, schemas, libraries, test strategy, or code snippets are present.
