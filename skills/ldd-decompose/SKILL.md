@@ -28,6 +28,7 @@ Required input standard before previewing or creating child tickets:
 - plan slices are traceable to acceptance criteria and dependency-safe
 - in GitHub tracker mode, the SDD issue is approved or bound and has a known issue number
 - enough slice detail for independently grabbable child tickets
+- each proposed slice has a review-load estimate that is reasonable for one human review
 
 If inputs fail this standard, write nothing and name the blocking gap. The earliest LDD command that can repair missing slices is `/ldd:plan`; missing approval routes to `/ldd:approve <ticket-id>`; missing SDD issue linkage routes to `/ldd:approve <ticket-id>` for SDD approval or tracker reconciliation.
 
@@ -44,12 +45,14 @@ Proposed child tickets:
    Type: Autonomous | Human-review
    Blocked by: None | <ticket title/id>
    User stories covered: <PRD story numbers>
+   Review load: Low | Medium | High, with expected file groups and risk
    Summary: <one or two sentences>
 
 Ask:
 - Does the granularity feel right?
 - Are dependency relationships correct?
 - Are Autonomous/Human-review classifications correct?
+- Is the review load small enough for a focused PR?
 - Should any tickets be merged or split?
 ```
 
@@ -61,6 +64,11 @@ Only after approval may the command create child ledgers or external child work 
 - External mutations require human confirmation.
 - Decompose only from an approved plan. Do not invent scope or architecture.
 - Child tickets are vertical slices derived from plan slices, not layer tasks.
+- Decompose for human reviewability, not just execution convenience. A reviewer should be able to understand one child ticket and its likely PR without loading the entire project into working memory.
+- Apply a cognitive-load budget before creating children. Estimate expected file groups, likely files touched, test surface, risk, and dependency coupling for each slice.
+- Do not knowingly create a child ticket or aggregate implementation path that would produce a huge PR, especially anything expected to approach or exceed 200 changed files. Split by user-visible outcome, workflow path, command surface, or risk boundary before ticket creation.
+- Prefer several coherent vertical slices over one overloaded slice when the same reviewer would otherwise need to review unrelated command surfaces, templates, docs, and tracker behavior in one PR.
+- If a slice cannot be made reviewable without breaking atomic behavior, mark it `Human-review`, call out the overload risk in the preview, and require explicit human approval before creating the child ticket.
 - In GitHub tracker mode, each child issue title must start with `SDD #<sdd_issue_number> Slice <slice-number>:` followed by a concise outcome title. This keeps issue lists readable and makes each implementation slice visibly traceable to its SDD parent without opening the issue body.
 - In local-only tracker mode, use the equivalent approved SDD identifier in the child title, for example `SDD <ticket-id> Slice <slice-number>: <short outcome title>`.
 - Each child ticket must be independently grabbable: an implementation agent can read the ticket, follow links as needed, and understand what end-to-end behavior to build, what acceptance criteria must pass, what it is blocked by, and which user stories or PRD criteria it covers.
@@ -80,5 +88,6 @@ Only after approval may the command create child ledgers or external child work 
 - parent ledger missing
 - plan is missing or not approved
 - plan slices are too vague to turn into independently grabbable vertical slices
+- proposed slices are too large for focused human review and need to be split
 - external tracker is configured but cannot be reached
 - human rejects the proposed child ticket set

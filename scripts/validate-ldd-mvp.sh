@@ -197,6 +197,8 @@ grep -q 'Review Checklist' skills/ldd-setup/assets/templates/sdd.md
 grep -q '# Implementation Plan:' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Acceptance Criteria Traceability' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Slice quality bar:' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Review load' skills/ldd-setup/assets/templates/plan.md
+grep -q '200 changed files' skills/ldd-setup/assets/templates/plan.md
 grep -q 'must not introduce new architecture decisions' skills/ldd-setup/assets/templates/plan.md
 grep -q '## Problem Statement' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q 'GitHub issue projection' skills/ldd-setup/assets/templates/issue-body-prd.md
@@ -212,8 +214,12 @@ grep -q 'Tracker parent relationship:' skills/ldd-setup/assets/templates/issue-b
 grep -q '## Acceptance criteria' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Blocked by' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## User stories covered' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q '## Review load' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'Decompose only from an approved plan' skills/ldd-decompose/SKILL.md
 grep -q 'vertical slices' skills/ldd-decompose/SKILL.md
+grep -q 'cognitive-load budget' skills/ldd-decompose/SKILL.md
+grep -q '200 changed files' skills/ldd-decompose/SKILL.md
+grep -q 'focused human review' skills/ldd-decompose/SKILL.md
 grep -q 'Preview Before Creation' skills/ldd-decompose/SKILL.md
 grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
 grep -q 'SDD #<sdd_issue_number> Slice <slice-number>:' skills/ldd-decompose/SKILL.md

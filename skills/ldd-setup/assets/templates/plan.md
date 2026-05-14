@@ -37,15 +37,17 @@ This plan translates the approved PRD and SDD into executable slices. It must no
 
 Use thin vertical slices where possible. Each slice should leave the repo in a reviewable state and include its own verification.
 
-| Slice | Outcome | Files/modules | Tests/checks | Dependencies |
-| --- | --- | --- | --- | --- |
-| 1.  |  |  |  |  |
+| Slice | Outcome | Files/modules | Tests/checks | Dependencies | Review load |
+| --- | --- | --- | --- | --- | --- |
+| 1.  |  |  |  |  | Low/Medium/High; expected file groups and risk |
 
 Slice quality bar:
 
 - Each slice names externally visible behavior or a concrete enabling outcome.
 - Dependencies are explicit.
 - Tests/checks are close to the changed behavior.
+- Review load is estimated; slices expected to create overloaded PRs are split before decomposition.
+- No planned slice should knowingly approach or exceed 200 changed files without an explicit human-approved exception.
 - No slice exists only to "clean up" unless the SDD makes that cleanup necessary.
 
 ## Acceptance Criteria Traceability

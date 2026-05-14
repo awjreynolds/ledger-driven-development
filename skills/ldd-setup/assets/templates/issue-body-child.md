@@ -18,6 +18,10 @@
 
 {user_stories_covered}
 
+## Review load
+
+{review_load}
+
 ## LDD Traceability
 
 - Parent PRD: `{parent_prd_path}`
