@@ -58,27 +58,28 @@ The problem is sharper now that LDD is being configured for GitHub projection. E
 
 ## Acceptance Criteria
 
-- [ ] LDD provides a research phase that can gather and classify standard PM inputs before PRD scoping.
-- [ ] Research can use full read-only visibility into the repo and relevant local/private context, while its shareable artifact separates evidence, constraints, assumptions, risks, open questions, and sensitivity handling.
-- [ ] Research output makes clear whether the work is ready for scope, blocked on more input, should be split, or is not a Product Requirement.
-- [ ] Scope rejects insufficient inputs when the agent cannot identify a useful product boundary without inventing intent.
-- [ ] Scope routes insufficient inputs to research or asks for missing source context, instead of filling goals and non-goals from weak assumptions.
-- [ ] LDD phases validate the quality and approval state of their required inputs before producing or mutating phase artifacts.
-- [ ] A phase with poor inputs names the blocking input gap and recommends the earliest LDD command that can fix it.
-- [ ] Sensitive private inputs are not copied into committed artifacts or GitHub-visible projections; only sanitized conclusions are shared.
-- [ ] GitHub projection validation shows that external visibility can use sanitized artifacts while the repo-local ledger remains canonical.
+- [ ] A product author can start a research phase before scoping and receive prompts for source trigger, target users, problem evidence, current workflow, desired outcome, product importance, known constraints, prior context, comparable behavior, non-goal candidates, and open questions.
+- [ ] A maintainer can run research with full read-only visibility into repository, documentation, existing LDD artifacts, and private/local context supplied by the human.
+- [ ] The shareable research output separates product evidence, codebase facts, constraints, assumptions, risks, sensitivity handling, and open questions without turning findings into product scope or engineering design.
+- [ ] Research readiness is reported as one of: ready for scope, blocked on more input, split recommended, or not a Product Requirement.
+- [ ] Scope refuses to create or update goals and non-goals when source inputs do not identify a clear problem or desired product outcome.
+- [ ] Scope routes weak inputs to research or asks for missing source context, instead of filling product boundaries from weak assumptions.
+- [ ] Every LDD phase states the required input standard for that phase before writing or mutating its artifact.
+- [ ] When a phase rejects its inputs, it names the blocking input gap and recommends the earliest LDD command that can fix the gap.
+- [ ] Sensitive private inputs are consumed only as private intake material; committed artifacts and GitHub-visible projections contain sanitized conclusions and never raw financial or commercial details.
+- [ ] GitHub projection validation creates or updates a shareable Product Requirement projection only after explicit human confirmation, and the projection states that the repo-local ledger remains canonical.
 
 ## Success Metrics
 
-- Research readiness clarity: a maintainer can tell from the research output whether scoping should proceed, stop for more input, split, or abandon the Product Requirement.
-- Scope quality: `/ldd:scope` no longer creates or updates product boundaries when the input lacks a clear problem or desired product outcome.
-- Sensitivity protection: financially sensitive raw inputs are excluded from committed and GitHub-visible artifacts.
-- Phase routing clarity: when a phase rejects poor inputs, the next recommended LDD command and blocking reason are explicit.
-- GitHub projection confidence: the first GitHub-visible projection for this Product Requirement can be reviewed without exposing private input material or making GitHub canonical.
+- Research readiness clarity: 100% of research outputs include one explicit readiness label and a recommended next LDD command or stop reason.
+- Scope quality: 100% of scope runs either name the product boundary from adequate inputs or stop with a missing-input reason.
+- Sensitivity protection: 0 raw financially sensitive values, customer names, budgets, revenue figures, or private commercial notes appear in committed or GitHub-visible artifacts produced by this workflow.
+- Phase routing clarity: 100% of phase-gate rejections name the failing input standard and the earliest LDD command that can repair it.
+- GitHub projection confidence: the first GitHub-visible Product Requirement projection for this work is readable without private source material and states that the repo-local ledger remains canonical.
 
 ## Dependencies
 
-- The repository is configured for GitHub projection in `.ldd/config.yml`, with repo-local ledgers remaining canonical.
+- The repository has GitHub projection configured, with repo-local ledgers remaining canonical.
 - External GitHub mutations require explicit human confirmation and drift checks.
 - `/ldd:research` needs a clear sensitivity boundary between private intake material and shareable repo/GitHub artifacts.
 - Existing LDD command boundaries must be preserved: PM commands own product inputs and scope, design owns engineering translation, plan owns executable slices, implementation owns child work, verification and close own closure readiness and closure.
@@ -86,10 +87,10 @@ The problem is sharper now that LDD is being configured for GitHub projection. E
 
 ## Open Questions
 
-- Resolved for draft acceptance: Research readiness should distinguish at least ready for scope, blocked on more input, split recommended, and not a Product Requirement. `/ldd:refine` should make the exact labels final.
-- Open, owner maintainer: Should private research intake live only in project context/pasted notes, or should LDD also define a gitignored local private folder convention?
-- Open, owner maintainer: Which downstream phase gates need full behavior changes in the first implementation slice versus a shared contract update?
-- Open, owner maintainer: What GitHub projection action should validate the integration after PRD approval: creating the Product Requirement issue, opening a PRD PR, or both?
+- Resolved: Research readiness labels are ready for scope, blocked on more input, split recommended, and not a Product Requirement.
+- Resolved: Private research intake may come from project context, pasted notes, or human-supplied local private sources. Shareable artifacts must contain only sanitized conclusions.
+- Resolved: GitHub validation for this Product Requirement should use the external Product Requirement issue projection after explicit human confirmation. Opening an additional PRD PR is optional follow-on behavior, not required for acceptance.
+- Non-blocking, owner engineering design: Decide the implementation order for applying phase input gates across all LDD commands.
 
 ## PRD Handoff Checklist
 
