@@ -47,15 +47,15 @@ artifacts:
         - command: "git diff --check"
           result: passed
   verification:
-    path: null
-    status: missing
+    path: "docs/tickets/1-add-research-and-phase-gates/children/6-scope-adequacy-gate-and-pm-command-gates/verification.md"
+    status: override_required
 
 closure:
   status: verification_required
   verified_at: null
   archived_at: null
   external_closed_at: null
-  override_reason: null
+  override_reason: "Implementation PR #9 is merged externally, but matching merge evidence is not recorded in the child ledger."
 
 blocked_by: ["5"]
 user_stories_covered: [1, 4]
@@ -99,4 +99,7 @@ events:
     actor: agent
   - at: "2026-05-14T23:09:22Z"
     type: implementation_pr_created
+    actor: agent
+  - at: "2026-05-14T23:31:13Z"
+    type: verification_override_required
     actor: agent
