@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-commands='setup next scope elaborate refine approve design plan decompose implement verify close'
+commands='setup next research scope elaborate refine approve design plan decompose implement verify close'
 
 required_files='
 agent-skills.json
@@ -14,6 +14,7 @@ gemini-extension.json
 GEMINI.md
 skills/ldd-setup/assets/templates/config.yml
 skills/ldd-setup/assets/templates/ledger.yml
+skills/ldd-setup/assets/templates/research.md
 skills/ldd-setup/assets/templates/prd.md
 skills/ldd-setup/assets/templates/sdd.md
 skills/ldd-setup/assets/templates/plan.md
@@ -53,6 +54,7 @@ fi
 
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/ldd:setup"' agent-skills.json
+grep -q '"command": "/ldd:research"' agent-skills.json
 grep -q '"command": "/ldd:approve"' agent-skills.json
 grep -q '"command": "/ldd:decompose"' agent-skills.json
 grep -q '"command": "/ldd:implement"' agent-skills.json
@@ -98,6 +100,7 @@ grep -q '"source": "./"' .claude-plugin/marketplace.json
 grep -q '"name": "ledger-driven-development"' gemini-extension.json
 grep -q '"contextFileName": "GEMINI.md"' gemini-extension.json
 grep -q '"/ldd:verify"' gemini-extension.json
+grep -q '"/ldd:research"' gemini-extension.json
 grep -q '"/ldd:approve"' gemini-extension.json
 grep -q '"/ldd:close"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
@@ -134,19 +137,23 @@ grep -q 'next_human_action' skills/ldd-next/SKILL.md
 grep -q '/ldd:approve <ticket-id>' skills/ldd-next/SKILL.md
 grep -q 'does not perform mutations' skills/ldd-next/SKILL.md
 grep -q 'Approval Gate Detection' skills/ldd-next/SKILL.md
+grep -q 'copyable command block containing only the next command' skills/ldd-next/SKILL.md
 grep -Eq 'execution_context\.phase.*refine' skills/ldd-next/SKILL.md
 if grep -q 'artifacts.prd.status: draft.*approved_artifacts.prd' skills/ldd-next/SKILL.md skills/ldd-approve/SKILL.md; then
   echo "draft PRDs must not be treated as approval-ready before refinement" >&2
   exit 1
 fi
 
-grep -q 'Approve exactly one PRD or SDD gate' skills/ldd-approve/SKILL.md
-grep -q 'does not approve implementation plans' skills/ldd-approve/SKILL.md
+grep -q 'Approve exactly one PRD, SDD, or plan gate' skills/ldd-approve/SKILL.md
+grep -q 'Plan Approval Workflow' skills/ldd-approve/SKILL.md
+grep -q 'Plan candidate' skills/ldd-approve/SKILL.md
+grep -q 'next_command: /ldd:decompose 123' skills/ldd-approve/SKILL.md
 grep -q 'exactly one approval gate is active' skills/ldd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/ldd-approve/SKILL.md
 grep -q 'GitHub issue number as the stable ticket ID' skills/ldd-approve/SKILL.md
 grep -q 'Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode' skills/ldd-approve/SKILL.md
 grep -q 'GitHub SDD issue' skills/ldd-approve/SKILL.md
+grep -q 'PRD #<prd_issue_number> SDD:' skills/ldd-approve/SKILL.md
 grep -q 'child ticket of the PRD issue' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
@@ -165,6 +172,10 @@ grep -q 'GitHub-first managed projections' skills/ldd-setup/assets/templates/con
 grep -q 'Linear and Jira are follow-on collaboration surfaces' skills/ldd-setup/assets/templates/config.yml
 grep -q 'schema_version: 1' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'children: \[\]' skills/ldd-setup/assets/templates/ledger.yml
+grep -q 'research:' skills/ldd-setup/assets/templates/ledger.yml
+grep -q '# LDD Research' skills/ldd-setup/assets/templates/research.md
+grep -q 'Readiness Decision' skills/ldd-setup/assets/templates/research.md
+grep -q 'Sensitivity Handling' skills/ldd-setup/assets/templates/research.md
 grep -q 'external_body_hash:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'managed_body_version:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'current_gate: scope' skills/ldd-setup/assets/templates/ledger.yml
@@ -186,26 +197,39 @@ grep -q 'Review Checklist' skills/ldd-setup/assets/templates/sdd.md
 grep -q '# Implementation Plan:' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Acceptance Criteria Traceability' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Slice quality bar:' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Review load' skills/ldd-setup/assets/templates/plan.md
+grep -q '200 changed files' skills/ldd-setup/assets/templates/plan.md
 grep -q 'must not introduce new architecture decisions' skills/ldd-setup/assets/templates/plan.md
 grep -q '## Problem Statement' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q 'GitHub issue projection' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q '## LDD Links' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q '## Parent Product Requirement' skills/ldd-setup/assets/templates/issue-body-sdd.md
+grep -q '# PRD {prd_issue} SDD: {title}' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q 'GitHub child issue projection for SDD visibility' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q 'implementation child issues created by decomposition are children of this SDD issue' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q '## What to build' skills/ldd-setup/assets/templates/issue-body-child.md
-grep -q 'GitHub child issue projection' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q 'native child/sub-issue projection' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'SDD issue:' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q 'Tracker parent relationship:' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Acceptance criteria' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Blocked by' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## User stories covered' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q '## Review load' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'Decompose only from an approved plan' skills/ldd-decompose/SKILL.md
 grep -q 'vertical slices' skills/ldd-decompose/SKILL.md
+grep -q 'cognitive-load budget' skills/ldd-decompose/SKILL.md
+grep -q '200 changed files' skills/ldd-decompose/SKILL.md
+grep -q 'focused human review' skills/ldd-decompose/SKILL.md
 grep -q 'Preview Before Creation' skills/ldd-decompose/SKILL.md
 grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
+grep -q 'SDD #<sdd_issue_number> Slice <slice-number>:' skills/ldd-decompose/SKILL.md
 grep -q "LDD's standalone child issue shape" skills/ldd-decompose/SKILL.md
 grep -q 'external contribution' skills/ldd-decompose/SKILL.md
 grep -q 'projected as GitHub issues' skills/ldd-decompose/SKILL.md
+grep -q 'native GitHub sub-issue' skills/ldd-decompose/SKILL.md
+grep -q 'POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues' skills/ldd-decompose/SKILL.md
+grep -q 'sub_issue_id' skills/ldd-decompose/SKILL.md
+grep -q 'body-only linked issue fallback requires a separate explicit human confirmation' skills/ldd-decompose/SKILL.md
 grep -q 'grandchildren of the PRD issue' skills/ldd-decompose/SKILL.md
 grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md
@@ -237,6 +261,17 @@ grep -q 'GitHub issue or PR closure is an external mutation' skills/ldd-close/SK
 grep -q 'every child is verified and closeable' skills/ldd-close/SKILL.md
 grep -q 'Move the parent directory' skills/ldd-close/SKILL.md
 grep -q 'parent close requested while any child is not verified and closeable' skills/ldd-close/SKILL.md
+grep -q 'standard PM inputs' skills/ldd-research/SKILL.md
+grep -q 'full read-only' skills/ldd-research/SKILL.md
+grep -q 'ready_for_scope' skills/ldd-research/SKILL.md
+grep -q 'blocked_on_more_input' skills/ldd-research/SKILL.md
+grep -q 'split_recommended' skills/ldd-research/SKILL.md
+grep -q 'not_a_product_requirement' skills/ldd-research/SKILL.md
+grep -q 'financially sensitive' skills/ldd-research/SKILL.md
+for command in $commands; do
+  grep -q 'Input Quality Gate' "skills/ldd-$command/SKILL.md"
+  grep -q 'earliest LDD command' "skills/ldd-$command/SKILL.md"
+done
 grep -q 'Verification status: pending | passed | failed | override_required' skills/ldd-setup/assets/templates/verification.md
 grep -q 'Boundary: child-ticket closure only, not repository health' skills/ldd-setup/assets/templates/verification.md
 grep -q 'External tracker drift: pending' skills/ldd-setup/assets/templates/verification.md
@@ -260,7 +295,9 @@ grep -q 'GitHub issue number as the promoted ticket ID' skills/ldd-refine/SKILL.
 grep -q "SDD template's quality bar" skills/ldd-design/SKILL.md
 grep -q 'SDD approval must be recorded through `/ldd:approve <ticket-id>`' skills/ldd-design/SKILL.md
 grep -q "plan template's traceability" skills/ldd-plan/SKILL.md
-grep -q '/ldd:approve` does not approve plans' skills/ldd-plan/SKILL.md
+grep -q 'Stop at explicit plan approval through `/ldd:approve <ticket-id>`' skills/ldd-plan/SKILL.md
+grep -q 'next_command: /ldd:approve <ticket-id>' skills/ldd-plan/SKILL.md
+grep -q 'plan exists but is not approved' skills/ldd-next/SKILL.md
 grep -q 'repo-local ledger as canonical workflow state' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then

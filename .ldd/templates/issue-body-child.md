@@ -18,16 +18,21 @@
 
 {user_stories_covered}
 
+## Review load
+
+{review_load}
+
 ## LDD Traceability
 
 - Parent PRD: `{parent_prd_path}`
 - Parent PRD issue: `{parent_prd_issue}`
 - SDD issue: `{sdd_issue}`
+- Tracker parent relationship: `{tracker_parent_relationship}`
 - Plan: `{plan_path}`
 - Plan slice: `{plan_slice}`
 - Ledger: `{ledger_path}`
 - Canonical state: repo-local ledger
-- External tracker role: GitHub child issue projection for implementation visibility
+- External tracker role: native child/sub-issue projection for implementation visibility when supported
 
 ## External Notes
 

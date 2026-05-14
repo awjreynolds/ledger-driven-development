@@ -33,6 +33,7 @@ Bootstrap the current target repository for the LDD MVP workflow.
 - `docs/tickets/_archive/`
 - `.ldd/config.yml`
 - `.ldd/templates/ledger.yml`
+- `.ldd/templates/research.md`
 - `.ldd/templates/prd.md`
 - `.ldd/templates/sdd.md`
 - `.ldd/templates/plan.md`
@@ -48,6 +49,17 @@ Bootstrap the current target repository for the LDD MVP workflow.
 Use bundled templates from `assets/templates/`.
 
 Copy templates exactly unless the user explicitly asks to customize them. The templates include artifact quality guidance and are part of the LDD workflow contract, not just blank markdown scaffolds.
+
+## Input Quality Gate
+
+Required input standard before writing setup files:
+
+- confirmed target repository context
+- confirmed setup mode on first run: local-only or GitHub projection
+- confirmed existing settings on rerun before any change
+- safe destination directories for `.ldd/` and `docs/tickets/`
+
+If these inputs are missing or conflict with existing setup state, write nothing and ask the narrowest confirmation question. The earliest LDD command that can repair the gap is `/ldd:setup`.
 
 ## Rules
 

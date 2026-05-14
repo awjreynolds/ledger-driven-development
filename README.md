@@ -37,6 +37,7 @@ The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-m
 ```text
 /ldd:setup
 /ldd:next
+/ldd:research
 /ldd:scope
 /ldd:elaborate
 /ldd:refine
@@ -66,6 +67,7 @@ Until the stock installer reads `agent-skills.json` directly, install the paths 
 ```text
 skills/ldd-setup
 skills/ldd-next
+skills/ldd-research
 skills/ldd-scope
 skills/ldd-elaborate
 skills/ldd-refine
@@ -99,7 +101,7 @@ Install this repository as a Gemini CLI extension:
 gemini extensions install https://github.com/awjreynolds/ledger-driven-development
 ```
 
-Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, and `/ldd:close`.
+Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:research`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, and `/ldd:close`.
 
 ## Source Of Truth
 
@@ -114,7 +116,7 @@ External trackers are optional review and sync surfaces. They are not canonical 
 GitHub is the first external-tracker dogfooding path:
 
 - GitHub issues project PRD, SDD, and child work visibility.
-- SDD issues are children of PRD issues; implementation child work issues created by decomposition reference the SDD issue, so a PRD issue may have implementation issue grandchildren.
+- SDD issues are children of PRD issues; implementation child work issues created by decomposition are native GitHub sub-issues of the SDD issue when GitHub supports sub-issues, so a PRD issue may have implementation issue grandchildren.
 - GitHub PRs project implementation review.
 - LDD updates managed GitHub bodies only after explicit human confirmation and drift checks.
 - Linear and Jira remain follow-on optional collaboration surfaces until the GitHub model is proven.
@@ -123,6 +125,7 @@ GitHub is the first external-tracker dogfooding path:
 
 ```text
 draft PRD ledger
+  -> optional research
   -> promoted Product Requirement ticket
   -> PRD approval with /ldd:approve
   -> SDD/Plan
@@ -136,7 +139,11 @@ The repo-local `ledger.yml` is canonical. `/ldd:refine` commits the final PRD an
 
 New Product Requirements can be scoped while other promoted tickets are still in progress. `/ldd:scope` creates or updates the local draft ticket directory; incomplete promoted tickets do not block new draft PRDs. Local mode keeps one active draft, so starting another draft first requires continuing, renaming, promoting, or discarding the existing draft.
 
-PM commands use a bounded shared-understanding gate before a PRD can move forward. That gate keeps the useful part of grill-style questioning: the agent must prove it understands the user's intended boundary, blocker, and handoff criteria. It is bounded so the conversation does not absorb every related idea into the current PRD; new scope routes back to `/ldd:scope`, a later phase, or a separate PRD.
+`/ldd:research` gathers PM-grade inputs before scoping when the trigger is weak, sensitive, or requires codebase investigation. Research has full read-only visibility into repository files, docs, existing LDD artifacts, and human-supplied private/local context, but it writes only sanitized conclusions, codebase facts, assumptions, risks, sensitivity handling, open questions, and one readiness decision.
+
+PM commands use a bounded shared-understanding gate before a PRD can move forward. That gate keeps the useful part of grill-style questioning: the agent must prove it understands the user's intended boundary, blocker, and handoff criteria. It is bounded so the conversation does not absorb every related idea into the current PRD; weak inputs route to `/ldd:research`, new scope routes back to `/ldd:scope`, a later phase, or a separate PRD.
+
+Every LDD phase has an input quality gate. A command must validate its source inputs before writing or mutating artifacts; when inputs fail the standard, it names the blocking gap and the earliest LDD command that can repair it.
 
 ## Handoff Artifacts
 
@@ -145,6 +152,7 @@ PM commands use a bounded shared-understanding gate before a PRD can move forwar
 ```text
 .ldd/config.yml
 .ldd/templates/ledger.yml
+.ldd/templates/research.md
 .ldd/templates/prd.md
 .ldd/templates/sdd.md
 .ldd/templates/plan.md
@@ -162,7 +170,8 @@ docs/tickets/_archive/
 The templates are quality contracts, not blank forms:
 
 - PRDs keep product scope separate from technical design.
-- `/ldd:approve` records explicit human approval for PRD and SDD gates. It does not approve plans, decomposition, closure, or external mutations.
+- Research artifacts gather standard PM inputs, codebase facts, and sensitivity handling before scope without becoming product scope or engineering design.
+- `/ldd:approve` records explicit human approval for PRD, SDD, and plan gates. It does not approve decomposition, closure, or external mutations.
 - SDDs translate approved PRDs into designs grounded in code and ADRs.
 - Plans trace acceptance criteria to implementation slices and verification.
 - Decomposition turns approved plan slices into child vertical-slice tickets.
@@ -170,7 +179,7 @@ The templates are quality contracts, not blank forms:
 - Verification checks child-ticket closure readiness before archive or external close.
 - Close applies verified closure, archives child work locally, and can close/archive a parent only when every child is verified and closeable.
 - External issue bodies are rich projections of the ledger and artifacts, readable without opening the repo.
-- GitHub-first projections use issues for PRD, SDD, and child work visibility and PRs for implementation review while keeping the repo-local ledger canonical.
+- GitHub-first projections use issues for PRD, SDD, and child work visibility, native sub-issues for implementation child work where supported, and PRs for implementation review while keeping the repo-local ledger canonical.
 - Child tickets follow LDD's standalone independently-grabbable shape: parent, what to build, acceptance criteria, blockers, user stories covered, and LDD traceability.
 - PR bodies focus reviewers on the correct handoff question.
 

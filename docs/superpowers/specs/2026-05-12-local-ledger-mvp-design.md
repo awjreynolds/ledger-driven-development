@@ -25,6 +25,8 @@ See `CONTEXT.md` for the glossary. The key terms are:
 
 - **Ledger**: repo-local machine-readable state for one ticket.
 - **Product Requirement**: the parent product-scope unit.
+- **Research Artifact**: sanitized pre-scope PM input, codebase fact, risk, sensitivity, and readiness evidence.
+- **Input Quality Gate**: a command-local input standard checked before artifact mutation.
 - **Draft Ticket Directory**: temporary workspace before a ticket ID is assigned.
 - **Ticket Promotion**: assignment of a stable local or external ticket ID.
 - **Decomposition**: conscious post-plan step that turns an approved plan into vertical slices.
@@ -87,6 +89,9 @@ tracker:
   external_url: null
 
 artifacts:
+  research:
+    path: null
+    status: missing
   prd:
     path: docs/tickets/_drafts/2026-05-12-short-slug/prd.md
     status: draft
@@ -133,6 +138,10 @@ Events are important workflow transitions only. They are not progress logs or se
 /ldd:setup
   -> installs config, templates, draft/archive directories
 
+/ldd:research
+  -> gathers PM-grade inputs, codebase facts, and sanitized readiness evidence
+  -> routes to /ldd:scope only when ready_for_scope
+
 /ldd:scope
 /ldd:elaborate
 /ldd:refine
@@ -140,8 +149,8 @@ Events are important workflow transitions only. They are not progress logs or se
   -> refine routes PRD approval to /ldd:approve
 
 /ldd:approve
-  -> approves a PRD or SDD gate when exactly one approval gate is active
-  -> does not approve plans, decomposition, closure, or external mutations
+  -> approves a PRD, SDD, or plan gate when exactly one approval gate is active
+  -> does not approve decomposition, closure, or external mutations
 
 /ldd:design
   -> writes SDD for the promoted Product Requirement
@@ -165,9 +174,13 @@ Events are important workflow transitions only. They are not progress logs or se
   -> archives locally and syncs external close only with explicit human approval
 ```
 
-`/ldd:next` is read-only. It inspects active ledgers, identifies the next command and next human action, explains why, and stops. For PRD and SDD approval gates, it names `/ldd:approve <ticket-id>`.
+`/ldd:next` is read-only. It inspects active ledgers, identifies the next command and next human action, explains why, and stops. For PRD, SDD, and plan approval gates, it names `/ldd:approve <ticket-id>`.
+
+`/ldd:research` is the pre-scope discovery command. It may use full read-only visibility into repository files, docs, existing artifacts, and human-supplied private/local context, but it writes only sanitized committed output. Its readiness decision is one of `ready_for_scope`, `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`.
 
 `/ldd:scope` is the draft entry point for new Product Requirements. If no active draft exists, it creates a new draft in `docs/tickets/_drafts/`. Existing promoted tickets do not block new scoping work. If an active draft already exists, `/ldd:scope` updates that draft or asks the human to continue, rename, promote, or discard it before starting another one.
+
+Every command-shaped skill owns an `Input Quality Gate`. Before writing or mutating artifacts, the command validates that its source inputs meet the phase standard. Rejections name the missing input and the earliest LDD command that can repair it, rather than filling gaps from assumptions.
 
 `/ldd:implement` never auto-decomposes. If no ready child tickets exist, it reports that there are no tickets to implement. If the plan is approved but no child tickets exist, it reports that `/ldd:decompose` is required. Implementation completion does not close child work; it records evidence and routes the child to `/ldd:verify`.
 
@@ -180,7 +193,7 @@ Events are important workflow transitions only. They are not progress logs or se
 External trackers are configured through `.ldd/config.yml`. The MVP supports the model, not full sync engines:
 
 - `local`: use `LDD-0001` style local IDs.
-- `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD, SDD, and child work visibility and GitHub PRs for implementation review.
+- `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD, SDD, and child work visibility, GitHub native sub-issues for child work hierarchy where supported, and GitHub PRs for implementation review.
 - `linear`, `jira`: follow-on optional collaboration surfaces after the GitHub-first projection model is proven.
 
 External mutations require human confirmation. If local ledger state and external tracker state diverge, commands report drift and stop rather than silently reconciling.
@@ -191,7 +204,7 @@ External tracker tickets are rich projections, not thin placeholders. A TPM, PM,
 
 Parent Product Requirement tickets use `.ldd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and LDD links.
 
-SDD tickets use `.ldd/templates/issue-body-sdd.md` and reference the parent PRD issue. Child work item tickets use `.ldd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal LDD traceability. In GitHub mode, decomposition-created child work issues reference the SDD issue as their parent review context, which makes them grandchildren of the PRD issue in the LDD projection model.
+SDD tickets use `.ldd/templates/issue-body-sdd.md` and reference the parent PRD issue. Child work item tickets use `.ldd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal LDD traceability. In GitHub mode, decomposition-created child work issues must be attached as native sub-issues of the SDD issue when GitHub supports sub-issues, with body traceability as backup. That makes implementation work children of the SDD issue and grandchildren of the PRD issue in the external projection.
 
 `/ldd:decompose` must preview the complete proposed child ticket set before creation. The preview includes title, Autonomous/Human-review type, blockers, user stories covered, and summary. External child tickets are created only after human approval.
 

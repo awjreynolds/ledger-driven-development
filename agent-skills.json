@@ -25,6 +25,12 @@
       "purpose": "Read repo-local ledger state and report the next LDD command."
     },
     {
+      "command": "/ldd:research",
+      "skill": "ldd-research",
+      "path": "skills/ldd-research",
+      "purpose": "Gather PM-grade inputs, codebase facts, and sanitized readiness evidence before scoping."
+    },
+    {
       "command": "/ldd:scope",
       "skill": "ldd-scope",
       "path": "skills/ldd-scope",

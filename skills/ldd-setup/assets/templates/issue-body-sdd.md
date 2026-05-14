@@ -1,9 +1,8 @@
-# SDD: {title}
+# PRD {prd_issue} SDD: {title}
 
 ## Parent Product Requirement
 
 - PRD issue: `{prd_issue}`
-- PRD artifact: `{prd_path}`
 
 ## Design Summary
 

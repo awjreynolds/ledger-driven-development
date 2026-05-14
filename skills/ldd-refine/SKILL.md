@@ -34,6 +34,17 @@ Core refinement questions:
 5. Are open questions resolved, owned, or explicitly non-blocking?
 6. Does any language prescribe design or implementation mechanics?
 
+## Input Quality Gate
+
+Required input standard before writing refinement:
+
+- an elaborated PRD with goals, non-goals, users/personas, user stories, acceptance criteria, metrics, dependencies, and open questions
+- observable acceptance coverage for every user story or an explicit blocker
+- open questions that are resolved, owned, or explicitly non-blocking
+- no changed product boundary that belongs back in scope
+
+If inputs fail this standard, write nothing or only record the blocking reason when already editing the PRD. The earliest LDD command that can repair missing handoff detail is `/ldd:elaborate`; changed scope routes to `/ldd:scope`; missing source context routes to `/ldd:research`.
+
 ## Bounded Shared Understanding Gate
 
 Before committing refinement or asking for PRD approval, prove shared understanding of the handoff.

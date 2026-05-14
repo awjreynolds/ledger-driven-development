@@ -34,6 +34,17 @@ If no ticket ID is provided, stop and ask for one.
 - archive location under configured `archive_directory`
 - external tracker close/sync only after explicit human confirmation
 
+## Input Quality Gate
+
+Required input standard before closure:
+
+- requested child has `artifacts.verification.status: passed`, `closure.status: verified`, and readable `verification.md`; or requested parent has every child closed or verified and closeable
+- archive directory is known and will not overwrite existing evidence
+- external tracker drift is resolved before any external mutation
+- explicit human confirmation exists for external close or sync
+
+If inputs fail this standard, do not archive or close anything. The earliest LDD command that can repair missing closure evidence is `/ldd:verify`; ambiguous workflow state routes to `/ldd:next`; unresolved external drift routes to human reconciliation.
+
 ## Rules
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.

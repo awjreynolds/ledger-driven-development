@@ -18,6 +18,17 @@ Create or update `sdd.md` in the promoted ticket directory.
 - Software Design Document
 - ADR creates/updates only when the strict ADR threshold is met
 
+## Input Quality Gate
+
+Required input standard before writing design:
+
+- approved PRD in the parent ledger
+- readable code, docs, and ADR context needed to ground engineering design
+- no contradiction between code reality and approved product scope
+- no unresolved product question that would change goals, non-goals, or acceptance criteria
+
+If inputs fail this standard, write nothing and name the blocking gap. The earliest LDD command that can repair a product gap is `/ldd:refine`, `/ldd:scope`, or `/ldd:research` depending on the missing input; code/design uncertainty remains in `/ldd:design` until it requires an ADR or PRD change.
+
 ## Exit Gate
 
 After writing the SDD, stop at explicit SDD approval:

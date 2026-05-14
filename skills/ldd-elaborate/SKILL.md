@@ -35,6 +35,16 @@ Core elaboration questions:
 5. What product-facing draft acceptance criteria prove the stories?
 6. What draft metrics would indicate success?
 
+## Input Quality Gate
+
+Required input standard before writing product detail:
+
+- an existing scoped PRD with goals, non-goals, and constraints
+- enough user, workflow, problem, and desired-outcome context to map stories and product outcomes inside that scope
+- no unresolved scope ambiguity that would change goals or non-goals
+
+If inputs fail this standard, write nothing and name the blocking gap. The earliest LDD command that can repair missing product detail is `/ldd:elaborate`; missing or wrong scope routes to `/ldd:scope`; missing source evidence or weak PM inputs route to `/ldd:research`.
+
 ## Bounded Shared Understanding Gate
 
 Before writing product detail or declaring elaboration ready, reach shared understanding of the product detail inside the existing scope.

@@ -21,6 +21,17 @@ Read repo-local ledger state and report the next explicit LDD command and next h
 - child implementation, verification, and closure state
 - external tracker sync state and body drift when configured
 
+## Input Quality Gate
+
+Required input standard before reporting workflow navigation:
+
+- readable active ledger state, or enough artifact state to derive equivalent phase state
+- no ambiguous multiple active drafts unless the user selected one
+- child ledger paths are readable when parent state depends on children
+- external tracker drift metadata is either clean or reported as a blocker
+
+If inputs fail this standard, do not mutate anything and report the ambiguity or missing state. The earliest LDD command that can repair missing setup is `/ldd:setup`; missing decomposition routes to `/ldd:decompose`; ambiguous or drifted state requires human reconciliation before another command runs.
+
 ## Rules
 
 - Read-only. It never mutates GitHub or local files.
@@ -37,7 +48,7 @@ Read repo-local ledger state and report the next explicit LDD command and next h
 - Prioritize child work with completed implementation evidence and unverified closure before starting additional child implementation.
 - When continuation is safe and commandable, name the exact command the user can run next.
 - When continuation requires human review, approval, drift reconciliation, external mutation confirmation, or a blocked choice, name the human decision instead of offering unsafe automation.
-- PRD and SDD approval gates must route to `/ldd:approve <ticket-id>`.
+- PRD, SDD, and plan approval gates must route to `/ldd:approve <ticket-id>`.
 
 ## Report Contract
 
@@ -46,6 +57,7 @@ Always report:
 - ticket ID and current phase/gate
 - `next_command`, if available or derivable
 - `next_human_action`, if available or derivable
+- a copyable command block containing only the next command when continuation is commandable
 - reason
 - blocking decision, if blocked
 
@@ -55,7 +67,11 @@ Use this shape:
 Next command: /ldd:plan LDD-0003
 Next human action: none
 Reason: SDD is approved and ready for implementation planning.
-Offer: Run /ldd:plan LDD-0003 when ready.
+Copy:
+```
+
+```text
+/ldd:plan LDD-0003
 ```
 
 For approval gates:
@@ -63,8 +79,12 @@ For approval gates:
 ```text
 Next command: /ldd:approve LDD-0003
 Next human action: /ldd:approve LDD-0003
-Reason: The PRD or SDD is waiting for explicit approval.
-Offer: Run /ldd:approve LDD-0003 when ready.
+Reason: The PRD, SDD, or plan is waiting for explicit approval.
+Copy:
+```
+
+```text
+/ldd:approve LDD-0003
 ```
 
 For blocked gates:
@@ -73,7 +93,7 @@ For blocked gates:
 Next command: blocked
 Next human action: reconcile external tracker drift
 Reason: The external body changed since the last recorded sync hash.
-Offer: no automatic continuation
+Copy: not available
 ```
 
 ## Decision Tree
@@ -96,7 +116,8 @@ Else if ready child vertical slices exist:
 Else if plan is approved and no child tickets exist:
   next: /ldd:decompose
 Else if plan exists but is not approved:
-  inspect plan state
+  next: /ldd:approve <ticket-id>
+  next_human_action: /ldd:approve <ticket-id>
 Else if SDD is approved:
   next: /ldd:plan
 Else if SDD exists but is not approved:
@@ -139,7 +160,19 @@ next_command: /ldd:approve <ticket-id>
 next_human_action: /ldd:approve <ticket-id>
 ```
 
-If both PRD and SDD approval appear active, report the ambiguity and route to human reconciliation. Do not choose one silently.
+Treat a plan as waiting for approval when either:
+
+- `execution_context.current_gate: plan_review`
+- `artifacts.plan.status: draft` and `artifacts.sdd.status: approved`
+
+Report:
+
+```text
+next_command: /ldd:approve <ticket-id>
+next_human_action: /ldd:approve <ticket-id>
+```
+
+If more than one PRD, SDD, or plan approval gate appears active, report the ambiguity and route to human reconciliation. Do not choose one silently.
 
 ## Verification Gate Detection
 

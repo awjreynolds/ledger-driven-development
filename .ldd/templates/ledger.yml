@@ -13,6 +13,9 @@ tracker:
   external_url: null
 
 artifacts:
+  research:
+    path: null
+    status: missing
   prd:
     path: "{ticket_dir}/prd.md"
     status: draft

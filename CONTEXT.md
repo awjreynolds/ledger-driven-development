@@ -16,6 +16,14 @@ _Avoid_: GitHub issue, task, story
 The product-scope artifact that defines what should be built and why before engineering design begins.
 _Avoid_: implementation ticket, design brief, GitHub issue body
 
+**Research Artifact**:
+A sanitized pre-scope artifact that gathers PM-grade inputs, codebase facts, assumptions, risks, sensitivity handling, and open questions before a Product Requirement boundary is written.
+_Avoid_: PRD, design brief, raw private notes
+
+**Input Quality Gate**:
+A command-local standard that validates whether the current phase has enough approved or source input before writing or mutating its artifact.
+_Avoid_: best-effort guess, implicit assumption, silent artifact mutation
+
 **Local Ticket ID**:
 A repo-assigned identifier for a **Ticket** that has no configured external tracker identity.
 _Avoid_: GitHub issue number, Linear issue key, Jira issue key
@@ -113,7 +121,7 @@ A human-readable external tracker issue generated from LDD ledger and artifact s
 _Avoid_: canonical state, thin ID placeholder
 
 **GitHub-first Projection**:
-The first supported external tracker visibility path: GitHub issues for Product Requirement and Child Work Item visibility, and GitHub PRs for SDD/Plan and implementation review.
+The first supported external tracker visibility path: GitHub issues for Product Requirement, SDD, and Child Work Item visibility; native GitHub sub-issues for Child Work Item hierarchy where supported; and GitHub PRs for implementation review.
 _Avoid_: source of truth, sync engine, Linear/Jira parity
 
 **External Drift**:
@@ -137,6 +145,9 @@ _Avoid_: active ticket tree, deletion
 - A **Local Ticket ID** is used only when a **Ticket** has no configured **External Tracker** identity.
 - A **Draft Ticket Directory** exists before a **Product Requirement** is ready for review in an **External Tracker**.
 - Every **Product Requirement** starts in a **Draft Ticket Directory**.
+- A **Research Artifact** may exist before a **Product Requirement** is scoped, but it does not define scope.
+- A **Research Artifact** may use full read-only repository and private/local context visibility, while committed output contains only sanitized conclusions.
+- An **Input Quality Gate** belongs to one command and must name the missing input and earliest repairing LDD command when it rejects work.
 - A **Draft Ticket Directory** uses a date and **Draft Slug** for human context.
 - An incomplete **Promoted Ticket Directory** does not block creating a new **Draft Ticket Directory**.
 - Multiple **Promoted Ticket Directories** may be active at different LDD phases.
@@ -173,8 +184,8 @@ _Avoid_: active ticket tree, deletion
 - An **External Ticket Projection** must be useful to a PM, TPM, Director, or implementation agent without requiring them to open repository files.
 - A **GitHub-first Projection** is the initial dogfooding path for external visibility.
 - Linear and Jira are follow-on optional collaboration surfaces until the **GitHub-first Projection** model is proven.
-- GitHub issues project **Product Requirement**, SDD, and **Child Work Item** visibility; GitHub PRs project implementation review.
-- In GitHub tracker mode, SDD approval creates or binds an SDD issue that references the parent **Product Requirement** issue. Decomposition-created **Child Work Item** issues reference the SDD issue, so the **Product Requirement** may have grandchildren in the external projection.
+- GitHub issues project **Product Requirement**, SDD, and **Child Work Item** visibility; GitHub native sub-issues project **Child Work Item** hierarchy where supported; GitHub PRs project implementation review.
+- In GitHub tracker mode, SDD approval creates or binds an SDD issue that references the parent **Product Requirement** issue. Decomposition-created **Child Work Item** issues must be attached as native sub-issues of the SDD issue when GitHub supports sub-issues, so the **Product Requirement** may have grandchildren in the external projection. Body links to the SDD issue are backup traceability, not a substitute for native sub-issue hierarchy when available.
 - **External Drift** stops automatic sync until a human decides whether to import, preserve, or overwrite the external contribution.
 
 ## Example dialogue
