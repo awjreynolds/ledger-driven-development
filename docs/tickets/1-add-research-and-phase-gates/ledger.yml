@@ -1,21 +1,21 @@
 schema_version: 1
 
 ticket:
-  id: null
+  id: "1"
   draft_id: "2026-05-14-add-research-and-phase-gates"
   title: "Add LDD research and phase input gates"
   kind: product_requirement
-  status: draft
+  status: approved
 
 tracker:
   mode: github
-  external_id: null
-  external_url: null
+  external_id: "1"
+  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/1"
 
 artifacts:
   prd:
-    path: "docs/tickets/_drafts/2026-05-14-add-research-and-phase-gates/prd.md"
-    status: draft
+    path: "docs/tickets/1-add-research-and-phase-gates/prd.md"
+    status: approved
   sdd:
     path: null
     status: missing
@@ -38,26 +38,26 @@ closure:
   override_reason: null
 
 execution_context:
-  phase: refine
-  current_gate: prd_approval
-  next_command: /ldd:approve 2026-05-14-add-research-and-phase-gates
-  next_human_action: /ldd:approve 2026-05-14-add-research-and-phase-gates
-  next_reason: Draft Product Requirement is refined and ready for explicit PRD approval.
+  phase: design
+  current_gate: design
+  next_command: /ldd:design 1
+  next_human_action: null
+  next_reason: PRD is approved and ready for engineering design.
   approved_artifacts:
-    prd: null
+    prd: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     sdd: null
     plan: null
   boundaries:
-    product: "docs/tickets/_drafts/2026-05-14-add-research-and-phase-gates/prd.md"
+    product: "docs/tickets/1-add-research-and-phase-gates/prd.md"
     design: null
     plan: null
-  updated_at: "2026-05-14T14:31:51Z"
+  updated_at: "2026-05-14T16:57:49Z"
 
 sync:
-  status: local_only
-  last_checked_at: null
+  status: synced
+  last_checked_at: "2026-05-14T16:57:49Z"
   external_updated_at: null
-  external_body_hash: null
+  external_body_hash: "sha256:d4ce1796f41acf39b61eae967f8a2f97c4e41ff4fa4cc2a89a6af6141c6e99fd"
   managed_body_version: 1
 
 events:
@@ -73,3 +73,9 @@ events:
   - at: "2026-05-14T14:31:51Z"
     type: prd_refined
     actor: agent
+  - at: "2026-05-14T16:57:49Z"
+    type: external_issue_created
+    actor: agent
+  - at: "2026-05-14T16:57:49Z"
+    type: prd_approved
+    actor: human

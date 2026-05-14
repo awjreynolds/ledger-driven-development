@@ -1,8 +1,9 @@
 ---
-ticket: 2026-05-14-add-research-and-phase-gates
+ticket: 1
 title: "Add LDD research and phase input gates"
 created: 2026-05-14
 updated: 2026-05-14
+status: approved
 ---
 
 # PRD: Add LDD research and phase input gates
