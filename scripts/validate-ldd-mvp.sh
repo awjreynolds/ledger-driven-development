@@ -252,6 +252,10 @@ grep -q 'passed | failed | override_required' skills/ldd-verify/SKILL.md
 grep -q 'approved parent PRD, approved parent SDD, approved parent plan' skills/ldd-verify/SKILL.md
 grep -q 'scope/design/plan drift' skills/ldd-verify/SKILL.md
 grep -q 'external ticket drift is unresolved' skills/ldd-verify/SKILL.md
+grep -q 'Implementation PR State Rule' skills/ldd-verify/SKILL.md
+grep -q 'implementation PR state is externally checked' skills/ldd-verify/SKILL.md
+grep -q 'Never treat a conversational claim such as "merged" as merge evidence' skills/ldd-verify/SKILL.md
+grep -q 'reconcile implementation PR merge state into the repo-local ledger' skills/ldd-verify/SKILL.md
 grep -q 'verification.md' skills/ldd-verify/SKILL.md
 grep -q 'Do not mutate external trackers' skills/ldd-verify/SKILL.md
 grep -q 'Apply closure for one verified child work item' skills/ldd-close/SKILL.md
