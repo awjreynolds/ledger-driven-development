@@ -6,7 +6,7 @@ ticket:
   title: Teach /ldd:next and /ldd:implement the verification gate
   kind: child_work_item
   type: autonomous
-  status: verification_required
+  status: verified
 
 parent:
   id: LDD-0001
@@ -34,12 +34,12 @@ artifacts:
       - Added validation checks for next/implement verification gate wording.
       - Preserved approved PRD, SDD, and plan boundary rules in the command contracts.
   verification:
-    path: null
-    status: missing
+    path: docs/tickets/LDD-0001-verify-context-header/children/LDD-0001-003-next-implement-verify-gate/verification.md
+    status: passed
 
 closure:
-  status: verification_required
-  verified_at: null
+  status: verified
+  verified_at: 2026-05-14T08:42:52Z
   archived_at: null
   external_closed_at: null
   override_reason: null
@@ -49,11 +49,11 @@ user_stories_covered: [1, 2, 3, 5]
 plan_slice: "3. Teach /ldd:next and /ldd:implement the verification gate"
 
 execution_context:
-  phase: verify
-  current_gate: verification
-  next_command: /ldd:verify LDD-0001-003
+  phase: close
+  current_gate: closure
+  next_command: /ldd:close LDD-0001-003
   next_human_action: null
-  next_reason: Next/implement verification gate implementation is complete and ready for verification.
+  next_reason: Verification passed and the child is ready for closure.
   approved_artifacts:
     prd: docs/tickets/LDD-0001-verify-context-header/prd.md
     sdd: docs/tickets/LDD-0001-verify-context-header/sdd.md
@@ -62,7 +62,7 @@ execution_context:
     product: docs/tickets/LDD-0001-verify-context-header/prd.md
     design: docs/tickets/LDD-0001-verify-context-header/sdd.md
     plan: docs/tickets/LDD-0001-verify-context-header/plan.md
-  updated_at: 2026-05-13T11:04:34Z
+  updated_at: 2026-05-14T08:42:52Z
 
 sync:
   status: local_only
@@ -77,4 +77,7 @@ events:
     actor: agent
   - at: 2026-05-13T11:04:34Z
     type: implementation_completed
+    actor: agent
+  - at: 2026-05-14T08:42:52Z
+    type: verification_passed
     actor: agent
