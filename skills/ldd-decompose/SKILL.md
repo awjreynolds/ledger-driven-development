@@ -18,7 +18,7 @@ Turn an approved `plan.md` into child vertical-slice tickets.
 
 - child ticket entries in the parent ledger
 - child ticket ledgers under the parent ticket directory
-- external child tickets only when a tracker is configured and the human approves
+- external child work items only when a tracker is configured and the human approves
 
 ## Preview Before Creation
 
@@ -42,7 +42,7 @@ Ask:
 - Should any tickets be merged or split?
 ```
 
-Only after approval may the command create child ledgers or external child tickets. When stopping before approval, set `execution_context.next_human_action` to the decomposition review decision.
+Only after approval may the command create child ledgers or external child work items. When stopping before approval, set `execution_context.next_human_action` to the decomposition review decision.
 
 ## Rules
 
@@ -52,10 +52,13 @@ Only after approval may the command create child ledgers or external child ticke
 - Child tickets are vertical slices derived from plan slices, not layer tasks.
 - Each child ticket must be independently grabbable: an implementation agent can read the ticket, follow links as needed, and understand what end-to-end behavior to build, what acceptance criteria must pass, what it is blocked by, and which user stories or PRD criteria it covers.
 - Each child ticket must reference the parent Product Requirement and approved plan slice.
-- In GitHub tracker mode, each child ticket must also reference the approved SDD issue, making implementation child tickets children of the SDD issue and grandchildren of the PRD issue.
+- In GitHub tracker mode, each child work item must be created as a native GitHub sub-issue of the approved SDD issue. Body traceability to the SDD issue is required, but body links alone are not enough when GitHub sub-issues are available.
+- To create the GitHub relationship, create the child issue first, capture its numeric REST `id`, then call GitHub's sub-issues endpoint on the SDD issue: `POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues` with `sub_issue_id`. Verify the relationship with the parent/sub-issues REST endpoints before recording the child as externally synced.
+- In GitHub tracker mode, native sub-issues make implementation child work items children of the SDD issue and grandchildren of the PRD issue.
 - External child ticket bodies use LDD's standalone child issue shape: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, plus minimal LDD Traceability.
-- In GitHub tracker mode, child tickets may be projected as GitHub issues after explicit human confirmation. Each projected child issue must record its PRD issue reference, SDD issue reference, plan slice, and local ledger path. The child ledger remains canonical.
-- Linear and Jira child-ticket projections are follow-on optional collaboration surfaces.
+- In GitHub tracker mode, child tickets may be projected as GitHub issues after explicit human confirmation. Each projected child issue must record its PRD issue reference, SDD issue reference, plan slice, native parent/sub-issue relationship status, and local ledger path. The child ledger remains canonical.
+- If GitHub sub-issue attachment fails because the feature, permissions, repository settings, or API are unavailable, stop and report the failure. Do not silently fall back to body-only linked issues. A body-only linked issue fallback requires a separate explicit human confirmation after the failure is reported.
+- Linear and Jira child-ticket projections are follow-on optional collaboration surfaces, but the portable LDD contract is the same: create tracker-native child/sub-items where the tracker supports them, and record body traceability as backup.
 - Before updating an existing external child ticket, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.
 - Keep the MVP lightweight: do not create a separate decomposition artifact unless the user explicitly asks.
 

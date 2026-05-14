@@ -197,8 +197,9 @@ grep -q '## Parent Product Requirement' skills/ldd-setup/assets/templates/issue-
 grep -q 'GitHub child issue projection for SDD visibility' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q 'implementation child issues created by decomposition are children of this SDD issue' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q '## What to build' skills/ldd-setup/assets/templates/issue-body-child.md
-grep -q 'GitHub child issue projection' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q 'native child/sub-issue projection' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'SDD issue:' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q 'Tracker parent relationship:' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Acceptance criteria' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Blocked by' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## User stories covered' skills/ldd-setup/assets/templates/issue-body-child.md
@@ -209,6 +210,10 @@ grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
 grep -q "LDD's standalone child issue shape" skills/ldd-decompose/SKILL.md
 grep -q 'external contribution' skills/ldd-decompose/SKILL.md
 grep -q 'projected as GitHub issues' skills/ldd-decompose/SKILL.md
+grep -q 'native GitHub sub-issue' skills/ldd-decompose/SKILL.md
+grep -q 'POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues' skills/ldd-decompose/SKILL.md
+grep -q 'sub_issue_id' skills/ldd-decompose/SKILL.md
+grep -q 'body-only linked issue fallback requires a separate explicit human confirmation' skills/ldd-decompose/SKILL.md
 grep -q 'grandchildren of the PRD issue' skills/ldd-decompose/SKILL.md
 grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md

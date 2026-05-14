@@ -214,7 +214,7 @@ This feature does not change the approved GitHub hierarchy design. It validates 
 
 - PRD approval in GitHub tracker mode uses the GitHub issue number as the ticket ID.
 - SDD approval creates or binds an SDD issue that references the PRD issue.
-- Decomposition creates implementation child issues that reference the SDD issue.
+- Decomposition creates implementation child issues as native sub-issues of the SDD issue when GitHub supports sub-issues, with body traceability as backup.
 - External issue bodies use sanitized PRD/SDD/child content only.
 
 Any new research content must not be projected to GitHub unless later PRD/SDD artifacts already contain the sanitized conclusions.

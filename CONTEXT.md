@@ -113,7 +113,7 @@ A human-readable external tracker issue generated from LDD ledger and artifact s
 _Avoid_: canonical state, thin ID placeholder
 
 **GitHub-first Projection**:
-The first supported external tracker visibility path: GitHub issues for Product Requirement and Child Work Item visibility, and GitHub PRs for SDD/Plan and implementation review.
+The first supported external tracker visibility path: GitHub issues for Product Requirement, SDD, and Child Work Item visibility; native GitHub sub-issues for Child Work Item hierarchy where supported; and GitHub PRs for implementation review.
 _Avoid_: source of truth, sync engine, Linear/Jira parity
 
 **External Drift**:
@@ -173,8 +173,8 @@ _Avoid_: active ticket tree, deletion
 - An **External Ticket Projection** must be useful to a PM, TPM, Director, or implementation agent without requiring them to open repository files.
 - A **GitHub-first Projection** is the initial dogfooding path for external visibility.
 - Linear and Jira are follow-on optional collaboration surfaces until the **GitHub-first Projection** model is proven.
-- GitHub issues project **Product Requirement**, SDD, and **Child Work Item** visibility; GitHub PRs project implementation review.
-- In GitHub tracker mode, SDD approval creates or binds an SDD issue that references the parent **Product Requirement** issue. Decomposition-created **Child Work Item** issues reference the SDD issue, so the **Product Requirement** may have grandchildren in the external projection.
+- GitHub issues project **Product Requirement**, SDD, and **Child Work Item** visibility; GitHub native sub-issues project **Child Work Item** hierarchy where supported; GitHub PRs project implementation review.
+- In GitHub tracker mode, SDD approval creates or binds an SDD issue that references the parent **Product Requirement** issue. Decomposition-created **Child Work Item** issues must be attached as native sub-issues of the SDD issue when GitHub supports sub-issues, so the **Product Requirement** may have grandchildren in the external projection. Body links to the SDD issue are backup traceability, not a substitute for native sub-issue hierarchy when available.
 - **External Drift** stops automatic sync until a human decides whether to import, preserve, or overwrite the external contribution.
 
 ## Example dialogue

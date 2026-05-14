@@ -166,7 +166,7 @@ GitHub is the first external tracker dogfooding path, but it is still a projecti
 - GitHub PRs represent implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
 - PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.
-- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue; decomposition-created implementation issues reference the SDD issue, so the PRD issue has grandchildren.
+- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue; decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren.
 - Plan approval is repo-local gate approval. It does not create GitHub child issues; `/ldd:decompose` owns child issue preview and creation after its own explicit human confirmation.
 - Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
 - Before updating a managed GitHub body, re-read the external body and compare recorded hash/timestamp. If it changed, stop and ask the human to reconcile.
