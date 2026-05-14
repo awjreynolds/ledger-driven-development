@@ -21,6 +21,8 @@
 ## LDD Traceability
 
 - Parent PRD: `{parent_prd_path}`
+- Parent PRD issue: `{parent_prd_issue}`
+- SDD issue: `{sdd_issue}`
 - Plan: `{plan_path}`
 - Plan slice: `{plan_slice}`
 - Ledger: `{ledger_path}`

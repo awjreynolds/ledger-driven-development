@@ -36,6 +36,7 @@ Read the ledger first. Use the ledger to locate the PRD and SDD paths, artifact 
 - target ticket `ledger.yml`
 - compact ledger events
 - GitHub Product Requirement issue when approving a PRD in GitHub tracker mode
+- GitHub SDD issue when approving an SDD in GitHub tracker mode
 
 Do not write implementation plans, child tickets, verification reports, archive locations, or unrelated repository files from this command.
 
@@ -112,8 +113,13 @@ When blocked, report the gate candidates and the next command that owns the stat
 
 1. Confirm the PRD is approved in the ledger.
 2. Confirm the SDD exists and passes the SDD review checklist.
-3. Mark SDD frontmatter `status: approved` and update `updated`.
-4. Update ledger:
+3. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
+   - Build the issue from the current SDD content and `.ldd/templates/issue-body-sdd.md`.
+   - Reference the approved parent PRD issue number and URL in the SDD issue body.
+   - Record the SDD issue number and URL under `artifacts.sdd.external_id` and `artifacts.sdd.external_url`.
+   - Treat this SDD issue as the GitHub child ticket of the PRD issue.
+4. Mark SDD frontmatter `status: approved` and update `updated`.
+5. Update ledger:
    - `ticket.status: approved`
    - `artifacts.sdd.status: approved`
    - `execution_context.phase: plan`
@@ -123,8 +129,7 @@ When blocked, report the gate candidates and the next command that owns the stat
    - `execution_context.next_reason: Software Design Document is approved and ready for implementation planning.`
    - `execution_context.approved_artifacts.sdd` to the SDD path
    - `execution_context.boundaries.design` to the SDD path
-5. Append an `sdd_approved` event with `actor: human`.
-6. In GitHub tracker mode, prepare or update the SDD/plan review PR projection only after explicit human confirmation and drift checks.
+6. Append an `sdd_approved` event with `actor: human`.
 7. Report the next command: `/ldd:plan <ticket-id>`.
 
 ## GitHub Projection Rule
@@ -132,9 +137,11 @@ When blocked, report the gate candidates and the next command that owns the stat
 GitHub is the first external tracker dogfooding path, but it is still a projection:
 
 - GitHub issues represent PRD and child work visibility.
-- GitHub PRs represent SDD/plan review and implementation review.
+- GitHub issues represent SDD review visibility as a child ticket of the PRD issue.
+- GitHub PRs represent implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
 - PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.
+- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue; decomposition-created implementation issues reference the SDD issue, so the PRD issue has grandchildren.
 - Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
 - Before updating a managed GitHub body, re-read the external body and compare recorded hash/timestamp. If it changed, stop and ask the human to reconcile.
 
@@ -190,3 +197,4 @@ Preserve existing unrelated ledger fields and events.
 - requested approval is for plan, decomposition, verification, closure, or a non-PRD/SDD external mutation
 - external drift is detected
 - GitHub tracker mode is configured but the Product Requirement issue cannot be created or bound
+- GitHub tracker mode is configured for SDD approval but the SDD issue cannot be created or bound

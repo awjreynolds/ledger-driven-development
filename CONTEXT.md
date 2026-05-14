@@ -173,7 +173,8 @@ _Avoid_: active ticket tree, deletion
 - An **External Ticket Projection** must be useful to a PM, TPM, Director, or implementation agent without requiring them to open repository files.
 - A **GitHub-first Projection** is the initial dogfooding path for external visibility.
 - Linear and Jira are follow-on optional collaboration surfaces until the **GitHub-first Projection** model is proven.
-- GitHub issues project **Product Requirement** and **Child Work Item** visibility; GitHub PRs project SDD/Plan and implementation review.
+- GitHub issues project **Product Requirement**, SDD, and **Child Work Item** visibility; GitHub PRs project implementation review.
+- In GitHub tracker mode, SDD approval creates or binds an SDD issue that references the parent **Product Requirement** issue. Decomposition-created **Child Work Item** issues reference the SDD issue, so the **Product Requirement** may have grandchildren in the external projection.
 - **External Drift** stops automatic sync until a human decides whether to import, preserve, or overwrite the external contribution.
 
 ## Example dialogue

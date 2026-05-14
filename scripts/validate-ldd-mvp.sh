@@ -19,6 +19,7 @@ skills/ldd-setup/assets/templates/sdd.md
 skills/ldd-setup/assets/templates/plan.md
 skills/ldd-setup/assets/templates/plan.html
 skills/ldd-setup/assets/templates/issue-body-prd.md
+skills/ldd-setup/assets/templates/issue-body-sdd.md
 skills/ldd-setup/assets/templates/issue-body-child.md
 skills/ldd-setup/assets/templates/pr-body-prd.md
 skills/ldd-setup/assets/templates/pr-body-sdd-plan.md
@@ -145,6 +146,8 @@ grep -q 'exactly one approval gate is active' skills/ldd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/ldd-approve/SKILL.md
 grep -q 'GitHub issue number as the stable ticket ID' skills/ldd-approve/SKILL.md
 grep -q 'Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode' skills/ldd-approve/SKILL.md
+grep -q 'GitHub SDD issue' skills/ldd-approve/SKILL.md
+grep -q 'child ticket of the PRD issue' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
 grep -q 'This is a bounded shared understanding gate' skills/ldd-scope/SKILL.md
@@ -187,8 +190,12 @@ grep -q 'must not introduce new architecture decisions' skills/ldd-setup/assets/
 grep -q '## Problem Statement' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q 'GitHub issue projection' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q '## LDD Links' skills/ldd-setup/assets/templates/issue-body-prd.md
+grep -q '## Parent Product Requirement' skills/ldd-setup/assets/templates/issue-body-sdd.md
+grep -q 'GitHub child issue projection for SDD visibility' skills/ldd-setup/assets/templates/issue-body-sdd.md
+grep -q 'implementation child issues created by decomposition are children of this SDD issue' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q '## What to build' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'GitHub child issue projection' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q 'SDD issue:' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Acceptance criteria' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Blocked by' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## User stories covered' skills/ldd-setup/assets/templates/issue-body-child.md
@@ -199,6 +206,7 @@ grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
 grep -q "LDD's standalone child issue shape" skills/ldd-decompose/SKILL.md
 grep -q 'external contribution' skills/ldd-decompose/SKILL.md
 grep -q 'projected as GitHub issues' skills/ldd-decompose/SKILL.md
+grep -q 'grandchildren of the PRD issue' skills/ldd-decompose/SKILL.md
 grep -q 'Built-in TDD Loop' skills/ldd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/ldd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/ldd-implement/SKILL.md

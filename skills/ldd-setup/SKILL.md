@@ -39,6 +39,7 @@ Bootstrap the current target repository for the LDD MVP workflow.
 - `.ldd/templates/plan.html`
 - `.ldd/templates/verification.md`
 - `.ldd/templates/issue-body-prd.md`
+- `.ldd/templates/issue-body-sdd.md`
 - `.ldd/templates/issue-body-child.md`
 - `.ldd/templates/pr-body-prd.md`
 - `.ldd/templates/pr-body-sdd-plan.md`
@@ -52,7 +53,7 @@ Copy templates exactly unless the user explicitly asks to customize them. The te
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- GitHub-first tracker readiness means GitHub issues for PRD/child work and GitHub PRs for SDD/plan/implementation review, all as managed projections of the repo-local ledger.
+- GitHub-first tracker readiness means GitHub issues for PRD, SDD, and child work visibility and GitHub PRs for implementation review, all as managed projections of the repo-local ledger.
 - Linear and Jira remain optional follow-on collaboration surfaces until the GitHub projection model is proven.
 - Every Product Requirement starts in `docs/tickets/_drafts/YYYY-MM-DD-short-slug/` with a `ledger.yml`.
 - Promotion moves the draft directory to a stable ticket ID directory. Local mode uses the configured local prefix. GitHub mode creates or binds the Product Requirement issue during PRD approval and uses the GitHub issue number as the ticket ID.

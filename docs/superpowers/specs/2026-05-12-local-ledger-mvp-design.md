@@ -180,18 +180,18 @@ Events are important workflow transitions only. They are not progress logs or se
 External trackers are configured through `.ldd/config.yml`. The MVP supports the model, not full sync engines:
 
 - `local`: use `LDD-0001` style local IDs.
-- `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD/child work and GitHub PRs for SDD/plan and implementation review.
+- `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD, SDD, and child work visibility and GitHub PRs for implementation review.
 - `linear`, `jira`: follow-on optional collaboration surfaces after the GitHub-first projection model is proven.
 
 External mutations require human confirmation. If local ledger state and external tracker state diverge, commands report drift and stop rather than silently reconciling.
 
 The MVP supports the state model for external IDs, but does not promise a full sync engine. GitHub projections can be dogfooded first without making GitHub canonical; Linear and Jira should not be treated as parity requirements yet.
 
-External tracker tickets are rich projections, not thin placeholders. A TPM, PM, Director, or implementation agent must be able to read the external ticket without opening the repository and understand the product requirement or child work item.
+External tracker tickets are rich projections, not thin placeholders. A TPM, PM, Director, or implementation agent must be able to read the external ticket without opening the repository and understand the product requirement, SDD review context, or child work item.
 
 Parent Product Requirement tickets use `.ldd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and LDD links.
 
-Child work item tickets use `.ldd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal LDD traceability.
+SDD tickets use `.ldd/templates/issue-body-sdd.md` and reference the parent PRD issue. Child work item tickets use `.ldd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal LDD traceability. In GitHub mode, decomposition-created child work issues reference the SDD issue as their parent review context, which makes them grandchildren of the PRD issue in the LDD projection model.
 
 `/ldd:decompose` must preview the complete proposed child ticket set before creation. The preview includes title, Autonomous/Human-review type, blockers, user stories covered, and summary. External child tickets are created only after human approval.
 

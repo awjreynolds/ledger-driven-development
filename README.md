@@ -113,8 +113,9 @@ External trackers are optional review and sync surfaces. They are not canonical 
 
 GitHub is the first external-tracker dogfooding path:
 
-- GitHub issues project PRD and child work visibility.
-- GitHub PRs project SDD/plan review and implementation review.
+- GitHub issues project PRD, SDD, and child work visibility.
+- SDD issues are children of PRD issues; implementation child work issues created by decomposition reference the SDD issue, so a PRD issue may have implementation issue grandchildren.
+- GitHub PRs project implementation review.
 - LDD updates managed GitHub bodies only after explicit human confirmation and drift checks.
 - Linear and Jira remain follow-on optional collaboration surfaces until the GitHub model is proven.
 
@@ -169,7 +170,7 @@ The templates are quality contracts, not blank forms:
 - Verification checks child-ticket closure readiness before archive or external close.
 - Close applies verified closure, archives child work locally, and can close/archive a parent only when every child is verified and closeable.
 - External issue bodies are rich projections of the ledger and artifacts, readable without opening the repo.
-- GitHub-first projections use issues for PRD/child work and PRs for SDD/plan/implementation review while keeping the repo-local ledger canonical.
+- GitHub-first projections use issues for PRD, SDD, and child work visibility and PRs for implementation review while keeping the repo-local ledger canonical.
 - Child tickets follow LDD's standalone independently-grabbable shape: parent, what to build, acceptance criteria, blockers, user stories covered, and LDD traceability.
 - PR bodies focus reviewers on the correct handoff question.
 
