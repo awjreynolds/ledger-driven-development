@@ -123,6 +123,7 @@ When blocked, report the gate candidates and the next command that owns the stat
 2. Confirm the SDD exists and passes the SDD review checklist.
 3. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
    - Build the issue from the current SDD content and `.ldd/templates/issue-body-sdd.md`.
+   - Title the SDD issue `PRD #<prd_issue_number> SDD: <short title>` so tracker issue lists visibly show which Product Requirement the design belongs to.
    - Reference the approved parent PRD issue number and URL in the SDD issue body.
    - Record the SDD issue number and URL under `artifacts.sdd.external_id` and `artifacts.sdd.external_url`.
    - Treat this SDD issue as the GitHub child ticket of the PRD issue.
@@ -166,7 +167,7 @@ GitHub is the first external tracker dogfooding path, but it is still a projecti
 - GitHub PRs represent implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
 - PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.
-- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue; decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren.
+- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue in both the issue title and body. The title must start with `PRD #<prd_issue_number> SDD:`. Decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren.
 - Plan approval is repo-local gate approval. It does not create GitHub child issues; `/ldd:decompose` owns child issue preview and creation after its own explicit human confirmation.
 - Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
 - Before updating a managed GitHub body, re-read the external body and compare recorded hash/timestamp. If it changed, stop and ask the human to reconcile.

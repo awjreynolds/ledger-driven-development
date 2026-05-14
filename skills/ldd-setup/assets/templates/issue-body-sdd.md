@@ -1,4 +1,4 @@
-# SDD: {title}
+# PRD {prd_issue} SDD: {title}
 
 ## Parent Product Requirement
 

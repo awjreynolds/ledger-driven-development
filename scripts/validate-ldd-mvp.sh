@@ -150,6 +150,7 @@ grep -q 'GitHub is the first external tracker dogfooding path' skills/ldd-approv
 grep -q 'GitHub issue number as the stable ticket ID' skills/ldd-approve/SKILL.md
 grep -q 'Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode' skills/ldd-approve/SKILL.md
 grep -q 'GitHub SDD issue' skills/ldd-approve/SKILL.md
+grep -q 'PRD #<prd_issue_number> SDD:' skills/ldd-approve/SKILL.md
 grep -q 'child ticket of the PRD issue' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
@@ -194,6 +195,7 @@ grep -q '## Problem Statement' skills/ldd-setup/assets/templates/issue-body-prd.
 grep -q 'GitHub issue projection' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q '## LDD Links' skills/ldd-setup/assets/templates/issue-body-prd.md
 grep -q '## Parent Product Requirement' skills/ldd-setup/assets/templates/issue-body-sdd.md
+grep -q '# PRD {prd_issue} SDD: {title}' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q 'GitHub child issue projection for SDD visibility' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q 'implementation child issues created by decomposition are children of this SDD issue' skills/ldd-setup/assets/templates/issue-body-sdd.md
 grep -q '## What to build' skills/ldd-setup/assets/templates/issue-body-child.md
