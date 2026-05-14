@@ -45,7 +45,7 @@ docs/tickets/_drafts/YYYY-MM-DD-short-slug/
 
 An incomplete promoted ticket does not block a new draft. `/ldd:scope` may create a new draft while other promoted tickets remain active, but local mode keeps at most one active draft in `_drafts/` to avoid ambiguous Product Manager work.
 
-Promotion assigns a stable ticket ID and moves the directory:
+Promotion assigns a stable ticket ID and moves the directory. Local mode uses the configured local prefix:
 
 ```text
 docs/tickets/LDD-0001/
@@ -57,7 +57,7 @@ docs/tickets/LDD-0001/
   children/
 ```
 
-If an external tracker is configured, promotion may create or bind to an external ID such as `PROJ-123` and use that as the promoted directory name.
+If GitHub is configured, PRD approval creates or binds the GitHub Product Requirement issue first, then uses the GitHub issue number as the stable ticket ID and promoted directory name, for example `docs/tickets/123-short-slug/`.
 
 Completed child work items move to:
 
@@ -180,7 +180,7 @@ Events are important workflow transitions only. They are not progress logs or se
 External trackers are configured through `.ldd/config.yml`. The MVP supports the model, not full sync engines:
 
 - `local`: use `LDD-0001` style local IDs.
-- `github`: first external tracker dogfooding path, using GitHub issues for PRD/child work and GitHub PRs for SDD/plan and implementation review.
+- `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD/child work and GitHub PRs for SDD/plan and implementation review.
 - `linear`, `jira`: follow-on optional collaboration surfaces after the GitHub-first projection model is proven.
 
 External mutations require human confirmation. If local ledger state and external tracker state diverge, commands report drift and stop rather than silently reconciling.

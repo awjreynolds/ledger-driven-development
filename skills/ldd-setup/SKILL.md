@@ -55,7 +55,7 @@ Copy templates exactly unless the user explicitly asks to customize them. The te
 - GitHub-first tracker readiness means GitHub issues for PRD/child work and GitHub PRs for SDD/plan/implementation review, all as managed projections of the repo-local ledger.
 - Linear and Jira remain optional follow-on collaboration surfaces until the GitHub projection model is proven.
 - Every Product Requirement starts in `docs/tickets/_drafts/YYYY-MM-DD-short-slug/` with a `ledger.yml`.
-- Promotion moves the draft directory to a stable ticket ID directory using either a local ID such as `LDD-0001` or an external tracker ID.
+- Promotion moves the draft directory to a stable ticket ID directory. Local mode uses the configured local prefix. GitHub mode creates or binds the Product Requirement issue during PRD approval and uses the GitHub issue number as the ticket ID.
 - Do not create `docs/adr/` during setup. The ADR directory is created or confirmed only when the first ADR is needed.
 - Do not push, create external tickets, open PRs, comment, request reviewers, or otherwise mutate an external tracker.
 - Show a summary and diff. Commit locally only after explicit human approval.

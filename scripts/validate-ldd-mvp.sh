@@ -143,6 +143,8 @@ grep -q 'Approve exactly one PRD or SDD gate' skills/ldd-approve/SKILL.md
 grep -q 'does not approve implementation plans' skills/ldd-approve/SKILL.md
 grep -q 'exactly one approval gate is active' skills/ldd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/ldd-approve/SKILL.md
+grep -q 'GitHub issue number as the stable ticket ID' skills/ldd-approve/SKILL.md
+grep -q 'Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
 grep -q 'This is a bounded shared understanding gate' skills/ldd-scope/SKILL.md
@@ -246,6 +248,7 @@ grep -q 'PRD template as a quality contract' skills/ldd-scope/SKILL.md
 grep -q 'should not prescribe exact command behavior' skills/ldd-elaborate/SKILL.md
 grep -q 'Preserve the Product Manager boundary' skills/ldd-refine/SKILL.md
 grep -q 'Run /ldd:approve <ticket-id> to approve this PRD' skills/ldd-refine/SKILL.md
+grep -q 'GitHub issue number as the promoted ticket ID' skills/ldd-refine/SKILL.md
 grep -q "SDD template's quality bar" skills/ldd-design/SKILL.md
 grep -q 'SDD approval must be recorded through `/ldd:approve <ticket-id>`' skills/ldd-design/SKILL.md
 grep -q "plan template's traceability" skills/ldd-plan/SKILL.md

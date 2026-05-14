@@ -9,7 +9,7 @@ Approve exactly one PRD or SDD gate for an LDD ticket.
 
 This command is a standalone, agent-agnostic LDD command. Follow this file directly; do not require any other installed skill.
 
-Scope this command to PRD and SDD approval only. It does not approve implementation plans, decomposition, closure, external tracker mutation, PR merges, or broad workflow automation.
+Scope this command to PRD and SDD approval only. It does not approve implementation plans, decomposition, closure, PR merges, or broad workflow automation.
 
 ## Input
 
@@ -35,8 +35,9 @@ Read the ledger first. Use the ledger to locate the PRD and SDD paths, artifact 
 - SDD frontmatter/status when approving the SDD
 - target ticket `ledger.yml`
 - compact ledger events
+- GitHub Product Requirement issue when approving a PRD in GitHub tracker mode
 
-Do not write implementation plans, child tickets, verification reports, archive locations, external trackers, or unrelated repository files from this command.
+Do not write implementation plans, child tickets, verification reports, archive locations, or unrelated repository files from this command.
 
 ## Rules
 
@@ -45,10 +46,10 @@ Do not write implementation plans, child tickets, verification reports, archive 
 - Approve only when exactly one approval gate is active.
 - PRD approval is allowed only for a draft PRD gate.
 - SDD approval is allowed only when the PRD is already approved and a draft SDD gate is active.
-- `/ldd:approve` does not approve plan review, decomposition review, closure, verification overrides, external issue creation, external issue updates, external close, PR creation, PR update, or PR merge.
+- `/ldd:approve` does not approve plan review, decomposition review, closure, verification overrides, external close, PR creation, PR update, or PR merge.
 - Preserve approved boundaries. If approval would change product scope or design, stop and route to `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, or `/ldd:design`.
 - In local tracker mode, approval mutates only repo-local artifacts and ledger state.
-- In GitHub tracker mode, approval may prepare a managed projection using the configured templates, but it must ask for explicit human confirmation before creating or updating an external issue or PR.
+- In GitHub tracker mode, PRD approval creates or binds the GitHub Product Requirement issue before local promotion. The explicit `/ldd:approve <draft-id>` invocation is the human confirmation to create or bind that Product Requirement issue. Other GitHub mutations still require their owning command and explicit confirmation.
 - If external drift is detected, stop before mutation and ask the human to reconcile the external contribution.
 - Commit locally after approval when you changed files.
 
@@ -85,9 +86,16 @@ When blocked, report the gate candidates and the next command that owns the stat
 ## PRD Approval Workflow
 
 1. Confirm the PRD exists and passes the Product Manager handoff checklist.
-2. If the ticket is still in a draft directory and approval is promoting it, assign or preserve the stable ticket ID according to the existing local ledger convention.
-3. Mark PRD frontmatter `status: approved` and update `updated`.
-4. Update ledger:
+2. If tracker mode is GitHub and the ticket is still in a draft directory:
+   - Create or bind the GitHub Product Requirement issue before changing the local PRD.
+   - Build the issue from the current draft `prd.md` content and `.ldd/templates/issue-body-prd.md`.
+   - Use the returned GitHub issue number as the stable ticket ID.
+   - Move the draft directory to `docs/tickets/<issue-number>-<short-slug>/`.
+   - Set `ticket.id` and `tracker.external_id` to the issue number, and `tracker.external_url` to the issue URL.
+   - Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode.
+3. If tracker mode is local and the ticket is still in a draft directory, assign the next local ID according to the configured local ledger convention.
+4. Mark PRD frontmatter `ticket` to the stable ticket ID, set `status: approved`, and update `updated`.
+5. Update ledger:
    - `ticket.status: approved`
    - `artifacts.prd.status: approved`
    - `execution_context.phase: design`
@@ -97,8 +105,7 @@ When blocked, report the gate candidates and the next command that owns the stat
    - `execution_context.next_reason: PRD is approved and ready for engineering design.`
    - `execution_context.approved_artifacts.prd` to the PRD path
    - `execution_context.boundaries.product` to the PRD path
-5. Append a `prd_approved` event with `actor: human`.
-6. In external tracker mode, prepare the Product Requirement projection from `.ldd/templates/issue-body-prd.md`, ask for explicit human confirmation before creating/updating it, then record the external ID/URL/hash only after success.
+6. Append a `prd_approved` event with `actor: human`.
 7. Report the next command: `/ldd:design <ticket-id>`.
 
 ## SDD Approval Workflow
@@ -127,7 +134,8 @@ GitHub is the first external tracker dogfooding path, but it is still a projecti
 - GitHub issues represent PRD and child work visibility.
 - GitHub PRs represent SDD/plan review and implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
-- Every GitHub create, update, comment, label, close, or PR mutation needs explicit human confirmation.
+- PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.
+- Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
 - Before updating a managed GitHub body, re-read the external body and compare recorded hash/timestamp. If it changed, stop and ask the human to reconcile.
 
 Linear and Jira are follow-on optional collaboration surfaces. Do not invent Linear or Jira behavior while implementing this command.
@@ -143,7 +151,7 @@ artifacts:
 execution_context:
   phase: design
   current_gate: design
-  next_command: /ldd:design LDD-0003
+  next_command: /ldd:design 123
   next_human_action: null
 events:
   - at: 2026-05-13T00:00:00Z
@@ -160,7 +168,7 @@ artifacts:
 execution_context:
   phase: plan
   current_gate: plan
-  next_command: /ldd:plan LDD-0003
+  next_command: /ldd:plan 123
   next_human_action: null
 events:
   - at: 2026-05-13T00:00:00Z
@@ -179,6 +187,6 @@ Preserve existing unrelated ledger fields and events.
 - PRD is not approved before SDD approval
 - no active PRD or SDD approval gate
 - multiple active approval gates
-- requested approval is for plan, decomposition, verification, closure, or external mutation
+- requested approval is for plan, decomposition, verification, closure, or a non-PRD/SDD external mutation
 - external drift is detected
-- external mutation is needed but human confirmation is not explicit
+- GitHub tracker mode is configured but the Product Requirement issue cannot be created or bound

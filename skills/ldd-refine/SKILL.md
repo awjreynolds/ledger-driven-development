@@ -90,11 +90,11 @@ Use this reviewer prompt exactly: "Is this ready for engineering design? If yes,
 - Do not expand scope or add technical design.
 - Preserve the Product Manager boundary: acceptance criteria describe required product/workflow outcomes, not the engineering solution that will satisfy them.
 - Commit locally after refinement.
-- End refinement with an explicit approval prompt: `Run /ldd:approve <ticket-id> to approve this PRD and create or sync the external Product Requirement ticket only when a tracker is configured and you explicitly confirm that mutation.`
+- End refinement with an explicit approval prompt: `Run /ldd:approve <ticket-id> to approve this PRD. In GitHub tracker mode, approval creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.`
 - If the human has already approved the refined PRD in the current turn, do not stop at a refined draft. Promote it immediately.
 - Promotion assigns the stable ticket ID, moves the draft directory out of `_drafts`, updates `ledger.yml` and PRD frontmatter links/IDs, marks the PRD approved, and commits the promotion.
 - In `local` tracker mode, the promoted repo-local ledger directory is the real Product Requirement ticket.
-- In GitHub tracker mode, promotion creates or binds the external Product Requirement issue and records its ID/URL in `ledger.yml` only after explicit human confirmation and drift checks.
+- In GitHub tracker mode, promotion creates or binds the GitHub Product Requirement issue before approving the local PRD. The GitHub issue number is the stable ticket ID and the promoted directory name uses that number, not a local `LDD-0004` style ID.
 - Linear and Jira are follow-on optional collaboration surfaces; do not invent Linear or Jira mutation behavior in this command.
 - External Product Requirement tickets must be readable without opening the repo. Use `.ldd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and LDD links.
 - Before updating an existing external ticket, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.

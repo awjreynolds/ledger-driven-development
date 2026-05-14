@@ -142,7 +142,7 @@ _Avoid_: active ticket tree, deletion
 - Multiple **Promoted Ticket Directories** may be active at different LDD phases.
 - Local mode keeps at most one **Active Draft** to avoid ambiguous Product Manager work.
 - If an **Active Draft** already exists, new scoping work continues that draft or explicitly resolves it before starting another.
-- A **Ticket Promotion** assigns either a **Local Ticket ID** or an **External Tracker ID** as the final ticket identifier.
+- A **Ticket Promotion** assigns either a **Local Ticket ID** or an **External Tracker ID** as the final ticket identifier. In GitHub tracker mode, the GitHub issue number is the final ticket identifier.
 - A **Ticket Promotion** moves the **Draft Ticket Directory** to a **Promoted Ticket Directory**.
 - A **Promoted Ticket Directory** name is stable after review starts.
 - A **Ledger** contains current state and a small history of **Ledger Events**.
