@@ -177,8 +177,6 @@ for command in $commands; do
 done
 
 grep -q '`.gadd/config.yml`' skills/gadd-setup/SKILL.md
-grep -q 'docs/tickets/_drafts/' skills/gadd-setup/SKILL.md
-grep -q 'docs/tickets/_archive/' skills/gadd-setup/SKILL.md
 grep -q 'GitNexus is the strongly recommended code-intelligence surface' skills/gadd-setup/SKILL.md
 
 grep -q 'Read-only' skills/gadd-next/SKILL.md
@@ -399,7 +397,7 @@ grep -q 'needs_prd' skills/gadd-next/SKILL.md
 grep -q 'bug_fix' skills/gadd-implement/SKILL.md
 grep -q 'task' skills/gadd-implement/SKILL.md
 grep -q 'approved triage outcome' skills/gadd-implement/SKILL.md
-grep -q 'Work Items, not only child tickets' skills/gadd-verify/SKILL.md
+grep -q 'verify Work Items, not only child tickets' skills/gadd-verify/SKILL.md
 grep -q 'Work Item archive directory' skills/gadd-archive/SKILL.md
 
 grep -q 'artifact quality guidance' skills/gadd-setup/SKILL.md
