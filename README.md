@@ -1,8 +1,33 @@
-# Ledger-Driven Development Skills
+# Ledger-Driven Development
 
-Agent-agnostic skills for the Ledger-Driven Development MVP.
+Enterprise teams can use AI agents for real software delivery without giving up SDLC governance, role ownership, roadmap visibility, review discipline, or multi-repo control.
 
-LDD uses a repo-local ledger as canonical workflow state. External trackers such as GitHub, Linear, or Jira are optional sync and review surfaces. LDD separates product scope, engineering design, implementation planning, decomposition, implementation, verification, and closure so AI-assisted work has explicit, reviewable handoffs.
+Ledger-Driven Development (LDD) is an AI-native workflow for product and engineering teams. It turns agent work into explicit SDLC handoffs: product scope, technical design, implementation planning, vertical-slice implementation, verification, and closure. The repo-local `ledger.yml` remains canonical; planning and review systems are projection surfaces.
+
+## Why LDD Exists
+
+AI agents are powerful, but chat-first delivery is a poor enterprise control plane.
+
+In a maverick chat/task loop, one prompt can quietly become product scope, technical design, implementation plan, test strategy, documentation policy, and closure decision. PM, EM, Tech Lead, SE, QA, and TPM responsibilities blur. Scope grows in the conversation. Planning systems drift. Reviewers end up asking "what happened?" instead of reviewing the intended handoff.
+
+LDD keeps the useful part of AI acceleration while putting the work back into recognizable SDLC boundaries:
+
+- product scope stays separate from engineering design
+- technical decisions are reviewed before implementation planning
+- implementation happens as bounded vertical slices
+- verification and closure are separate gates
+- business planning systems stay visible without becoming the hidden source of truth
+- multi-repo impact can be discovered without turning design into one unbounded cross-repo blob
+
+## What LDD Changes
+
+| Enterprise risk | LDD response |
+| --- | --- |
+| Agent chat becomes the source of truth | Repo-local `ledger.yml` records phase, gate, approved inputs, next action, external links, and evidence. |
+| Scope creep hides inside implementation | PRD, SDD, plan, decomposition, implementation, verification, and closure are separate handoffs. |
+| Existing planning tools go stale | External systems are managed projections for roadmap, review, and status visibility. |
+| Multi-repo work becomes unbounded | LDD is multi-repo aware, but SDDs and plans stay repo-scoped. |
+| Reviewers lack evidence | Implementation, documentation impact, verification, and closure evidence are recorded explicitly. |
 
 ## Package Model
 
