@@ -8,6 +8,8 @@ agent-skills.json
 README.md
 CONTEXT.md
 docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
+docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
+docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
 .claude-plugin/plugin.json
 .claude-plugin/marketplace.json
 gemini-extension.json
@@ -71,10 +73,16 @@ grep -q 'optional local archive cleanup' README.md
 grep -q 'GitHub is the first external-tracker dogfooding path' README.md
 grep -q 'Linear and Jira remain follow-on optional collaboration surfaces' README.md
 grep -q 'bounded shared-understanding gate' README.md
+grep -q 'GitNexus is the strongly recommended code-intelligence surface' README.md
+grep -q 'Implementation evidence must include documentation impact' README.md
 grep -q 'Package Source Of Truth' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:approve' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:verify' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q 'GitHub-first Projection' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
+grep -q 'GitNexus Code Intelligence Design' docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
+grep -q 'The PRD is the parent product contract' docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
+grep -q 'Documentation Freshness Design' docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
+grep -q 'Every implementation slice must account for documentation impact' docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Execution Context' CONTEXT.md
 grep -q 'Bounded Shared Understanding Gate' CONTEXT.md
@@ -127,6 +135,7 @@ done
 grep -q '`.ldd/config.yml`' skills/ldd-setup/SKILL.md
 grep -q 'docs/tickets/_drafts/' skills/ldd-setup/SKILL.md
 grep -q 'docs/tickets/_archive/' skills/ldd-setup/SKILL.md
+grep -q 'GitNexus is the strongly recommended code-intelligence surface' skills/ldd-setup/SKILL.md
 
 grep -q 'Read-only' skills/ldd-next/SKILL.md
 grep -q 'It never mutates GitHub or local files' skills/ldd-next/SKILL.md
@@ -175,17 +184,24 @@ grep -q 'do not read the codebase as a design input' skills/ldd-elaborate/SKILL.
 grep -q 'This is a bounded shared understanding gate' skills/ldd-elaborate/SKILL.md
 grep -q 'do not read the codebase as a design input' skills/ldd-refine/SKILL.md
 grep -q 'This is a bounded shared understanding gate' skills/ldd-refine/SKILL.md
+grep -q 'explicit uncertainties' skills/ldd-scope/SKILL.md
+grep -q 'explicit uncertainties' skills/ldd-elaborate/SKILL.md
+grep -q 'explicit uncertainties' skills/ldd-refine/SKILL.md
 
 grep -q 'draft_directory: docs/tickets/_drafts' skills/ldd-setup/assets/templates/config.yml
 grep -q 'archive_directory: docs/tickets/_archive' skills/ldd-setup/assets/templates/config.yml
 grep -q 'GitHub-first managed projections' skills/ldd-setup/assets/templates/config.yml
 grep -q 'Linear and Jira are follow-on collaboration surfaces' skills/ldd-setup/assets/templates/config.yml
+grep -q 'code_intelligence:' skills/ldd-setup/assets/templates/config.yml
+grep -q 'preferred_tool: gitnexus' skills/ldd-setup/assets/templates/config.yml
 grep -q 'schema_version: 1' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'children: \[\]' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'research:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q '# LDD Research' skills/ldd-setup/assets/templates/research.md
 grep -q 'Readiness Decision' skills/ldd-setup/assets/templates/research.md
 grep -q 'Sensitivity Handling' skills/ldd-setup/assets/templates/research.md
+grep -q 'GitNexus / Code Intelligence' skills/ldd-setup/assets/templates/research.md
+grep -q 'Explicit Uncertainties' skills/ldd-setup/assets/templates/research.md
 grep -q 'external_body_hash:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'managed_body_version:' skills/ldd-setup/assets/templates/ledger.yml
 grep -q 'current_gate: scope' skills/ldd-setup/assets/templates/ledger.yml
@@ -208,6 +224,8 @@ grep -q '# Implementation Plan:' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Acceptance Criteria Traceability' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Slice quality bar:' skills/ldd-setup/assets/templates/plan.md
 grep -q 'Review load' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Documentation Impact' skills/ldd-setup/assets/templates/plan.md
+grep -q 'Documentation impact is explicit' skills/ldd-setup/assets/templates/plan.md
 grep -q '200 changed files' skills/ldd-setup/assets/templates/plan.md
 grep -q 'must not introduce new architecture decisions' skills/ldd-setup/assets/templates/plan.md
 grep -q '## Problem Statement' skills/ldd-setup/assets/templates/issue-body-prd.md
@@ -225,12 +243,14 @@ grep -q '## Acceptance criteria' skills/ldd-setup/assets/templates/issue-body-ch
 grep -q '## Blocked by' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## User stories covered' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q '## Review load' skills/ldd-setup/assets/templates/issue-body-child.md
+grep -q '## Documentation impact' skills/ldd-setup/assets/templates/issue-body-child.md
 grep -q 'Decompose only from an approved plan' skills/ldd-decompose/SKILL.md
 grep -q 'vertical slices' skills/ldd-decompose/SKILL.md
 grep -q 'cognitive-load budget' skills/ldd-decompose/SKILL.md
 grep -q '200 changed files' skills/ldd-decompose/SKILL.md
 grep -q 'focused human review' skills/ldd-decompose/SKILL.md
 grep -q 'Preview Before Creation' skills/ldd-decompose/SKILL.md
+grep -q 'Documentation impact' skills/ldd-decompose/SKILL.md
 grep -q 'independently grabbable' skills/ldd-decompose/SKILL.md
 grep -q 'SDD #<sdd_issue_number> Slice <slice-number>:' skills/ldd-decompose/SKILL.md
 grep -q "LDD's standalone child issue shape" skills/ldd-decompose/SKILL.md
@@ -250,8 +270,12 @@ grep -q 'closure.status: verification_required' skills/ldd-implement/SKILL.md
 grep -q 'Do not archive child tickets' skills/ldd-implement/SKILL.md
 grep -q 'Do not close external child work items' skills/ldd-implement/SKILL.md
 grep -q 'implementation PR is a managed projection' skills/ldd-implement/SKILL.md
+grep -q 'documentation impact status and paths or rationale' skills/ldd-implement/SKILL.md
+grep -q 'documentation impact is `blocked`' skills/ldd-implement/SKILL.md
 grep -q 'child-ticket closure' skills/ldd-verify/SKILL.md
 grep -q 'not a general repository healthcheck' skills/ldd-verify/SKILL.md
+grep -q 'documentation impact evidence' skills/ldd-verify/SKILL.md
+grep -q 'GitNexus may be used for optional blast-radius' skills/ldd-verify/SKILL.md
 grep -q 'implementation completion' skills/ldd-verify/SKILL.md
 grep -q 'closure.status' skills/ldd-verify/SKILL.md
 grep -q 'passed | failed | override_required' skills/ldd-verify/SKILL.md

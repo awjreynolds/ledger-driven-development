@@ -36,7 +36,15 @@ financial/commercial/customer material here.
 
 ## Codebase Facts
 
-## Assumptions
+### GitNexus / Code Intelligence
+
+- GitNexus used:
+- Indexed repositories considered:
+- Indexed commits or staleness notes:
+- Evidence classes or queries:
+- Limitations:
+
+## Explicit Uncertainties
 
 ## Risks
 

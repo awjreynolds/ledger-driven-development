@@ -25,7 +25,7 @@ Support three entry modes when the user's intent is not already obvious:
 
 - **Guided**: ask one scope question at a time.
 - **Context dump**: use the supplied context, skip resolved questions, and ask only for missing scope decisions.
-- **Best guess**: draft scope from available context, label assumptions, and keep uncertain points in dependencies or open questions.
+- **Best effort from supplied context**: draft scope from available context, label explicit uncertainties, and keep uncertain points in dependencies or open questions.
 
 Core scope questions:
 
@@ -43,7 +43,7 @@ Required input standard before writing or updating scope:
 - enough evidence, current-workflow context, constraints, or research readiness to avoid inventing the boundary
 - candidate non-goals or enough context to identify likely scope creep
 
-If `artifacts.research.status` is present, proceed only when it is `ready_for_scope`. If research is `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`, reject scope and report that readiness decision. If no research exists but the supplied context meets this standard, scope may proceed and record assumptions. If the standard is not met, write nothing and route to `/ldd:research` or ask one decisive missing-context question. The earliest LDD command that can repair weak source inputs is `/ldd:research`.
+If `artifacts.research.status` is present, proceed only when it is `ready_for_scope`. If research is `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`, reject scope and report that readiness decision. If no research exists but the supplied context meets this standard, scope may proceed and record explicit uncertainties. If the standard is not met, write nothing and route to `/ldd:research` or ask one decisive missing-context question. The earliest LDD command that can repair weak source inputs is `/ldd:research`.
 
 ## Bounded Shared Understanding Gate
 

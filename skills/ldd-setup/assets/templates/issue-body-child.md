@@ -22,6 +22,10 @@
 
 {review_load}
 
+## Documentation impact
+
+{documentation_impact}
+
 ## LDD Traceability
 
 - Parent PRD: `{parent_prd_path}`

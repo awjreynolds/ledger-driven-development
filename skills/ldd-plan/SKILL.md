@@ -12,6 +12,7 @@ Create or update `plan.md` and generated `plan.html` in the promoted ticket dire
 - merged PRD
 - SDD
 - relevant ADRs
+- GitNexus code-intelligence context when available and relevant
 
 ## Plan Must Include
 
@@ -21,6 +22,7 @@ Create or update `plan.md` and generated `plan.html` in the promoted ticket dire
 - implementation slices
 - acceptance criteria traceability
 - files / modules expected to change
+- documentation impact by slice
 - test strategy
 - review checklist
 - planned vertical slices for later `/ldd:decompose`
@@ -41,6 +43,7 @@ If inputs fail this standard, write nothing and name the blocking gap. The earli
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - Use the plan template's traceability and review checklist as mandatory completion criteria.
+- GitNexus is strongly recommended for expected files/modules, slice boundaries, dependency order, and review-load estimates when code reality matters. If GitNexus is unavailable, stale, unindexed, or outside the configured related repositories, continue with normal inspection and record the limitation when it affects the plan.
 - The plan may define vertical slices, but child tickets are created by `/ldd:decompose`.
 - Do not introduce new architectural decisions. If planning discovers one, stop and return to `/ldd:design`.
 - `plan.md` is the durable source; `plan.html` is generated from it.

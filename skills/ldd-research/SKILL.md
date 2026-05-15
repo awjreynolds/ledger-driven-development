@@ -23,8 +23,11 @@ If no trigger, draft, ticket, or context source is provided, ask one direct ques
 - human-supplied private/local PM context when explicitly provided
 - `.ldd/config.yml` and ledger state when a draft or ticket is selected
 - prior research, PRD, SDD, plan, or child artifacts when present
+- GitNexus code-intelligence context when available and relevant
 
 Research may inspect code and local context to discover codebase facts, constraints, comparable behavior, and open questions. It must not mutate code, GitHub, or non-research artifacts.
+
+GitNexus is strongly recommended when the trigger needs codebase investigation, comparable behavior, architecture context, or possible multi-repo impact discovery. If GitNexus is unavailable, stale, unindexed, or outside the configured related repositories, continue with normal read-only repository inspection and record the limitation.
 
 ## Produces
 
@@ -72,7 +75,7 @@ Write `research.md` using the installed template when present. The shareable res
 - Desired Outcomes
 - Constraints
 - Codebase Facts
-- Assumptions
+- Explicit Uncertainties
 - Risks
 - Sensitivity Handling
 - Open Questions
@@ -99,22 +102,23 @@ Private/local context may inform research, but committed and GitHub-visible arti
 - Internal/private inputs may be summarized only as conclusions needed for product decisions.
 - Financially sensitive, customer-identifying, secret, revenue, budget, or commercial material must not be quoted, copied, named, or written as raw values.
 - Record redaction notes that describe the class of omitted material and the safe implication used.
-- If sanitization removes too much evidence to justify scoping, set readiness to `blocked_on_more_input` and ask the human for a shareable summary or permission to proceed with explicit assumptions.
+- If sanitization removes too much evidence to justify scoping, set readiness to `blocked_on_more_input` and ask the human for a shareable summary or permission to record explicit uncertainties for human review.
 
 ## Workflow
 
 1. Resolve or create the draft/ticket directory when requested. If no directory context is available, prepare research content and ask where to store it.
 2. Read the repo, docs, artifacts, and supplied private/local context read-only.
-3. Classify input sensitivity before drafting any committed output.
-4. Fill `research.md` with sanitized evidence, codebase facts, assumptions, risks, and open questions.
-5. Choose one readiness decision.
-6. Update optional ledger research fields and execution context when a ledger is available:
+3. When code reality matters, prefer GitNexus code intelligence if available. Record whether GitNexus was used, indexed repositories considered, relevant indexed commits or staleness notes, evidence classes used, and limitations.
+4. Classify input sensitivity before drafting any committed output.
+5. Fill `research.md` with sanitized evidence, codebase facts, explicit uncertainties, risks, and open questions.
+6. Choose one readiness decision.
+7. Update optional ledger research fields and execution context when a ledger is available:
    - `artifacts.research.path`
    - `artifacts.research.status`
    - `execution_context.phase: research`
    - `execution_context.current_gate: research`
    - `execution_context.next_command` to `/ldd:scope <draft-id-or-ticket-id>` only for `ready_for_scope`
-7. Report the readiness decision, artifact path, redaction notes, and next command or stop reason.
+8. Report the readiness decision, artifact path, redaction notes, GitNexus usage or limitation, and next command or stop reason.
 
 ## Rules
 
@@ -122,6 +126,7 @@ Private/local context may inform research, but committed and GitHub-visible arti
 - External mutations require human confirmation.
 - Research has full read-only repository, documentation, LDD artifact, and human-supplied private/local context visibility.
 - Research may write only sanitized `research.md` and ledger research state.
+- GitNexus findings must remain evidence, not product scope. Turn them into codebase facts, explicit uncertainties, risks, constraints, or open questions.
 - Do not mutate GitHub, create PRDs, approve artifacts, write design, write plans, decompose, implement, verify, close, or archive work.
 - Do not store raw private, customer, revenue, budget, financial, or commercial detail in committed artifacts.
 - Scope remains owned by `/ldd:scope`; research only says whether scoping is ready and why.

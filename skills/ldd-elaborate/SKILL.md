@@ -24,7 +24,7 @@ Support three entry modes when the user's intent is not already obvious:
 
 - **Guided**: ask one product-detail question at a time.
 - **Context dump**: use supplied context, skip resolved questions, and ask only for missing product detail.
-- **Best guess**: draft product detail from available context, label assumptions, and keep uncertain points in open questions.
+- **Best effort from supplied context**: draft product detail from available context, label explicit uncertainties, and keep uncertain points in open questions.
 
 Core elaboration questions:
 
@@ -63,7 +63,7 @@ Then walk each scoped goal one at a time:
 - If the branch exposes a new goal, new non-goal, or changed boundary, stop and route back to `/ldd:scope`.
 - If the branch belongs to engineering design, planning, implementation, or verification, capture it as a dependency or open question for the owning phase instead of adding it to acceptance criteria.
 
-Do not let best-guess mode resolve maintainer-specific knowledge silently. Label such assumptions and ask unless the missing detail is clearly non-blocking.
+Do not let best-effort mode resolve maintainer-specific knowledge silently. Label explicit uncertainties and ask unless the missing detail is clearly non-blocking.
 
 When elaboration is blocked, ask one decisive question and include a recommended product-facing answer. If interrupted, answer the interruption, restate elaboration status, and resume the current question.
 

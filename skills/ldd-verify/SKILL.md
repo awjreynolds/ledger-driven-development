@@ -30,7 +30,9 @@ If no child ticket ID is provided, stop and ask for one. Do not infer a target f
 - implementation evidence
 - implementation PR state when implementation evidence references a PR
 - check evidence
+- documentation impact evidence
 - external drift metadata when configured
+- optional GitNexus code-intelligence context when the approved plan or implementation evidence references it
 
 Read the child ledger before reading broader repo state. Use the child ledger and parent ledger to locate the approved artifacts and expected evidence paths.
 
@@ -40,6 +42,7 @@ Required input standard before writing verification:
 
 - exactly one implemented child ticket
 - child ledger implementation evidence and check evidence
+- documentation impact evidence for the implemented child
 - implementation PR state is externally checked when implementation evidence references a PR
 - approved parent PRD, approved parent SDD, approved parent plan, and child ticket body
 - no unresolved external tracker drift when a tracker projection exists
@@ -54,6 +57,7 @@ Required evidence:
 - implementation evidence from the child ledger, local diff summary, commit/PR reference, or implementation notes recorded by `/ldd:implement`
 - implementation PR evidence from the external tracker when a PR URL or number is recorded, including state, merge time, and merge commit when available
 - check evidence from automated command output, validation output, or explicit manual verification notes
+- documentation impact evidence with status `updated`, `not_needed`, or `blocked`, plus changed documentation paths or direct rationale
 - external drift metadata from `sync` fields or configured tracker metadata, including external update timestamps/body hashes when available
 
 ## Writes
@@ -70,6 +74,8 @@ Do not write outside the child ticket directory and child ledger except for the 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - Verification is specific to child-ticket closure. It is not a general repository healthcheck.
+- Verification checks documentation impact for the implemented child only. It is not a repository-wide documentation audit.
+- GitNexus may be used for optional blast-radius or change-impact checks, but missing GitNexus evidence must not block closure unless the approved plan explicitly required it.
 - Keep implementation completion separate from ticket closure.
 - Treat external tracker state as a projection. If external metadata shows unresolved drift, block closure and ask for human reconciliation.
 - Treat PR review, approval, merge, close, and branch deletion as external actions. Do not infer them from the conversation, local branch state, or the user's statement. If implementation evidence references a PR, read the external PR state before deciding verification.
@@ -77,7 +83,7 @@ Do not write outside the child ticket directory and child ledger except for the 
 - If the implementation PR is merged and there is no conflict with recorded ledger state, record the observed `mergedAt` and merge commit in `verification.md` and the child ledger as verification evidence; do not block merely because the ledger lacked that evidence before verification.
 - If the implementation PR is merged but conflicts with recorded ledger merge evidence, classify verification as `override_required` and route to human reconciliation before closure can be recommended.
 - Do not mutate external trackers, archive child tickets, close external tickets, push branches, or create PRs from this command.
-- Recommend closure only when the child acceptance criteria, approved parent artifacts, implementation evidence, check evidence, and drift checks all support closure.
+- Recommend closure only when the child acceptance criteria, approved parent artifacts, implementation evidence, documentation impact evidence, check evidence, and drift checks all support closure.
 - If evidence is missing or checks failed, write the blocking reason to `verification.md` and leave `closure.status` unclosed.
 
 ## Workflow
@@ -89,20 +95,22 @@ Do not write outside the child ticket directory and child ledger except for the 
 5. Collect implementation evidence for the child ticket. Prefer child ledger implementation evidence, then current diff/commit/PR evidence if referenced by the user.
 6. If implementation evidence references a PR, read the external PR state. For GitHub, inspect at least `state`, `mergedAt`, and merge commit. Do not treat conversational claims such as "merged" as evidence.
 7. Collect check evidence. Include exact commands and results when available; otherwise record the missing evidence as a blocker.
-8. Review scope/design/plan drift:
+8. Collect documentation impact evidence. Accept only `updated`, `not_needed`, or `blocked`; require changed documentation paths for `updated` and a direct rationale for `not_needed`.
+9. Optionally use GitNexus for blast-radius or change-impact checks when the approved plan or implementation evidence references it. Record missing or stale GitNexus evidence as a limitation unless the approved plan required fresh GitNexus evidence.
+10. Review scope/design/plan drift:
    - scope drift: implementation no longer fits the approved PRD or child acceptance criteria
    - design drift: implementation contradicts the approved SDD
    - plan drift: implementation does not match the approved plan slice or dependencies
-9. Review external drift metadata. If external ticket or PR drift is unresolved, block closure and identify the human reconciliation needed.
-10. Write or update `verification.md` as a human-readable report.
-11. Update only the child ledger verification state and compact event history.
-12. Report the result and next action to the user.
+11. Review external drift metadata. If external ticket or PR drift is unresolved, block closure and identify the human reconciliation needed.
+12. Write or update `verification.md` as a human-readable report.
+13. Update only the child ledger verification state and compact event history.
+14. Report the result and next action to the user.
 
 ## Verification Status Contract
 
 Update `artifacts.verification.status` to exactly one of:
 
-- `passed`: evidence is present, referenced implementation PR state is checked and recorded, checks pass, no scope/design/plan drift is detected, and no external ticket drift is unresolved.
+- `passed`: evidence is present, referenced implementation PR state is checked and recorded, documentation impact is satisfied, checks pass, no scope/design/plan drift is detected, and no external ticket drift is unresolved.
 - `failed`: closure must be blocked because evidence is missing, checks failed, or scope/design/plan drift is detected.
 - `override_required`: closure must be blocked because the command cannot decide safely without human override, most commonly unresolved external ticket drift, unavailable approved artifacts, ambiguous evidence, or a requested external mutation.
 
@@ -124,6 +132,7 @@ Block child-ticket closure when any of these are true:
 - parent ledger is missing
 - approved parent PRD, approved parent SDD, or approved parent plan is missing or not approved
 - implementation evidence is missing or does not trace to the child acceptance criteria
+- documentation impact evidence is missing, `blocked`, or inconsistent with a user-facing behavior, command behavior, public API, configuration, setup flow, template, integration contract, or operational workflow change
 - implementation PR state is open, closed without merge, unavailable, or conflicts with recorded ledger merge evidence
 - check evidence is missing, skipped without justification, or failed
 - scope/design/plan drift is detected
@@ -142,6 +151,7 @@ The report must include:
 - approved inputs with paths and approval status
 - execution context that states `Boundary: child-ticket closure only, not repository health`
 - implementation evidence and acceptance-criteria traceability
+- documentation impact status, changed documentation paths, or docs-not-needed rationale
 - implementation PR state, merge evidence, and reconciliation status when a PR is referenced
 - check evidence with command names, results, and skipped-check rationale
 - drift review for ledger drift, approved artifact drift, scope/design/plan drift, and external tracker drift

@@ -37,14 +37,15 @@ This plan translates the approved PRD and SDD into executable slices. It must no
 
 Use thin vertical slices where possible. Each slice should leave the repo in a reviewable state and include its own verification.
 
-| Slice | Outcome | Files/modules | Tests/checks | Dependencies | Review load |
-| --- | --- | --- | --- | --- | --- |
-| 1.  |  |  |  |  | Low/Medium/High; expected file groups and risk |
+| Slice | Outcome | Files/modules | Documentation impact | Tests/checks | Dependencies | Review load |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1.  |  |  | Updated / Not needed with reason / Blocked question |  |  | Low/Medium/High; expected file groups and risk |
 
 Slice quality bar:
 
 - Each slice names externally visible behavior or a concrete enabling outcome.
 - Dependencies are explicit.
+- Documentation impact is explicit: updated, not needed with reason, or blocked.
 - Tests/checks are close to the changed behavior.
 - Review load is estimated; slices expected to create overloaded PRs are split before decomposition.
 - No planned slice should knowingly approach or exceed 200 changed files without an explicit human-approved exception.
@@ -68,6 +69,16 @@ List expected touch points. This is a planning aid, not permission to ignore dis
 
 If implementation discovers different touch points, explain the variance in the implementation PR body.
 
+## Documentation Impact
+
+List expected documentation touch points. If no documentation update is expected, state the reason.
+
+| Slice | Documentation path or surface | Expected change | Reason |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+If implementation discovers different documentation impact, explain the variance in the implementation evidence.
+
 ## Test Strategy
 
 Describe the minimum credible test set before coding starts.
@@ -85,6 +96,7 @@ Quality bar: tests prove behavior and contract conformance, not internal line-by
 - [ ] The plan only implements the approved PRD and SDD.
 - [ ] Every PRD acceptance criterion maps to at least one slice and verification.
 - [ ] Every SDD interface/contract change appears in a slice.
+- [ ] Every slice records documentation impact as updated, not needed with reason, or blocked.
 - [ ] Migration, compatibility, observability, and security/privacy work is included or explicitly not needed.
 - [ ] Slice order is dependency-safe and reviewable.
 - [ ] Any newly discovered architecture decision has been moved back to the SDD/ADR process.

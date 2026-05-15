@@ -15,6 +15,7 @@ Bootstrap the current target repository for the LDD MVP workflow.
     - ledger mode, draft directory, archive directory, local ID prefix
     - tracker provider, repo/project/default branch
     - artifact root
+    - code intelligence provider, recommendation level, related repositories, and freshness policy
     - branch and PR naming patterns
     - plan renderer setting
     - ADR directory and update policy
@@ -25,6 +26,7 @@ Bootstrap the current target repository for the LDD MVP workflow.
   - GitHub is the first MVP external tracker projection path. If selected, ask for the GitHub repo and default branch before writing config.
   - Linear and Jira are follow-on compatibility targets and should be recorded as future intent, not configured as working providers.
 - External tracker setup only configures projection intent. Future external mutations still require explicit human confirmation and drift checks.
+- GitNexus is the strongly recommended code-intelligence surface when code reality matters. Setup may detect whether GitNexus is available and whether the current repo appears indexed, but GitNexus remains advisory and must not block setup.
 
 ## Create
 
@@ -50,6 +52,8 @@ Use bundled templates from `assets/templates/`.
 
 Copy templates exactly unless the user explicitly asks to customize them. The templates include artifact quality guidance and are part of the LDD workflow contract, not just blank markdown scaffolds.
 
+When writing `.ldd/config.yml`, include the advisory `code_intelligence` section from the bundled template. If GitNexus appears unavailable, unindexed, or stale, report that limitation and recommend the exact indexing or refresh command the human can run. Do not silently install GitNexus, run indexing, refresh indexes, clean indexes, or mutate sibling repositories.
+
 ## Input Quality Gate
 
 Required input standard before writing setup files:
@@ -58,6 +62,7 @@ Required input standard before writing setup files:
 - confirmed setup mode on first run: local-only or GitHub projection
 - confirmed existing settings on rerun before any change
 - safe destination directories for `.ldd/` and `docs/tickets/`
+- confirmed code-intelligence config if the user wants to add related repositories during setup
 
 If these inputs are missing or conflict with existing setup state, write nothing and ask the narrowest confirmation question. The earliest LDD command that can repair the gap is `/ldd:setup`.
 
@@ -70,6 +75,7 @@ If these inputs are missing or conflict with existing setup state, write nothing
 - Every Product Requirement starts in `docs/tickets/_drafts/YYYY-MM-DD-short-slug/` with a `ledger.yml`.
 - Promotion moves the draft directory to a stable ticket ID directory. Local mode uses the configured local prefix. GitHub mode creates or binds the Product Requirement issue during PRD approval and uses the GitHub issue number as the ticket ID.
 - Do not create `docs/adr/` during setup. The ADR directory is created or confirmed only when the first ADR is needed.
+- Treat GitNexus as strongly recommended code intelligence, not canonical LDD state. Setup may write advisory configuration and recommend indexing, but it must not require GitNexus and must not perform GitNexus installation, analysis, refresh, cleanup, or cross-repo mutation without explicit human approval.
 - Do not push, create external tickets, open PRs, comment, request reviewers, or otherwise mutate an external tracker.
 - Show a summary and diff. Commit locally only after explicit human approval.
 

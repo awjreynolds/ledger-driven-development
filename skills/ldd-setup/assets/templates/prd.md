@@ -39,7 +39,7 @@ Avoid: implementation tasks, internal architecture, or vague improvements like "
 
 <!--
 Name tempting work that is intentionally out of scope.
-Good: prevents scope creep and protects downstream design from hidden assumptions.
+Good: prevents scope creep and protects downstream design from hidden uncertainty.
 Avoid: saying "none" unless the feature is truly atomic.
 -->
 
@@ -99,7 +99,7 @@ Avoid: vanity metrics or internal engineering measures unless they directly expr
 
 <!--
 List inputs, decisions, teams, releases, policies, or external systems this PRD depends on.
-Good: distinguishes confirmed dependencies from assumptions.
+Good: distinguishes confirmed dependencies from explicit uncertainties.
 Avoid: turning dependencies into implementation design.
 -->
 

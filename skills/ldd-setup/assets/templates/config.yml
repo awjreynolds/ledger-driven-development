@@ -17,6 +17,15 @@ tracker:
 artifacts:
   root: docs/tickets
 
+code_intelligence:
+  preferred_tool: gitnexus
+  recommendation_level: strong
+  required: false
+  related_repositories: []
+  freshness_policy:
+    warn_when_stale: true
+    block_when_stale: false
+
 branches:
   prd: ldd/prd/{ticket}
   sdd_plan: ldd/sdd-plan/{ticket}

@@ -25,6 +25,15 @@ Summarize implementation against the approved plan. Do not rewrite the plan here
 
 Variance rule: explain any file/module/test deviation from the plan. If the variance changes architecture or scope, stop and update the SDD/plan before requesting implementation review.
 
+## Documentation Impact
+
+Status: updated / not_needed / blocked
+
+- Documentation changed:
+- Rationale:
+
+If documentation impact is `blocked`, do not request implementation review until the blocking question is resolved.
+
 ## Test / Check Summary
 
 {test_summary}
@@ -49,8 +58,9 @@ Please review in this order:
 
 1. Does the implementation follow the approved plan slices?
 2. Are any variances justified and still inside the approved SDD?
-3. Do tests/checks prove the acceptance criteria and contracts?
-4. Is there any hidden scope or architecture drift that should go back through LDD design/planning?
+3. Is documentation impact recorded and correct for the behavior changed?
+4. Do tests/checks prove the acceptance criteria and contracts?
+5. Is there any hidden scope or architecture drift that should go back through LDD design/planning?
 
 ## Managed Projection Rule
 

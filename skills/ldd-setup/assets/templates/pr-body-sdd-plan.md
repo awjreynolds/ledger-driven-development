@@ -31,7 +31,7 @@ This PR is the GitHub-first managed projection for SDD and plan review. The repo
 ## Known Review Risks
 
 - Design gaps:
-- Planning assumptions:
+- Planning uncertainties:
 - Open questions:
 
 ## Reviewer Prompt

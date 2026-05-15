@@ -12,6 +12,7 @@ Create or update `sdd.md` in the promoted ticket directory.
 - merged PRD
 - relevant code
 - existing ADRs under configured ADR directory
+- GitNexus code-intelligence context when available and relevant
 
 ## Produces
 
@@ -44,6 +45,8 @@ After writing the SDD, stop at explicit SDD approval:
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - SE-hat command: existing code and ADRs may shape implementation design.
+- GitNexus is strongly recommended before deciding affected repos, systems, SDD boundaries, cross-repo sequencing, or contract risks. If GitNexus is unavailable, stale, unindexed, or outside the configured related repositories, continue with normal code inspection and record the limitation in the SDD.
+- Use GitNexus findings as design evidence, not canonical workflow state. Record indexed repositories considered, freshness or staleness notes, affected repos/systems, and any limitations that materially affect design confidence.
 - Use the SDD template's quality bar before committing design output.
 - The PRD still owns product scope. If code reality contradicts the PRD, stop and return to the earliest affected Product Manager step.
 - ADR threshold: hard to reverse, surprising without context, and the result of a real trade-off.

@@ -45,6 +45,7 @@ Proposed child tickets:
    Type: Autonomous | Human-review
    Blocked by: None | <ticket title/id>
    User stories covered: <PRD story numbers>
+   Documentation impact: Updated | Not needed: <reason> | Blocked: <question>
    Review load: Low | Medium | High, with expected file groups and risk
    Summary: <one or two sentences>
 
@@ -53,6 +54,7 @@ Ask:
 - Are dependency relationships correct?
 - Are Autonomous/Human-review classifications correct?
 - Is the review load small enough for a focused PR?
+- Is documentation impact explicit for every child ticket?
 - Should any tickets be merged or split?
 ```
 
@@ -73,6 +75,7 @@ Only after approval may the command create child ledgers or external child work 
 - In local-only tracker mode, use the equivalent approved SDD identifier in the child title, for example `SDD <ticket-id> Slice <slice-number>: <short outcome title>`.
 - Each child ticket must be independently grabbable: an implementation agent can read the ticket, follow links as needed, and understand what end-to-end behavior to build, what acceptance criteria must pass, what it is blocked by, and which user stories or PRD criteria it covers.
 - Each child ticket must reference the parent Product Requirement and approved plan slice.
+- Each child ticket must include documentation impact: documentation to update, not needed with reason, or a blocked documentation question.
 - In GitHub tracker mode, each child work item must be created as a native GitHub sub-issue of the approved SDD issue. Body traceability to the SDD issue is required, but body links alone are not enough when GitHub sub-issues are available.
 - To create the GitHub relationship, create the child issue first, capture its numeric REST `id`, then call GitHub's sub-issues endpoint on the SDD issue: `POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues` with `sub_issue_id`. Verify the relationship with the parent/sub-issues REST endpoints before recording the child as externally synced.
 - In GitHub tracker mode, native sub-issues make implementation child work items children of the SDD issue and grandchildren of the PRD issue.

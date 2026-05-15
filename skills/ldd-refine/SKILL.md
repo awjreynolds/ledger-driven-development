@@ -23,7 +23,7 @@ Support three entry modes when the user's intent is not already obvious:
 
 - **Guided**: ask one handoff-quality question at a time.
 - **Context dump**: use supplied context, skip resolved questions, and ask only for missing handoff decisions.
-- **Best guess**: refine from available context, label assumptions, and keep uncertain points owned or explicitly non-blocking.
+- **Best effort from supplied context**: refine from available context, label explicit uncertainties, and keep uncertain points owned or explicitly non-blocking.
 
 Core refinement questions:
 
