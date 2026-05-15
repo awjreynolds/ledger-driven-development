@@ -30,6 +30,10 @@ LDD keeps the useful part of AI acceleration while putting the work back into re
 | Multi-repo work becomes unbounded | LDD is multi-repo aware, but SDDs and plans stay repo-scoped. |
 | Reviewers lack evidence | Implementation, documentation impact, verification, and closure evidence are recorded explicitly. |
 
+![LDD workflow mapped to common Software Development Life Cycle phases](docs/assets/ldd-sdlc-workflow.png)
+
+The visualization uses common SDLC phase terminology: Planning, Requirements Analysis, Design, Development, Testing, Deployment, and Maintenance with Continuous Feedback. LDD adds explicit role-owned handoffs, artifacts, skills, approval gates, and evidence without renaming the lifecycle.
+
 ## Workflow By Role
 
 LDD is designed for teams where different people own different SDLC decisions. The agent can assist each phase, but it should not collapse ownership into one task loop.
