@@ -18,9 +18,9 @@ parent:
 tracker:
   mode: github
   external_id: "5"
-  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/5"
+  external_url: "https://github.com/awjreynolds/gadd/issues/5"
   parent_external_id: "2"
-  parent_external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+  parent_external_url: "https://github.com/awjreynolds/gadd/issues/2"
   relationship: native_sub_issue
 
 artifacts:
@@ -33,7 +33,7 @@ artifacts:
     evidence:
       implementation_pr:
         number: 9
-        url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+        url: "https://github.com/awjreynolds/gadd/pull/9"
         state: merged
         merged_at: "2026-05-14T23:11:19Z"
         merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
@@ -41,12 +41,12 @@ artifacts:
         mode: aggregate
         addresses: ["3", "4", "5", "6", "7", "8"]
       changed_files:
-        - "skills/ldd-research/SKILL.md"
-        - "skills/ldd-setup/assets/templates/research.md"
-        - ".ldd/templates/research.md"
+        - "skills/gadd-research/SKILL.md"
+        - "skills/gadd-setup/assets/templates/research.md"
+        - ".gadd/templates/research.md"
         - "CONTEXT.md"
       checks:
-        - command: "./scripts/validate-ldd-mvp.sh"
+        - command: "./scripts/validate-gadd-mvp.sh"
           result: passed
         - command: "git diff --check"
           result: passed
@@ -68,7 +68,7 @@ plan_slice: "3. Research workflow and privacy contract"
 execution_context:
   phase: verification
   current_gate: verification
-  next_command: /ldd:verify 5
+  next_command: /gadd:verify 5
   next_human_action: null
   next_reason: Dependencies were implemented in this run; implementation completed and needs verification.
   approved_artifacts:

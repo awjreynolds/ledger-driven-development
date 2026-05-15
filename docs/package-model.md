@@ -1,4 +1,4 @@
-# LDD Package Model
+# GADD Package Model
 
 The canonical package manifest is `agent-skills.json`.
 
@@ -16,11 +16,11 @@ Adapter manifests make the same skills installable in specific agents:
 
 | Agent | Adapter files |
 | --- | --- |
-| Codex | `skills/ldd-*`, `agents/openai.yaml`, `agent-skills.json` |
-| Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `skills/ldd-*` |
-| Gemini Command-Line Interface (CLI) | `gemini-extension.json`, `GEMINI.md`, `commands/ldd/*.toml`, `skills/ldd-*` |
+| Codex | `skills/gadd-*`, `agents/openai.yaml`, `agent-skills.json` |
+| Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `skills/gadd-*` |
+| Gemini Command-Line Interface (CLI) | `gemini-extension.json`, `GEMINI.md`, `commands/gadd/*.toml`, `skills/gadd-*` |
 
-LDD skills are standalone. They must not require other installed skills such as external Test-Driven Development, issue-generation, planning, triage, or debugging skills. A host agent may provide helpful tools, but every `/ldd:*` command must carry its own workflow contract.
+GADD skills are standalone. They must not require other installed skills such as external Test-Driven Development, issue-generation, planning, triage, or debugging skills. A host agent may provide helpful tools, but every `/gadd:*` command must carry its own workflow contract.
 
 The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md`. Supplemental design notes capture the GitNexus code-intelligence contract and documentation freshness contract. Older GitHub-ledger specs remain as historical context only.
 
@@ -30,38 +30,38 @@ Use `$skill-installer` from inside Codex and ask it to install the skills listed
 
 ```text
 Use $skill-installer to install all skills from
-https://github.com/awjreynolds/ledger-driven-development
+https://github.com/awjreynolds/gadd
 using agent-skills.json.
 ```
 
 Until the stock installer reads `agent-skills.json` directly, install the paths in that manifest:
 
 ```text
-skills/ldd-setup
-skills/ldd-next
-skills/ldd-research
-skills/ldd-scope
-skills/ldd-elaborate
-skills/ldd-refine
-skills/ldd-approve
-skills/ldd-design
-skills/ldd-plan
-skills/ldd-decompose
-skills/ldd-implement
-skills/ldd-verify
-skills/ldd-close
-skills/ldd-archive
+skills/gadd-setup
+skills/gadd-next
+skills/gadd-research
+skills/gadd-scope
+skills/gadd-elaborate
+skills/gadd-refine
+skills/gadd-approve
+skills/gadd-design
+skills/gadd-plan
+skills/gadd-decompose
+skills/gadd-implement
+skills/gadd-verify
+skills/gadd-close
+skills/gadd-archive
 ```
 
-Installed Codex skills are local copies under `~/.codex/skills`. They are not live-linked to this repository. To update, remove the installed `ldd-*` skills, reinstall from the current `agent-skills.json`, and restart Codex.
+Installed Codex skills are local copies under `~/.codex/skills`. They are not live-linked to this repository. To update, remove the installed `gadd-*` skills, reinstall from the current `agent-skills.json`, and restart Codex.
 
 ## Claude Code
 
 Add this repository as a plugin marketplace, then install the plugin:
 
 ```text
-/plugin marketplace add awjreynolds/ledger-driven-development
-/plugin install ldd@ledger-driven-development
+/plugin marketplace add awjreynolds/gadd
+/plugin install gadd@gadd
 ```
 
 Restart Claude Code after installing.
@@ -71,7 +71,7 @@ Restart Claude Code after installing.
 Install this repository as a Gemini CLI extension:
 
 ```sh
-gemini extensions install https://github.com/awjreynolds/ledger-driven-development
+gemini extensions install https://github.com/awjreynolds/gadd
 ```
 
-Restart Gemini CLI after installing. The extension provides `commands/ldd/*.toml`, which map to `/ldd:setup`, `/ldd:next`, `/ldd:research`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve`, `/ldd:design`, `/ldd:plan`, `/ldd:decompose`, `/ldd:implement`, `/ldd:verify`, `/ldd:close`, and `/ldd:archive`.
+Restart Gemini CLI after installing. The extension provides `commands/gadd/*.toml`, which map to `/gadd:setup`, `/gadd:next`, `/gadd:research`, `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, `/gadd:approve`, `/gadd:design`, `/gadd:plan`, `/gadd:decompose`, `/gadd:implement`, `/gadd:verify`, `/gadd:close`, and `/gadd:archive`.

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Implementation Plan: Add LDD research and phase input gates</title>
+  <title>Implementation Plan: Add GADD research and phase input gates</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -100,7 +100,7 @@
 <body>
   <main>
     <header>
-      <h1>Implementation Plan: Add LDD research and phase input gates</h1>
+      <h1>Implementation Plan: Add GADD research and phase input gates</h1>
       <p>This file is generated from <code>plan.md</code> for review. Treat <code>plan.md</code> as the source of truth.</p>
     </header>
     <section class="review-note" aria-label="Reviewer guidance">
@@ -108,7 +108,7 @@
     </section>
 
     <h2>Review Context</h2>
-    <p>This plan adds <code>/ldd:research</code>, makes input-quality gates explicit across all LDD commands, strengthens <code>/ldd:scope</code>, and preserves the GitHub issue hierarchy already approved for PRD and SDD projection.</p>
+    <p>This plan adds <code>/gadd:research</code>, makes input-quality gates explicit across all GADD commands, strengthens <code>/gadd:scope</code>, and preserves the GitHub issue hierarchy already approved for PRD and SDD projection.</p>
 
     <h3>PRD Summary</h3>
     <ul>
@@ -120,7 +120,7 @@
     <h3>SDD Summary</h3>
     <ul>
       <li>Source: <code>docs/tickets/1-add-research-and-phase-gates/sdd.md</code></li>
-      <li>Add <code>/ldd:research</code> as a standalone command-shaped skill with Codex, Claude, and Gemini adapters.</li>
+      <li>Add <code>/gadd:research</code> as a standalone command-shaped skill with Codex, Claude, and Gemini adapters.</li>
       <li>Add optional <code>artifacts.research.path/status</code> and a sanitized <code>research.md</code> template.</li>
       <li>Add <code>Input Quality Gate</code> sections to every command skill.</li>
       <li>Keep SDD issue <code>#2</code> as child of PRD issue <code>#1</code>; future implementation child issues reference SDD issue <code>#2</code>.</li>
@@ -140,29 +140,29 @@
       <tbody>
         <tr>
           <td>1. Research command surface</td>
-          <td><code>/ldd:research</code> is discoverable and installable across Codex, Claude, and Gemini.</td>
-          <td><code>skills/ldd-research</code>, <code>commands/ldd/research.*</code>, manifests, README, GEMINI.</td>
+          <td><code>/gadd:research</code> is discoverable and installable across Codex, Claude, and Gemini.</td>
+          <td><code>skills/gadd-research</code>, <code>commands/gadd/research.*</code>, manifests, README, GEMINI.</td>
           <td>Package validation, manifest JSON validation, command coverage greps.</td>
           <td>None.</td>
         </tr>
         <tr>
           <td>2. Research artifact, ledger, and setup templates</td>
           <td>Setup installs <code>research.md</code>; ledgers can record optional research state without breaking old tickets.</td>
-          <td>Setup templates, installed <code>.ldd/templates</code>, setup skill, README, CONTEXT.</td>
+          <td>Setup templates, installed <code>.gadd/templates</code>, setup skill, README, CONTEXT.</td>
           <td>Validation checks template presence and <code>artifacts.research</code>; manual compatibility check.</td>
           <td>Slice 1 can run in parallel.</td>
         </tr>
         <tr>
           <td>3. Research workflow and privacy contract</td>
           <td>Research prompts for PM inputs, reads context read-only, writes sanitized output, and reports readiness.</td>
-          <td><code>skills/ldd-research/SKILL.md</code>, research templates, CONTEXT.</td>
+          <td><code>skills/gadd-research/SKILL.md</code>, research templates, CONTEXT.</td>
           <td>Review weak input, split feature, non-PR, and private financial examples; grep readiness labels.</td>
           <td>Slices 1 and 2.</td>
         </tr>
         <tr>
           <td>4. Scope adequacy gate and PM command gates</td>
           <td>Scope rejects weak inputs; PM commands state input standards and repair routing.</td>
-          <td><code>ldd-scope</code>, <code>ldd-elaborate</code>, <code>ldd-refine</code>.</td>
+          <td><code>gadd-scope</code>, <code>gadd-elaborate</code>, <code>gadd-refine</code>.</td>
           <td>Validation greps for <code>Input Quality Gate</code>; manual weak-input dry run.</td>
           <td>Slice 3.</td>
         </tr>
@@ -177,7 +177,7 @@
           <td>6. Documentation and package validation</td>
           <td>Docs and validation enforce research, gates, privacy, and GitHub projection behavior.</td>
           <td>README, GEMINI, CONTEXT, design spec, validation script.</td>
-          <td><code>./scripts/validate-ldd-mvp.sh</code>, <code>git diff --check</code>, docs review.</td>
+          <td><code>./scripts/validate-gadd-mvp.sh</code>, <code>git diff --check</code>, docs review.</td>
           <td>Slices 1-5.</td>
         </tr>
       </tbody>
@@ -208,9 +208,9 @@
 
     <h2>Test Strategy</h2>
     <ul>
-      <li>Run <code>./scripts/validate-ldd-mvp.sh</code>.</li>
+      <li>Run <code>./scripts/validate-gadd-mvp.sh</code>.</li>
       <li>Keep JSON validation for all manifests.</li>
-      <li>Regression-check existing command installability, old-ledger compatibility, copyable <code>/ldd:next</code>, and GitHub issue-number identity.</li>
+      <li>Regression-check existing command installability, old-ledger compatibility, copyable <code>/gadd:next</code>, and GitHub issue-number identity.</li>
       <li>Manually review weak input, sensitive input, and GitHub hierarchy paths.</li>
       <li>Do not automate Linear/Jira or live GitHub mutations in package validation.</li>
     </ul>

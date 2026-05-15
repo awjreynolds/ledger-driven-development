@@ -1,21 +1,21 @@
 {
-  "name": "ledger-driven-development",
-  "description": "Ledger-Driven Development plugin marketplace.",
+  "name": "gadd",
+  "description": "GADD governed autonomy plugin marketplace.",
   "version": "0.1.0",
   "owner": {
     "name": "awjreynolds"
   },
   "plugins": [
     {
-      "name": "ldd",
+      "name": "gadd",
       "source": "./",
-      "description": "Ledger-Driven Development workflow skills for repo-local ledgers, verification gates, and optional external trackers.",
+      "description": "GADD governed autonomy workflow skills for repo-local ledgers, verification gates, and optional external trackers.",
       "version": "0.1.0",
       "author": {
         "name": "awjreynolds"
       },
-      "homepage": "https://github.com/awjreynolds/ledger-driven-development",
-      "repository": "https://github.com/awjreynolds/ledger-driven-development",
+      "homepage": "https://github.com/awjreynolds/gadd",
+      "repository": "https://github.com/awjreynolds/gadd",
       "license": "MIT",
       "category": "development",
       "tags": [

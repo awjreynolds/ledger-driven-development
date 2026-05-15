@@ -1,9 +1,0 @@
-description = "Report the next LDD command for one ticket ledger."
-prompt = """
-Run `/ldd:next` using the `ldd-next` Agent Skill.
-
-If the `ldd-next` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

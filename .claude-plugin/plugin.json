@@ -1,36 +1,36 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
-  "name": "ldd",
+  "name": "gadd",
   "version": "0.1.0",
-  "description": "Ledger-Driven Development workflow skills for repo-local ledgers and optional external trackers.",
+  "description": "GADD governed autonomy workflow skills for repo-local ledgers and optional external trackers.",
   "author": {
     "name": "awjreynolds"
   },
-  "homepage": "https://github.com/awjreynolds/ledger-driven-development",
-  "repository": "https://github.com/awjreynolds/ledger-driven-development",
+  "homepage": "https://github.com/awjreynolds/gadd",
+  "repository": "https://github.com/awjreynolds/gadd",
   "license": "MIT",
   "keywords": [
     "agent-skills",
-    "ledger-driven-development",
+    "gadd",
     "github",
     "prd",
     "sdd",
     "planning"
   ],
   "commands": [
-    "./commands/ldd/setup.md",
-    "./commands/ldd/next.md",
-    "./commands/ldd/research.md",
-    "./commands/ldd/scope.md",
-    "./commands/ldd/elaborate.md",
-    "./commands/ldd/refine.md",
-    "./commands/ldd/approve.md",
-    "./commands/ldd/design.md",
-    "./commands/ldd/plan.md",
-    "./commands/ldd/decompose.md",
-    "./commands/ldd/implement.md",
-    "./commands/ldd/verify.md",
-    "./commands/ldd/close.md",
-    "./commands/ldd/archive.md"
+    "./commands/gadd/setup.md",
+    "./commands/gadd/next.md",
+    "./commands/gadd/research.md",
+    "./commands/gadd/scope.md",
+    "./commands/gadd/elaborate.md",
+    "./commands/gadd/refine.md",
+    "./commands/gadd/approve.md",
+    "./commands/gadd/design.md",
+    "./commands/gadd/plan.md",
+    "./commands/gadd/decompose.md",
+    "./commands/gadd/implement.md",
+    "./commands/gadd/verify.md",
+    "./commands/gadd/close.md",
+    "./commands/gadd/archive.md"
   ]
 }

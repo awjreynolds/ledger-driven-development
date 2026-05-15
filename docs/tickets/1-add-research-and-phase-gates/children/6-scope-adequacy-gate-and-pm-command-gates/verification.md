@@ -20,11 +20,11 @@ Boundary: child-ticket closure only, not repository health.
 
 ## Implementation Evidence
 
-- Implementation PR: https://github.com/awjreynolds/ledger-driven-development/pull/9
+- Implementation PR: https://github.com/awjreynolds/gadd/pull/9
 - External PR state checked: MERGED
 - External merged at: 2026-05-14T23:11:19Z
 - External merge commit: c104f3cafabf650798e451728b27a992787f495c
-- Ledger reconciliation status: recorded by /ldd:verify
+- Ledger reconciliation status: recorded by /gadd:verify
 
 ## Acceptance-Criteria Traceability
 
@@ -32,7 +32,7 @@ The implementation evidence covers the scope adequacy gate, PM command input gat
 
 ## Check Evidence
 
-- `./scripts/validate-ldd-mvp.sh`: passed before verification
+- `./scripts/validate-gadd-mvp.sh`: passed before verification
 - `git diff --check`: passed before verification
 - JSON manifest validation: passed before verification where applicable
 - GitHub PR state check: passed; PR #9 is merged

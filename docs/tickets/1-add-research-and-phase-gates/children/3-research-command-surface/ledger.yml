@@ -18,9 +18,9 @@ parent:
 tracker:
   mode: github
   external_id: "3"
-  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/3"
+  external_url: "https://github.com/awjreynolds/gadd/issues/3"
   parent_external_id: "2"
-  parent_external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+  parent_external_url: "https://github.com/awjreynolds/gadd/issues/2"
   relationship: native_sub_issue
 
 artifacts:
@@ -33,7 +33,7 @@ artifacts:
     evidence:
       implementation_pr:
         number: 9
-        url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+        url: "https://github.com/awjreynolds/gadd/pull/9"
         state: merged
         merged_at: "2026-05-14T23:11:19Z"
         merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
@@ -41,18 +41,18 @@ artifacts:
         mode: aggregate
         addresses: ["3", "4", "5", "6", "7", "8"]
       changed_files:
-        - "skills/ldd-research/SKILL.md"
-        - "skills/ldd-research/agents/openai.yaml"
-        - "commands/ldd/research.md"
-        - "commands/ldd/research.toml"
+        - "skills/gadd-research/SKILL.md"
+        - "skills/gadd-research/agents/openai.yaml"
+        - "commands/gadd/research.md"
+        - "commands/gadd/research.toml"
         - "agent-skills.json"
         - ".claude-plugin/plugin.json"
         - "gemini-extension.json"
         - "GEMINI.md"
         - "README.md"
-        - "scripts/validate-ldd-mvp.sh"
+        - "scripts/validate-gadd-mvp.sh"
       checks:
-        - command: "./scripts/validate-ldd-mvp.sh"
+        - command: "./scripts/validate-gadd-mvp.sh"
           result: passed
         - command: "git diff --check"
           result: passed
@@ -76,7 +76,7 @@ plan_slice: "1. Research command surface"
 execution_context:
   phase: closure
   current_gate: closure
-  next_command: /ldd:close 3
+  next_command: /gadd:close 3
   next_human_action: null
   next_reason: Verification passed and child is ready for human-approved closure.
   approved_artifacts:

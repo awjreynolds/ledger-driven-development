@@ -18,9 +18,9 @@ parent:
 tracker:
   mode: github
   external_id: "7"
-  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/7"
+  external_url: "https://github.com/awjreynolds/gadd/issues/7"
   parent_external_id: "2"
-  parent_external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+  parent_external_url: "https://github.com/awjreynolds/gadd/issues/2"
   relationship: native_sub_issue
 
 artifacts:
@@ -33,7 +33,7 @@ artifacts:
     evidence:
       implementation_pr:
         number: 9
-        url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+        url: "https://github.com/awjreynolds/gadd/pull/9"
         state: merged
         merged_at: "2026-05-14T23:11:19Z"
         merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
@@ -41,18 +41,18 @@ artifacts:
         mode: aggregate
         addresses: ["3", "4", "5", "6", "7", "8"]
       changed_files:
-        - "skills/ldd-approve/SKILL.md"
-        - "skills/ldd-design/SKILL.md"
-        - "skills/ldd-plan/SKILL.md"
-        - "skills/ldd-decompose/SKILL.md"
-        - "skills/ldd-implement/SKILL.md"
-        - "skills/ldd-verify/SKILL.md"
-        - "skills/ldd-close/SKILL.md"
-        - "skills/ldd-next/SKILL.md"
-        - "skills/ldd-setup/SKILL.md"
-        - "scripts/validate-ldd-mvp.sh"
+        - "skills/gadd-approve/SKILL.md"
+        - "skills/gadd-design/SKILL.md"
+        - "skills/gadd-plan/SKILL.md"
+        - "skills/gadd-decompose/SKILL.md"
+        - "skills/gadd-implement/SKILL.md"
+        - "skills/gadd-verify/SKILL.md"
+        - "skills/gadd-close/SKILL.md"
+        - "skills/gadd-next/SKILL.md"
+        - "skills/gadd-setup/SKILL.md"
+        - "scripts/validate-gadd-mvp.sh"
       checks:
-        - command: "./scripts/validate-ldd-mvp.sh"
+        - command: "./scripts/validate-gadd-mvp.sh"
           result: passed
         - command: "git diff --check"
           result: passed
@@ -74,7 +74,7 @@ plan_slice: "5. Downstream phase gates and GitHub hierarchy safeguards"
 execution_context:
   phase: verification
   current_gate: verification
-  next_command: /ldd:verify 7
+  next_command: /gadd:verify 7
   next_human_action: null
   next_reason: Dependency was implemented in this run; implementation completed and needs verification.
   approved_artifacts:

@@ -1,0 +1,88 @@
+schema_version: 1
+
+ticket:
+  id: GADD-0003-002
+  parent_id: GADD-0003
+  title: Guide /gadd:next and approval-routing gates
+  kind: child_work_item
+  type: autonomous
+  status: archived
+
+parent:
+  id: GADD-0003
+  ledger: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/ledger.yml
+  prd: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/prd.md
+  sdd: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/sdd.md
+  plan: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/plan.md
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  ticket:
+    path: docs/tickets/_archive/GADD-0003-002-next-and-approval-routing/ticket.md
+    status: ready
+  implementation:
+    status: completed
+    completed_at: 2026-05-13T17:34:00Z
+    evidence:
+      - Updated /gadd:next to report next_command, next_human_action, reason, and safe continuation text.
+      - Added PRD and SDD approval gate detection that routes to /gadd:approve <ticket-id>.
+      - Updated /gadd:refine to route PRD approval through /gadd:approve <ticket-id>.
+      - Updated /gadd:design to stop at design_review and route SDD approval through /gadd:approve <ticket-id>.
+      - Clarified that plan and decomposition approvals are not handled by /gadd:approve.
+      - bash scripts/validate-gadd-mvp.sh passed.
+      - git diff --check passed.
+  verification:
+    path: docs/tickets/_archive/GADD-0003-002-next-and-approval-routing/verification.md
+    status: passed
+
+closure:
+  status: archived
+  verified_at: 2026-05-13T18:05:00Z
+  archived_at: 2026-05-13T18:10:00Z
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: [GADD-0003-001]
+user_stories_covered: [5, 6, 7]
+plan_slice: "Slice 2: Guided /gadd:next and approval-routing gates"
+
+execution_context:
+  phase: done
+  current_gate: archived
+  next_command: null
+  next_human_action: null
+  next_reason: Child ticket is archived locally.
+  approved_artifacts:
+    prd: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/prd.md
+    sdd: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/sdd.md
+    plan: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/plan.md
+  boundaries:
+    product: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/prd.md
+    design: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/sdd.md
+    plan: docs/tickets/_archive/GADD-0003-tracker-readiness-guided-next/plan.md
+  updated_at: 2026-05-13T18:10:00Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T17:15:00Z
+    type: child_created
+    actor: agent
+  - at: 2026-05-13T17:34:00Z
+    type: implementation_completed
+    actor: agent
+  - at: 2026-05-13T18:05:00Z
+    type: verification_passed
+    actor: agent
+  - at: 2026-05-13T18:10:00Z
+    type: child_archived
+    actor: agent

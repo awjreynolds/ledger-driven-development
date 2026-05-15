@@ -2,7 +2,7 @@
 
 ## Parent
 
-PRD #1 Add LDD research and phase input gates; SDD #2.
+PRD #1 Add GADD research and phase input gates; SDD #2.
 
 ## What to build
 
@@ -11,7 +11,7 @@ Add the durable research artifact and optional ledger state. Setup should instal
 ## Acceptance criteria
 
 - [ ] Setup templates include `research.md` and optional `artifacts.research.path/status`.
-- [ ] Installed `.ldd/templates` are updated consistently with setup assets.
+- [ ] Installed `.gadd/templates` are updated consistently with setup assets.
 - [ ] Existing ledgers without `artifacts.research` remain valid and readable.
 
 ## Blocked by
@@ -22,12 +22,12 @@ None.
 
 1, 2, 3, 4
 
-## LDD Traceability
+## GADD Traceability
 
 - Parent PRD: `docs/tickets/1-add-research-and-phase-gates/prd.md`
 - Parent PRD issue: #1
 - SDD issue: #2
-- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/ldd:decompose`
+- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/gadd:decompose`
 - Plan: `docs/tickets/1-add-research-and-phase-gates/plan.md`
 - Plan slice: 2. Research artifact, ledger, and setup templates
 - Ledger: `docs/tickets/1-add-research-and-phase-gates/children/4-research-artifact-ledger-and-setup-templates/ledger.yml`

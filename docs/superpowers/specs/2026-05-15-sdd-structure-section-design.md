@@ -6,7 +6,7 @@
 
 ## Thesis
 
-LDD Software Design Documents (SDDs) must include a required `## Structure` section near the top of the document.
+GADD Software Design Documents (SDDs) must include a required `## Structure` section near the top of the document.
 
 The SDD is intentionally detailed: it grounds a Product Requirements Document (PRD) in current code, Architecture Decision Records (ADRs), interfaces, data flow, migration, observability, security, alternatives, and open design questions. That detail is valuable, but it creates a human cognition problem when the first useful summary is buried inside a long AI-generated artifact.
 
@@ -74,7 +74,7 @@ The section must be concise, but it must not be vague. It should summarize the a
 
 ## Command Behavior
 
-`/ldd:design` should write or update `## Structure` whenever it writes an SDD.
+`/gadd:design` should write or update `## Structure` whenever it writes an SDD.
 
 The design command should:
 
@@ -83,11 +83,11 @@ The design command should:
 - treat it as a summary of the detailed design, not a separate design authority
 - avoid turning it into a second PRD, plan, or implementation checklist
 
-If a later design edit changes components, boundaries, interfaces, or non-changes, `/ldd:design` must update `## Structure` in the same edit.
+If a later design edit changes components, boundaries, interfaces, or non-changes, `/gadd:design` must update `## Structure` in the same edit.
 
 ## Approval Behavior
 
-`/ldd:approve` should treat missing or stale `## Structure` as approval-blocking for SDD approval.
+`/gadd:approve` should treat missing or stale `## Structure` as approval-blocking for SDD approval.
 
 An SDD should not be approved if:
 
@@ -103,14 +103,14 @@ This gate applies to new or updated SDDs going forward. Historical archived SDDs
 
 The following surfaces should mention the requirement:
 
-- `skills/ldd-setup/assets/templates/sdd.md`
-- `skills/ldd-design/SKILL.md`
-- `skills/ldd-approve/SKILL.md`
+- `skills/gadd-setup/assets/templates/sdd.md`
+- `skills/gadd-design/SKILL.md`
+- `skills/gadd-approve/SKILL.md`
 - `docs/workflow.md`
 - `docs/skills.md`
-- `scripts/validate-ldd-mvp.sh`
+- `scripts/validate-gadd-mvp.sh`
 
-README changes are optional. The README should stay concise unless the workflow pitch needs to explain this as part of LDD's human-review discipline.
+README changes are optional. The README should stay concise unless the workflow pitch needs to explain this as part of GADD's human-review discipline.
 
 ## Non-Goals
 
@@ -118,13 +118,13 @@ README changes are optional. The README should stay concise unless the workflow 
 - Do not make `## Structure` canonical over the detailed SDD sections.
 - Do not migrate archived SDDs unless they are reopened or edited.
 - Do not duplicate the entire detailed design inside `## Structure`.
-- Do not turn `## Structure` into the implementation plan; `/ldd:plan` owns planning.
+- Do not turn `## Structure` into the implementation plan; `/gadd:plan` owns planning.
 
 ## Acceptance Criteria
 
 - The SDD template includes `## Structure` immediately after the document title.
-- `/ldd:design` requires new and updated SDDs to include a concise, synchronized `## Structure`.
-- `/ldd:approve` blocks SDD approval when `## Structure` is missing, placeholder, contradictory, or materially incomplete.
+- `/gadd:design` requires new and updated SDDs to include a concise, synchronized `## Structure`.
+- `/gadd:approve` blocks SDD approval when `## Structure` is missing, placeholder, contradictory, or materially incomplete.
 - Human-facing docs explain that `## Structure` is the SDD's TLDR/header-file section.
 - Validation checks for the template and command contract wording.
 - Existing archived SDDs are not rewritten as part of this change.

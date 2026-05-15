@@ -1,9 +1,0 @@
-description = "Approve an LDD PRD, SDD, or plan gate from ledger state."
-prompt = """
-Run `/ldd:approve` using the `ldd-approve` Agent Skill.
-
-If the `ldd-approve` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

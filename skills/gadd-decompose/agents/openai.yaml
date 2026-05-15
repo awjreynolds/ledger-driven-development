@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Decompose"
+  short_description: "Create child vertical slices"
+  default_prompt: "Use $gadd-decompose to run /gadd:decompose for this ticket."
+
+policy:
+  allow_implicit_invocation: true

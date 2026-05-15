@@ -2,16 +2,16 @@
 
 ## Parent
 
-PRD #1 Add LDD research and phase input gates; SDD #2.
+PRD #1 Add GADD research and phase input gates; SDD #2.
 
 ## What to build
 
-Add input gates to downstream LDD commands and enforce the GitHub hierarchy: PRD issue #1 -> SDD issue #2 -> native implementation sub-issues.
+Add input gates to downstream GADD commands and enforce the GitHub hierarchy: PRD issue #1 -> SDD issue #2 -> native implementation sub-issues.
 
 ## Acceptance criteria
 
 - [ ] Design, plan, decompose, implement, verify, close, approve, next, and setup state their input standards and reject behavior.
-- [ ] Plan approval routes through `/ldd:approve` before decomposition.
+- [ ] Plan approval routes through `/gadd:approve` before decomposition.
 - [ ] GitHub decomposition creates native sub-issues under the approved SDD issue when supported, with body traceability as backup.
 - [ ] Validation catches missing gate language and hierarchy safeguards.
 
@@ -23,12 +23,12 @@ Add input gates to downstream LDD commands and enforce the GitHub hierarchy: PRD
 
 4, 5
 
-## LDD Traceability
+## GADD Traceability
 
 - Parent PRD: `docs/tickets/1-add-research-and-phase-gates/prd.md`
 - Parent PRD issue: #1
 - SDD issue: #2
-- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/ldd:decompose`
+- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/gadd:decompose`
 - Plan: `docs/tickets/1-add-research-and-phase-gates/plan.md`
 - Plan slice: 5. Downstream phase gates and GitHub hierarchy safeguards
 - Ledger: `docs/tickets/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/ledger.yml`

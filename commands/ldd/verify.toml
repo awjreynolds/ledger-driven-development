@@ -1,9 +1,0 @@
-description = "Verify an implemented LDD child ticket for closure readiness."
-prompt = """
-Run `/ldd:verify` using the `ldd-verify` Agent Skill.
-
-If the `ldd-verify` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

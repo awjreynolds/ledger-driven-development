@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Approve"
+  short_description: "Approve PRD, SDD, or plan gates"
+  default_prompt: "Use $gadd-approve to run /gadd:approve for issue #1."
+
+policy:
+  allow_implicit_invocation: true

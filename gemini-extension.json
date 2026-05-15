@@ -1,21 +1,21 @@
 {
-  "name": "ledger-driven-development",
+  "name": "gadd",
   "version": "0.1.0",
   "contextFileName": "GEMINI.md",
   "commands": [
-    "/ldd:setup",
-    "/ldd:next",
-    "/ldd:research",
-    "/ldd:scope",
-    "/ldd:elaborate",
-    "/ldd:refine",
-    "/ldd:approve",
-    "/ldd:design",
-    "/ldd:plan",
-    "/ldd:decompose",
-    "/ldd:implement",
-    "/ldd:verify",
-    "/ldd:close",
-    "/ldd:archive"
+    "/gadd:setup",
+    "/gadd:next",
+    "/gadd:research",
+    "/gadd:scope",
+    "/gadd:elaborate",
+    "/gadd:refine",
+    "/gadd:approve",
+    "/gadd:design",
+    "/gadd:plan",
+    "/gadd:decompose",
+    "/gadd:implement",
+    "/gadd:verify",
+    "/gadd:close",
+    "/gadd:archive"
   ]
 }

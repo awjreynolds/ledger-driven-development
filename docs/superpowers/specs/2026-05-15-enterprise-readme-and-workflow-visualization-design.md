@@ -2,23 +2,23 @@
 
 **Date:** 2026-05-15
 **Status:** approved direction for implementation planning
-**Context:** improving the public README so enterprise PMs, EMs, Tech Leads, SEs, TPMs, engineering reviewers, and buyers of AI-assisted delivery workflows understand why LDD is different
+**Context:** improving the public README so enterprise PMs, EMs, Tech Leads, SEs, TPMs, engineering reviewers, and buyers of AI-assisted delivery workflows understand why GADD is different
 
 ## Thesis
 
-The README should sell Ledger-Driven Development as the enterprise operating model for AI-assisted software delivery, not as another prompt pack, task wrapper, or individual-developer productivity hack.
+The README should sell GADD as the enterprise operating model for AI-assisted software delivery, not as another prompt pack, task wrapper, or individual-developer productivity hack.
 
 The sales promise is:
 
-> LDD lets enterprise teams use AI agents without losing SDLC governance, role ownership, roadmap visibility, review discipline, or multi-repo delivery control.
+> GADD lets enterprise teams use AI agents without losing SDLC governance, role ownership, roadmap visibility, review discipline, or multi-repo delivery control.
 
-LDD is different because it keeps product scope, technical design, planning, implementation, verification, and closure in explicit handoffs. Agents can accelerate the work, but they must not collapse role boundaries into one maverick chat loop where scope expands quietly, planning systems drift, and approval evidence is unclear.
+GADD is different because it keeps product scope, technical design, planning, implementation, verification, and closure in explicit handoffs. Agents can accelerate the work, but they must not collapse role boundaries into one maverick chat loop where scope expands quietly, planning systems drift, and approval evidence is unclear.
 
 The README should make that promise visible in the first screen before explaining package mechanics.
 
 ## Audience
 
-The primary audience is enterprise teams evaluating whether LDD makes AI-assisted delivery safe enough for real product work:
+The primary audience is enterprise teams evaluating whether GADD makes AI-assisted delivery safe enough for real product work:
 
 - PMs who own product problem, users, outcomes, scope, and PRD readiness
 - EMs and Tech Leads who own technical design decisions and engineering plan shape
@@ -41,7 +41,7 @@ Lead with enterprise pain:
 - Multi-repo work becomes risky when one agent treats several codebases as one unbounded implementation surface.
 - Reviewers end up asking "what happened?" instead of the intended handoff question.
 
-Then state the LDD promise:
+Then state the GADD promise:
 
 - role-safe SDLC handoffs
 - canonical repo-local workflow state
@@ -55,7 +55,7 @@ The README should use confident product language, but every claim must stay with
 
 The AI-native pitch should be explicit:
 
-> Point LDD at the planning system your organization already uses (GitHub Issues, Jira, Asana, Linear, Trello, or an internal tracker). LDD is designed to learn the available API surface, propose the safest projection model, and keep the repo-local ledger canonical.
+> Point GADD at the planning system your organization already uses (GitHub Issues, Jira, Asana, Linear, Trello, or an internal tracker). GADD is designed to learn the available API surface, propose the safest projection model, and keep the repo-local ledger canonical.
 
 That claim must be framed as product direction unless and until API-surface discovery, mapping approval, and external mutation controls are implemented and verified.
 
@@ -64,20 +64,20 @@ That claim must be framed as product direction unless and until API-surface disc
 Open with the contrast:
 
 - **Maverick chat/task loop:** scope, design, planning, implementation, and review happen in one conversation; responsibilities blur; scope creep is easy; trackers drift; review asks the wrong question.
-- **LDD:** each SDLC phase has clear inputs, owning role, `/ldd:*` skill, output artifact, approval gate, and next command.
+- **GADD:** each SDLC phase has clear inputs, owning role, `/gadd:*` skill, output artifact, approval gate, and next command.
 
 Then explain the mechanism:
 
 - the repo-local `ledger.yml` is canonical workflow state
 - external tools are projections for planning, review, and visibility, not the source of truth
-- `/ldd:next` is shared read-only navigation for every participant
+- `/gadd:next` is shared read-only navigation for every participant
 - visible progress checklists are recommended agent UX only; they do not replace ledger state, approval, verification, or closure evidence
 
 The first README screen should answer three sales questions:
 
-1. What enterprise risk does LDD remove?
-2. Why is LDD different from letting an agent run a task list?
-3. How does LDD fit existing business planning and engineering review?
+1. What enterprise risk does GADD remove?
+2. Why is GADD different from letting an agent run a task list?
+3. How does GADD fit existing business planning and engineering review?
 
 Detailed commands and installation should come after those answers.
 
@@ -89,29 +89,29 @@ The lanes should be:
 
 1. **PM**
    - Inputs: customer pain, business goal, roadmap context, current workflow, constraints
-   - Skills: `/ldd:research`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve`
+   - Skills: `/gadd:research`, `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, `/gadd:approve`
    - Outputs: `research.md`, approved `prd.md`
 2. **EM / Tech Lead**
    - Inputs: approved PRD, repository context, ADRs, technical constraints, related repositories
-   - Skills: `/ldd:design`, `/ldd:plan`, `/ldd:approve`, `/ldd:decompose`
+   - Skills: `/gadd:design`, `/gadd:plan`, `/gadd:approve`, `/gadd:decompose`
    - Outputs: repo-scoped `sdd.md`, `plan.md`, `plan.html`, child vertical-slice tickets
 3. **SEs**
    - Inputs: ready child ticket, approved plan, codebase, tests, documentation obligation
-   - Skills: `/ldd:implement <ticket>`, `/ldd:implement ALL`
+   - Skills: `/gadd:implement <ticket>`, `/gadd:implement ALL`
    - Outputs: bounded code diff or PR, implementation evidence, documentation impact evidence
 4. **Engineering Review**
    - Inputs: implementation evidence, required checks, approved artifacts, PR state, drift metadata
-   - Skills: `/ldd:verify`, `/ldd:close`, `/ldd:archive`
+   - Skills: `/gadd:verify`, `/gadd:close`, `/gadd:archive`
    - Outputs: `verification.md`, closed ledger state, optional external tracker projection
 
-TPMs should not be shown as owning a distinct LDD artifact or gate. They should be named as important planning, dependency, sequencing, roadmap, and status stakeholders.
+TPMs should not be shown as owning a distinct GADD artifact or gate. They should be named as important planning, dependency, sequencing, roadmap, and status stakeholders.
 
 ## Utility Skills
 
 The README should include a small utility section:
 
-- `/ldd:next`: read-only workflow navigation used by PMs, TPMs, EMs, SEs, and reviewers
-- `/ldd:setup`: repository bootstrap
+- `/gadd:next`: read-only workflow navigation used by PMs, TPMs, EMs, SEs, and reviewers
+- `/gadd:setup`: repository bootstrap
 - visible session progress: recommended UX for agents that support it
 
 Utility skills do not own SDLC artifacts.
@@ -120,10 +120,10 @@ Utility skills do not own SDLC artifacts.
 
 The README must state the distinction clearly:
 
-- LDD is multi-repo aware.
+- GADD is multi-repo aware.
 - SDDs are repo-scoped.
 
-A Product Requirement can reveal coordinated work across several repositories. LDD may use repository inspection and GitNexus-style code intelligence across related repositories to discover impact and sequencing. The design output must still preserve repository ownership: each affected repository needs its own SDD and plan boundary for implementation, review, verification, and closure.
+A Product Requirement can reveal coordinated work across several repositories. GADD may use repository inspection and GitNexus-style code intelligence across related repositories to discover impact and sequencing. The design output must still preserve repository ownership: each affected repository needs its own SDD and plan boundary for implementation, review, verification, and closure.
 
 The README should avoid implying one vague cross-repo SDD owns all code changes.
 
@@ -148,7 +148,7 @@ Recommended structure:
 
 1. Sales headline and one-paragraph enterprise promise
 2. "Why AI delivery breaks in enterprise teams" pain section
-3. "What LDD changes" differentiator section
+3. "What GADD changes" differentiator section
 4. Role-lane workflow visualization
 5. Shared state and utility skills
 6. Multi-repo awareness and repo-scoped SDDs
@@ -170,7 +170,7 @@ Do not require GitHub Pages for this change. The README should be the canonical 
 
 - Do not claim validated Jira, Linear, or Asana support.
 - Do not claim validated Trello or custom internal tracker support.
-- Do not define a TPM-owned LDD artifact or gate.
+- Do not define a TPM-owned GADD artifact or gate.
 - Do not make visible agent progress canonical workflow state.
 - Do not move canonical workflow truth out of `ledger.yml`.
 - Do not replace existing command contracts in this README-only change.
@@ -179,11 +179,11 @@ Do not require GitHub Pages for this change. The README should be the canonical 
 
 ## Acceptance Criteria
 
-- A new reader can identify why LDD is different from a chat/task loop within the first README section.
+- A new reader can identify why GADD is different from a chat/task loop within the first README section.
 - A skeptical enterprise reader can identify the business value: safer AI adoption, clearer role ownership, less scope creep, reviewable evidence, planning-system visibility, and multi-repo control.
 - PM, EM/Tech Lead, SE, Engineering Review, and TPM participation are explained without blurring ownership.
-- `/ldd:next`, `/ldd:setup`, and visible progress are described as utility/support surfaces.
-- `/ldd:implement <ticket>` and `/ldd:implement ALL` are described without inventing behavior for bare `/ldd:implement`.
+- `/gadd:next`, `/gadd:setup`, and visible progress are described as utility/support surfaces.
+- `/gadd:implement <ticket>` and `/gadd:implement ALL` are described without inventing behavior for bare `/gadd:implement`.
 - Multi-repo awareness and repo-scoped SDDs are stated explicitly.
 - External tool maturity is labeled accurately, with GitHub as the first dogfooding path and Jira/Linear/Asana/Trello/internal trackers not claimed as validated.
 - Existing install and package instructions remain available.

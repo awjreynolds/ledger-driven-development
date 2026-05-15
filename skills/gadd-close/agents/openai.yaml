@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Close"
+  short_description: "Close verified child or parent"
+  default_prompt: "Use $gadd-close to run /gadd:close for issue #1."
+
+policy:
+  allow_implicit_invocation: true

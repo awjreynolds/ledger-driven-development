@@ -5,7 +5,7 @@
 
 ## Thesis
 
-Ledger-Driven Development uses a repo-local ledger as canonical workflow state. External trackers such as GitHub, Linear, and Jira are optional sync and review surfaces, not the source of truth for LDD state.
+GADD uses a repo-local ledger as canonical workflow state. External trackers such as GitHub, Linear, and Jira are optional sync and review surfaces, not the source of truth for GADD state.
 
 The MVP keeps each Product Requirement deliberately narrow: one Product Requirement moves through the full SDLC flow, then decomposes into child vertical-slice tickets for implementation and verification. Repositories may contain multiple active Product Requirements at different phases. Sync engines, deep child lifecycle management, and swarm orchestration are out of scope.
 
@@ -13,11 +13,11 @@ The MVP keeps each Product Requirement deliberately narrow: one Product Requirem
 
 This repository publishes command-shaped agent skills. The repo-root `agent-skills.json` file is the package manifest for installable skills and adapter manifests.
 
-Installed skills are copies in an agent-specific local directory. They are not live-linked to this repository. Updating an installed LDD skill set means reinstalling the skills listed in `agent-skills.json` and restarting the agent.
+Installed skills are copies in an agent-specific local directory. They are not live-linked to this repository. Updating an installed GADD skill set means reinstalling the skills listed in `agent-skills.json` and restarting the agent.
 
-There is no installed `ldd-core` skill in the MVP. Shared LDD rules live inside each command-shaped skill so `/ldd:*` commands remain self-contained across Codex, Claude, Gemini, and other agents.
+There is no installed `gadd-core` skill in the MVP. Shared GADD rules live inside each command-shaped skill so `/gadd:*` commands remain self-contained across Codex, Claude, Gemini, and other agents.
 
-LDD must not depend on other installed skills. Commands may be inspired by known workflows, but the command-shaped LDD skill must include the required instructions itself. In particular, `/ldd:implement` embeds its own red/green/refactor loop.
+GADD must not depend on other installed skills. Commands may be inspired by known workflows, but the command-shaped GADD skill must include the required instructions itself. In particular, `/gadd:implement` embeds its own red/green/refactor loop.
 
 ## Canonical Terms
 
@@ -30,7 +30,7 @@ See `CONTEXT.md` for the glossary. The key terms are:
 - **Draft Ticket Directory**: temporary workspace before a ticket ID is assigned.
 - **Ticket Promotion**: assignment of a stable local or external ticket ID.
 - **Decomposition**: conscious post-plan step that turns an approved plan into vertical slices.
-- **Workflow Navigation**: read-only identification of the next LDD command.
+- **Workflow Navigation**: read-only identification of the next GADD command.
 - **Verification**: child-work closure gate after implementation.
 - **Bounded Shared Understanding Gate**: Product Manager checkpoint that proves shared understanding without expanding the current PRD.
 - **GitHub-first Projection**: GitHub issues and PRs as the first external tracker visibility path, while the repo-local ledger remains canonical.
@@ -45,12 +45,12 @@ docs/tickets/_drafts/YYYY-MM-DD-short-slug/
   prd.md
 ```
 
-An incomplete promoted ticket does not block a new draft. `/ldd:scope` may create a new draft while other promoted tickets remain active, but local mode keeps at most one active draft in `_drafts/` to avoid ambiguous Product Manager work.
+An incomplete promoted ticket does not block a new draft. `/gadd:scope` may create a new draft while other promoted tickets remain active, but local mode keeps at most one active draft in `_drafts/` to avoid ambiguous Product Manager work.
 
 Promotion assigns a stable ticket ID and moves the directory. Local mode uses the configured local prefix:
 
 ```text
-docs/tickets/LDD-0001/
+docs/tickets/GADD-0001/
   ledger.yml
   prd.md
   sdd.md
@@ -112,7 +112,7 @@ children: []
 execution_context:
   phase: scope
   current_gate: scope
-  next_command: /ldd:elaborate
+  next_command: /gadd:elaborate
   next_human_action: null
   next_reason: Draft Product Requirement exists and needs elaboration before approval.
 
@@ -135,69 +135,69 @@ Events are important workflow transitions only. They are not progress logs or se
 ## Command Flow
 
 ```text
-/ldd:setup
+/gadd:setup
   -> installs config, templates, draft/archive directories
 
-/ldd:research
+/gadd:research
   -> gathers PM-grade inputs, codebase facts, and sanitized readiness evidence
-  -> routes to /ldd:scope only when ready_for_scope
+  -> routes to /gadd:scope only when ready_for_scope
 
-/ldd:scope
-/ldd:elaborate
-/ldd:refine
+/gadd:scope
+/gadd:elaborate
+/gadd:refine
   -> build the PRD in a draft directory
-  -> refine routes PRD approval to /ldd:approve
+  -> refine routes PRD approval to /gadd:approve
 
-/ldd:approve
+/gadd:approve
   -> approves a PRD, SDD, or plan gate when exactly one approval gate is active
   -> does not approve decomposition, closure, or external mutations
 
-/ldd:design
+/gadd:design
   -> writes SDD for the promoted Product Requirement
-  -> routes SDD approval to /ldd:approve
+  -> routes SDD approval to /gadd:approve
 
-/ldd:plan
+/gadd:plan
   -> writes reviewed implementation plan and plan.html
 
-/ldd:decompose
+/gadd:decompose
   -> turns approved plan slices into child vertical-slice tickets
 
-/ldd:implement
+/gadd:implement
   -> implements one ready child ticket
 
-/ldd:verify
+/gadd:verify
   -> verifies implemented child-ticket closure readiness
   -> recommends human-approved close only after evidence passes
 
-/ldd:close
+/gadd:close
   -> applies closure for one verified child ticket or a closeable parent roll-up
   -> keeps local ticket paths stable and syncs external close only with explicit human approval
 
-/ldd:archive
+/gadd:archive
   -> optional local storage cleanup for already-closed tickets
 ```
 
-`/ldd:next` is read-only. It inspects active ledgers, identifies the next command and next human action, explains why, and stops. For PRD, SDD, and plan approval gates, it names `/ldd:approve <ticket-id>`.
+`/gadd:next` is read-only. It inspects active ledgers, identifies the next command and next human action, explains why, and stops. For PRD, SDD, and plan approval gates, it names `/gadd:approve <ticket-id>`.
 
-`/ldd:research` is the pre-scope discovery command. It may use full read-only visibility into repository files, docs, existing artifacts, and human-supplied private/local context, but it writes only sanitized committed output. Its readiness decision is one of `ready_for_scope`, `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`.
+`/gadd:research` is the pre-scope discovery command. It may use full read-only visibility into repository files, docs, existing artifacts, and human-supplied private/local context, but it writes only sanitized committed output. Its readiness decision is one of `ready_for_scope`, `blocked_on_more_input`, `split_recommended`, or `not_a_product_requirement`.
 
-`/ldd:scope` is the draft entry point for new Product Requirements. If no active draft exists, it creates a new draft in `docs/tickets/_drafts/`. Existing promoted tickets do not block new scoping work. If an active draft already exists, `/ldd:scope` updates that draft or asks the human to continue, rename, promote, or discard it before starting another one.
+`/gadd:scope` is the draft entry point for new Product Requirements. If no active draft exists, it creates a new draft in `docs/tickets/_drafts/`. Existing promoted tickets do not block new scoping work. If an active draft already exists, `/gadd:scope` updates that draft or asks the human to continue, rename, promote, or discard it before starting another one.
 
-Every command-shaped skill owns an `Input Quality Gate`. Before writing or mutating artifacts, the command validates that its source inputs meet the phase standard. Rejections name the missing input and the earliest LDD command that can repair it, rather than filling gaps from assumptions.
+Every command-shaped skill owns an `Input Quality Gate`. Before writing or mutating artifacts, the command validates that its source inputs meet the phase standard. Rejections name the missing input and the earliest GADD command that can repair it, rather than filling gaps from assumptions.
 
-`/ldd:implement` never auto-decomposes. If no ready child tickets exist, it reports that there are no tickets to implement. If the plan is approved but no child tickets exist, it reports that `/ldd:decompose` is required. Implementation completion does not close child work; it records evidence and routes the child to `/ldd:verify`.
+`/gadd:implement` never auto-decomposes. If no ready child tickets exist, it reports that there are no tickets to implement. If the plan is approved but no child tickets exist, it reports that `/gadd:decompose` is required. Implementation completion does not close child work; it records evidence and routes the child to `/gadd:verify`.
 
-`/ldd:verify` is the child-ticket closure-readiness gate. It checks implementation evidence, required checks, traceability to the approved PRD/SDD/plan, and external drift metadata. It writes `verification.md` and machine-readable ledger status. It may recommend closure, but it does not archive or close external tickets.
+`/gadd:verify` is the child-ticket closure-readiness gate. It checks implementation evidence, required checks, traceability to the approved PRD/SDD/plan, and external drift metadata. It writes `verification.md` and machine-readable ledger status. It may recommend closure, but it does not archive or close external tickets.
 
-`/ldd:close` is the post-verification mutating gate. For a child ticket, it requires passed verification, records workflow closure, updates parent ledger state, and closes or syncs external tracker projections only with explicit human confirmation. It does not move local ticket files. For a parent ticket, it may close the parent only when every child is already closed or verified and closeable; otherwise it stops with the blocking child list.
+`/gadd:close` is the post-verification mutating gate. For a child ticket, it requires passed verification, records workflow closure, updates parent ledger state, and closes or syncs external tracker projections only with explicit human confirmation. It does not move local ticket files. For a parent ticket, it may close the parent only when every child is already closed or verified and closeable; otherwise it stops with the blocking child list.
 
-`/ldd:archive` is optional storage hygiene for already-closed tickets. It moves local ticket packages to `_archive/` and rewrites local paths, but it never decides whether work is done and never mutates external trackers.
+`/gadd:archive` is optional storage hygiene for already-closed tickets. It moves local ticket packages to `_archive/` and rewrites local paths, but it never decides whether work is done and never mutates external trackers.
 
 ## External Trackers
 
-External trackers are configured through `.ldd/config.yml`. The MVP supports the model, not full sync engines:
+External trackers are configured through `.gadd/config.yml`. The MVP supports the model, not full sync engines:
 
-- `local`: use `LDD-0001` style local IDs.
+- `local`: use `GADD-0001` style local IDs.
 - `github`: first external tracker dogfooding path, using GitHub issue numbers as ticket IDs for PRD, SDD, and child work visibility, GitHub native sub-issues for child work hierarchy where supported, and GitHub PRs for implementation review.
 - `linear`, `jira`: follow-on optional collaboration surfaces after the GitHub-first projection model is proven.
 
@@ -207,13 +207,13 @@ The MVP supports the state model for external IDs, but does not promise a full s
 
 External tracker tickets are rich projections, not thin placeholders. A TPM, PM, Director, or implementation agent must be able to read the external ticket without opening the repository and understand the product requirement, SDD review context, or child work item.
 
-Parent Product Requirement tickets use `.ldd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and LDD links.
+Parent Product Requirement tickets use `.gadd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and GADD links.
 
-SDD tickets use `.ldd/templates/issue-body-sdd.md` and reference the parent PRD issue. Child work item tickets use `.ldd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal LDD traceability. In GitHub mode, decomposition-created child work issues must be attached as native sub-issues of the SDD issue when GitHub supports sub-issues, with body traceability as backup. That makes implementation work children of the SDD issue and grandchildren of the PRD issue in the external projection.
+SDD tickets use `.gadd/templates/issue-body-sdd.md` and reference the parent PRD issue. Child work item tickets use `.gadd/templates/issue-body-child.md` and intentionally stay lightweight: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, and minimal GADD traceability. In GitHub mode, decomposition-created child work issues must be attached as native sub-issues of the SDD issue when GitHub supports sub-issues, with body traceability as backup. That makes implementation work children of the SDD issue and grandchildren of the PRD issue in the external projection.
 
-`/ldd:decompose` must preview the complete proposed child ticket set before creation. The preview includes title, Autonomous/Human-review type, blockers, user stories covered, and summary. External child tickets are created only after human approval.
+`/gadd:decompose` must preview the complete proposed child ticket set before creation. The preview includes title, Autonomous/Human-review type, blockers, user stories covered, and summary. External child tickets are created only after human approval.
 
-External tickets can evolve through comments or body edits. LDD records sync metadata such as last checked time, external update time, managed body version, and body hash. If an external body changed since the last sync, commands report drift and stop for human reconciliation.
+External tickets can evolve through comments or body edits. GADD records sync metadata such as last checked time, external update time, managed body version, and body hash. If an external body changed since the last sync, commands report drift and stop for human reconciliation.
 
 ## Out of Scope
 

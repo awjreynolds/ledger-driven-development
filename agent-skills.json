@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "name": "ledger-driven-development",
-  "displayName": "Ledger-Driven Development",
+  "name": "gadd",
+  "displayName": "GADD",
   "version": "0.1.0",
-  "description": "Agent-agnostic skills for repo-local ledger product, design, planning, decomposition, and implementation handoffs.",
+  "description": "Governed Autonomy skills for product, design, planning, decomposition, implementation, verification, and closure handoffs.",
   "license": "MIT",
-  "repository": "https://github.com/awjreynolds/ledger-driven-development",
+  "repository": "https://github.com/awjreynolds/gadd",
   "canonicalSkillRoot": "skills",
   "ledger": {
     "type": "repo-local",
@@ -13,88 +13,88 @@
   },
   "commands": [
     {
-      "command": "/ldd:setup",
-      "skill": "ldd-setup",
-      "path": "skills/ldd-setup",
-      "purpose": "Bootstrap LDD files and local ledger support in a target repository."
+      "command": "/gadd:setup",
+      "skill": "gadd-setup",
+      "path": "skills/gadd-setup",
+      "purpose": "Bootstrap GADD files and local ledger support in a target repository."
     },
     {
-      "command": "/ldd:next",
-      "skill": "ldd-next",
-      "path": "skills/ldd-next",
-      "purpose": "Read repo-local ledger state and report the next LDD command."
+      "command": "/gadd:next",
+      "skill": "gadd-next",
+      "path": "skills/gadd-next",
+      "purpose": "Read repo-local ledger state and report the next GADD command."
     },
     {
-      "command": "/ldd:research",
-      "skill": "ldd-research",
-      "path": "skills/ldd-research",
+      "command": "/gadd:research",
+      "skill": "gadd-research",
+      "path": "skills/gadd-research",
       "purpose": "Gather PM-grade inputs, codebase facts, and sanitized readiness evidence before scoping."
     },
     {
-      "command": "/ldd:scope",
-      "skill": "ldd-scope",
-      "path": "skills/ldd-scope",
+      "command": "/gadd:scope",
+      "skill": "gadd-scope",
+      "path": "skills/gadd-scope",
       "purpose": "Write PRD goals, non-goals, and initial constraints."
     },
     {
-      "command": "/ldd:elaborate",
-      "skill": "ldd-elaborate",
-      "path": "skills/ldd-elaborate",
+      "command": "/gadd:elaborate",
+      "skill": "gadd-elaborate",
+      "path": "skills/gadd-elaborate",
       "purpose": "Fill product detail inside the approved scope."
     },
     {
-      "command": "/ldd:refine",
-      "skill": "ldd-refine",
-      "path": "skills/ldd-refine",
+      "command": "/gadd:refine",
+      "skill": "gadd-refine",
+      "path": "skills/gadd-refine",
       "purpose": "Make the PRD testable and ready for engineering design review."
     },
     {
-      "command": "/ldd:approve",
-      "skill": "ldd-approve",
-      "path": "skills/ldd-approve",
+      "command": "/gadd:approve",
+      "skill": "gadd-approve",
+      "path": "skills/gadd-approve",
       "purpose": "Approve a PRD or SDD gate from repo-local ledger state."
     },
     {
-      "command": "/ldd:design",
-      "skill": "ldd-design",
-      "path": "skills/ldd-design",
+      "command": "/gadd:design",
+      "skill": "gadd-design",
+      "path": "skills/gadd-design",
       "purpose": "Write the SDD and apply the ADR threshold."
     },
     {
-      "command": "/ldd:plan",
-      "skill": "ldd-plan",
-      "path": "skills/ldd-plan",
+      "command": "/gadd:plan",
+      "skill": "gadd-plan",
+      "path": "skills/gadd-plan",
       "purpose": "Write the implementation plan and generated HTML review copy."
     },
     {
-      "command": "/ldd:decompose",
-      "skill": "ldd-decompose",
-      "path": "skills/ldd-decompose",
+      "command": "/gadd:decompose",
+      "skill": "gadd-decompose",
+      "path": "skills/gadd-decompose",
       "purpose": "Create child vertical-slice tickets from an approved plan."
     },
     {
-      "command": "/ldd:implement",
-      "skill": "ldd-implement",
-      "path": "skills/ldd-implement",
+      "command": "/gadd:implement",
+      "skill": "gadd-implement",
+      "path": "skills/gadd-implement",
       "purpose": "Implement one ready child vertical-slice ticket with code and tests."
     },
     {
-      "command": "/ldd:verify",
-      "skill": "ldd-verify",
-      "path": "skills/ldd-verify",
+      "command": "/gadd:verify",
+      "skill": "gadd-verify",
+      "path": "skills/gadd-verify",
       "purpose": "Verify one implemented child ticket is ready for human-approved closure."
     },
     {
-      "command": "/ldd:close",
-      "skill": "ldd-close",
-      "path": "skills/ldd-close",
+      "command": "/gadd:close",
+      "skill": "gadd-close",
+      "path": "skills/gadd-close",
       "purpose": "Apply human-approved closure for one verified child ticket or a closeable parent roll-up."
     },
     {
-      "command": "/ldd:archive",
-      "skill": "ldd-archive",
-      "path": "skills/ldd-archive",
-      "purpose": "Optionally archive closed LDD ticket files after workflow closure."
+      "command": "/gadd:archive",
+      "skill": "gadd-archive",
+      "path": "skills/gadd-archive",
+      "purpose": "Optionally archive closed GADD ticket files after workflow closure."
     }
   ],
   "adapters": {
@@ -106,13 +106,13 @@
       "type": "claude-code-plugin",
       "pluginManifest": ".claude-plugin/plugin.json",
       "marketplaceManifest": ".claude-plugin/marketplace.json",
-      "commands": "commands/ldd/*.md"
+      "commands": "commands/gadd/*.md"
     },
     "gemini": {
       "type": "gemini-cli-extension",
       "extensionManifest": "gemini-extension.json",
       "context": "GEMINI.md",
-      "commands": "commands/ldd/*.toml"
+      "commands": "commands/gadd/*.toml"
     }
   }
 }

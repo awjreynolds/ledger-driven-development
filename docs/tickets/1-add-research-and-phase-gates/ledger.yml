@@ -3,14 +3,14 @@ schema_version: 1
 ticket:
   id: "1"
   draft_id: "2026-05-14-add-research-and-phase-gates"
-  title: "Add LDD research and phase input gates"
+  title: "Add GADD research and phase input gates"
   kind: product_requirement
   status: approved
 
 tracker:
   mode: github
   external_id: "1"
-  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/1"
+  external_url: "https://github.com/awjreynolds/gadd/issues/1"
 
 artifacts:
   prd:
@@ -20,7 +20,7 @@ artifacts:
     path: "docs/tickets/1-add-research-and-phase-gates/sdd.md"
     status: approved
     external_id: "2"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+    external_url: "https://github.com/awjreynolds/gadd/issues/2"
   plan:
     path: "docs/tickets/1-add-research-and-phase-gates/plan.md"
     status: approved
@@ -28,7 +28,7 @@ artifacts:
     status: completed
     pr:
       number: 9
-      url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+      url: "https://github.com/awjreynolds/gadd/pull/9"
       state: merged
       merged_at: "2026-05-14T23:11:19Z"
       merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
@@ -46,7 +46,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/3-research-command-surface/ledger.yml"
     external_id: "3"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/3"
+    external_url: "https://github.com/awjreynolds/gadd/issues/3"
     blocked_by: []
     user_stories_covered: [1, 2]
   - id: "4"
@@ -55,7 +55,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/4-research-artifact-ledger-and-setup-templates/ledger.yml"
     external_id: "4"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/4"
+    external_url: "https://github.com/awjreynolds/gadd/issues/4"
     blocked_by: []
     user_stories_covered: [1, 2, 3, 4]
   - id: "5"
@@ -64,7 +64,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/5-research-workflow-and-privacy-contract/ledger.yml"
     external_id: "5"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/5"
+    external_url: "https://github.com/awjreynolds/gadd/issues/5"
     blocked_by: ["3", "4"]
     user_stories_covered: [1, 2, 3]
   - id: "6"
@@ -73,7 +73,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/6-scope-adequacy-gate-and-pm-command-gates/ledger.yml"
     external_id: "6"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/6"
+    external_url: "https://github.com/awjreynolds/gadd/issues/6"
     blocked_by: ["5"]
     user_stories_covered: [1, 4]
   - id: "7"
@@ -82,7 +82,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/ledger.yml"
     external_id: "7"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/7"
+    external_url: "https://github.com/awjreynolds/gadd/issues/7"
     blocked_by: ["6"]
     user_stories_covered: [4, 5]
   - id: "8"
@@ -91,7 +91,7 @@ children:
     status: verified
     path: "docs/tickets/1-add-research-and-phase-gates/children/8-documentation-and-package-validation/ledger.yml"
     external_id: "8"
-    external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/8"
+    external_url: "https://github.com/awjreynolds/gadd/issues/8"
     blocked_by: ["3", "4", "5", "6", "7"]
     user_stories_covered: [1, 2, 3, 4, 5]
 
@@ -105,7 +105,7 @@ closure:
 execution_context:
   phase: closure
   current_gate: closure
-  next_command: /ldd:close 1
+  next_command: /gadd:close 1
   next_human_action: null
   next_reason: All child work items passed verification and are ready for parent roll-up closure.
   approved_artifacts:

@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Plan"
+  short_description: "Write reviewed implementation plan"
+  default_prompt: "Use $gadd-plan to run /gadd:plan for issue #1."
+
+policy:
+  allow_implicit_invocation: true

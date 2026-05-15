@@ -1,9 +1,0 @@
-description = "Close a verified LDD child ticket or closeable parent roll-up."
-prompt = """
-Run `/ldd:close` using the `ldd-close` Agent Skill.
-
-If the `ldd-close` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

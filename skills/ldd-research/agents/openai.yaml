@@ -1,7 +1,0 @@
-interface:
-  display_name: "LDD Research"
-  short_description: "Gather PM-grade inputs before scope"
-  default_prompt: "Use $ldd-research to run /ldd:research before scoping."
-
-policy:
-  allow_implicit_invocation: true

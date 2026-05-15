@@ -1,15 +1,15 @@
-# Ledger-Driven Development
+# GADD
 
-Ledger-Driven Development is a workflow for AI-assisted software delivery where product scope, engineering design, planning, and implementation move through explicit reviewable handoffs.
+Governed Autonomy is the operating philosophy for AI-assisted work that keeps authority, scope, evidence, and approval boundaries explicit. GADD is the software-delivery methodology that applies that philosophy across product scope, engineering design, planning, implementation, verification, and closure.
 
 ## Language
 
 **Ledger**:
-A repo-local, machine-readable record of an LDD ticket's workflow state, artifact state, external tracker links, and synchronization status.
+A repo-local, machine-readable record of a GADD ticket's workflow state, artifact state, external tracker links, and synchronization status.
 _Avoid_: GitHub issue, progress log, audit log, task list
 
 **Ticket**:
-The unit of LDD work that carries one product requirement through design, planning, and implementation.
+The unit of GADD work that carries one product requirement through design, planning, and implementation.
 _Avoid_: GitHub issue, task, story
 
 **Product Requirement**:
@@ -81,7 +81,7 @@ The conscious post-plan step that turns an approved implementation plan into **V
 _Avoid_: planning, implementation, auto-decomposition
 
 **Workflow Navigation**:
-The read-only act of identifying the next LDD command from the current **Ledger** state.
+The read-only act of identifying the next GADD command from the current **Ledger** state.
 _Avoid_: orchestration, dispatch, execution
 
 **Verification**:
@@ -93,11 +93,11 @@ The post-verification decision to mark child work done and optionally close its 
 _Avoid_: implementation completion, verification pass, automatic close
 
 **Close Command**:
-The LDD command that applies **Closure** after **Verification** has passed.
+The GADD command that applies **Closure** after **Verification** has passed.
 _Avoid_: verification, implementation, automatic archive
 
 **Archive Command**:
-The optional LDD command that moves already-closed ticket files into the **Ticket Archive** as storage cleanup.
+The optional GADD command that moves already-closed ticket files into the **Ticket Archive** as storage cleanup.
 _Avoid_: closure decision, verification, external tracker mutation
 
 **Parent Roll-up Closure**:
@@ -109,19 +109,19 @@ A **Child Work Item** with passing **Verification** recorded in its **Ledger** a
 _Avoid_: closed ticket, archived work, merged code
 
 **Agent Skills Manifest**:
-The repo-root `agent-skills.json` file that lists the installable LDD skills and adapter manifests.
-_Avoid_: LDD-specific manifest, command registry, package lock
+The repo-root `agent-skills.json` file that lists the installable GADD skills and adapter manifests.
+_Avoid_: GADD-specific manifest, command registry, package lock
 
 **Standalone Skill Contract**:
-The rule that every installed LDD command must include its own workflow instructions and must not require other installed skills to run correctly.
+The rule that every installed GADD command must include its own workflow instructions and must not require other installed skills to run correctly.
 _Avoid_: external skill dependency, hidden prerequisite
 
 **Installed Skill Copy**:
-A copy of an LDD skill installed into an agent-specific local skills directory.
+A copy of a GADD skill installed into an agent-specific local skills directory.
 _Avoid_: live link, source of truth
 
 **External Ticket Projection**:
-A human-readable external tracker issue generated from LDD ledger and artifact state.
+A human-readable external tracker issue generated from GADD ledger and artifact state.
 _Avoid_: canonical state, thin ID placeholder
 
 **GitHub-first Projection**:
@@ -129,11 +129,11 @@ The first supported external tracker visibility path: GitHub issues for Product 
 _Avoid_: source of truth, sync engine, Linear/Jira parity
 
 **External Drift**:
-A detected change in an external tracker record since LDD last synchronized its generated projection.
+A detected change in an external tracker record since GADD last synchronized its generated projection.
 _Avoid_: automatic conflict resolution
 
 **Active Ticket Tree**:
-The repo-local ticket directories that contain current work visible to normal LDD commands.
+The repo-local ticket directories that contain current work visible to normal GADD commands.
 _Avoid_: archive
 
 **Ticket Archive**:
@@ -145,16 +145,16 @@ _Avoid_: active ticket tree, deletion
 - A **Ledger** belongs to exactly one **Ticket**.
 - A **Ticket** has exactly one **Product Requirement**.
 - A **Ticket** has exactly one **Ledger**.
-- A **Ledger** may link to external tracker records, but those records are not the canonical LDD state.
+- A **Ledger** may link to external tracker records, but those records are not the canonical GADD state.
 - A **Local Ticket ID** is used only when a **Ticket** has no configured **External Tracker** identity.
 - A **Draft Ticket Directory** exists before a **Product Requirement** is ready for review in an **External Tracker**.
 - Every **Product Requirement** starts in a **Draft Ticket Directory**.
 - A **Research Artifact** may exist before a **Product Requirement** is scoped, but it does not define scope.
 - A **Research Artifact** may use full read-only repository and private/local context visibility, while committed output contains only sanitized conclusions.
-- An **Input Quality Gate** belongs to one command and must name the missing input and earliest repairing LDD command when it rejects work.
+- An **Input Quality Gate** belongs to one command and must name the missing input and earliest repairing GADD command when it rejects work.
 - A **Draft Ticket Directory** uses a date and **Draft Slug** for human context.
 - An incomplete **Promoted Ticket Directory** does not block creating a new **Draft Ticket Directory**.
-- Multiple **Promoted Ticket Directories** may be active at different LDD phases.
+- Multiple **Promoted Ticket Directories** may be active at different GADD phases.
 - Local mode keeps at most one **Active Draft** to avoid ambiguous Product Manager work.
 - If an **Active Draft** already exists, new scoping work continues that draft or explicitly resolves it before starting another.
 - A **Ticket Promotion** assigns either a **Local Ticket ID** or an **External Tracker ID** as the final ticket identifier. In GitHub tracker mode, the GitHub issue number is the final ticket identifier.
@@ -164,7 +164,7 @@ _Avoid_: active ticket tree, deletion
 - A **Ledger** may contain **Execution Context** for exactly its own **Ticket**.
 - **Execution Context** never creates global workflow state.
 - A **Bounded Shared Understanding Gate** protects Product Manager work before PRD approval.
-- A **Bounded Shared Understanding Gate** must route new scope to `/ldd:scope`, a later phase, or a separate **Product Requirement** instead of silently expanding the current PRD.
+- A **Bounded Shared Understanding Gate** must route new scope to `/gadd:scope`, a later phase, or a separate **Product Requirement** instead of silently expanding the current PRD.
 - A **Child Work Item** belongs to exactly one parent **Product Requirement**.
 - A **Vertical Slice** is the preferred form of **Child Work Item** for implementation.
 - A **Vertical Slice** may be independent or may depend on other **Vertical Slices**.
@@ -183,8 +183,8 @@ _Avoid_: active ticket tree, deletion
 - **Workflow Navigation** identifies the next step but does not perform it.
 - Completed **Child Work Items** and closed parent tickets may move from the **Active Ticket Tree** to the **Ticket Archive** only through optional archival cleanup.
 - **Workflow Navigation** ignores the **Ticket Archive** by default.
-- The **Agent Skills Manifest** is the package source of truth for installable LDD skills.
-- The **Standalone Skill Contract** applies to every `/ldd:*` command.
+- The **Agent Skills Manifest** is the package source of truth for installable GADD skills.
+- The **Standalone Skill Contract** applies to every `/gadd:*` command.
 - An **Installed Skill Copy** can become stale and must be updated from the **Agent Skills Manifest**.
 - An **External Ticket Projection** must be useful to a PM, TPM, Director, or implementation agent without requiring them to open repository files.
 - A **GitHub-first Projection** is the initial dogfooding path for external visibility.
@@ -196,12 +196,12 @@ _Avoid_: active ticket tree, deletion
 ## Example dialogue
 
 > **Dev:** "If GitHub says the PRD PR is merged but the local ledger says the PRD is still draft, which state wins?"
-> **Domain expert:** "The **Ledger** is canonical for LDD state. The GitHub state is external sync input, so the command should report drift and ask before reconciling."
+> **Domain expert:** "The **Ledger** is canonical for GADD state. The GitHub state is external sync input, so the command should report drift and ask before reconciling."
 
 ## Flagged ambiguities
 
 - "Ledger" previously meant GitHub Issues and Pull Requests. Resolved: **Ledger** now means repo-local canonical workflow state; GitHub, Linear, and Jira are external sync targets.
 - "ticket", "epic", "story", and "subtask" were used interchangeably. Resolved: **Product Requirement** is the parent review unit; **Child Work Item** is the implementation/decomposition unit that rolls up to it.
-- "`ldd-core`" previously meant a shared installed skill. Resolved: there is no installed core skill; shared rules live in each command-shaped skill and package discovery lives in the **Agent Skills Manifest**.
+- "`gadd-core`" previously meant a shared installed skill. Resolved: there is no installed core skill; shared rules live in each command-shaped skill and package discovery lives in the **Agent Skills Manifest**.
 - "External ticket" previously meant a thin identifier binding. Resolved: external tickets are rich projections that may receive external contributions and therefore require drift detection.
-- "TDD" is an implementation discipline embedded in `/ldd:implement`, not a dependency on another installed skill.
+- "TDD" is an implementation discipline embedded in `/gadd:implement`, not a dependency on another installed skill.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Elaborate"
+  short_description: "Fill product detail in PRD"
+  default_prompt: "Use $gadd-elaborate to run /gadd:elaborate for issue #1."
+
+policy:
+  allow_implicit_invocation: true

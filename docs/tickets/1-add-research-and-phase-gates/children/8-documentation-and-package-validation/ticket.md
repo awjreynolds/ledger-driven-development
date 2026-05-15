@@ -2,7 +2,7 @@
 
 ## Parent
 
-PRD #1 Add LDD research and phase input gates; SDD #2.
+PRD #1 Add GADD research and phase input gates; SDD #2.
 
 ## What to build
 
@@ -10,9 +10,9 @@ Update user-facing docs, glossary, design spec, and validation checks so researc
 
 ## Acceptance criteria
 
-- [ ] README, GEMINI, CONTEXT, and package design docs describe `/ldd:research`, input gates, privacy boundaries, and tracker-native child work projection.
-- [ ] `scripts/validate-ldd-mvp.sh` enforces the new command surface, templates, readiness labels, phase gates, and GitHub sub-issue hierarchy contract.
-- [ ] `./scripts/validate-ldd-mvp.sh` and `git diff --check` pass.
+- [ ] README, GEMINI, CONTEXT, and package design docs describe `/gadd:research`, input gates, privacy boundaries, and tracker-native child work projection.
+- [ ] `scripts/validate-gadd-mvp.sh` enforces the new command surface, templates, readiness labels, phase gates, and GitHub sub-issue hierarchy contract.
+- [ ] `./scripts/validate-gadd-mvp.sh` and `git diff --check` pass.
 
 ## Blocked by
 
@@ -22,12 +22,12 @@ Update user-facing docs, glossary, design spec, and validation checks so researc
 
 1, 2, 3, 4, 5
 
-## LDD Traceability
+## GADD Traceability
 
 - Parent PRD: `docs/tickets/1-add-research-and-phase-gates/prd.md`
 - Parent PRD issue: #1
 - SDD issue: #2
-- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/ldd:decompose`
+- Tracker parent relationship: Native GitHub sub-issue of #2 verified during `/gadd:decompose`
 - Plan: `docs/tickets/1-add-research-and-phase-gates/plan.md`
 - Plan slice: 6. Documentation and package validation
 - Ledger: `docs/tickets/1-add-research-and-phase-gates/children/8-documentation-and-package-validation/ledger.yml`

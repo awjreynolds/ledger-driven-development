@@ -2,24 +2,24 @@
 
 **Date:** 2026-05-15
 **Status:** proposed design
-**Context:** extending LDD code-understanding guidance for multi-repo Product Requirements
+**Context:** extending GADD code-understanding guidance for multi-repo Product Requirements
 
 ## Thesis
 
-LDD should strongly recommend GitNexus as the preferred code-understanding surface whenever code reality matters, especially when a Product Requirement may span multiple repositories or architecture boundaries.
+GADD should strongly recommend GitNexus as the preferred code-understanding surface whenever code reality matters, especially when a Product Requirement may span multiple repositories or architecture boundaries.
 
-GitNexus must remain advisory rather than mandatory. LDD is ledger-first and agent-agnostic; it should not become unusable when GitNexus is unavailable, stale, unindexed, or outside the user's current toolchain. Commands should continue with normal repository inspection when GitNexus cannot be used, and record the limitation in the relevant artifact.
+GitNexus must remain advisory rather than mandatory. GADD is ledger-first and agent-agnostic; it should not become unusable when GitNexus is unavailable, stale, unindexed, or outside the user's current toolchain. Commands should continue with normal repository inspection when GitNexus cannot be used, and record the limitation in the relevant artifact.
 
-## Current LDD Constraint
+## Current GADD Constraint
 
 The current MVP keeps each Product Requirement deliberately narrow and repo-local:
 
 - one Product Requirement moves through PRD, SDD, plan, decomposition, implementation, verification, and closure
 - the repo-local `ledger.yml` remains canonical workflow state
 - external systems are projections or evidence sources, not canonical state
-- `/ldd:research` may inspect code read-only and write sanitized conclusions
-- `/ldd:design` grounds the SDD in code and ADR reality
-- `/ldd:setup` bootstraps one target repository
+- `/gadd:research` may inspect code read-only and write sanitized conclusions
+- `/gadd:design` grounds the SDD in code and ADR reality
+- `/gadd:setup` bootstraps one target repository
 
 That model works for single-repo work but does not yet give agents a disciplined way to reason about product work that may require coordinated changes across multiple repositories.
 
@@ -27,7 +27,7 @@ That model works for single-repo work but does not yet give agents a disciplined
 
 GitNexus indexes repositories into graph-backed code intelligence: dependencies, call chains, functional clusters, execution flows, symbol context, impact analysis, and change detection. Its MCP server can serve multiple indexed repositories from a local registry.
 
-Important boundary: GitNexus multi-repo support uses independent per-repo graphs. Cross-repo investigation is performed by querying specific repos and combining results in the agent or workflow layer. LDD should therefore treat GitNexus as structured evidence, not as a complete cross-repo truth source.
+Important boundary: GitNexus multi-repo support uses independent per-repo graphs. Cross-repo investigation is performed by querying specific repos and combining results in the agent or workflow layer. GADD should therefore treat GitNexus as structured evidence, not as a complete cross-repo truth source.
 
 Sources reviewed:
 
@@ -50,15 +50,15 @@ GitNexus helps the agent make that decision by improving codebase discovery and 
 
 ## Recommended Command Behavior
 
-### `/ldd:setup`
+### `/gadd:setup`
 
-`/ldd:setup` should become GitNexus-aware, not GitNexus-owning.
+`/gadd:setup` should become GitNexus-aware, not GitNexus-owning.
 
 It should:
 
 - detect whether GitNexus is available when practical
 - detect whether the current repo appears indexed when practical
-- optionally add advisory code-intelligence configuration to `.ldd/config.yml`
+- optionally add advisory code-intelligence configuration to `.gadd/config.yml`
 - recommend exact indexing commands for the current repo and configured related repos
 - never silently install GitNexus
 - never silently run indexing
@@ -84,7 +84,7 @@ code_intelligence:
 
 This keeps setup repo-local while allowing later commands to know which related repos should be considered.
 
-### `/ldd:research`
+### `/gadd:research`
 
 Research should strongly recommend GitNexus when the product trigger needs codebase investigation, comparable behavior, architectural context, or possible multi-repo impact discovery.
 
@@ -99,11 +99,11 @@ Research output should record:
 
 Research should not use GitNexus findings to write product scope directly. It should turn them into codebase facts, explicit uncertainties, risks, constraints, or open questions. Any uncertainty that would affect scope or design must be stated directly and reviewed by a human before it can shape the next artifact.
 
-### `/ldd:design`
+### `/gadd:design`
 
 Design should be the strongest GitNexus consumer.
 
-Before writing or updating an SDD, `/ldd:design` should recommend GitNexus-backed discovery for:
+Before writing or updating an SDD, `/gadd:design` should recommend GitNexus-backed discovery for:
 
 - affected repos and systems
 - relevant entry points, call chains, and functional clusters
@@ -121,13 +121,13 @@ If GitNexus is stale, design should warn clearly and either:
 
 It should not hard-block unless a future approved Product Requirement or team policy explicitly requires fresh GitNexus evidence.
 
-### `/ldd:plan`
+### `/gadd:plan`
 
 Planning should recommend GitNexus for expected file/module impact, slice boundaries, and review-load estimates.
 
 The plan should record GitNexus-derived impact evidence only when it materially affects slice order, dependencies, risk, or expected files/modules.
 
-### `/ldd:verify`
+### `/gadd:verify`
 
 Verification may use GitNexus for optional blast-radius or change-impact checks, but it should not make child closure depend on GitNexus unless the approved plan explicitly required that evidence.
 
@@ -156,7 +156,7 @@ This is not part of the immediate setup change, but GitNexus-aware setup and des
 
 ## Ledger And Artifact Evidence
 
-LDD should record GitNexus evidence as artifact context, not canonical state.
+GADD should record GitNexus evidence as artifact context, not canonical state.
 
 Appropriate places:
 
@@ -165,33 +165,33 @@ Appropriate places:
 - `plan.md`: impact-informed slice order and expected files/modules
 - `ledger.yml`: optional compact metadata about code-intelligence evidence, only if needed for workflow navigation or reproducibility
 
-Avoid turning the ledger into a second GitNexus registry. GitNexus owns its index registry; LDD records which evidence informed a decision.
+Avoid turning the ledger into a second GitNexus registry. GitNexus owns its index registry; GADD records which evidence informed a decision.
 
 ## Human Control And Safety
 
-GitNexus-related operations may touch local files outside the current repo or write `.gitnexus/` indexes. LDD commands should therefore ask before running setup, install, analyze, clean, or cross-repo indexing commands.
+GitNexus-related operations may touch local files outside the current repo or write `.gitnexus/` indexes. GADD commands should therefore ask before running setup, install, analyze, clean, or cross-repo indexing commands.
 
 Safe defaults:
 
 - recommending commands is allowed
-- reading configured LDD state is allowed
+- reading configured GADD state is allowed
 - reading GitNexus registry/context is allowed when available
 - indexing or mutating another repo requires explicit human approval
 - deleting indexes or cleaning registries is never automatic
 
 ## Open Follow-On Work
 
-- Define the exact `.ldd/config.yml` schema for `code_intelligence`.
-- Update `/ldd:setup` to add advisory config and guidance.
-- Update `/ldd:research`, `/ldd:design`, `/ldd:plan`, and `/ldd:verify` with GitNexus recommendation language.
+- Define the exact `.gadd/config.yml` schema for `code_intelligence`.
+- Update `/gadd:setup` to add advisory config and guidance.
+- Update `/gadd:research`, `/gadd:design`, `/gadd:plan`, and `/gadd:verify` with GitNexus recommendation language.
 - Decide whether multi-SDD workstreams require new ledger schema fields or can first be represented as design output.
-- Decide whether to add a later `/ldd:context` or `/ldd:index` command for workspace-level code intelligence.
+- Decide whether to add a later `/gadd:context` or `/gadd:index` command for workspace-level code intelligence.
 
 ## Non-Goals
 
-- Do not make GitNexus mandatory for LDD.
+- Do not make GitNexus mandatory for GADD.
 - Do not replace repo-local ledgers with GitNexus state.
 - Do not add a full cross-repo orchestration engine.
 - Do not silently install tooling or mutate sibling repositories.
 - Do not treat stale GitNexus indexes as fresh evidence.
-- Do not require native cross-repo graph edges from GitNexus before LDD can support multi-repo design reasoning.
+- Do not require native cross-repo graph edges from GitNexus before GADD can support multi-repo design reasoning.

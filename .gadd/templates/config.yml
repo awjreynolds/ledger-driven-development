@@ -1,0 +1,36 @@
+ledger:
+  mode: local
+  draft_directory: docs/tickets/_drafts
+  archive_directory: docs/tickets/_archive
+  local_id_prefix: GADD
+
+tracker:
+  # provider values:
+  # - local: repo-local ledger only
+  # - github: GitHub-first managed projections for issues and PR review
+  # Linear and Jira are follow-on collaboration surfaces, not MVP providers.
+  provider: local
+  repo: null
+  project: null
+  default_branch: null
+
+artifacts:
+  root: docs/tickets
+
+branches:
+  prd: gadd/prd/{ticket}
+  sdd_plan: gadd/sdd-plan/{ticket}
+  implementation: gadd/impl/{ticket}
+
+prs:
+  prd_title: "PRD: {title}"
+  sdd_plan_title: "SDD + Plan: {title}"
+  implementation_title: "{title}"
+
+renderer:
+  plan_html: true
+
+adr:
+  directory: docs/adr
+  update_policy: immutable_superseded
+  filename_style: dated_slug

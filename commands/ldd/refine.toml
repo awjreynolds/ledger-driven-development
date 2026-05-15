@@ -1,9 +1,0 @@
-description = "Prepare an LDD PRD for engineering design handoff."
-prompt = """
-Run `/ldd:refine` using the `ldd-refine` Agent Skill.
-
-If the `ldd-refine` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

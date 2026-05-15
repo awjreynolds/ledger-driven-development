@@ -7,32 +7,32 @@ status: approved
 adrs: []
 ---
 
-# Software Design Document: Add LDD research and phase input gates
+# Software Design Document: Add GADD research and phase input gates
 
 ## Context
 
-The approved PRD requires LDD to stop producing PRDs from weak context, add a first-class `/ldd:research` phase, and apply input-quality gates across the workflow. It also requires research to have full read-only code visibility while keeping financially sensitive or private PM inputs out of committed and GitHub-visible artifacts.
+The approved PRD requires GADD to stop producing PRDs from weak context, add a first-class `/gadd:research` phase, and apply input-quality gates across the workflow. It also requires research to have full read-only code visibility while keeping financially sensitive or private PM inputs out of committed and GitHub-visible artifacts.
 
 - PRD: `docs/tickets/1-add-research-and-phase-gates/prd.md`
-- Existing entry points: `skills/ldd-*/SKILL.md`, `commands/ldd/*.md`, `commands/ldd/*.toml`, `agent-skills.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, `skills/ldd-setup/assets/templates/*`, and `scripts/validate-ldd-mvp.sh`
+- Existing entry points: `skills/gadd-*/SKILL.md`, `commands/gadd/*.md`, `commands/gadd/*.toml`, `agent-skills.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, `skills/gadd-setup/assets/templates/*`, and `scripts/validate-gadd-mvp.sh`
 - Relevant ADRs: none found under `docs/`
 - Terms from the codebase/domain glossary: Repo-local Ledger, Execution Context, Product Requirement, GitHub-first Projection, Standalone Skill Contract, Bounded Shared Understanding Gate, Ticket Promotion
 
 ## Constraints
 
 - Product constraints from the PRD:
-  - `/ldd:research` must gather standard PM inputs before PRD scoping and must not itself scope, design, plan, or implement.
+  - `/gadd:research` must gather standard PM inputs before PRD scoping and must not itself scope, design, plan, or implement.
   - Research must have full read-only repo and local context visibility.
   - Shareable research output must separate evidence, codebase facts, constraints, assumptions, risks, sensitivity handling, and open questions.
-  - Each LDD phase must declare and enforce an input-quality standard before writing or mutating artifacts.
+  - Each GADD phase must declare and enforce an input-quality standard before writing or mutating artifacts.
   - Weak input must be rejected with the missing quality bar and the earliest command that can fix it.
   - Sensitive private inputs may inform research but must be sanitized before entering committed artifacts or GitHub projections.
 - Technical constraints from existing code:
-  - LDD commands are standalone command-shaped skills, not a shared runtime.
-  - Adapter files are routers; `skills/ldd-*/SKILL.md` files are canonical.
+  - GADD commands are standalone command-shaped skills, not a shared runtime.
+  - Adapter files are routers; `skills/gadd-*/SKILL.md` files are canonical.
   - The repo-local `ledger.yml` is canonical phase state.
-  - `.ldd/templates/*` are installed copies sourced from `skills/ldd-setup/assets/templates/*`.
-  - `scripts/validate-ldd-mvp.sh` is the package-level contract test.
+  - `.gadd/templates/*` are installed copies sourced from `skills/gadd-setup/assets/templates/*`.
+  - `scripts/validate-gadd-mvp.sh` is the package-level contract test.
 - Operational constraints:
   - GitHub is an optional projection, and external mutations require human confirmation.
   - Installed Codex skills are local copies, so package changes must be reflected in source manifests and setup templates.
@@ -46,9 +46,9 @@ The approved PRD requires LDD to stop producing PRDs from weak context, add a fi
 
 ## Existing System
 
-The package is a collection of standalone skills. Each command owns its workflow contract in `skills/ldd-*/SKILL.md`, with Claude and Gemini adapter files pointing back to the canonical skill. The top-level `agent-skills.json`, `.claude-plugin/plugin.json`, and `gemini-extension.json` list the available command surface.
+The package is a collection of standalone skills. Each command owns its workflow contract in `skills/gadd-*/SKILL.md`, with Claude and Gemini adapter files pointing back to the canonical skill. The top-level `agent-skills.json`, `.claude-plugin/plugin.json`, and `gemini-extension.json` list the available command surface.
 
-Current PRD creation moves through `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, and `/ldd:approve`. Scope, elaborate, and refine currently use bounded shared-understanding gates, but there is no first-class research phase before scope and no uniform phase input-gate contract across all commands. `/ldd:scope` explicitly avoids reading the codebase as design input, while `/ldd:design` is allowed to read code and ADRs.
+Current PRD creation moves through `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, and `/gadd:approve`. Scope, elaborate, and refine currently use bounded shared-understanding gates, but there is no first-class research phase before scope and no uniform phase input-gate contract across all commands. `/gadd:scope` explicitly avoids reading the codebase as design input, while `/gadd:design` is allowed to read code and ADRs.
 
 The ledger template tracks PRD, SDD, plan, implementation, verification, child tickets, closure, execution context, sync state, and events. It has no research artifact field today. Because the ledger is YAML consumed by humans and agents rather than strict generated code, optional additive fields are compatible with existing tickets.
 
@@ -58,34 +58,34 @@ GitHub projection support now treats PRD approval as GitHub issue creation or bi
 
 | Decision | Rationale | Source |
 | --- | --- | --- |
-| Add `/ldd:research` as a standalone command-shaped skill with the same adapter surfaces as other commands. | The package model has no shared command runtime; adding a normal skill preserves the existing installation and adapter pattern. | PRD / code |
+| Add `/gadd:research` as a standalone command-shaped skill with the same adapter surfaces as other commands. | The package model has no shared command runtime; adding a normal skill preserves the existing installation and adapter pattern. | PRD / code |
 | Model research as an optional ledger artifact: `artifacts.research.path` and `artifacts.research.status`. | Research must become durable enough to hand off to scope, while existing tickets without research must keep working. | PRD / code |
 | Keep raw sensitive PM inputs out of committed artifacts; store only sanitized conclusions, source classes, and redaction notes in `research.md`. | The PRD explicitly permits private inputs but excludes sensitive material from GitHub and tracked artifacts. | PRD |
-| Allow `/ldd:research` full read-only code visibility, but keep `/ldd:scope`, `/ldd:elaborate`, and `/ldd:refine` in the PM boundary. | Research needs code visibility to inform readiness; PM commands should still avoid technical design and solution-smuggling. | PRD / existing skill rules |
+| Allow `/gadd:research` full read-only code visibility, but keep `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` in the PM boundary. | Research needs code visibility to inform readiness; PM commands should still avoid technical design and solution-smuggling. | PRD / existing skill rules |
 | Add an "Input Quality Gate" section to every command skill. | The current quality gates are command-specific and uneven; the PRD requires similar controls at each phase. | PRD |
-| Make scope refuse weak inputs before writing PRD scope and route to `/ldd:research` when PM-grade inputs are missing. | Scope is the earliest PRD mutation point and must not create plausible artifacts from inadequate evidence. | PRD |
-| Extend validation to require the new research command, adapters, manifest entries, setup templates, and gate language. | `scripts/validate-ldd-mvp.sh` is the current package contract test and should catch incomplete command-surface changes. | code |
+| Make scope refuse weak inputs before writing PRD scope and route to `/gadd:research` when PM-grade inputs are missing. | Scope is the earliest PRD mutation point and must not create plausible artifacts from inadequate evidence. | PRD |
+| Extend validation to require the new research command, adapters, manifest entries, setup templates, and gate language. | `scripts/validate-gadd-mvp.sh` is the current package contract test and should catch incomplete command-surface changes. | code |
 | Do not create an ADR for this change. | This extends the existing command-contract and ledger-template model without changing the durable architecture rule that repo-local ledger is canonical. | code |
 
 ## Alternatives Considered
 
 | Alternative | Why not | Tradeoff accepted |
 | --- | --- | --- |
-| Fold research into `/ldd:scope`. | The PRD needs research to gather broad inputs and code facts before scope decides product boundaries. Scope would become too broad and would blur PM/product discovery with scoping. | One more command is added to the workflow. |
-| Create a shared gate engine or reusable rule file. | LDD skills are intentionally standalone so each agent can execute a command from its own skill file without resolving shared code. | Gate wording is duplicated across skills, checked by validation. |
-| Persist raw PM research notes in a gitignored `.ldd/private/` convention. | The PRD only requires consuming private context, not creating a local secret store. Introducing storage rules would expand scope and increase handling risk. | The research contract tells the agent to use private inputs transiently or from human-managed local files, then commit only sanitized output. |
-| Make research mandatory for every PRD. | Some inputs may already meet the PRD handoff bar, and `/ldd:scope` can validate adequacy directly. | Research is strongly routed when quality is insufficient, but not an unconditional step. |
+| Fold research into `/gadd:scope`. | The PRD needs research to gather broad inputs and code facts before scope decides product boundaries. Scope would become too broad and would blur PM/product discovery with scoping. | One more command is added to the workflow. |
+| Create a shared gate engine or reusable rule file. | GADD skills are intentionally standalone so each agent can execute a command from its own skill file without resolving shared code. | Gate wording is duplicated across skills, checked by validation. |
+| Persist raw PM research notes in a gitignored `.gadd/private/` convention. | The PRD only requires consuming private context, not creating a local secret store. Introducing storage rules would expand scope and increase handling risk. | The research contract tells the agent to use private inputs transiently or from human-managed local files, then commit only sanitized output. |
+| Make research mandatory for every PRD. | Some inputs may already meet the PRD handoff bar, and `/gadd:scope` can validate adequacy directly. | Research is strongly routed when quality is insufficient, but not an unconditional step. |
 | Put GitHub SDD and child hierarchy changes in this feature. | The core hierarchy contract already exists in approve/decompose behavior and templates. This feature should validate that integration and avoid reopening settled design. | Implementation will add validation coverage where needed, not redesign GitHub projection. |
 
 ## Proposed Design
 
-### New `/ldd:research` Command
+### New `/gadd:research` Command
 
-Add a new standalone skill at `skills/ldd-research/SKILL.md`, plus:
+Add a new standalone skill at `skills/gadd-research/SKILL.md`, plus:
 
-- `skills/ldd-research/agents/openai.yaml`
-- `commands/ldd/research.md`
-- `commands/ldd/research.toml`
+- `skills/gadd-research/agents/openai.yaml`
+- `commands/gadd/research.md`
+- `commands/gadd/research.toml`
 - manifest entries in `agent-skills.json`, `.claude-plugin/plugin.json`, and `gemini-extension.json`
 - README/GEMINI references
 
@@ -107,7 +107,7 @@ The research command owns product discovery inputs only:
 
 It explicitly does not own goals, non-goals, user stories, acceptance criteria, metrics, software design, plans, decomposition, implementation, verification, or closure.
 
-Research output is `research.md` in the draft or promoted ticket directory. Add `skills/ldd-setup/assets/templates/research.md`, and install it as `.ldd/templates/research.md`. The template should include:
+Research output is `research.md` in the draft or promoted ticket directory. Add `skills/gadd-setup/assets/templates/research.md`, and install it as `.gadd/templates/research.md`. The template should include:
 
 - Research Summary
 - Expected PM Inputs
@@ -151,7 +151,7 @@ artifacts:
 execution_context:
   phase: research
   current_gate: research
-  next_command: /ldd:scope <draft-id>
+  next_command: /gadd:scope <draft-id>
   next_human_action: null
 ```
 
@@ -171,30 +171,30 @@ Minimum phase gates:
 
 | Command | Required input standard | Reject to |
 | --- | --- | --- |
-| `/ldd:research` | A product trigger or context source, plus enough human-accessible context to investigate. | Human question for source/context. |
-| `/ldd:scope` | Clear problem or desired outcome, target user or workflow, constraints/non-goal candidates, and either research readiness or equivalent supplied inputs. | `/ldd:research` or one decisive missing-input question. |
-| `/ldd:elaborate` | Scoped goals/non-goals and enough user/problem detail to map stories and product outcomes. | `/ldd:scope` or `/ldd:research`. |
-| `/ldd:refine` | Elaborated PRD with goals, stories, acceptance criteria, metrics, dependencies, and owned open questions. | `/ldd:elaborate` or `/ldd:scope`. |
-| `/ldd:approve` | Exactly one active PRD, SDD, or plan approval gate and the relevant artifact passing its checklist. | Owning phase command. |
-| `/ldd:design` | Approved PRD, readable code/ADR context, and no product contradiction. | `/ldd:refine`, `/ldd:scope`, or `/ldd:research` depending on the gap. |
-| `/ldd:plan` | Approved SDD and PRD, with no new architecture decision discovered during planning. | `/ldd:design`. |
-| `/ldd:decompose` | Approved plan with traceable vertical slices and, in GitHub mode, an approved/bound SDD issue. | `/ldd:plan` or `/ldd:approve`. |
-| `/ldd:implement` | Ready child ticket with approved parent PRD, SDD, and plan boundaries. | `/ldd:decompose` or parent planning/design command. |
-| `/ldd:verify` | Implemented child ticket plus explicit verification scope and approved parent boundaries. | `/ldd:implement` or owning parent command for drift. |
-| `/ldd:close` | Passed verification for child closure, or all children verified and closeable for parent closure. | `/ldd:verify` or `/ldd:next`. |
-| `/ldd:next` | Readable ledger state, or derivable state from artifacts. | Human reconciliation when state is ambiguous. |
-| `/ldd:setup` | Target repo context and confirmed tracker settings on rerun. | Human confirmation for setup choices. |
+| `/gadd:research` | A product trigger or context source, plus enough human-accessible context to investigate. | Human question for source/context. |
+| `/gadd:scope` | Clear problem or desired outcome, target user or workflow, constraints/non-goal candidates, and either research readiness or equivalent supplied inputs. | `/gadd:research` or one decisive missing-input question. |
+| `/gadd:elaborate` | Scoped goals/non-goals and enough user/problem detail to map stories and product outcomes. | `/gadd:scope` or `/gadd:research`. |
+| `/gadd:refine` | Elaborated PRD with goals, stories, acceptance criteria, metrics, dependencies, and owned open questions. | `/gadd:elaborate` or `/gadd:scope`. |
+| `/gadd:approve` | Exactly one active PRD, SDD, or plan approval gate and the relevant artifact passing its checklist. | Owning phase command. |
+| `/gadd:design` | Approved PRD, readable code/ADR context, and no product contradiction. | `/gadd:refine`, `/gadd:scope`, or `/gadd:research` depending on the gap. |
+| `/gadd:plan` | Approved SDD and PRD, with no new architecture decision discovered during planning. | `/gadd:design`. |
+| `/gadd:decompose` | Approved plan with traceable vertical slices and, in GitHub mode, an approved/bound SDD issue. | `/gadd:plan` or `/gadd:approve`. |
+| `/gadd:implement` | Ready child ticket with approved parent PRD, SDD, and plan boundaries. | `/gadd:decompose` or parent planning/design command. |
+| `/gadd:verify` | Implemented child ticket plus explicit verification scope and approved parent boundaries. | `/gadd:implement` or owning parent command for drift. |
+| `/gadd:close` | Passed verification for child closure, or all children verified and closeable for parent closure. | `/gadd:verify` or `/gadd:next`. |
+| `/gadd:next` | Readable ledger state, or derivable state from artifacts. | Human reconciliation when state is ambiguous. |
+| `/gadd:setup` | Target repo context and confirmed tracker settings on rerun. | Human confirmation for setup choices. |
 
 The reject response must name the missing quality bar, avoid mutating the artifact, and print a copyable next command when there is one.
 
 ### Scope Changes
 
-`/ldd:scope` becomes the first mutation gate for PRDs. Before creating or updating scope, it must determine whether input is PM-grade enough:
+`/gadd:scope` becomes the first mutation gate for PRDs. Before creating or updating scope, it must determine whether input is PM-grade enough:
 
 - If research exists and is `ready_for_scope`, scope may proceed using the sanitized research output.
 - If research exists and is blocked, split-recommended, or not a product requirement, scope must reject and report that decision.
 - If no research exists but the user supplied equivalent context, scope may proceed while recording assumptions.
-- If no research exists and the problem/outcome/users/evidence are weak, scope must route to `/ldd:research`.
+- If no research exists and the problem/outcome/users/evidence are weak, scope must route to `/gadd:research`.
 
 Scope still must not read the codebase as a design input. It may consume codebase facts already summarized by research as product constraints, dependencies, or open questions.
 
@@ -222,17 +222,17 @@ Any new research content must not be projected to GitHub unless later PRD/SDD ar
 ## Data Flow / Control Flow
 
 1. Research path:
-   - Human runs `/ldd:research` with a trigger or context.
+   - Human runs `/gadd:research` with a trigger or context.
    - Agent reads repo/docs/artifacts and any human-supplied private context.
-   - Agent classifies sensitivity, writes sanitized `research.md`, updates optional research ledger fields, and routes to `/ldd:scope` only when ready.
+   - Agent classifies sensitivity, writes sanitized `research.md`, updates optional research ledger fields, and routes to `/gadd:scope` only when ready.
 2. Scope path with research:
-   - Human runs `/ldd:scope`.
+   - Human runs `/gadd:scope`.
    - Scope checks for `artifacts.research.status`.
    - If ready, it consumes `research.md` as input and writes only scope-owned PRD sections.
    - If absent but equivalent context is present, it may proceed with assumptions.
 3. Scope rejection path:
    - Scope detects missing problem, user/workflow, evidence, or outcome.
-   - Scope writes nothing, states the missing standard, and routes to `/ldd:research`.
+   - Scope writes nothing, states the missing standard, and routes to `/gadd:research`.
 4. Later phase gate path:
    - A command reads ledger/artifact state before mutation.
    - If input does not meet the phase gate, it writes nothing and routes to the earliest command that can repair the issue.
@@ -243,23 +243,23 @@ Any new research content must not be projected to GitHub unless later PRD/SDD ar
 
 | Contract | Producer | Consumer | Compatibility notes |
 | --- | --- | --- | --- |
-| `/ldd:research [new|draft-id|ticket-id] [context]` | Skill package | Human/agent adapters | New command; no existing callers break. |
-| `research.md` | `/ldd:research` | `/ldd:scope`, humans | New optional artifact; sanitized and commit-safe. |
-| `artifacts.research.path/status` | `/ldd:research`, setup template | `/ldd:scope`, `/ldd:next` | Optional field; missing means research was not run. |
-| Research readiness labels | `/ldd:research` | `/ldd:scope` | Labels are command contract values, not GitHub labels. |
+| `/gadd:research [new|draft-id|ticket-id] [context]` | Skill package | Human/agent adapters | New command; no existing callers break. |
+| `research.md` | `/gadd:research` | `/gadd:scope`, humans | New optional artifact; sanitized and commit-safe. |
+| `artifacts.research.path/status` | `/gadd:research`, setup template | `/gadd:scope`, `/gadd:next` | Optional field; missing means research was not run. |
+| Research readiness labels | `/gadd:research` | `/gadd:scope` | Labels are command contract values, not GitHub labels. |
 | Input Quality Gate sections | All command skills | Human/agent executor, validation script | Markdown contract enforced by validation greps and review. |
 | Adapter command entries | `agent-skills.json`, Claude/Gemini manifests | Codex/Claude/Gemini installers | Must be updated together with the new skill. |
-| GitHub SDD/child hierarchy | `/ldd:approve`, `/ldd:decompose` | GitHub issue projection | Existing contract remains; validation may be strengthened. |
+| GitHub SDD/child hierarchy | `/gadd:approve`, `/gadd:decompose` | GitHub issue projection | Existing contract remains; validation may be strengthened. |
 
 ## Migration / Compatibility
 
 - Migration required: none for existing tickets. `artifacts.research` is optional.
 - Rollout/backout: adding the research command is additive. Backout removes the command surface and optional template without changing existing approved tickets.
-- Default behavior: `/ldd:scope` can still proceed without research when supplied context meets the PM-grade input bar.
+- Default behavior: `/gadd:scope` can still proceed without research when supplied context meets the PM-grade input bar.
 - Compatibility tests:
-  - Existing promoted ticket with no `artifacts.research` remains readable by `/ldd:next` and later commands.
+  - Existing promoted ticket with no `artifacts.research` remains readable by `/gadd:next` and later commands.
   - New setup installs research template and ledger field.
-  - Manifests list `/ldd:research` consistently for Codex, Claude, and Gemini.
+  - Manifests list `/gadd:research` consistently for Codex, Claude, and Gemini.
 
 ## Observability
 
@@ -269,7 +269,7 @@ Any new research content must not be projected to GitHub unless later PRD/SDD ar
 - Debugging affordances:
   - Ledger events should include `research_completed` or `research_blocked`.
   - `research.md` should contain the readiness decision and redaction notes.
-  - `/ldd:next` should surface the next command in a copyable command block.
+  - `/gadd:next` should surface the next command in a copyable command block.
   - Validation script should fail when the research command surface or input gate language is incomplete.
 
 ## Security / Privacy

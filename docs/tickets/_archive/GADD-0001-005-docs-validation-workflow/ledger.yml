@@ -1,0 +1,90 @@
+schema_version: 1
+
+ticket:
+  id: GADD-0001-005
+  parent_id: GADD-0001
+  title: Update docs and validation for end-to-end workflow
+  kind: child_work_item
+  type: human_review
+  status: archived
+
+parent:
+  id: GADD-0001
+  ledger: docs/tickets/_archive/GADD-0001-verify-context-header/ledger.yml
+  prd: docs/tickets/_archive/GADD-0001-verify-context-header/prd.md
+  sdd: docs/tickets/_archive/GADD-0001-verify-context-header/sdd.md
+  plan: docs/tickets/_archive/GADD-0001-verify-context-header/plan.md
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  ticket:
+    path: docs/tickets/_archive/GADD-0001-005-docs-validation-workflow/ticket.md
+    status: ready
+  implementation:
+    status: completed
+    completed_at: 2026-05-13T11:09:00Z
+    evidence:
+      - Updated README workflow to include verification and human-approved closure/archive.
+      - Updated local-ledger MVP design notes with /gadd:verify and execution context schema notes.
+      - Extended validate-gadd-mvp.sh to enforce public workflow and glossary language.
+      - Updated active parent ledger to route next work to verification.
+      - ./scripts/validate-gadd-mvp.sh passed.
+      - git diff --check passed.
+  verification:
+    path: docs/tickets/_archive/GADD-0001-005-docs-validation-workflow/verification.md
+    status: passed
+
+closure:
+  status: archived
+  verified_at: 2026-05-14T08:42:52Z
+  archived_at: 2026-05-14T08:50:00Z
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: [GADD-0001-001, GADD-0001-002, GADD-0001-003, GADD-0001-004]
+user_stories_covered: [1, 2, 3, 4, 5]
+plan_slice: "5. Update docs and validation for the new end-to-end workflow"
+
+execution_context:
+  phase: done
+  current_gate: archived
+  next_command: null
+  next_human_action: null
+  next_reason: Child ticket is archived locally.
+  approved_artifacts:
+    prd: docs/tickets/_archive/GADD-0001-verify-context-header/prd.md
+    sdd: docs/tickets/_archive/GADD-0001-verify-context-header/sdd.md
+    plan: docs/tickets/_archive/GADD-0001-verify-context-header/plan.md
+  boundaries:
+    product: docs/tickets/_archive/GADD-0001-verify-context-header/prd.md
+    design: docs/tickets/_archive/GADD-0001-verify-context-header/sdd.md
+    plan: docs/tickets/_archive/GADD-0001-verify-context-header/plan.md
+  updated_at: 2026-05-14T08:50:00Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T00:00:00Z
+    type: child_created
+    actor: agent
+  - at: 2026-05-13T11:05:28Z
+    type: dependencies_implemented
+    actor: agent
+  - at: 2026-05-13T11:09:00Z
+    type: implementation_completed
+    actor: agent
+  - at: 2026-05-14T08:42:52Z
+    type: verification_passed
+    actor: agent
+  - at: 2026-05-14T08:50:00Z
+    type: child_archived
+    actor: agent

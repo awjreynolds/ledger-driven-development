@@ -1,9 +1,0 @@
-description = "Fill product detail inside existing LDD PRD scope."
-prompt = """
-Run `/ldd:elaborate` using the `ldd-elaborate` Agent Skill.
-
-If the `ldd-elaborate` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

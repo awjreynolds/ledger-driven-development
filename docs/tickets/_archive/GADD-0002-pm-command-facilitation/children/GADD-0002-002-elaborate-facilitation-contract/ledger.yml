@@ -1,0 +1,86 @@
+schema_version: 1
+
+ticket:
+  id: GADD-0002-002
+  parent_id: GADD-0002
+  title: Add elaborate facilitation contract
+  kind: child_work_item
+  type: autonomous
+  status: archived
+
+parent:
+  id: GADD-0002
+  ledger: docs/tickets/_archive/GADD-0002-pm-command-facilitation/ledger.yml
+  prd: docs/tickets/_archive/GADD-0002-pm-command-facilitation/prd.md
+  sdd: docs/tickets/_archive/GADD-0002-pm-command-facilitation/sdd.md
+  plan: docs/tickets/_archive/GADD-0002-pm-command-facilitation/plan.md
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  ticket:
+    path: docs/tickets/_archive/GADD-0002-pm-command-facilitation/children/GADD-0002-002-elaborate-facilitation-contract/ticket.md
+    status: ready
+  implementation:
+    status: completed
+    completed_at: 2026-05-13T11:31:26Z
+    evidence:
+      - Updated skills/gadd-elaborate/SKILL.md with Facilitation Protocol, Product Quality Bar, and Exit Gate sections.
+      - Added product-detail questions and scope-protection guidance for /gadd:elaborate.
+      - Targeted grep confirmed the new facilitation contract text exists.
+      - git diff --check passed for the changed PM skill files.
+      - ./scripts/validate-gadd-mvp.sh passed.
+  verification:
+    path: docs/tickets/_archive/GADD-0002-pm-command-facilitation/children/GADD-0002-002-elaborate-facilitation-contract/verification.md
+    status: passed
+
+closure:
+  status: archived
+  verified_at: 2026-05-13T11:33:00Z
+  archived_at: 2026-05-13T14:05:48Z
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: [GADD-0002-001]
+user_stories_covered: [2, 3, 4, 5]
+plan_slice: "2. Elaborate facilitation and product-detail contract"
+
+execution_context:
+  phase: done
+  current_gate: closure
+  next_command: null
+  next_human_action: null
+  next_reason: Child work item is locally archived.
+  approved_artifacts:
+    prd: docs/tickets/_archive/GADD-0002-pm-command-facilitation/prd.md
+    sdd: docs/tickets/_archive/GADD-0002-pm-command-facilitation/sdd.md
+    plan: docs/tickets/_archive/GADD-0002-pm-command-facilitation/plan.md
+  boundaries:
+    product: docs/tickets/_archive/GADD-0002-pm-command-facilitation/prd.md
+    design: docs/tickets/_archive/GADD-0002-pm-command-facilitation/sdd.md
+    plan: docs/tickets/_archive/GADD-0002-pm-command-facilitation/plan.md
+  updated_at: 2026-05-13T14:05:48Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T11:28:43Z
+    type: child_created
+    actor: agent
+  - at: 2026-05-13T11:31:26Z
+    type: implementation_completed
+    actor: agent
+  - at: 2026-05-13T11:33:00Z
+    type: verification_passed
+    actor: agent
+  - at: 2026-05-13T14:05:48Z
+    type: child_archived
+    actor: agent

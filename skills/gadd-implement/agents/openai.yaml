@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Implement"
+  short_description: "Execute an approved GADD plan"
+  default_prompt: "Use $gadd-implement to run /gadd:implement for issue #1."
+
+policy:
+  allow_implicit_invocation: true

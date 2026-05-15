@@ -2,11 +2,11 @@
 
 **Date:** 2026-05-15
 **Status:** proposed design
-**Context:** making documentation freshness explicit in LDD implementation and verification
+**Context:** making documentation freshness explicit in GADD implementation and verification
 
 ## Thesis
 
-LDD should treat documentation freshness as part of implementation evidence, not as optional cleanup and not as a hidden reviewer responsibility.
+GADD should treat documentation freshness as part of implementation evidence, not as optional cleanup and not as a hidden reviewer responsibility.
 
 When a child work item changes user-facing behavior, command behavior, public APIs, configuration, setup flow, templates, integration contracts, or operational workflow, the implementation must either update the relevant documentation or record a direct rationale that no documentation update is needed.
 
@@ -18,8 +18,8 @@ Current behavior:
 
 - `plan.md` asks for files/modules and tests/checks, but not documentation impact.
 - Child tickets ask for what to build, acceptance criteria, review load, and traceability, but not documentation impact.
-- `/ldd:implement` records changed-file summary and check evidence, but does not require docs changed or docs-not-needed rationale.
-- `/ldd:verify` checks implementation evidence, check evidence, and scope/design/plan drift, but only catches missing docs when docs were already part of the approved plan or child ticket.
+- `/gadd:implement` records changed-file summary and check evidence, but does not require docs changed or docs-not-needed rationale.
+- `/gadd:verify` checks implementation evidence, check evidence, and scope/design/plan drift, but only catches missing docs when docs were already part of the approved plan or child ticket.
 
 This leaves agents room to treat code changes as complete even when user-facing docs, setup docs, templates, or external issue/PR body guidance are stale.
 
@@ -58,7 +58,7 @@ The section should tell an implementation agent what documentation needs to be u
 
 ## Implementation Contract
 
-`/ldd:implement` should require documentation evidence before marking a child as implemented.
+`/gadd:implement` should require documentation evidence before marking a child as implemented.
 
 Implementation completion evidence must include:
 
@@ -68,13 +68,13 @@ Implementation completion evidence must include:
 - documentation impact status: `updated`, `not_needed`, or `blocked`
 - documentation files changed, or docs-not-needed rationale
 
-If documentation impact is `blocked`, `/ldd:implement` must not mark the child as implementation-completed. It should report the blocking documentation question and the earliest command or human decision that can repair it.
+If documentation impact is `blocked`, `/gadd:implement` must not mark the child as implementation-completed. It should report the blocking documentation question and the earliest command or human decision that can repair it.
 
-Implementation must not silently update approved PRD, SDD, or plan artifacts to make documentation match code. If implementation reveals that approved artifacts are wrong or incomplete, it must stop and route to the earliest affected `/ldd:scope`, `/ldd:design`, or `/ldd:plan` command.
+Implementation must not silently update approved PRD, SDD, or plan artifacts to make documentation match code. If implementation reveals that approved artifacts are wrong or incomplete, it must stop and route to the earliest affected `/gadd:scope`, `/gadd:design`, or `/gadd:plan` command.
 
 ## Verification Contract
 
-`/ldd:verify` should treat missing documentation evidence as a verification issue.
+`/gadd:verify` should treat missing documentation evidence as a verification issue.
 
 Verification should:
 
@@ -127,7 +127,7 @@ artifacts:
 ## Non-Goals
 
 - Do not require documentation edits for every code change.
-- Do not turn `/ldd:verify` into a repository-wide documentation audit.
+- Do not turn `/gadd:verify` into a repository-wide documentation audit.
 - Do not let implementation silently rewrite approved PRD, SDD, or plan artifacts.
 - Do not add a duplicate progress log for documentation work.
 - Do not make documentation freshness depend on external tracker state unless the child ticket or plan explicitly requires it.
@@ -135,8 +135,8 @@ artifacts:
 ## Follow-On Work
 
 - Update `README.md`.
-- Update `skills/ldd-setup/assets/templates/plan.md`.
-- Update `skills/ldd-setup/assets/templates/issue-body-child.md`.
-- Update `skills/ldd-implement/SKILL.md`.
-- Update `skills/ldd-verify/SKILL.md`.
+- Update `skills/gadd-setup/assets/templates/plan.md`.
+- Update `skills/gadd-setup/assets/templates/issue-body-child.md`.
+- Update `skills/gadd-implement/SKILL.md`.
+- Update `skills/gadd-verify/SKILL.md`.
 - Update validation if package checks should enforce the new contract text.

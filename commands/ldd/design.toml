@@ -1,9 +1,0 @@
-description = "Write the LDD SDD and apply the ADR threshold."
-prompt = """
-Run `/ldd:design` using the `ldd-design` Agent Skill.
-
-If the `ldd-design` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
-
-User arguments:
-{{args}}
-"""

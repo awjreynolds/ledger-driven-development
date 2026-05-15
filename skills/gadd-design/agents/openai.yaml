@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Design"
+  short_description: "Write SDD and ADR checks"
+  default_prompt: "Use $gadd-design to run /gadd:design for issue #1."
+
+policy:
+  allow_implicit_invocation: true

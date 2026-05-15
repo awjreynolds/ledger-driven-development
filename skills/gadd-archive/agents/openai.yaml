@@ -1,0 +1,7 @@
+interface:
+  display_name: "GADD Archive"
+  short_description: "Archive closed GADD ticket files"
+  default_prompt: "Use $gadd-archive to run /gadd:archive for issue #1."
+
+policy:
+  allow_implicit_invocation: true

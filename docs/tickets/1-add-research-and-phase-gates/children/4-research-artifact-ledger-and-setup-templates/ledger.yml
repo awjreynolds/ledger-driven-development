@@ -18,9 +18,9 @@ parent:
 tracker:
   mode: github
   external_id: "4"
-  external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/4"
+  external_url: "https://github.com/awjreynolds/gadd/issues/4"
   parent_external_id: "2"
-  parent_external_url: "https://github.com/awjreynolds/ledger-driven-development/issues/2"
+  parent_external_url: "https://github.com/awjreynolds/gadd/issues/2"
   relationship: native_sub_issue
 
 artifacts:
@@ -33,7 +33,7 @@ artifacts:
     evidence:
       implementation_pr:
         number: 9
-        url: "https://github.com/awjreynolds/ledger-driven-development/pull/9"
+        url: "https://github.com/awjreynolds/gadd/pull/9"
         state: merged
         merged_at: "2026-05-14T23:11:19Z"
         merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
@@ -41,15 +41,15 @@ artifacts:
         mode: aggregate
         addresses: ["3", "4", "5", "6", "7", "8"]
       changed_files:
-        - "skills/ldd-setup/assets/templates/research.md"
-        - ".ldd/templates/research.md"
-        - "skills/ldd-setup/assets/templates/ledger.yml"
-        - ".ldd/templates/ledger.yml"
-        - "skills/ldd-setup/SKILL.md"
+        - "skills/gadd-setup/assets/templates/research.md"
+        - ".gadd/templates/research.md"
+        - "skills/gadd-setup/assets/templates/ledger.yml"
+        - ".gadd/templates/ledger.yml"
+        - "skills/gadd-setup/SKILL.md"
         - "README.md"
         - "CONTEXT.md"
       checks:
-        - command: "./scripts/validate-ldd-mvp.sh"
+        - command: "./scripts/validate-gadd-mvp.sh"
           result: passed
         - command: "git diff --check"
           result: passed
@@ -71,7 +71,7 @@ plan_slice: "2. Research artifact, ledger, and setup templates"
 execution_context:
   phase: closure
   current_gate: closure
-  next_command: /ldd:close 4
+  next_command: /gadd:close 4
   next_human_action: null
   next_reason: Verification passed and child is ready for human-approved closure.
   approved_artifacts:

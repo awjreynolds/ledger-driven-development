@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Update LDD command contracts, templates, README, and validation so GitNexus is strongly recommended for code intelligence and every implementation slice accounts for documentation impact.
+**Goal:** Update GADD command contracts, templates, README, and validation so GitNexus is strongly recommended for code intelligence and every implementation slice accounts for documentation impact.
 
-**Architecture:** This is a contract/documentation change in the LDD skill package. The canonical behavior lives in `skills/ldd-*/SKILL.md`; setup templates under `skills/ldd-setup/assets/templates/` define target-repo artifact shapes; `README.md` describes the public package contract; `scripts/validate-ldd-mvp.sh` enforces key package invariants.
+**Architecture:** This is a contract/documentation change in the GADD skill package. The canonical behavior lives in `skills/gadd-*/SKILL.md`; setup templates under `skills/gadd-setup/assets/templates/` define target-repo artifact shapes; `README.md` describes the public package contract; `scripts/validate-gadd-mvp.sh` enforces key package invariants.
 
 **Tech Stack:** Markdown skill files, YAML templates, shell validation with `grep`, git.
 
@@ -13,12 +13,12 @@
 ### Task 1: Add GitNexus advisory code-intelligence contract
 
 **Files:**
-- Modify: `skills/ldd-setup/SKILL.md`
-- Modify: `skills/ldd-setup/assets/templates/config.yml`
-- Modify: `skills/ldd-research/SKILL.md`
-- Modify: `skills/ldd-design/SKILL.md`
-- Modify: `skills/ldd-plan/SKILL.md`
-- Modify: `skills/ldd-verify/SKILL.md`
+- Modify: `skills/gadd-setup/SKILL.md`
+- Modify: `skills/gadd-setup/assets/templates/config.yml`
+- Modify: `skills/gadd-research/SKILL.md`
+- Modify: `skills/gadd-design/SKILL.md`
+- Modify: `skills/gadd-plan/SKILL.md`
+- Modify: `skills/gadd-verify/SKILL.md`
 - Modify: `README.md`
 
 - [x] **Step 1: Update setup contract**
@@ -56,10 +56,10 @@ Add public README language that GitNexus is strongly recommended when code reali
 ### Task 2: Add documentation freshness contract
 
 **Files:**
-- Modify: `skills/ldd-setup/assets/templates/plan.md`
-- Modify: `skills/ldd-setup/assets/templates/issue-body-child.md`
-- Modify: `skills/ldd-implement/SKILL.md`
-- Modify: `skills/ldd-verify/SKILL.md`
+- Modify: `skills/gadd-setup/assets/templates/plan.md`
+- Modify: `skills/gadd-setup/assets/templates/issue-body-child.md`
+- Modify: `skills/gadd-implement/SKILL.md`
+- Modify: `skills/gadd-verify/SKILL.md`
 - Modify: `README.md`
 
 - [x] **Step 1: Update plan template**
@@ -85,7 +85,7 @@ State that docs freshness is part of implementation evidence and verification.
 ### Task 3: Update validation and verify
 
 **Files:**
-- Modify: `scripts/validate-ldd-mvp.sh`
+- Modify: `scripts/validate-gadd-mvp.sh`
 
 - [x] **Step 1: Add validation greps**
 
@@ -94,15 +94,15 @@ Add targeted checks for:
 - `code_intelligence` in the config template
 - `GitNexus` in README and relevant command skills
 - `Documentation impact` in plan and child issue templates
-- documentation impact evidence in `/ldd:implement`
-- documentation impact verification in `/ldd:verify`
+- documentation impact evidence in `/gadd:implement`
+- documentation impact verification in `/gadd:verify`
 
 - [x] **Step 2: Run validation**
 
 Run:
 
 ```sh
-./scripts/validate-ldd-mvp.sh
+./scripts/validate-gadd-mvp.sh
 git diff --check
 ```
 
