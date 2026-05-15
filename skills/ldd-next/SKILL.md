@@ -52,6 +52,7 @@ If inputs fail this standard, do not mutate anything and report the ambiguity or
 - Prioritize parent roll-up closure when all children are verified and closeable.
 - Prioritize verified but unclosed child work before verification and implementation.
 - Prioritize child work with completed implementation evidence and unverified closure before starting additional child implementation.
+- Treat `/ldd:archive` as optional cleanup only. Do not route to archive as required workflow work after closure.
 - When continuation is safe and commandable, name the exact command the user can run next.
 - When continuation requires human review, approval, drift reconciliation, external mutation confirmation, or a blocked choice, name the human decision instead of offering unsafe automation.
 - PRD, SDD, and plan approval gates must route to `/ldd:approve <ticket-id>`.
@@ -109,8 +110,9 @@ If no ledger exists:
   next: /ldd:setup
 Else if draft PRD exists:
   inspect PRD completeness and recommend /ldd:scope, /ldd:elaborate, /ldd:refine, or /ldd:approve <ticket-id> for PRD approval
-Else if parent ticket is done:
+Else if parent ticket is closed, externally closed, archived, or done:
   done
+  optional_cleanup_command: /ldd:archive <parent-ticket-id> only when the ticket is closed in the active tree and the human wants local cleanup
 Else if parent has children and every child is verified and closeable or already closed:
   next: /ldd:close <parent-ticket-id>
 Else if any active child is verified but not closed or archived:
@@ -192,7 +194,7 @@ Treat an active child as needing verification when either of these is true:
 
 Derived state means implementation evidence exists, for example `artifacts.implementation.status: completed`, `artifacts.implementation.evidence`, a recorded implementation completion event, or equivalent local changed-file/check evidence in the child ledger; and closure is unverified, for example missing `closure`, `closure.status: open`, `closure.status: verification_required`, missing `artifacts.verification`, or `artifacts.verification.status: missing | pending | failed`.
 
-Do not route archived children, externally closed children, or children with `closure.status: verified | archived | externally_closed` to `/ldd:verify`.
+Do not route archived, closed, or externally closed children, or children with `closure.status: verified | closed | archived | externally_closed`, to `/ldd:verify`.
 
 ## Closure Gate Detection
 
@@ -203,14 +205,18 @@ Treat an active child as ready to close when either of these is true:
 
 Derived state means `artifacts.verification.status: passed`, `closure.status: verified`, and the child directory is still in the active ticket tree rather than `_archive/`.
 
-Do not route children with `closure.status: archived | externally_closed` to `/ldd:close`.
+Do not route children with `closure.status: closed | archived | externally_closed` to `/ldd:close`.
 
 Treat a parent as ready for roll-up closure when it has at least one child and every child is either:
 
-- already closed with `closure.status: archived | externally_closed`
+- already closed with `closure.status: closed | archived | externally_closed`
 - closeable with `artifacts.verification.status: passed`, `closure.status: verified`, and a readable `verification.md`
 
 If any child is implemented but unverified, route to `/ldd:verify <child-ticket-id>`. If any child is ready but not implemented, route to `/ldd:implement <child-ticket-id>`.
+
+## Archive Cleanup Detection
+
+Treat a ticket as optionally ready to archive when it has `closure.status: closed | externally_closed`, lives in the active ticket tree, and the configured `archive_directory` exists or can be created safely. Report this as optional cleanup, not as `next_command`, unless the user explicitly asks for `/ldd:archive`.
 
 ## Implementation PR State Detection
 
