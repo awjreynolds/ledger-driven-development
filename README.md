@@ -77,6 +77,25 @@ Current maturity:
 
 Do not treat external trackers as LDD's source of truth. External mutations require explicit human confirmation and drift checks.
 
+## Commands
+
+```text
+/ldd:setup
+/ldd:next
+/ldd:research
+/ldd:scope
+/ldd:elaborate
+/ldd:refine
+/ldd:approve
+/ldd:design
+/ldd:plan
+/ldd:decompose
+/ldd:implement
+/ldd:verify
+/ldd:close
+/ldd:archive
+```
+
 ## Package Model
 
 The canonical package manifest is `agent-skills.json`.
@@ -104,25 +123,6 @@ There is no `ldd-core` skill to install. Shared LDD rules are intentionally embe
 LDD skills are standalone. They must not require other installed skills such as external TDD, issue-generation, planning, triage, or debugging skills. A host agent may provide helpful tools, but every `/ldd:*` command must carry its own workflow contract.
 
 The current workflow design is `docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md`. Supplemental design notes capture the GitNexus code-intelligence contract and documentation freshness contract. Older GitHub-ledger specs remain as historical context only.
-
-## Commands
-
-```text
-/ldd:setup
-/ldd:next
-/ldd:research
-/ldd:scope
-/ldd:elaborate
-/ldd:refine
-/ldd:approve
-/ldd:design
-/ldd:plan
-/ldd:decompose
-/ldd:implement
-/ldd:verify
-/ldd:close
-/ldd:archive
-```
 
 ## Install
 
