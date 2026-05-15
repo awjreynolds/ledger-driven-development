@@ -9,7 +9,7 @@
   "canonicalSkillRoot": "skills",
   "ledger": {
     "type": "repo-local",
-    "stateSource": "docs/tickets/**/ledger.yml"
+    "stateSource": "docs/work-items/**/ledger.yml"
   },
   "commands": [
     {
@@ -23,6 +23,12 @@
       "skill": "gadd-next",
       "path": "skills/gadd-next",
       "purpose": "Read repo-local ledger state and report the next GADD command."
+    },
+    {
+      "command": "/gadd:triage",
+      "skill": "gadd-triage",
+      "path": "skills/gadd-triage",
+      "purpose": "Normalize unclassified intake and route a Work Item to implementation, SDD, PRD discovery, or a terminal state."
     },
     {
       "command": "/gadd:research",

@@ -20,6 +20,7 @@
   "commands": [
     "./commands/gadd/setup.md",
     "./commands/gadd/next.md",
+    "./commands/gadd/triage.md",
     "./commands/gadd/research.md",
     "./commands/gadd/scope.md",
     "./commands/gadd/elaborate.md",

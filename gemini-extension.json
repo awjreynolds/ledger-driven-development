@@ -5,6 +5,7 @@
   "commands": [
     "/gadd:setup",
     "/gadd:next",
+    "/gadd:triage",
     "/gadd:research",
     "/gadd:scope",
     "/gadd:elaborate",

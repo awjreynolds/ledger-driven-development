@@ -1,0 +1,157 @@
+---
+name: gadd-triage
+description: Run /gadd:triage for unclassified GADD intake. Use when the user says /gadd:triage, provides an external issue, reports a bug, asks what to do with an issue, or wants to route a task, bug, engineering change, or ambiguous request into GADD.
+---
+
+# /gadd:triage
+
+Normalize unclassified intake into a GADD Work Item and route it to implementation, SDD-only design, PRD discovery, or a terminal state.
+
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require brainstorming, grill-me, issue-generation, or external triage skills.
+
+## Inputs
+
+```text
+/gadd:triage [new|work-item-id|external-ref] [context]
+```
+
+Use `/gadd:triage` for unclassified incoming work: external issues, bug reports, engineer tasks, support reports, ambiguous requests, and "what should we do with this?" items. Do not require triage before deliberate PM-led Product Requirement discovery; `/gadd:research` and `/gadd:scope` remain valid direct entry points.
+
+## Reads
+
+- `.gadd/config.yml` when present
+- active Work Item ledgers under the configured Work Item root
+- external issue body, comments, labels, timestamps, and reporter metadata when an external reference is supplied and the tracker is configured
+- repository files, docs, tests, ADRs, and existing GADD artifacts
+- GitNexus code-intelligence context when code reality matters
+
+## Writes
+
+- a Work Item `ledger.yml`
+- local-only `triage.md` only when no external tracker is configured for the Work Item
+- compact ledger events for triage route decisions and external projection metadata
+- external issue body/comment/labels/close only after human-in-the-loop approval and drift checks
+
+## Work Item Types
+
+- `bug_fix`: broken behavior against a clear expectation.
+- `task`: bounded work where the desired outcome is clear and blast radius is low enough for implementation from the approved triage outcome.
+- `engineering_change`: product intent is settled, but SDD is needed because architecture, contracts, data model, security/privacy behavior, cross-repo impact, or blast radius is meaningful.
+- `product_requirement`: PRD path is required because product outcome, users, acceptance criteria, non-goals, or scope needs product agreement.
+- `external_issue_intake`: temporary type while poor-quality external input is being normalized.
+- `not_gadd_work`: duplicate, out of scope, unsupported, or not actionable through GADD.
+
+## Triage States
+
+Set exactly one state:
+
+- `needs_info`
+- `ready_for_implementation`
+- `needs_sdd`
+- `needs_prd`
+- `blocked_on_human_decision`
+- `duplicate`
+- `out_of_scope`
+- `not_gadd_work`
+
+## Input Quality Gate
+
+Required input standard before routing:
+
+- source intake exists: user request, external issue, bug report, task description, support signal, or comparable context
+- enough context exists to identify the affected behavior, desired outcome, or missing information
+- external issue state has been freshly read when an external reference is supplied
+- external drift has been checked before any external mutation
+- GitNexus evidence is available and fresh enough before routing `bug_fix`, `task`, or `engineering_change` to `ready_for_implementation` or `needs_sdd`, unless the human explicitly approves manual fallback
+- manual fallback records lower confidence and must not silently claim low blast radius
+
+If the input quality gate fails, write only safe local state when useful and set `state: needs_info` or `blocked_on_human_decision`. Ask one focused question or recommend the earliest repairing action.
+
+## Triage Quality Loop
+
+Run a bounded quality loop:
+
+1. Read the incoming request, external issue, comments, labels, and existing GADD state.
+2. Create or bind a local Work Item early.
+3. For bugs, attempt reproduction or identify the exact missing repro evidence.
+4. Use GitNexus where code reality matters.
+5. Draft or update the triage narrative and route decision.
+6. Identify only gaps that block routing or implementation quality.
+7. Ask focused questions one at a time, or propose a cleaned-up external issue rewrite.
+8. Stop when the Work Item can route to implementation, SDD, PRD discovery, or a terminal state.
+
+Do not visibly switch the user into brainstorming, grill-me, or another skill. The quality loop belongs to `/gadd:triage`.
+
+## Routing Rules
+
+- `ready_for_implementation` routes to `/gadd:implement <work-item-id>`.
+- `needs_sdd` routes to `/gadd:design <work-item-id>`.
+- `needs_prd` routes to `/gadd:research <work-item-id>` or `/gadd:scope <work-item-id>`.
+- `needs_info` remains in `/gadd:triage <work-item-id>`.
+- terminal states may lead to external update, label, comment, or close only after human approval and drift checks.
+
+## Approved Triage Outcome
+
+In external-tracker mode, the approved triage outcome is the projected external issue body/comment plus the local ledger route decision.
+
+In local-only mode, the approved triage outcome is `triage.md` plus the local ledger route decision.
+
+The durable GADD workflow state is the Work Item ledger. The human-facing triage narrative should live where the humans work: the external issue body or comments when an external tracker is configured.
+
+## External Projection
+
+Before posting a comment, rewriting a body, applying labels, or closing an issue:
+
+1. Re-read the external issue.
+2. Compare `external_updated_at` and `body_hash` with the ledger.
+3. Present the exact proposed body/comment/label/close action.
+4. Ask for human approval.
+5. Record the projected URL, timestamp, hash, and managed labels in the ledger after success.
+
+External comments should be normal engineering triage:
+
+```markdown
+## Triage Summary
+
+What we have established:
+
+- The command fails when the reporter passes an empty title.
+
+What we still need:
+
+- Please provide the exact command invocation and the expected title value.
+
+Current GADD route:
+
+- State: needs_info
+- Likely route after clarification: needs_sdd | ready_for_implementation | needs_prd
+
+---
+
+GADD Traceability:
+- Work Item: <work-item-id>
+- Route: <route>
+- Last synchronized: <timestamp>
+```
+
+Do not include raw private context, sensitive repo analysis, non-shareable GitNexus detail, or internal reasoning in external comments.
+
+## Exit Gate
+
+End with:
+
+- Work Item ID
+- type and state
+- route and next command
+- GitNexus evidence status or approved fallback status
+- external projection status
+- one copyable next command
+
+## Stop Conditions
+
+- no source intake exists
+- external issue cannot be read when needed
+- unresolved external drift would be overwritten
+- GitNexus is missing, stale, or unindexed and the human has not approved fallback
+- missing information prevents responsible route selection
+- requested mutation lacks human approval
