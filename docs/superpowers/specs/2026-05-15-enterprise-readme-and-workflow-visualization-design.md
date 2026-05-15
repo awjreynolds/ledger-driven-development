@@ -48,10 +48,16 @@ Then state the LDD promise:
 - reviewable artifacts at each phase
 - vertical-slice implementation with evidence
 - explicit verification and closure
-- business planning and review projections without making Jira, Linear, Asana, or GitHub the hidden source of truth
+- business planning and review projections without making the planning system (GitHub Issues, Jira, Asana, Linear, Trello, or a custom internal tracker) the hidden source of truth
 - multi-repo awareness with repo-scoped SDDs
 
-The README should use confident product language, but every claim must stay within validated support. It can say "designed for Jira/Linear/Asana-style planning surfaces" or "future projection targets"; it must not say those integrations work today.
+The README should use confident product language, but every claim must stay within validated support. It can say "designed for planning systems such as GitHub Issues, Jira, Asana, Linear, Trello, and internal trackers" or "future/adaptive projection targets"; it must not say those integrations work today.
+
+The AI-native pitch should be explicit:
+
+> Point LDD at the planning system your organization already uses (GitHub Issues, Jira, Asana, Linear, Trello, or an internal tracker). LDD is designed to learn the available API surface, propose the safest projection model, and keep the repo-local ledger canonical.
+
+That claim must be framed as product direction unless and until API-surface discovery, mapping approval, and external mutation controls are implemented and verified.
 
 ## README Narrative
 
@@ -132,8 +138,9 @@ Use an integration maturity model:
 - **Linear:** important planning surface, not validated support yet
 - **Jira:** important enterprise planning surface, not validated support yet
 - **Asana:** potential roadmap/cross-functional planning surface, not part of the current validated contract
+- **Trello and internal trackers:** examples of adaptive projection targets, not validated support yet
 
-Avoid language such as "supports Jira" or "integrates with Asana" until those paths are implemented and verified. Prefer "projection target", "planned surface", "not yet validated", or "future integration candidate" depending on maturity.
+Avoid language such as "supports Jira", "supports Trello", or "integrates with Asana" until those paths are implemented and verified. Prefer "planning-system target", "adaptive projection target", "not yet validated", or "future integration candidate" depending on maturity.
 
 ## README Structure
 
@@ -162,6 +169,7 @@ Do not require GitHub Pages for this change. The README should be the canonical 
 ## Non-Goals
 
 - Do not claim validated Jira, Linear, or Asana support.
+- Do not claim validated Trello or custom internal tracker support.
 - Do not define a TPM-owned LDD artifact or gate.
 - Do not make visible agent progress canonical workflow state.
 - Do not move canonical workflow truth out of `ledger.yml`.
@@ -177,6 +185,6 @@ Do not require GitHub Pages for this change. The README should be the canonical 
 - `/ldd:next`, `/ldd:setup`, and visible progress are described as utility/support surfaces.
 - `/ldd:implement <ticket>` and `/ldd:implement ALL` are described without inventing behavior for bare `/ldd:implement`.
 - Multi-repo awareness and repo-scoped SDDs are stated explicitly.
-- External tool maturity is labeled accurately, with GitHub as the first dogfooding path and Jira/Linear/Asana not claimed as validated.
+- External tool maturity is labeled accurately, with GitHub as the first dogfooding path and Jira/Linear/Asana/Trello/internal trackers not claimed as validated.
 - Existing install and package instructions remain available.
 - The repository validation command still passes.
