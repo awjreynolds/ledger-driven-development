@@ -29,6 +29,27 @@ LDD keeps the useful part of AI acceleration while putting the work back into re
 | Multi-repo work becomes unbounded | LDD is multi-repo aware, but SDDs and plans stay repo-scoped. |
 | Reviewers lack evidence | Implementation, documentation impact, verification, and closure evidence are recorded explicitly. |
 
+## Workflow By Role
+
+LDD is designed for teams where different people own different SDLC decisions. The agent can assist each phase, but it should not collapse ownership into one task loop.
+
+| Role | Inputs | LDD skills | Outputs |
+| --- | --- | --- | --- |
+| PM | Customer pain, business goal, roadmap context, current workflow, constraints | `/ldd:research`, `/ldd:scope`, `/ldd:elaborate`, `/ldd:refine`, `/ldd:approve` | `research.md`, approved `prd.md` |
+| EM / Tech Lead | Approved PRD, repo context, ADRs, technical constraints, related repositories | `/ldd:design`, `/ldd:plan`, `/ldd:approve`, `/ldd:decompose` | repo-scoped `sdd.md`, `plan.md`, `plan.html`, child vertical-slice tickets |
+| SEs | Ready child ticket, approved plan, codebase, tests, documentation obligation | `/ldd:implement <ticket>`, `/ldd:implement ALL` | bounded code diff or PR, implementation evidence, documentation impact evidence |
+| Engineering Review | Implementation evidence, required checks, approved artifacts, PR state, drift metadata | `/ldd:verify`, `/ldd:close`, `/ldd:archive` | `verification.md`, closed ledger state, optional external tracker projection |
+
+TPMs and delivery stakeholders are first-class consumers of the workflow. They need dependency, sequencing, roadmap, review-load, and status visibility, but the current LDD command model does not define a TPM-owned artifact or approval gate.
+
+## Shared Utilities
+
+Some LDD skills support every participant rather than owning one SDLC artifact:
+
+- `/ldd:next` is read-only workflow navigation. It reports the next command, next human action, reason, and blocker from repo-local ledger state.
+- `/ldd:setup` bootstraps a target repository with ledger config, templates, draft/archive directories, and optional external projection settings.
+- Visible session progress is recommended agent UX when the host agent supports it. It helps humans see what the agent is doing, but it never replaces `ledger.yml`, approval evidence, verification, or closure state.
+
 ## Package Model
 
 The canonical package manifest is `agent-skills.json`.
