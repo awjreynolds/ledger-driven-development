@@ -231,6 +231,13 @@ Labels are projection metadata, not canonical state. If external labels conflict
 
 `/gadd:design` should support `engineering_change` Work Items whose approved boundary is the Triage Brief rather than a PRD. It still produces an SDD and records design evidence.
 
+`/gadd:design` should support two approved boundary sources:
+
+- an approved PRD for `product_requirement` Work Items,
+- an approved Triage Brief for `engineering_change` Work Items.
+
+It should not design directly from an unnormalized external issue. If the user passes an external issue reference, `/gadd:design` may resolve it only when it is already bound to a local Work Item with a design-ready state. Otherwise it must stop and route to `/gadd:triage <external-ref>` so triage can normalize the issue, gather GitNexus evidence, and decide whether the work needs SDD or PRD.
+
 `/gadd:plan` and `/gadd:decompose` should remain available after SDD where multiple slices or review-load management are needed. They are not always required for small SDD-only engineering changes.
 
 `/gadd:next` must understand Work Item states and route from triage outcomes, not only PRD-led ledgers.
@@ -279,6 +286,15 @@ Add:
 ```text
 /gadd:triage [new|work-item-id|external-ref] [context]
 ```
+
+Update design entry:
+
+```text
+/gadd:design <work-item-id>
+/gadd:design <external-ref>
+```
+
+The external reference form is resolver-only. It can continue only if the external issue is already bound to a local Work Item whose state is `needs_sdd` or otherwise design-ready. Unbound or poor-quality external issues route back to `/gadd:triage`.
 
 Keep direct PM entry points:
 
