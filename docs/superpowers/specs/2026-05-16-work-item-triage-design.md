@@ -225,6 +225,40 @@ Labels should be additive by default. Existing team labels remain unless the hum
 
 Labels are projection metadata, not canonical state. If external labels conflict with local state, GADD should detect drift and ask before overwriting.
 
+## Workflow Documentation And Diagram
+
+The public workflow documentation and generated workflow image must change with the triage model.
+
+`README.md` currently presents one PRD-led SDLC flow. The new model needs a visible triage section that explains the two entry modes:
+
+- known product discovery enters through `/gadd:research` or `/gadd:scope`,
+- unclassified intake enters through `/gadd:triage`.
+
+`docs/workflow.md` should add a dedicated triage section before the Product Requirement lane. That section should explain how triage normalizes weak intake, creates or binds a Work Item, writes the Triage Brief, uses GitNexus for blast-radius evidence, and routes to implementation, SDD, PRD discovery, or terminal states.
+
+The workflow assets must be regenerated:
+
+- `docs/assets/gadd-sdlc-workflow.svg`
+- `docs/assets/gadd-sdlc-workflow.png`
+
+The diagram should show triage as an intake/routing lane rather than forcing every Work Item through PRD. It should include at least these routes:
+
+```text
+Unclassified intake
+  -> /gadd:triage
+  -> Triage Brief
+      -> ready_for_implementation -> /gadd:implement
+      -> needs_sdd -> /gadd:design
+      -> needs_prd -> /gadd:research or /gadd:scope
+      -> needs_info / duplicate / out_of_scope / not_gadd_work
+
+Known product discovery
+  -> /gadd:research or /gadd:scope
+  -> PRD lane
+```
+
+The PNG and SVG should remain generated documentation assets, not separate sources of truth. If the diagram is generated from a script or editable source during implementation, the source should be committed and validation should verify that the checked-in PNG/SVG are current.
+
 ## Downstream Command Changes
 
 `/gadd:implement` should support Work Item types. For `bug_fix` and `task`, the approved boundary is the Triage Brief. Implementation still requires tests where practical, documentation impact, implementation evidence, and later `/gadd:verify` plus `/gadd:close`.
@@ -276,7 +310,7 @@ Medium-impact updates:
 Low-impact or wording updates:
 
 - `/gadd:research`, `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` should consistently describe themselves as the Product Requirement lane rather than the only GADD entry path.
-- Public docs, templates, validation, and command adapters must replace user-facing "ticket" language with Work Item language except when referring to external tracker tickets/issues.
+- Public docs, workflow diagrams, templates, validation, and command adapters must replace user-facing "ticket" language with Work Item language except when referring to external tracker tickets/issues.
 
 ## Setup And Storage
 
@@ -347,6 +381,8 @@ Package validation should require:
 - Work Item ledger schema.
 - GitNexus setup guidance and config.
 - Label mapping config.
+- Updated `docs/assets/gadd-sdlc-workflow.svg` and `docs/assets/gadd-sdlc-workflow.png` showing triage and direct Work Item routing.
+- A README/workflow triage section that distinguishes unclassified intake from known PM-led product discovery.
 - Updated `/gadd:setup`, `/gadd:next`, `/gadd:approve`, `/gadd:implement`, `/gadd:design`, `/gadd:plan`, `/gadd:decompose`, `/gadd:verify`, `/gadd:close`, and `/gadd:archive` contracts.
 - Product-lane commands that accept only `product_requirement` Work Items and reject other Work Item types cleanly.
 - No remaining user-facing claim that a GADD Ticket is the canonical work unit.
