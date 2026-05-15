@@ -38,6 +38,8 @@ Sources reviewed:
 
 A single Product Requirement may require work across multiple repositories. That does not automatically mean multiple PRDs. The Product Requirement should remain the product-scope unit: user outcome, business reason, acceptance criteria, constraints, and non-goals.
 
+The PRD is the parent product contract that ties all SDD workstreams together. It ties them through shared product intent, acceptance criteria, constraints, non-goals, and closure conditions. It does not tie them through technical design, repo-specific architecture, implementation sequencing, API shape, schema details, or rollout mechanics.
+
 The design layer should decide whether the approved PRD needs:
 
 - one SDD for one cohesive code boundary
@@ -95,7 +97,7 @@ Research output should record:
 - sanitized codebase facts and constraints
 - known limitations when GitNexus was unavailable or stale
 
-Research should not use GitNexus findings to write product scope directly. It should turn them into codebase facts, assumptions, risks, constraints, or open questions.
+Research should not use GitNexus findings to write product scope directly. It should turn them into codebase facts, explicit uncertainties, risks, constraints, or open questions. Any uncertainty that would affect scope or design must be stated directly and reviewed by a human before it can shape the next artifact.
 
 ### `/ldd:design`
 
@@ -133,10 +135,11 @@ Verification remains a child-ticket closure-readiness gate, not a general reposi
 
 ## Multi-Repo SDD Model
 
-The eventual model should allow:
+The eventual model should allow one PRD to own multiple SDD workstreams. The PRD remains the single parent Product Requirement for every workstream. Each SDD must trace back to the parent PRD and explain which part of the PRD's product contract it satisfies.
 
 ```text
 Product Requirement / PRD
+  -> parent product contract
   -> Design routing decision
       -> SDD workstream: repo A or service A
           -> plan
