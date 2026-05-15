@@ -99,6 +99,7 @@ Detailed installation and package mechanics live in [docs/package-model.md](docs
 ## More Detail
 
 - [docs/workflow.md](docs/workflow.md) covers workflow state, external projections, the MVP workflow, and handoff artifact contracts.
+- [docs/skills.md](docs/skills.md) catalogs the `/ldd:*` skills by lane, purpose, input, output, and usual handoff.
 - [docs/package-model.md](docs/package-model.md) covers package layout, adapter manifests, and install commands.
 
 ## Validate This Repo

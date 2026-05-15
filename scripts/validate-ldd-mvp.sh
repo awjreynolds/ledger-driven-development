@@ -10,6 +10,9 @@ CONTEXT.md
 docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
 docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
+docs/skills.md
+docs/workflow.md
+docs/package-model.md
 .claude-plugin/plugin.json
 .claude-plugin/marketplace.json
 gemini-extension.json
@@ -67,7 +70,11 @@ grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'agent-skills.json' README.md
 grep -q 'docs/workflow.md' README.md
+grep -q 'docs/skills.md' README.md
 grep -q 'docs/package-model.md' README.md
+grep -q 'canonical executable contract' docs/skills.md
+grep -q '/ldd:implement <ticket>' docs/skills.md
+grep -q 'Software Engineering owns implementation quality' docs/skills.md
 grep -q 'Installed Codex skills are local copies' docs/package-model.md
 grep -q -- '-> verification' docs/workflow.md
 grep -q 'human-approved closure' docs/workflow.md
