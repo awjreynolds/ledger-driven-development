@@ -58,6 +58,11 @@ if [ -f gadd-skills.json ]; then
   exit 1
 fi
 
+if [ -d .gadd ]; then
+  echo "repo-root .gadd must not exist; setup templates live under skills/gadd-setup/assets/templates" >&2
+  exit 1
+fi
+
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
 grep -q '"command": "/gadd:setup"' agent-skills.json
 grep -q '"command": "/gadd:research"' agent-skills.json
@@ -69,14 +74,17 @@ grep -q '"command": "/gadd:close"' agent-skills.json
 grep -q '"command": "/gadd:archive"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
-grep -q 'agent-skills.json' README.md
+grep -q 'npx skills add awjreynolds/gadd' README.md
+grep -q 'skills.sh-install-green' README.md
+grep -q 'skills/gadd-setup/assets/templates/' README.md
 grep -q 'docs/workflow.md' README.md
 grep -q 'docs/skills.md' README.md
 grep -q 'docs/package-model.md' README.md
 grep -q 'canonical executable contract' docs/skills.md
 grep -q '/gadd:implement <ticket>' docs/skills.md
 grep -q 'Software Engineering owns implementation quality' docs/skills.md
-grep -q 'Installed Codex skills are local copies' docs/package-model.md
+grep -q 'npx skills add awjreynolds/gadd' docs/package-model.md
+grep -q 'Do not require repo-root `.gadd/` files' docs/package-model.md
 grep -q -- '-> verification' docs/workflow.md
 grep -q 'human-approved closure' docs/workflow.md
 grep -q 'optional local archive cleanup' docs/workflow.md
