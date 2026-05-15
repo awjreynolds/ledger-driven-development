@@ -174,6 +174,55 @@ The Triage Brief should include:
 
 The Triage Brief is canonical. External issue rewrites are projections.
 
+## Triage Brief Storage And Binding
+
+The Triage Brief is stored in the local Work Item directory, not inside the external tracker as canonical state.
+
+Recommended local shape:
+
+```text
+docs/work-items/<work-item-id>-<slug>/
+  ledger.yml
+  triage-brief.md
+```
+
+For external issue intake, the Work Item ledger records the binding:
+
+```yaml
+external:
+  provider: github
+  kind: issue
+  id: "123"
+  url: "https://github.com/org/repo/issues/123"
+  title: "Original external issue title"
+  last_read_at: "2026-05-16T12:00:00Z"
+  external_updated_at: "2026-05-16T11:58:00Z"
+  body_hash: "sha256:..."
+  labels:
+    observed:
+      - bug
+      - gadd:needs-info
+    managed:
+      - gadd:needs-info
+```
+
+The Triage Brief records a human-readable source block that points back to the external issue and states whether the external body has been projected from the brief.
+
+External tracker projection should add only a compact GADD traceability block to the issue body or comment, for example:
+
+```text
+## GADD Traceability
+
+- Work Item: GADD-123
+- Local brief: docs/work-items/GADD-123-slug/triage-brief.md
+- State: needs_sdd
+- Last synchronized: 2026-05-16T12:00:00Z
+```
+
+That block is a pointer and sync marker, not the source of truth. The full Triage Brief remains local because it may contain repo evidence, GitNexus findings, lower-confidence fallback notes, or internal reasoning that should not automatically be copied to an external tracker.
+
+Before rewriting the external issue body or labels, `/gadd:triage` must re-read the external issue and compare the recorded `external_updated_at` and `body_hash`. If the issue changed since the last read, triage stops for human reconciliation instead of overwriting the reporter or another engineer.
+
 ## GitNexus Requirement
 
 GADD should make GitNexus part of the expected setup.
