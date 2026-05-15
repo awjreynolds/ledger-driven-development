@@ -66,15 +66,17 @@ grep -q '"command": "/ldd:archive"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'agent-skills.json' README.md
-grep -q 'Installed Codex skills are local copies' README.md
-grep -q -- '-> verification' README.md
-grep -q 'human-approved closure' README.md
-grep -q 'optional local archive cleanup' README.md
-grep -q 'GitHub is the first external-tracker dogfooding path' README.md
-grep -q 'Linear and Jira remain follow-on optional collaboration surfaces' README.md
-grep -q 'bounded shared-understanding gate' README.md
-grep -q 'GitNexus is the strongly recommended code-intelligence surface' README.md
-grep -q 'Implementation evidence must include documentation impact' README.md
+grep -q 'docs/workflow.md' README.md
+grep -q 'docs/package-model.md' README.md
+grep -q 'Installed Codex skills are local copies' docs/package-model.md
+grep -q -- '-> verification' docs/workflow.md
+grep -q 'human-approved closure' docs/workflow.md
+grep -q 'optional local archive cleanup' docs/workflow.md
+grep -q 'GitHub is the first external-tracker dogfooding path' docs/workflow.md
+grep -q 'Linear and Jira remain follow-on optional collaboration surfaces' docs/workflow.md
+grep -q 'bounded shared-understanding gate' docs/workflow.md
+grep -q 'GitNexus is the strongly recommended code-intelligence surface' docs/workflow.md
+grep -q 'Implementation evidence must include documentation impact' docs/workflow.md
 grep -q 'Package Source Of Truth' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:approve' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:verify' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
