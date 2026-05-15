@@ -8,6 +8,20 @@ adrs: []
 
 # Software Design Document: {title}
 
+## Structure
+
+Summarize the design shape before the detailed sections. This is the human-readable header file for the SDD: concise, concrete, and synchronized with the detailed design below.
+
+- Design intent:
+- Primary components / modules:
+- Responsibility boundaries:
+- Key interfaces / contracts:
+- Data or control flow:
+- Explicit non-changes:
+- Detail map:
+
+Quality bar: a reviewer can read this section first and understand what is changing, which system parts are involved, which boundaries and interfaces matter, what is deliberately not changing, and where to read the detailed rationale.
+
 ## Context
 
 Write the engineering context after the PRD is merged. Use the merged PRD, current code, and relevant ADRs as inputs.

@@ -10,6 +10,7 @@ CONTEXT.md
 docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
 docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
+docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
 docs/skills.md
 docs/workflow.md
 docs/package-model.md
@@ -84,6 +85,8 @@ grep -q 'Linear and Jira remain follow-on optional collaboration surfaces' docs/
 grep -q 'bounded shared-understanding gate' docs/workflow.md
 grep -q 'GitNexus is the strongly recommended code-intelligence surface' docs/workflow.md
 grep -q 'Implementation evidence must include documentation impact' docs/workflow.md
+grep -q 'SDD templates include a required `## Structure` section' docs/workflow.md
+grep -q 'header-file summary' docs/skills.md
 grep -q 'Package Source Of Truth' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:approve' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
 grep -q '/ldd:verify' docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md
@@ -92,6 +95,9 @@ grep -q 'GitNexus Code Intelligence Design' docs/superpowers/specs/2026-05-15-gi
 grep -q 'The PRD is the parent product contract' docs/superpowers/specs/2026-05-15-gitnexus-code-intelligence-design.md
 grep -q 'Documentation Freshness Design' docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
 grep -q 'Every implementation slice must account for documentation impact' docs/superpowers/specs/2026-05-15-documentation-freshness-design.md
+grep -q 'SDD Structure Section Design' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
+grep -q 'header file' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
+grep -q 'approval-blocking' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Execution Context' CONTEXT.md
 grep -q 'Bounded Shared Understanding Gate' CONTEXT.md
@@ -183,6 +189,8 @@ grep -q 'Do not invent or preserve an `LDD-0004` style ID in GitHub tracker mode
 grep -q 'GitHub SDD issue' skills/ldd-approve/SKILL.md
 grep -q 'PRD #<prd_issue_number> SDD:' skills/ldd-approve/SKILL.md
 grep -q 'child ticket of the PRD issue' skills/ldd-approve/SKILL.md
+grep -q 'missing or stale `## Structure`' skills/ldd-approve/SKILL.md
+grep -q 'structure summary' skills/ldd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/ldd-scope/SKILL.md
 grep -q 'This is a bounded shared understanding gate' skills/ldd-scope/SKILL.md
@@ -196,6 +204,9 @@ grep -q 'This is a bounded shared understanding gate' skills/ldd-refine/SKILL.md
 grep -q 'explicit uncertainties' skills/ldd-scope/SKILL.md
 grep -q 'explicit uncertainties' skills/ldd-elaborate/SKILL.md
 grep -q 'explicit uncertainties' skills/ldd-refine/SKILL.md
+grep -q 'write or update `## Structure`' skills/ldd-design/SKILL.md
+grep -q 'header-file summary' skills/ldd-design/SKILL.md
+grep -q 'keep it synchronized' skills/ldd-design/SKILL.md
 
 grep -q 'draft_directory: docs/tickets/_drafts' skills/ldd-setup/assets/templates/config.yml
 grep -q 'archive_directory: docs/tickets/_archive' skills/ldd-setup/assets/templates/config.yml
@@ -226,6 +237,14 @@ grep -q 'avoid prescribing command mechanics' skills/ldd-setup/assets/templates/
 grep -q 'Avoid: Gherkin/Cucumber syntax here' skills/ldd-setup/assets/templates/prd.md
 grep -q 'Given/When/Then' skills/ldd-setup/assets/templates/prd.md
 grep -q '# Software Design Document:' skills/ldd-setup/assets/templates/sdd.md
+grep -q '## Structure' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Design intent:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Primary components / modules:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Responsibility boundaries:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Key interfaces / contracts:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Data or control flow:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Explicit non-changes:' skills/ldd-setup/assets/templates/sdd.md
+grep -q 'Detail map:' skills/ldd-setup/assets/templates/sdd.md
 grep -q 'Quality bar:' skills/ldd-setup/assets/templates/sdd.md
 grep -q 'ADR threshold:' skills/ldd-setup/assets/templates/sdd.md
 grep -q 'Review Checklist' skills/ldd-setup/assets/templates/sdd.md

@@ -38,6 +38,7 @@ Required input standard before approval:
 - the artifact for that gate exists and passes its checklist
 - all prerequisite artifacts for that gate are approved
 - external tracker state is reachable and not drifted when GitHub projection is configured
+- for SDD approval, the SDD includes a non-placeholder structure summary in `## Structure` that matches the detailed design
 
 If inputs fail this standard, do not approve and do not mutate local or external state. Name the blocking gate or artifact gap. The earliest LDD command that can repair the gap is the owning phase command: `/ldd:refine` for PRD approval, `/ldd:design` for SDD approval, `/ldd:plan` for plan approval, or human external-drift reconciliation when tracker state changed.
 
@@ -132,14 +133,15 @@ When blocked, report the gate candidates and the next command that owns the stat
 
 1. Confirm the PRD is approved in the ledger.
 2. Confirm the SDD exists and passes the SDD review checklist.
-3. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
+3. Confirm `## Structure` is present, non-placeholder, and synchronized with the detailed design. Treat missing or stale `## Structure` as approval-blocking for SDD approval. Block approval when the structure summary contradicts the detailed design, omits a material component, boundary, interface, or explicit non-change described later in the SDD, or only restates product scope.
+4. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
    - Build the issue from the current SDD content and `.ldd/templates/issue-body-sdd.md`.
    - Title the SDD issue `PRD #<prd_issue_number> SDD: <short title>` so tracker issue lists visibly show which Product Requirement the design belongs to.
    - Reference the approved parent PRD issue number and URL in the SDD issue body.
    - Record the SDD issue number and URL under `artifacts.sdd.external_id` and `artifacts.sdd.external_url`.
    - Treat this SDD issue as the GitHub child ticket of the PRD issue.
-4. Mark SDD frontmatter `status: approved` and update `updated`.
-5. Update ledger:
+5. Mark SDD frontmatter `status: approved` and update `updated`.
+6. Update ledger:
    - `ticket.status: approved`
    - `artifacts.sdd.status: approved`
    - `execution_context.phase: plan`
@@ -149,8 +151,8 @@ When blocked, report the gate candidates and the next command that owns the stat
    - `execution_context.next_reason: Software Design Document is approved and ready for implementation planning.`
    - `execution_context.approved_artifacts.sdd` to the SDD path
    - `execution_context.boundaries.design` to the SDD path
-6. Append an `sdd_approved` event with `actor: human`.
-7. Report the next command: `/ldd:plan <ticket-id>`.
+7. Append an `sdd_approved` event with `actor: human`.
+8. Report the next command: `/ldd:plan <ticket-id>`.
 
 ## Plan Approval Workflow
 

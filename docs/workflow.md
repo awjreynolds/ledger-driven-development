@@ -83,6 +83,7 @@ The templates are quality contracts, not blank forms:
 - GitNexus is strongly recommended code intelligence for research, design, planning, and optional verification evidence; it never replaces the repo-local ledger.
 - `/ldd:approve` records explicit human approval for PRD, SDD, and plan gates. It does not approve decomposition, closure, or external mutations.
 - SDDs translate approved PRDs into designs grounded in code and ADRs.
+- SDD templates include a required `## Structure` section immediately after the title. This is the SDD's header-file summary: a concise map of design intent, components, responsibility boundaries, interfaces, flow, explicit non-changes, and where to read the detailed rationale.
 - Plans trace acceptance criteria to implementation slices and verification.
 - Plans and child tickets must record documentation impact for each slice: updated, not needed with reason, or blocked.
 - Decomposition turns approved plan slices into child vertical-slice tickets.

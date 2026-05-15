@@ -18,6 +18,7 @@ Create or update `sdd.md` in the promoted ticket directory.
 
 - Software Design Document
 - ADR creates/updates only when the strict ADR threshold is met
+- required SDD `## Structure` header-file summary synchronized with the detailed design
 
 ## Input Quality Gate
 
@@ -48,6 +49,9 @@ After writing the SDD, stop at explicit SDD approval:
 - GitNexus is strongly recommended before deciding affected repos, systems, SDD boundaries, cross-repo sequencing, or contract risks. If GitNexus is unavailable, stale, unindexed, or outside the configured related repositories, continue with normal code inspection and record the limitation in the SDD.
 - Use GitNexus findings as design evidence, not canonical workflow state. Record indexed repositories considered, freshness or staleness notes, affected repos/systems, and any limitations that materially affect design confidence.
 - Use the SDD template's quality bar before committing design output.
+- Always write or update `## Structure` as the first content section of the SDD. Treat it as the SDD's header-file summary: concise enough to skim, concrete enough to reveal the design shape.
+- Always keep it synchronized with `Decision Summary`, `Proposed Design`, `Data Flow / Control Flow`, and `Interfaces / Contracts`. If the design changes components, boundaries, interfaces, flow, or explicit non-changes, update `## Structure` in the same edit.
+- Do not use `## Structure` as a second PRD, implementation plan, or separate design authority. It summarizes the detailed SDD; it does not replace it.
 - The PRD still owns product scope. If code reality contradicts the PRD, stop and return to the earliest affected Product Manager step.
 - ADR threshold: hard to reverse, surprising without context, and the result of a real trade-off.
 - Mandatory ADR support does not mean mandatory ADR creation.
