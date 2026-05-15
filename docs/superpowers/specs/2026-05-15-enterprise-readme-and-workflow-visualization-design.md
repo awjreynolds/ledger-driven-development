@@ -2,27 +2,56 @@
 
 **Date:** 2026-05-15
 **Status:** approved direction for implementation planning
-**Context:** improving the public README so PMs, EMs, Tech Leads, SEs, TPMs, and engineering reviewers understand why LDD is different
+**Context:** improving the public README so enterprise PMs, EMs, Tech Leads, SEs, TPMs, engineering reviewers, and buyers of AI-assisted delivery workflows understand why LDD is different
 
 ## Thesis
 
-The README should present Ledger-Driven Development as an enterprise SDLC workflow for AI-assisted delivery, not as another chat/task wrapper.
+The README should sell Ledger-Driven Development as the enterprise operating model for AI-assisted software delivery, not as another prompt pack, task wrapper, or individual-developer productivity hack.
 
-LDD is different because it keeps product scope, technical design, planning, implementation, verification, and closure in explicit handoffs. Agents can accelerate the work, but they must not collapse role boundaries into one maverick chat loop where scope expands quietly and approval evidence is unclear.
+The sales promise is:
 
-The README should make that difference visible in the first screen.
+> LDD lets enterprise teams use AI agents without losing SDLC governance, role ownership, roadmap visibility, review discipline, or multi-repo delivery control.
+
+LDD is different because it keeps product scope, technical design, planning, implementation, verification, and closure in explicit handoffs. Agents can accelerate the work, but they must not collapse role boundaries into one maverick chat loop where scope expands quietly, planning systems drift, and approval evidence is unclear.
+
+The README should make that promise visible in the first screen before explaining package mechanics.
 
 ## Audience
 
-The primary audience is SDLC participants:
+The primary audience is enterprise teams evaluating whether LDD makes AI-assisted delivery safe enough for real product work:
 
 - PMs who own product problem, users, outcomes, scope, and PRD readiness
 - EMs and Tech Leads who own technical design decisions and engineering plan shape
 - SEs who implement approved vertical slices
 - Engineering reviewers, including QA signal where needed, who assess evidence and closure readiness
 - TPMs and delivery stakeholders who need roadmap, dependency, sequencing, and status visibility
+- Directors and platform leaders who need adoption to fit existing planning, review, audit, and compliance expectations
 
 Agent/tool authors are secondary. Package mechanics and adapter details remain in the README, but they should no longer be the opening story.
+
+## Sales Positioning
+
+The README should be written as a sales pitch for enterprise teams, with a clear problem, promise, differentiators, and proof points.
+
+Lead with enterprise pain:
+
+- AI agents are effective, but chat-first delivery does not naturally respect PM, EM, SE, QA, TPM, roadmap, or audit boundaries.
+- One conversational task can quietly become product scope, design, implementation, test strategy, documentation policy, and closure decision.
+- External planning systems can become stale when the canonical work happens in an agent chat.
+- Multi-repo work becomes risky when one agent treats several codebases as one unbounded implementation surface.
+- Reviewers end up asking "what happened?" instead of the intended handoff question.
+
+Then state the LDD promise:
+
+- role-safe SDLC handoffs
+- canonical repo-local workflow state
+- reviewable artifacts at each phase
+- vertical-slice implementation with evidence
+- explicit verification and closure
+- business planning and review projections without making Jira, Linear, Asana, or GitHub the hidden source of truth
+- multi-repo awareness with repo-scoped SDDs
+
+The README should use confident product language, but every claim must stay within validated support. It can say "designed for Jira/Linear/Asana-style planning surfaces" or "future projection targets"; it must not say those integrations work today.
 
 ## README Narrative
 
@@ -37,6 +66,14 @@ Then explain the mechanism:
 - external tools are projections for planning, review, and visibility, not the source of truth
 - `/ldd:next` is shared read-only navigation for every participant
 - visible progress checklists are recommended agent UX only; they do not replace ledger state, approval, verification, or closure evidence
+
+The first README screen should answer three sales questions:
+
+1. What enterprise risk does LDD remove?
+2. Why is LDD different from letting an agent run a task list?
+3. How does LDD fit existing business planning and engineering review?
+
+Detailed commands and installation should come after those answers.
 
 ## Role Visualization
 
@@ -102,16 +139,17 @@ Avoid language such as "supports Jira" or "integrates with Asana" until those pa
 
 Recommended structure:
 
-1. Title and one-paragraph enterprise SDLC thesis
-2. "Why LDD is different" contrast against chat/task loops
-3. Role-lane workflow visualization
-4. Shared state and utility skills
-5. Multi-repo awareness and repo-scoped SDDs
-6. External planning/review surface maturity
-7. Commands
-8. Install
-9. Package model and source-of-truth details
-10. Validation
+1. Sales headline and one-paragraph enterprise promise
+2. "Why AI delivery breaks in enterprise teams" pain section
+3. "What LDD changes" differentiator section
+4. Role-lane workflow visualization
+5. Shared state and utility skills
+6. Multi-repo awareness and repo-scoped SDDs
+7. External planning/review surface maturity
+8. Commands
+9. Install
+10. Package model and source-of-truth details
+11. Validation
 
 The existing install and package details should remain, but move lower so readers understand the workflow before adapter mechanics.
 
@@ -129,10 +167,12 @@ Do not require GitHub Pages for this change. The README should be the canonical 
 - Do not move canonical workflow truth out of `ledger.yml`.
 - Do not replace existing command contracts in this README-only change.
 - Do not create a full documentation site unless the README proves insufficient.
+- Do not dilute the pitch into neutral package documentation before explaining the enterprise value.
 
 ## Acceptance Criteria
 
 - A new reader can identify why LDD is different from a chat/task loop within the first README section.
+- A skeptical enterprise reader can identify the business value: safer AI adoption, clearer role ownership, less scope creep, reviewable evidence, planning-system visibility, and multi-repo control.
 - PM, EM/Tech Lead, SE, Engineering Review, and TPM participation are explained without blurring ownership.
 - `/ldd:next`, `/ldd:setup`, and visible progress are described as utility/support surfaces.
 - `/ldd:implement <ticket>` and `/ldd:implement ALL` are described without inventing behavior for bare `/ldd:implement`.
