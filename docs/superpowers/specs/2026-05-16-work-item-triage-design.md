@@ -16,7 +16,7 @@ The current PRD-led workflow assumes work starts as a Product Requirement. That 
 
 - Replace GADD's canonical "Ticket" language with **Work Item** across the model.
 - Add `/gadd:triage` as the intake and routing command for unclassified work.
-- Normalize weak external issues into a local Triage Brief before routing or external mutation.
+- Normalize weak external issues into a shareable triage narrative and durable route decision before routing or external mutation.
 - Route Work Items to direct implementation, SDD-only design, PRD discovery, or terminal states.
 - Make GitNexus an expected GADD setup component and required triage evidence for code-impact routing unless a human approves fallback.
 - Keep external issues and labels useful to engineers who do not use GADD.
@@ -40,7 +40,7 @@ The canonical repo-local unit of GADD-governed work. A Work Item can represent a
 A tracker-native record in GitHub, Linear, Jira, or another external system. External issues can be sources or projections of Work Items, but they are not canonical GADD state.
 
 **Triage Brief**:
-The canonical normalized intake artifact written by `/gadd:triage`. It captures the cleaned-up problem statement, evidence, repro status, acceptance or done criteria, blast-radius notes, missing information, route, and external projection plan.
+A working human-in-the-loop communication artifact produced by `/gadd:triage`. It captures the cleaned-up problem statement, evidence, repro status, acceptance or done criteria, blast-radius notes, missing information, route, and external projection plan. In external-tracker mode it should normally be projected into the external issue as a body rewrite or comment after human approval. In local-only mode it is stored locally because the repository is the collaboration surface.
 
 **Triage Quality Loop**:
 The bounded clarification loop inside `/gadd:triage`. It improves poor-quality intake only until the Work Item can be routed responsibly.
@@ -53,7 +53,7 @@ Avoid using **Ticket** as GADD's internal term. Use "ticket" only when referring
 Broken behavior against a clear expectation.
 
 `task`:
-Bounded work where the desired outcome is clear and blast radius is low enough for implementation from the Triage Brief. This is broad by design; maintenance is one example, not the whole category.
+Bounded work where the desired outcome is clear and blast radius is low enough for implementation from the approved triage outcome. This is broad by design; maintenance is one example, not the whole category.
 
 `engineering_change`:
 Product intent is settled, but SDD is needed because architecture, contracts, data model, security/privacy behavior, cross-repo impact, or blast radius is meaningful.
@@ -72,7 +72,7 @@ Duplicate, out of scope, unsupported, or not actionable through GADD.
 Each triaged Work Item has exactly one state:
 
 - `needs_info`: missing evidence blocks responsible routing or implementation quality.
-- `ready_for_implementation`: implementation can start from the Triage Brief; no PRD, SDD, or plan is required.
+- `ready_for_implementation`: implementation can start from the approved triage outcome; no PRD, SDD, or plan is required.
 - `needs_sdd`: product intent is clear, but engineering design is required before implementation.
 - `needs_prd`: product scope or acceptance criteria needs PRD discovery and approval.
 - `blocked_on_human_decision`: GADD can frame the decision, but a human must choose.
@@ -94,7 +94,7 @@ Each triaged Work Item has exactly one state:
 /gadd:design <work-item-id>
 ```
 
-In this path, the approved boundary is the Triage Brief rather than a PRD. `/gadd:plan` and `/gadd:decompose` remain available when the SDD yields multiple reviewable slices. For small SDD-only changes, plan/decompose may be skipped only when the SDD explicitly approves a single implementation route.
+In this path, the approved boundary is the triage outcome rather than a PRD. In external-tracker mode, that means the approved external issue body/comment plus the local ledger route decision. In local-only mode, that means the local triage artifact plus the ledger route decision. `/gadd:plan` and `/gadd:decompose` remain available when the SDD yields multiple reviewable slices. For small SDD-only changes, plan/decompose may be skipped only when the SDD explicitly approves a single implementation route.
 
 `needs_prd` routes to one of:
 
@@ -148,16 +148,16 @@ PRD is required when the work depends on:
 2. Bind or create a local Work Item early.
 3. For bugs, attempt reproduction or identify the exact missing repro evidence.
 4. Use GitNexus where code reality matters.
-5. Draft or update the Triage Brief.
+5. Draft or update the triage narrative and route decision.
 6. Identify only gaps that block routing or implementation quality.
 7. Ask focused questions one at a time, or propose a cleaned-up external issue rewrite.
 8. Stop when the Work Item can route to implementation, SDD, PRD discovery, or a terminal state.
 
 The loop should sharpen ambiguity and challenge weak assumptions, but it must stay bounded to the routing decision.
 
-## Triage Brief
+## Triage Narrative And Outcome
 
-The Triage Brief should include:
+The triage narrative should include:
 
 - Work Item ID, type, state, and route.
 - Source summary and external bindings.
@@ -172,23 +172,27 @@ The Triage Brief should include:
 - Route rationale.
 - External projection plan.
 
-The Triage Brief is canonical. External issue rewrites are projections.
+The narrative is not the canonical source of workflow truth in external-tracker mode. The durable GADD state is the Work Item ledger: type, state, route, external binding, sync metadata, GitNexus evidence summary, approvals, and links to external projections. The human-facing triage narrative should live where engineers and reporters will read it: the external issue body or comments after human approval.
 
-## Triage Brief Storage And Binding
+## Triage Storage And Binding
 
-The Triage Brief is stored in the local Work Item directory, not inside the external tracker as canonical state.
+In external-tracker mode, the full triage narrative is staged during `/gadd:triage` and then projected to the external issue body or comments after human approval. The repository stores the Work Item ledger and projection metadata, not a permanent local triage brief as the single source of truth.
 
-Recommended local shape:
+Recommended external-tracker local shape:
 
 ```text
 docs/work-items/<work-item-id>-<slug>/
   ledger.yml
-  triage-brief.md
 ```
 
-For external issue intake, the Work Item ledger records the binding:
+The Work Item ledger records the binding and route:
 
 ```yaml
+work_item:
+  id: GADD-123
+  type: engineering_change
+  state: needs_sdd
+  route: /gadd:design GADD-123
 external:
   provider: github
   kind: issue
@@ -204,9 +208,27 @@ external:
       - gadd:needs-info
     managed:
       - gadd:needs-info
+triage:
+  projection:
+    mode: external_comment
+    url: "https://github.com/org/repo/issues/123#issuecomment-456"
+    projected_at: "2026-05-16T12:03:00Z"
+    projected_by: human-approved
+  code_intelligence:
+    provider: gitnexus
+    freshness: fresh
+    summary: "Affected area appears limited to command parsing and tests."
 ```
 
-The Triage Brief records a human-readable source block that points back to the external issue and states whether the external body has been projected from the brief.
+In local-only mode, GADD stores the human-facing narrative locally because there is no external collaboration surface:
+
+```text
+docs/work-items/<work-item-id>-<slug>/
+  ledger.yml
+  triage.md
+```
+
+`triage.md` follows the same shareable narrative shape that would otherwise be posted to an external issue. It should not contain raw private context or non-shareable internal reasoning.
 
 External tracker projection may add either a compact traceability block or an approved sanitized triage comment.
 
@@ -216,14 +238,14 @@ A compact GADD traceability block can be added to the issue body or comment:
 ## GADD Traceability
 
 - Work Item: GADD-123
-- Local brief: docs/work-items/GADD-123-slug/triage-brief.md
 - State: needs_sdd
+- Route: /gadd:design GADD-123
 - Last synchronized: 2026-05-16T12:00:00Z
 ```
 
-That block is a pointer and sync marker, not the source of truth. The full Triage Brief remains local because it may contain repo evidence, GitNexus findings, lower-confidence fallback notes, or internal reasoning that should not automatically be copied to an external tracker.
+That block is a pointer and sync marker, not the source of truth.
 
-A sanitized triage comment is appropriate when the external issue needs reporter questions, maintainer clarification, or a shareable summary of what GADD has established so far. It should be generated from the local Triage Brief, but it must not include raw private context, sensitive repo analysis, non-shareable GitNexus detail, or internal reasoning.
+A sanitized triage comment is appropriate when the external issue needs reporter questions, maintainer clarification, or a shareable summary of what GADD has established so far. It must not include raw private context, sensitive repo analysis, non-shareable GitNexus detail, or internal reasoning.
 
 Recommended triage comment shape:
 
@@ -244,7 +266,7 @@ Current GADD route:
 - Likely route after clarification: needs_sdd | ready_for_implementation | needs_prd
 ```
 
-For external issues raised by non-GADD users, the comment should be readable as normal engineering triage. GADD traceability should remain a small footer rather than the main content. Posting the comment, rewriting the body, applying labels, or closing the issue all require human approval and drift checks.
+For external issues raised by non-GADD users, the comment should be readable as normal engineering triage. GADD traceability should remain a small footer rather than the main content. Posting the comment, rewriting the body, applying labels, or closing the issue all require human approval and drift checks. After projection, the ledger records the projected comment/body URL, timestamp, and hash so `/gadd:next`, `/gadd:implement`, `/gadd:design`, and `/gadd:verify` can find the approved boundary.
 
 Before rewriting the external issue body or labels, `/gadd:triage` must re-read the external issue and compare the recorded `external_updated_at` and `body_hash`. If the issue changed since the last read, triage stops for human reconciliation instead of overwriting the reporter or another engineer.
 
@@ -264,7 +286,7 @@ This makes GitNexus required for normal impact-aware GADD usage while preserving
 
 External tracker records are useful collaboration surfaces for engineers who may not use GADD.
 
-When an external issue is poor quality, `/gadd:triage` should first write the local Triage Brief. It may then propose a rewritten external issue body, comment, labels, or close action. Any external mutation requires:
+When an external issue is poor quality, `/gadd:triage` should first prepare the triage narrative and route decision for human review. It may then propose a rewritten external issue body, comment, labels, or close action. Any external mutation requires:
 
 - human-in-the-loop approval,
 - a fresh read of the external issue,
@@ -308,7 +330,7 @@ The public workflow documentation and generated workflow image must change with 
 - known product discovery enters through `/gadd:research` or `/gadd:scope`,
 - unclassified intake enters through `/gadd:triage`.
 
-`docs/workflow.md` should add a dedicated triage section before the Product Requirement lane. That section should explain how triage normalizes weak intake, creates or binds a Work Item, writes the Triage Brief, uses GitNexus for blast-radius evidence, and routes to implementation, SDD, PRD discovery, or terminal states.
+`docs/workflow.md` should add a dedicated triage section before the Product Requirement lane. That section should explain how triage normalizes weak intake, creates or binds a Work Item, prepares and projects the triage narrative, records the route decision in the ledger, uses GitNexus for blast-radius evidence, and routes to implementation, SDD, PRD discovery, or terminal states.
 
 The workflow assets must be regenerated:
 
@@ -320,7 +342,7 @@ The diagram should show triage as an intake/routing lane rather than forcing eve
 ```text
 Unclassified intake
   -> /gadd:triage
-  -> Triage Brief
+  -> triage outcome
       -> ready_for_implementation -> /gadd:implement
       -> needs_sdd -> /gadd:design
       -> needs_prd -> /gadd:research or /gadd:scope
@@ -335,14 +357,14 @@ The PNG and SVG should remain generated documentation assets, not separate sourc
 
 ## Downstream Command Changes
 
-`/gadd:implement` should support Work Item types. For `bug_fix` and `task`, the approved boundary is the Triage Brief. Implementation still requires tests where practical, documentation impact, implementation evidence, and later `/gadd:verify` plus `/gadd:close`.
+`/gadd:implement` should support Work Item types. For `bug_fix` and `task`, the approved boundary is the triage outcome: projected external issue/comment plus ledger route decision in external-tracker mode, or local `triage.md` plus ledger route decision in local-only mode. Implementation still requires tests where practical, documentation impact, implementation evidence, and later `/gadd:verify` plus `/gadd:close`.
 
-`/gadd:design` should support `engineering_change` Work Items whose approved boundary is the Triage Brief rather than a PRD. It still produces an SDD and records design evidence.
+`/gadd:design` should support `engineering_change` Work Items whose approved boundary is the triage outcome rather than a PRD. It still produces an SDD and records design evidence.
 
 `/gadd:design` should support two approved boundary sources:
 
 - an approved PRD for `product_requirement` Work Items,
-- an approved Triage Brief for `engineering_change` Work Items.
+- an approved triage outcome for `engineering_change` Work Items.
 
 It should not design directly from an unnormalized external issue. If the user passes an external issue reference, `/gadd:design` may resolve it only when it is already bound to a local Work Item with a design-ready state. Otherwise it must stop and route to `/gadd:triage <external-ref>` so triage can normalize the issue, gather GitNexus evidence, and decide whether the work needs SDD or PRD.
 
@@ -352,8 +374,8 @@ It should not design directly from an unnormalized external issue. If the user p
 
 `/gadd:verify` remains mandatory before closure, but its evidence checklist depends on Work Item type:
 
-- fast-path `bug_fix` and `task`: Triage Brief plus implementation evidence,
-- `engineering_change`: Triage Brief, SDD, optional plan/decomposition artifacts, plus implementation evidence,
+- fast-path `bug_fix` and `task`: triage outcome plus implementation evidence,
+- `engineering_change`: triage outcome, SDD, optional plan/decomposition artifacts, plus implementation evidence,
 - `product_requirement`: PRD, SDD, plan, decomposition artifacts, plus implementation evidence.
 
 `/gadd:close` should close Work Items only after verification passes or an explicit human override is recorded.
@@ -364,11 +386,11 @@ The triage model affects every command that currently assumes a PRD-led parent t
 
 High-impact updates:
 
-- `/gadd:setup`: must create `docs/work-items/`, Work Item templates, Triage Brief template, label mapping config, and GitNexus setup guidance. Setup should no longer describe `docs/tickets/` as canonical storage.
+- `/gadd:setup`: must create `docs/work-items/`, Work Item templates, triage narrative/projection template, label mapping config, and GitNexus setup guidance. Setup should no longer describe `docs/tickets/` as canonical storage.
 - `/gadd:next`: must navigate Work Item type/state/route. It must support direct implementation from `ready_for_implementation`, design from `needs_sdd`, PRD discovery from `needs_prd`, and terminal triage states.
-- `/gadd:design`: must accept either an approved PRD or an approved Triage Brief as its design boundary. Raw external issues must route through triage first.
+- `/gadd:design`: must accept either an approved PRD or an approved triage outcome as its design boundary. Raw external issues must route through triage first.
 - `/gadd:approve`: must approve SDD gates that are attached to `engineering_change` Work Items without requiring an approved PRD. PRD approval remains required only for `product_requirement` Work Items.
-- `/gadd:implement`: must choose its required inputs from Work Item type. `bug_fix` and `task` use the Triage Brief; `engineering_change` uses Triage Brief plus approved SDD and optional plan; `product_requirement` uses PRD, SDD, plan, and decomposition outputs.
+- `/gadd:implement`: must choose its required inputs from Work Item type. `bug_fix` and `task` use the approved triage outcome; `engineering_change` uses the approved triage outcome plus approved SDD and optional plan; `product_requirement` uses PRD, SDD, plan, and decomposition outputs.
 - `/gadd:verify`: must verify Work Items, not only child tickets. Its required approved inputs depend on Work Item type.
 - `/gadd:close`: must close verified Work Items and support external issue closure projections after human approval and drift checks.
 - `/gadd:archive`: must archive closed Work Item packages under the configured Work Item archive directory.
@@ -402,7 +424,7 @@ Templates should use Work Item language:
 
 ```text
 .gadd/templates/work-item-ledger.yml
-.gadd/templates/triage-brief.md
+.gadd/templates/triage.md
 .gadd/templates/prd.md
 .gadd/templates/sdd.md
 .gadd/templates/plan.md
@@ -451,7 +473,7 @@ Package validation should require:
 
 - `/gadd:triage` skill and command adapters.
 - Work Item language in public docs and templates.
-- Triage Brief template.
+- Triage narrative/projection template.
 - Work Item ledger schema.
 - GitNexus setup guidance and config.
 - Label mapping config.
@@ -467,6 +489,6 @@ Package validation should require:
 - Whether SDD-only Work Items should have a separate approval gate or reuse `/gadd:approve` for SDD approval.
 - Exact GitNexus freshness policy and how commands detect stale indexes.
 - Exact external label defaults for GitHub and how Linear/Jira mappings should be represented.
-- Whether storage migration from existing `docs/tickets/` examples is part of the first implementation plan or handled by regenerating examples.
+- Whether existing `docs/tickets/` examples are regenerated as `docs/work-items/` examples or removed during the clean model shift.
 
 These are implementation-plan decisions, not design blockers.
