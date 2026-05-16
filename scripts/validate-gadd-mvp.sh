@@ -33,6 +33,7 @@ skills/gadd-setup/assets/templates/issue-body-sdd.md
 skills/gadd-setup/assets/templates/pr-body-prd.md
 skills/gadd-setup/assets/templates/pr-body-sdd-plan.md
 skills/gadd-setup/assets/templates/pr-body-implementation.md
+skills/gadd-next/references/gate-detection.md
 docs/assets/gadd-sdlc-workflow.svg
 docs/assets/gadd-sdlc-workflow.source.svg
 docs/assets/gadd-sdlc-workflow.png
@@ -135,6 +136,9 @@ grep -q 'Every implementation slice must account for documentation impact' docs/
 grep -q 'SDD Structure Section Design' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
 grep -q 'header file' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
 grep -q 'approval-blocking' docs/superpowers/specs/2026-05-15-sdd-structure-section-design.md
+grep -q 'Autonomous / Human-review' skills/gadd-setup/assets/templates/plan.md
+grep -q 'Stories/criteria' skills/gadd-setup/assets/templates/plan.md
+grep -q 'one or two sentence summary' skills/gadd-setup/assets/templates/plan.md
 grep -q 'A repo-local, machine-readable record' CONTEXT.md
 grep -q 'Execution Context' CONTEXT.md
 grep -q 'Bounded Shared Understanding Gate' CONTEXT.md
@@ -189,6 +193,42 @@ for command in $commands; do
   grep -q 'canonical' "commands/gadd/$command.toml"
 done
 
+section_line() {
+  grep -n "^## $2$" "$1" | sed 's/:.*//' | head -n 1
+}
+
+require_section_before() {
+  file="$1"
+  first="$2"
+  second="$3"
+  first_line="$(section_line "$file" "$first" || true)"
+  second_line="$(section_line "$file" "$second" || true)"
+  if [ -n "$first_line" ] && [ -n "$second_line" ] && [ "$first_line" -ge "$second_line" ]; then
+    echo "$file section order invalid: expected '$first' before '$second'" >&2
+    exit 1
+  fi
+}
+
+for skill_file in skills/gadd-*/SKILL.md; do
+  if [ "$(sed -n '1p' "$skill_file")" != "---" ]; then
+    echo "$skill_file must start with frontmatter" >&2
+    exit 1
+  fi
+  if [ "$(grep '^## ' "$skill_file" | tail -n 1)" != "## Stop Conditions" ]; then
+    echo "$skill_file must keep Stop Conditions as the final section" >&2
+    exit 1
+  fi
+  require_section_before "$skill_file" "Input" "Reads"
+  require_section_before "$skill_file" "Inputs" "Reads"
+  require_section_before "$skill_file" "Reads" "Writes"
+  require_section_before "$skill_file" "Reads" "Produces"
+  require_section_before "$skill_file" "Reads" "Owns"
+  require_section_before "$skill_file" "Writes" "Input Quality Gate"
+  require_section_before "$skill_file" "Produces" "Input Quality Gate"
+  require_section_before "$skill_file" "Owns" "Input Quality Gate"
+  require_section_before "$skill_file" "Input Quality Gate" "Rules"
+done
+
 grep -q 'short_description: "Report the next action for a Work Item"' skills/gadd-next/agents/openai.yaml
 grep -q 'default_prompt: "Use $gadd-next to inspect Work Item GADD-123."' skills/gadd-next/agents/openai.yaml
 grep -q 'short_description: "Approve a PRD, SDD, or plan gate"' skills/gadd-approve/agents/openai.yaml
@@ -228,7 +268,7 @@ grep -q 'next: /gadd:close <work-item-id>' skills/gadd-next/SKILL.md
 grep -q 'next: /gadd:close <parent-work-item-id>' skills/gadd-next/SKILL.md
 grep -q 'closure.status' skills/gadd-next/SKILL.md
 grep -q 'optional_cleanup_command: /gadd:archive <parent-work-item-id>' skills/gadd-next/SKILL.md
-grep -q 'optional cleanup, not as `next_command`' skills/gadd-next/SKILL.md
+grep -q 'optional cleanup, not as `next_command`' skills/gadd-next/references/gate-detection.md
 grep -q 'next_human_action' skills/gadd-next/SKILL.md
 grep -q '/gadd:approve <work-item-id>' skills/gadd-next/SKILL.md
 grep -q 'triage.approved_outcome.status: approved' skills/gadd-next/SKILL.md
@@ -237,9 +277,15 @@ grep -q 'work_item.state: blocked_on_human_decision' skills/gadd-next/SKILL.md
 grep -q 'does not perform mutations' skills/gadd-next/SKILL.md
 grep -q 'Do not infer them from the conversation' skills/gadd-next/SKILL.md
 grep -q 'implementation PR state is checked' skills/gadd-next/SKILL.md
-grep -q 'Verification owns recording observed merge evidence' skills/gadd-next/SKILL.md
-grep -q 'Never treat a conversational claim such as "merged" as merge evidence' skills/gadd-next/SKILL.md
-grep -q 'Approval Gate Detection' skills/gadd-next/SKILL.md
+grep -q 'skills/gadd-next/references/gate-detection.md' skills/gadd-next/SKILL.md
+grep -q 'Gate Detection Reference' skills/gadd-next/SKILL.md
+grep -q 'Verification owns recording observed merge evidence' skills/gadd-next/references/gate-detection.md
+grep -q 'Never treat a conversational claim such as "merged" as merge evidence' skills/gadd-next/references/gate-detection.md
+grep -q 'Approval Gate Detection' skills/gadd-next/references/gate-detection.md
+grep -q 'Verification Gate Detection' skills/gadd-next/references/gate-detection.md
+grep -q 'Closure Gate Detection' skills/gadd-next/references/gate-detection.md
+grep -q 'Archive Cleanup Detection' skills/gadd-next/references/gate-detection.md
+grep -q 'Implementation PR State Detection' skills/gadd-next/references/gate-detection.md
 grep -q 'copyable command block containing only the next command' skills/gadd-next/SKILL.md
 grep -Eq 'execution_context\.phase.*refine' skills/gadd-next/SKILL.md
 if grep -q 'artifacts.prd.status: draft.*approved_artifacts.prd' skills/gadd-next/SKILL.md skills/gadd-approve/SKILL.md; then

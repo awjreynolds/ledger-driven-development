@@ -37,7 +37,7 @@ If no Work Item ID is provided, stop and ask for the target Work Item ID.
 - review checklist
 - planned vertical slices for later `/gadd:decompose`
 
-Each implementation slice in `plan.md` must surface the fields that `/gadd:decompose` will turn into child Work Items. The canonical schema is the slice table in `skills/gadd-setup/assets/templates/plan.md` (`Slice` number/title, `Outcome`, `Files/modules`, `Documentation impact`, `Tests/checks`, `Dependencies`, `Review load`). Plans must also record per-slice information that the decomposition preview consumes: a `type` of `Autonomous` or `Human-review`, `blocked by` (dependency on other slices or external work), the user stories or acceptance criteria covered, and a one or two sentence `summary`. If a field is genuinely not applicable, mark it explicitly rather than omitting it.
+Each implementation slice in `plan.md` must surface the fields that `/gadd:decompose` will turn into child Work Items. The canonical schema is the slice table in `skills/gadd-setup/assets/templates/plan.md`: `Slice`, `Outcome`, `Type`, `Blocked by`, `Stories/criteria`, `Files/modules`, `Documentation impact`, `Tests/checks`, `Dependencies`, `Review load`, and `Summary`. If a field is genuinely not applicable, mark it explicitly rather than omitting it.
 
 ## Input Quality Gate
 

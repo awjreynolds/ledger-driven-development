@@ -57,14 +57,6 @@ Set exactly one state:
 - `out_of_scope`
 - `not_gadd_work`
 
-## Rules
-
-- Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
-- External mutations require human confirmation.
-- External issues and tickets are tracker-native collaboration surfaces, not GADD workflow state.
-- Do not route code-impacting Work Items without GitNexus evidence or recorded human-approved fallback, because triage routing depends on blast-radius evidence; downstream commands treat GitNexus as advisory.
-- Do not treat a poor-quality external issue as implementation-ready until the Triage Quality Loop has repaired the missing problem statement, evidence, done criteria, or route decision.
-
 ## Input Quality Gate
 
 Required input standard before routing:
@@ -77,6 +69,14 @@ Required input standard before routing:
 - manual fallback records lower confidence and must not silently claim low blast radius
 
 If the input quality gate fails, write only safe local state when useful and set `state: needs_info` or `blocked_on_human_decision`. Ask one focused question or recommend the earliest GADD command or repairing action.
+
+## Rules
+
+- Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
+- External mutations require human confirmation.
+- External issues and tickets are tracker-native collaboration surfaces, not GADD workflow state.
+- Do not route code-impacting Work Items without GitNexus evidence or recorded human-approved fallback, because triage routing depends on blast-radius evidence; downstream commands treat GitNexus as advisory.
+- Do not treat a poor-quality external issue as implementation-ready until the Triage Quality Loop has repaired the missing problem statement, evidence, done criteria, or route decision.
 
 ## Triage Quality Loop
 
@@ -108,9 +108,9 @@ On every triage completion, write `execution_context.next_command` and `executio
 
 | Triage state | `execution_context.next_command` | `execution_context.next_human_action` |
 | --- | --- | --- |
-| `ready_for_implementation` | `/gadd:implement <work-item-id>` | `/gadd:implement <work-item-id>` |
-| `needs_sdd` | `/gadd:design <work-item-id>` | `/gadd:design <work-item-id>` |
-| `needs_prd` | `/gadd:research <work-item-id>` or `/gadd:scope <work-item-id>` (whichever the route picked) | the same command |
+| `ready_for_implementation` | `/gadd:implement <work-item-id>` | `null` |
+| `needs_sdd` | `/gadd:design <work-item-id>` | `null` |
+| `needs_prd` | `/gadd:research <work-item-id>` or `/gadd:scope <work-item-id>` (whichever the route picked) | `null` |
 | `needs_info` | `/gadd:triage <work-item-id>` | answer the focused triage question |
 | `duplicate` | `blocked` | reference the duplicated Work Item; close terminally after human approval (`next_reason: duplicate`) |
 | `out_of_scope` | `blocked` | confirm the recorded scope reason (`next_reason: out_of_scope`) |

@@ -36,6 +36,15 @@ If no Work Item ID is provided, stop and ask for one. Do not infer a target from
 
 Read the Work Item ledger before reading broader repo state. Use the Work Item ledger and parent ledger, when present, to locate the approved artifacts and expected evidence paths.
 
+## Writes
+
+- `verification.md` in the Work Item directory
+- Work Item ledger `artifacts.verification`
+- Work Item ledger `closure.status`
+- compact Work Item ledger events for verification pass or failure
+
+Do not write outside the Work Item directory and ledger except for the narrowly required local report path. Do not edit parent PRD, SDD, plan, or Work Item body from this command.
+
 ## Input Quality Gate
 
 Required input standard before writing verification:
@@ -65,15 +74,6 @@ Required evidence:
 - check evidence from automated command output, validation output, or explicit manual verification notes
 - documentation impact evidence with status `updated`, `not_needed`, or `blocked`, plus changed documentation paths or direct rationale
 - External Issue drift metadata from `sync` fields or configured tracker metadata, including external update timestamps/body hashes when available
-
-## Writes
-
-- `verification.md` in the Work Item directory
-- Work Item ledger `artifacts.verification`
-- Work Item ledger `closure.status`
-- compact Work Item ledger events for verification pass or failure
-
-Do not write outside the Work Item directory and ledger except for the narrowly required local report path. Do not edit parent PRD, SDD, plan, or Work Item body from this command.
 
 ## Rules
 
@@ -221,7 +221,7 @@ closure:
   override_reason: Human reconciliation required before closure.
 execution_context:
   next_command: blocked
-  next_human_action: review and merge implementation PR
+  next_human_action: resolve the verification override reason
 events:
   - at: <iso8601-timestamp>
     type: verification_override_required

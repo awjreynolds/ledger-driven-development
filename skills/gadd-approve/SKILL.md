@@ -30,18 +30,6 @@ If no Work Item ID is provided, stop and ask for the target Work Item ID. Do not
 
 Read the ledger first. Use the ledger to locate the PRD, SDD, and plan paths, artifact statuses, current gate, approved artifact boundaries, and next action.
 
-## Input Quality Gate
-
-Required input standard before approval:
-
-- exactly one active PRD, SDD, or plan approval gate
-- the artifact for that gate exists and passes its checklist
-- all prerequisite artifacts for that gate are approved
-- external tracker state is reachable and not drifted when GitHub projection is configured
-- for SDD approval, the SDD includes a non-placeholder structure summary in `## Structure` that matches the detailed design
-
-If inputs fail this standard, do not approve and do not mutate local or external state. Name the blocking gate or artifact gap. The earliest GADD command that can repair the gap is the owning phase command: `/gadd:refine` for PRD approval, `/gadd:design` for SDD approval, `/gadd:plan` for plan approval, or human external-drift reconciliation when tracker state changed.
-
 ## Writes
 
 - PRD frontmatter/status when approving the PRD
@@ -53,6 +41,18 @@ If inputs fail this standard, do not approve and do not mutate local or external
 - GitHub SDD issue when approving an SDD in GitHub tracker mode
 
 Do not write child Work Items, verification reports, archive locations, or unrelated repository files from this command.
+
+## Input Quality Gate
+
+Required input standard before approval:
+
+- exactly one active PRD, SDD, or plan approval gate
+- the artifact for that gate exists and passes its checklist
+- all prerequisite artifacts for that gate are approved
+- external tracker state is reachable and not drifted when GitHub projection is configured
+- for SDD approval, the SDD includes a non-placeholder structure summary in `## Structure` that matches the detailed design
+
+If inputs fail this standard, do not approve and do not mutate local or external state. Name the blocking gate or artifact gap. The earliest GADD command that can repair the gap is the owning phase command: `/gadd:refine` for PRD approval, `/gadd:design` for SDD approval, `/gadd:plan` for plan approval, or human external-drift reconciliation when tracker state changed.
 
 ## Rules
 

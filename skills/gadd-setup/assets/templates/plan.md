@@ -47,15 +47,19 @@ This plan translates the approved boundary source and SDD into executable slices
 
 Use thin vertical slices where possible. Each slice should leave the repo in a reviewable state and include its own verification.
 
-| Slice | Outcome | Files/modules | Documentation impact | Tests/checks | Dependencies | Review load |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1.  |  |  | Updated / Not needed with reason / Blocked question |  |  | Low/Medium/High; expected file groups and risk |
+| Slice | Outcome | Type | Blocked by | Stories/criteria | Files/modules | Documentation impact | Tests/checks | Dependencies | Review load | Summary |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1.  |  | Autonomous / Human-review | None / slice or external dependency |  |  | Updated / Not needed with reason / Blocked question |  |  | Low/Medium/High; expected file groups and risk |  |
 
 Slice quality bar:
 
 - Each slice names externally visible behavior or a concrete enabling outcome.
+- Each slice is classified as `Autonomous` or `Human-review`.
 - Dependencies are explicit.
+- Blocking relationships are explicit and distinguish slice dependencies from external blockers.
+- User stories, acceptance criteria, or approved triage outcome criteria covered by the slice are named.
 - Documentation impact is explicit: updated, not needed with reason, or blocked.
+- Each slice includes a one or two sentence summary suitable for the `/gadd:decompose` preview.
 - Tests/checks are close to the changed behavior.
 - Review load is estimated; slices expected to create overloaded PRs are split before decomposition.
 - No planned slice should knowingly approach or exceed 200 changed files without an explicit human-approved exception.

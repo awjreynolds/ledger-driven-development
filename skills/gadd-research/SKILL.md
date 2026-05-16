@@ -120,10 +120,10 @@ Private/local context may inform research, but committed and GitHub-visible arti
    - `execution_context.phase: research`
    - `execution_context.current_gate: research`
    - `execution_context.next_command` and `execution_context.next_human_action` per the readiness state:
-     - `ready_for_scope` -> `next_command: /gadd:scope <draft-id-or-work-item-id>`; `next_human_action: /gadd:scope <draft-id-or-work-item-id>`
+     - `ready_for_scope` -> `next_command: /gadd:scope <draft-id-or-work-item-id>`; `next_human_action: null`
      - `blocked_on_more_input` -> `next_command: blocked`; `next_human_action: provide missing PM input`; name the missing input in `next_reason`
      - `split_recommended` -> `next_command: /gadd:scope <draft-id>` for the next slice, with a note that the trigger must be split before scoping; `next_human_action: confirm the split boundary before scoping`
-     - `not_a_product_requirement` -> `next_command: /gadd:triage <work-item-id>` to route off the PRD lane; `next_human_action: /gadd:triage <work-item-id>`
+     - `not_a_product_requirement` -> `next_command: /gadd:triage <work-item-id>` to route off the PRD lane; `next_human_action: null`
 8. Report the readiness decision, artifact path, redaction notes, GitNexus usage or limitation, and next command or stop reason.
 
 ## Rules
