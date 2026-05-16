@@ -34,6 +34,7 @@ skills/gadd-setup/assets/templates/pr-body-prd.md
 skills/gadd-setup/assets/templates/pr-body-sdd-plan.md
 skills/gadd-setup/assets/templates/pr-body-implementation.md
 docs/assets/gadd-sdlc-workflow.svg
+docs/assets/gadd-sdlc-workflow.source.svg
 docs/assets/gadd-sdlc-workflow.png
 '
 
@@ -212,7 +213,7 @@ grep -q 'Plan candidate' skills/gadd-approve/SKILL.md
 grep -q 'next_command: /gadd:decompose 123' skills/gadd-approve/SKILL.md
 grep -q 'exactly one approval gate is active' skills/gadd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/gadd-approve/SKILL.md
-grep -q 'GitHub issue number as the stable ticket ID' skills/gadd-approve/SKILL.md
+grep -q 'GitHub issue number as the stable Work Item ID' skills/gadd-approve/SKILL.md
 grep -q 'Do not invent or preserve an `GADD-0004` style ID in GitHub tracker mode' skills/gadd-approve/SKILL.md
 grep -q 'GitHub SDD issue' skills/gadd-approve/SKILL.md
 grep -q 'PRD #<prd_issue_number> SDD:' skills/gadd-approve/SKILL.md
@@ -222,7 +223,7 @@ grep -q 'structure summary' skills/gadd-approve/SKILL.md
 
 grep -q 'do not read the codebase as a design input' skills/gadd-scope/SKILL.md
 grep -q 'This is a bounded shared understanding gate' skills/gadd-scope/SKILL.md
-grep -q 'Existing promoted Product Requirement tickets do not block new scoping work' skills/gadd-scope/SKILL.md
+grep -q 'Existing promoted Product Requirement Work Items do not block new scoping work' skills/gadd-scope/SKILL.md
 grep -q 'Keep at most one active local draft' skills/gadd-scope/SKILL.md
 grep -q 'create a new draft' skills/gadd-scope/SKILL.md
 grep -q 'do not read the codebase as a design input' skills/gadd-elaborate/SKILL.md
@@ -331,34 +332,34 @@ grep -q 'Do not close external Work Item projections' skills/gadd-implement/SKIL
 grep -q 'implementation PR is a managed projection' skills/gadd-implement/SKILL.md
 grep -q 'documentation impact status and paths or rationale' skills/gadd-implement/SKILL.md
 grep -q 'documentation impact is `blocked`' skills/gadd-implement/SKILL.md
-grep -q 'child-ticket closure' skills/gadd-verify/SKILL.md
+grep -q 'Work Item closure' skills/gadd-verify/SKILL.md
 grep -q 'not a general repository healthcheck' skills/gadd-verify/SKILL.md
 grep -q 'documentation impact evidence' skills/gadd-verify/SKILL.md
 grep -q 'GitNexus may be used for optional blast-radius' skills/gadd-verify/SKILL.md
 grep -q 'implementation completion' skills/gadd-verify/SKILL.md
 grep -q 'closure.status' skills/gadd-verify/SKILL.md
 grep -q 'passed | failed | override_required' skills/gadd-verify/SKILL.md
-grep -q 'approved parent PRD, approved parent SDD, approved parent plan' skills/gadd-verify/SKILL.md
-grep -q 'scope/design/plan drift' skills/gadd-verify/SKILL.md
-grep -q 'external ticket drift is unresolved' skills/gadd-verify/SKILL.md
+grep -q 'approved inputs required by Work Item type' skills/gadd-verify/SKILL.md
+grep -q 'boundary/design/plan drift' skills/gadd-verify/SKILL.md
+grep -q 'External Issue drift is unresolved' skills/gadd-verify/SKILL.md
 grep -q 'Implementation PR State Rule' skills/gadd-verify/SKILL.md
 grep -q 'implementation PR state is externally checked' skills/gadd-verify/SKILL.md
 grep -q 'Never treat a conversational claim such as "merged" as merge evidence' skills/gadd-verify/SKILL.md
 grep -q 'records the observed `mergedAt` and merge commit as evidence' skills/gadd-verify/SKILL.md
 grep -q 'verification.md' skills/gadd-verify/SKILL.md
 grep -q 'Do not mutate external trackers' skills/gadd-verify/SKILL.md
-grep -q 'Apply closure for one verified child work item' skills/gadd-close/SKILL.md
+grep -q 'Apply closure for one verified Work Item' skills/gadd-close/SKILL.md
 grep -q 'artifacts.verification.status: passed' skills/gadd-close/SKILL.md
 grep -q 'closure.status: verified' skills/gadd-close/SKILL.md
 grep -q 'External mutations require human confirmation' skills/gadd-close/SKILL.md
-grep -q 'does not archive local ticket files' skills/gadd-close/SKILL.md
-grep -q 'Do not archive or move local ticket directories' skills/gadd-close/SKILL.md
+grep -q 'does not archive local Work Item files' skills/gadd-close/SKILL.md
+grep -q 'Do not archive or move local Work Item directories' skills/gadd-close/SKILL.md
 grep -q 'Parent Roll-up Workflow' skills/gadd-close/SKILL.md
 grep -q 'GitHub issue closure is the expected external close projection' skills/gadd-close/SKILL.md
 grep -q 'Do not rely on GitHub auto-close keywords' skills/gadd-close/SKILL.md
-grep -q 'every child is verified and closeable' skills/gadd-close/SKILL.md
+grep -q 'every child Work Item is verified and closeable' skills/gadd-close/SKILL.md
 grep -q 'Keep the parent directory in place' skills/gadd-close/SKILL.md
-grep -q 'parent close requested while any child is not verified and closeable' skills/gadd-close/SKILL.md
+grep -q 'parent close requested while any child Work Item is not verified and closeable' skills/gadd-close/SKILL.md
 grep -q 'Move already-closed local Work Item packages' skills/gadd-archive/SKILL.md
 grep -q 'storage hygiene only' skills/gadd-archive/SKILL.md
 grep -q 'No external tracker writes are allowed' skills/gadd-archive/SKILL.md
@@ -409,7 +410,7 @@ grep -q 'PRD template as a quality contract' skills/gadd-scope/SKILL.md
 grep -q 'should not prescribe exact command behavior' skills/gadd-elaborate/SKILL.md
 grep -q 'Preserve the Product Manager boundary' skills/gadd-refine/SKILL.md
 grep -q 'Run /gadd:approve <work-item-id> to approve this PRD' skills/gadd-refine/SKILL.md
-grep -q 'GitHub issue number as the promoted ticket ID' skills/gadd-refine/SKILL.md
+grep -q 'GitHub issue number as the promoted Work Item ID' skills/gadd-refine/SKILL.md
 grep -q "SDD template's quality bar" skills/gadd-design/SKILL.md
 grep -q 'SDD approval must be recorded through `/gadd:approve <work-item-id>`' skills/gadd-design/SKILL.md
 grep -q "plan template's traceability" skills/gadd-plan/SKILL.md

@@ -1,11 +1,13 @@
 ---
 name: gadd-elaborate
-description: Run /gadd:elaborate for a GADD ticket. Use when the user says /gadd:elaborate or wants to fill product detail inside existing GADD PRD scope.
+description: Run /gadd:elaborate for a GADD Product Requirement Work Item. Use when the user says /gadd:elaborate or wants to fill product detail inside existing GADD PRD scope.
 ---
 
 # /gadd:elaborate
 
-Update `prd.md` in the active draft or promoted ticket directory with product detail inside existing scope.
+Update `prd.md` in the active draft or promoted Work Item directory with product detail inside existing scope.
+
+This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
 
 ## Owns
 
@@ -96,7 +98,7 @@ After writing elaboration, set `execution_context.phase: elaborate`, `execution_
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - Product Manager command: do not read the codebase as a design input.
-- If elaboration changes the product meaning of an approved PRD, keep the stable ticket ID but mark the PRD artifact as draft, clear `approved_artifacts.prd`, route `execution_context` back to `/gadd:refine`, record an approval-invalidated event, and require human approval before `/gadd:design`.
+- If elaboration changes the product meaning of an approved PRD, keep the stable Work Item ID but mark the PRD artifact as draft, clear `approved_artifacts.prd`, route `execution_context` back to `/gadd:refine`, record an approval-invalidated event, and require human approval before `/gadd:design`.
 - Use the PRD template as a quality contract. Preserve the scoped goals/non-goals and fill only product-detail sections.
 - Do not expand scope. If elaboration exposes a scope problem, stop and recommend `/gadd:scope`.
 - Keep acceptance criteria product-facing and draft-quality; testability is finalized by `/gadd:refine`.

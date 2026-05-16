@@ -1,35 +1,37 @@
 ---
 name: gadd-close
-description: Run /gadd:close for verified GADD child tickets or parent roll-up closure. Use when the user says /gadd:close or wants to apply human-approved workflow closure after /gadd:verify passed.
+description: Run /gadd:close for verified GADD Work Items or parent roll-up closure. Use when the user says /gadd:close or wants to apply human-approved workflow closure after /gadd:verify passed.
 ---
 
 # /gadd:close
 
-Apply closure for one verified child work item, or apply parent roll-up closure when every child is verified and closeable. Closure records workflow completion and optional external issue closure; it does not archive local ticket files.
+Apply closure for one verified Work Item, or apply parent roll-up closure when every child Work Item is verified and closeable. Closure records workflow completion and optional External Issue closure; it does not archive local Work Item files.
+
+Close one verified Work Item, or close a parent Work Item only when every child Work Item is verified and closeable.
 
 This command is a standalone, agent-agnostic GADD command. It does not decide whether implementation is correct; `/gadd:verify` owns that gate.
 
 ## Inputs
 
 ```text
-/gadd:close <child-ticket-id>
-/gadd:close <parent-ticket-id>
+/gadd:close <work-item-id>
+/gadd:close <parent-work-item-id>
 ```
 
-If no ticket ID is provided, stop and ask for one.
+If no Work Item ID is provided, stop and ask for one.
 
 ## Reads
 
-- child ticket `ledger.yml`
-- child `verification.md`
-- parent ticket `ledger.yml`
+- Work Item `ledger.yml`
+- Work Item `verification.md`
+- parent Work Item `ledger.yml`
 - `.gadd/config.yml`
 - external drift metadata when configured
 
 ## Writes
 
-- child ledger `closure.status`
-- child ledger `closure.closed_at` and optional `closure.external_closed_at`
+- Work Item ledger `closure.status`
+- Work Item ledger `closure.closed_at` and optional `closure.external_closed_at`
 - parent ledger child status and `execution_context`
 - parent ledger closure status when closing a parent
 - external tracker close/sync only after explicit human confirmation
@@ -38,7 +40,7 @@ If no ticket ID is provided, stop and ask for one.
 
 Required input standard before closure:
 
-- requested child has `artifacts.verification.status: passed`, `closure.status: verified`, and readable `verification.md`; or requested parent has every child closed or verified and closeable
+- requested Work Item has `artifacts.verification.status: passed`, `closure.status: verified`, and readable `verification.md`; or requested parent has every child Work Item closed or verified and closeable
 - external tracker drift is resolved before any external mutation
 - explicit human confirmation exists for external close or sync
 
@@ -48,20 +50,20 @@ If inputs fail this standard, do not close anything. The earliest GADD command t
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- Close child work items directly. Close a parent Product Requirement only when the requested ID is the parent ID and every child is verified and closeable.
-- Require `artifacts.verification.status: passed` and `closure.status: verified` before closing a child.
+- Close Work Items directly. Close a parent Work Item only when the requested ID is the parent ID and every child Work Item is verified and closeable.
+- Require `artifacts.verification.status: passed` and `closure.status: verified` before closing a Work Item.
 - Parent roll-up closure requires every child to be closeable: each child is already closed, externally closed, or archived; or has `artifacts.verification.status: passed`, `closure.status: verified`, and a readable `verification.md`.
 - Require a readable `verification.md` report before closing.
 - Refuse closure when verification is missing, pending, failed, or `override_required`.
 - Refuse closure when external tracker drift is unresolved.
-- Do not archive or move local ticket directories from this command. Use `/gadd:archive <ticket-id>` for optional local cleanup after closure.
+- Do not archive or move local Work Item directories from this command. Use `/gadd:archive <work-item-id>` for optional local cleanup after closure.
 - In GitHub tracker mode, GitHub issue closure is the expected external close projection and requires explicit human confirmation after drift checks. Linear and Jira closure is follow-on optional scope.
-- Preserve the child ledger, ticket body, verification report, and implementation evidence.
+- Preserve the Work Item ledger, Work Item body, verification report, and implementation evidence.
 - Update `/gadd:next` state by pointing the parent ledger to the next close, verify, implement, decompose, done, or optional archive gate.
 
 ## Child Workflow
 
-1. Resolve the child ticket directory and read its `ledger.yml`.
+1. Resolve the Work Item directory and read its `ledger.yml`.
 2. Read the parent ledger.
 3. Confirm verification passed:
    - `artifacts.verification.status: passed`
@@ -69,18 +71,18 @@ If inputs fail this standard, do not close anything. The earliest GADD command t
    - `verification.md` exists
 4. Check external drift metadata. If drift is unresolved, stop.
 5. If an external tracker is configured, confirm the requested close action authorizes closing the matching external issue. If not clear, ask for explicit confirmation before mutating it.
-6. Update the child ledger:
+6. Update the Work Item ledger:
    - set `closure.status: closed` for local-only closure
    - set `closure.status: externally_closed` when the matching external issue was actually closed
    - set `closed_at`
    - set `external_closed_at` only if an external close actually occurred
    - add a `child_closed` event
 7. Keep the child directory in place.
-8. Update the parent ledger child entry to `closed` or `externally_closed` and keep `path` unchanged.
+8. Update the parent ledger child Work Item entry to `closed` or `externally_closed` and keep `path` unchanged.
 9. Recompute parent `execution_context`:
-   - verified but unclosed child: `/gadd:close <child-id>`
-   - implemented but unverified child: `/gadd:verify <child-id>`
-   - ready child: `/gadd:implement <child-id>`
+   - verified but unclosed child Work Item: `/gadd:close <work-item-id>`
+   - implemented but unverified child Work Item: `/gadd:verify <work-item-id>`
+   - ready child Work Item: `/gadd:implement <work-item-id>`
    - approved plan with no children: `/gadd:decompose`
    - all children closed: report parent ready for final close or done
 10. Report the closure result and next command.
@@ -105,7 +107,7 @@ Use this workflow only when the requested ticket ID is a parent Product Requirem
    - keep all child references and paths intact
 7. Keep the parent directory in place.
 8. If an external parent tracker is configured, confirm the requested close action authorizes closing the matching external parent issue. If not clear, ask for explicit confirmation before mutating it.
-9. Report that the parent is closed and that `/gadd:next` has no remaining required work for that parent. Mention `/gadd:archive <parent-ticket-id>` only as optional local cleanup.
+9. Report that the parent is closed and that `/gadd:next` has no remaining required work for that parent. Mention `/gadd:archive <parent-work-item-id>` only as optional local cleanup.
 
 ## Ledger Update Contract
 
@@ -125,13 +127,13 @@ events:
     actor: agent
 ```
 
-Parent ledger child entry should be equivalent to:
+Parent ledger child Work Item entry should be equivalent to:
 
 ```yaml
 children:
   - id: GADD-0001-001
     status: closed
-    path: docs/tickets/GADD-0001/children/GADD-0001-001-slug/ledger.yml
+    path: docs/work-items/GADD-0001/children/GADD-0001-001-slug/ledger.yml
 ```
 
 Preserve existing unrelated ledger fields and events.
@@ -164,12 +166,12 @@ If external drift exists, stop and ask the human to reconcile before closing.
 
 ## Stop Conditions
 
-- missing child ticket
+- missing Work Item
 - missing parent ledger
 - missing `verification.md`
 - `artifacts.verification.status` is not `passed`
 - requested child `closure.status` is not `verified`
-- parent close requested while any child is not verified and closeable
+- parent close requested while any child Work Item is not verified and closeable
 - unresolved external drift
 - external close requested without explicit human confirmation
-- requested archive or file movement; use `/gadd:archive <ticket-id>` instead
+- requested archive or file movement; use `/gadd:archive <work-item-id>` instead

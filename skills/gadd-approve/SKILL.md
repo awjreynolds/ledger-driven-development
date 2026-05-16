@@ -1,11 +1,11 @@
 ---
 name: gadd-approve
-description: Run /gadd:approve for a GADD ticket. Use when the user says /gadd:approve or wants to approve a PRD, SDD, or plan from repo-local ledger state.
+description: Run /gadd:approve for a GADD Work Item. Use when the user says /gadd:approve or wants to approve a PRD, SDD, or plan from repo-local ledger state.
 ---
 
 # /gadd:approve
 
-Approve exactly one PRD, SDD, or plan gate for a GADD ticket.
+Approve exactly one PRD, SDD, or plan gate for a GADD Work Item.
 
 This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
 
@@ -14,14 +14,14 @@ Scope this command to PRD, SDD, and plan approval only. It does not approve deco
 ## Input
 
 ```text
-/gadd:approve <ticket-id>
+/gadd:approve <work-item-id>
 ```
 
-If no ticket ID is provided, stop and ask for the target ticket ID. Do not infer approval from unrelated modified files or conversational shorthand.
+If no Work Item ID is provided, stop and ask for the target Work Item ID. Do not infer approval from unrelated modified files or conversational shorthand.
 
 ## Reads
 
-- target ticket `ledger.yml`
+- target Work Item `ledger.yml`
 - target PRD frontmatter and body
 - target SDD frontmatter and body when present
 - target plan frontmatter and body when present
@@ -47,12 +47,12 @@ If inputs fail this standard, do not approve and do not mutate local or external
 - PRD frontmatter/status when approving the PRD
 - SDD frontmatter/status when approving the SDD
 - plan frontmatter/status when approving the plan
-- target ticket `ledger.yml`
+- target Work Item `ledger.yml`
 - compact ledger events
 - GitHub Product Requirement issue when approving a PRD in GitHub tracker mode
 - GitHub SDD issue when approving an SDD in GitHub tracker mode
 
-Do not write child tickets, verification reports, archive locations, or unrelated repository files from this command.
+Do not write child Work Items, verification reports, archive locations, or unrelated repository files from this command.
 
 ## Rules
 
@@ -60,8 +60,9 @@ Do not write child tickets, verification reports, archive locations, or unrelate
 - External mutations require human confirmation.
 - Approve only when exactly one approval gate is active.
 - PRD approval is allowed only for a draft PRD gate.
-- SDD approval is allowed only when the PRD is already approved and a draft SDD gate is active.
-- Plan approval is allowed only when the PRD and SDD are already approved and a draft plan gate is active.
+- SDD approval is allowed when either the Work Item type is `product_requirement` and the PRD is approved, or the Work Item type is `engineering_change` and the approved triage outcome is recorded in the ledger.
+- Do not require an approved PRD for `engineering_change` SDD approval; allow this path without requiring an approved PRD. Do require the SDD `## Structure` quality gate in both paths.
+- Plan approval is allowed when the Work Item type is `product_requirement` and the PRD and SDD are already approved, or when the Work Item type is `engineering_change` and the approved SDD is already approved.
 - `/gadd:approve` does not approve decomposition review, closure, verification overrides, external close, PR creation, PR update, or PR merge.
 - Preserve approved boundaries. If approval would change product scope, design, or plan content, stop and route to `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, `/gadd:design`, or `/gadd:plan`.
 - In local tracker mode, approval mutates only repo-local artifacts and ledger state.
@@ -75,7 +76,7 @@ Determine candidate gates from ledger state:
 
 - PRD candidate:
   - `execution_context.phase` is `refine` and `execution_context.current_gate: prd_approval`, or
-  - `execution_context.current_gate: prd_approval` and `execution_context.next_command` is `/gadd:approve <ticket-id>`.
+  - `execution_context.current_gate: prd_approval` and `execution_context.next_command` is `/gadd:approve <work-item-id>`.
 - SDD candidate:
   - `execution_context.current_gate: design_review`, or
   - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`.
@@ -98,7 +99,8 @@ Stop when:
 - no candidate remains
 - more than one candidate remains
 - the candidate artifact is missing
-- the PRD is not approved before SDD approval
+- the PRD is not approved before SDD approval for a `product_requirement`
+- the approved triage outcome is missing before SDD approval for an `engineering_change`
 - the SDD is not approved before plan approval
 - the current gate is decomposition review, implementation, verification, closure, or external mutation confirmation
 
@@ -107,31 +109,33 @@ When blocked, report the gate candidates and the next command that owns the stat
 ## PRD Approval Workflow
 
 1. Confirm the PRD exists and passes the Product Manager handoff checklist.
-2. If tracker mode is GitHub and the ticket is still in a draft directory:
+2. If tracker mode is GitHub and the Work Item is still in a draft directory:
    - Create or bind the GitHub Product Requirement issue before changing the local PRD.
    - Build the issue from the current draft `prd.md` content and `.gadd/templates/issue-body-prd.md`.
-   - Use the returned GitHub issue number as the stable ticket ID.
-   - Move the draft directory to `docs/tickets/<issue-number>-<short-slug>/`.
-   - Set `ticket.id` and `tracker.external_id` to the issue number, and `tracker.external_url` to the issue URL.
+   - Use the returned GitHub issue number as the stable Work Item ID.
+   - Move the draft directory to `docs/work-items/<issue-number>-<short-slug>/`.
+   - Set `work_item.id` and `tracker.external_id` to the issue number, and `tracker.external_url` to the issue URL.
    - Do not invent or preserve an `GADD-0004` style ID in GitHub tracker mode.
-3. If tracker mode is local and the ticket is still in a draft directory, assign the next local ID according to the configured local ledger convention.
-4. Mark PRD frontmatter `ticket` to the stable ticket ID, set `status: approved`, and update `updated`.
+3. If tracker mode is local and the Work Item is still in a draft directory, assign the next local ID according to the configured local ledger convention.
+4. Mark PRD frontmatter `work_item` to the stable Work Item ID, set `status: approved`, and update `updated`.
 5. Update ledger:
-   - `ticket.status: approved`
+   - `work_item.status: approved`
    - `artifacts.prd.status: approved`
    - `execution_context.phase: design`
    - `execution_context.current_gate: design`
-   - `execution_context.next_command: /gadd:design <ticket-id>`
+   - `execution_context.next_command: /gadd:design <work-item-id>`
    - `execution_context.next_human_action: null`
    - `execution_context.next_reason: PRD is approved and ready for engineering design.`
    - `execution_context.approved_artifacts.prd` to the PRD path
    - `execution_context.boundaries.product` to the PRD path
 6. Append a `prd_approved` event with `actor: human`.
-7. Report the next command: `/gadd:design <ticket-id>`.
+7. Report the next command: `/gadd:design <work-item-id>`.
 
 ## SDD Approval Workflow
 
-1. Confirm the PRD is approved in the ledger.
+1. Confirm the SDD approval boundary in the ledger:
+   - for `product_requirement`, the PRD is approved.
+   - for `engineering_change`, the approved triage outcome is recorded.
 2. Confirm the SDD exists and passes the SDD review checklist.
 3. Confirm `## Structure` is present, non-placeholder, and synchronized with the detailed design. Treat missing or stale `## Structure` as approval-blocking for SDD approval. Block approval when the structure summary contradicts the detailed design, omits a material component, boundary, interface, or explicit non-change described later in the SDD, or only restates product scope.
 4. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
@@ -139,47 +143,47 @@ When blocked, report the gate candidates and the next command that owns the stat
    - Title the SDD issue `PRD #<prd_issue_number> SDD: <short title>` so tracker issue lists visibly show which Product Requirement the design belongs to.
    - Reference the approved parent PRD issue number and URL in the SDD issue body.
    - Record the SDD issue number and URL under `artifacts.sdd.external_id` and `artifacts.sdd.external_url`.
-   - Treat this SDD issue as the GitHub child ticket of the PRD issue.
+   - Treat this SDD issue as the GitHub SDD Work Item projection.
 5. Mark SDD frontmatter `status: approved` and update `updated`.
 6. Update ledger:
-   - `ticket.status: approved`
+   - `work_item.status: approved`
    - `artifacts.sdd.status: approved`
    - `execution_context.phase: plan`
    - `execution_context.current_gate: plan`
-   - `execution_context.next_command: /gadd:plan <ticket-id>`
+   - `execution_context.next_command: /gadd:plan <work-item-id>`
    - `execution_context.next_human_action: null`
    - `execution_context.next_reason: Software Design Document is approved and ready for implementation planning.`
    - `execution_context.approved_artifacts.sdd` to the SDD path
    - `execution_context.boundaries.design` to the SDD path
 7. Append an `sdd_approved` event with `actor: human`.
-8. Report the next command: `/gadd:plan <ticket-id>`.
+8. Report the next command: `/gadd:plan <work-item-id>`.
 
 ## Plan Approval Workflow
 
-1. Confirm the PRD and SDD are approved in the ledger.
+1. Confirm the required plan boundary is approved in the ledger: PRD and SDD for `product_requirement`, or approved triage outcome and SDD for `engineering_change`.
 2. Confirm the plan exists and passes the plan review checklist.
 3. Mark plan frontmatter `status: approved` and update `updated`.
 4. Update ledger:
    - `artifacts.plan.status: approved`
    - `execution_context.phase: decompose`
    - `execution_context.current_gate: decompose`
-   - `execution_context.next_command: /gadd:decompose <ticket-id>`
+   - `execution_context.next_command: /gadd:decompose <work-item-id>`
    - `execution_context.next_human_action: null`
    - `execution_context.next_reason: Implementation plan is approved and ready for decomposition preview.`
    - `execution_context.approved_artifacts.plan` to the plan path
    - `execution_context.boundaries.plan` to the plan path
 5. Append a `plan_approved` event with `actor: human`.
-6. Report the next command: `/gadd:decompose <ticket-id>`.
+6. Report the next command: `/gadd:decompose <work-item-id>`.
 
 ## GitHub Projection Rule
 
 GitHub is the first external tracker dogfooding path, but it is still a projection:
 
-- GitHub issues represent PRD and child work visibility.
-- GitHub issues represent SDD review visibility as a child ticket of the PRD issue.
+- GitHub issues represent PRD and child Work Item visibility.
+- GitHub issues represent SDD review visibility as an SDD Work Item projection.
 - GitHub PRs represent implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
-- PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.
+- PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted Work Item ID.
 - SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue in both the issue title and body. The title must start with `PRD #<prd_issue_number> SDD:`. Decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren.
 - Plan approval is repo-local gate approval. It does not create GitHub child issues; `/gadd:decompose` owns child issue preview and creation after its own explicit human confirmation.
 - Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
@@ -244,12 +248,13 @@ Preserve existing unrelated ledger fields and events.
 
 ## Stop Conditions
 
-- missing ticket ID
+- missing Work Item ID
 - missing or unreadable ledger
 - missing PRD for PRD approval
 - missing SDD for SDD approval
 - missing plan for plan approval
-- PRD is not approved before SDD approval
+- PRD is not approved before SDD approval for a `product_requirement`
+- approved triage outcome is missing before SDD approval for an `engineering_change`
 - SDD is not approved before plan approval
 - no active PRD, SDD, or plan approval gate
 - multiple active approval gates

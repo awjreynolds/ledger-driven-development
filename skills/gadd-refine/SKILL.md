@@ -1,11 +1,13 @@
 ---
 name: gadd-refine
-description: Run /gadd:refine for a GADD ticket. Use when the user says /gadd:refine or wants to sharpen a GADD PRD for engineering handoff and review.
+description: Run /gadd:refine for a GADD Product Requirement Work Item. Use when the user says /gadd:refine or wants to sharpen a GADD PRD for engineering handoff and review.
 ---
 
 # /gadd:refine
 
-Polish `prd.md` in the active draft or promoted ticket directory for the Product-to-engineering handoff, then use human approval as the gate that turns the draft into a real Product Requirement ticket.
+Polish `prd.md` in the active draft or promoted Work Item directory for the Product-to-engineering handoff, then use human approval as the gate that turns the draft into a real Product Requirement Work Item.
+
+This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
 
 ## Owns
 
@@ -86,31 +88,31 @@ End with:
 - artifact updated,
 - expected ledger transition or event,
 - remaining non-blocking questions,
-- approval prompt using `/gadd:approve <ticket-id>`,
+- approval prompt using `/gadd:approve <work-item-id>`,
 - recommended next command after approval, usually `/gadd:design`.
 
-Use this reviewer prompt exactly: "Is this ready for engineering design? If yes, run `/gadd:approve <ticket-id>`."
+Use this reviewer prompt exactly: "Is this ready for engineering design? If yes, run `/gadd:approve <work-item-id>`."
 
 ## Rules
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - Product Manager command: do not read the codebase as a design input.
-- If refinement changes the product meaning of an approved PRD, keep the stable ticket ID but mark the PRD artifact as draft, clear `approved_artifacts.prd`, keep or route `execution_context` to the PRD approval gate, record an approval-invalidated event, and require fresh human approval before `/gadd:design`.
+- If refinement changes the product meaning of an approved PRD, keep the stable Work Item ID but mark the PRD artifact as draft, clear `approved_artifacts.prd`, keep or route `execution_context` to the PRD approval gate, record an approval-invalidated event, and require fresh human approval before `/gadd:design`.
 - Use the PRD template's quality bar and handoff checklist before proposing a PRD PR.
 - Do not expand scope or add technical design.
 - Preserve the Product Manager boundary: acceptance criteria describe required product/workflow outcomes, not the engineering solution that will satisfy them.
 - Commit locally after refinement.
-- End refinement with an explicit approval prompt: `Run /gadd:approve <ticket-id> to approve this PRD. In GitHub tracker mode, approval creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted ticket ID.`
+- End refinement with an explicit approval prompt: `Run /gadd:approve <work-item-id> to approve this PRD. In GitHub tracker mode, approval creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted Work Item ID.`
 - If the human has already approved the refined PRD in the current turn, do not stop at a refined draft. Promote it immediately.
-- Promotion assigns the stable ticket ID, moves the draft directory out of `_drafts`, updates `ledger.yml` and PRD frontmatter links/IDs, marks the PRD approved, and commits the promotion.
-- In `local` tracker mode, the promoted repo-local ledger directory is the real Product Requirement ticket.
-- In GitHub tracker mode, promotion creates or binds the GitHub Product Requirement issue before approving the local PRD. The GitHub issue number is the stable ticket ID and the promoted directory name uses that number, not a local `GADD-0004` style ID.
+- Promotion assigns the stable Work Item ID, moves the draft directory out of `_drafts`, updates `ledger.yml` and PRD frontmatter links/IDs, marks the PRD approved, and commits the promotion.
+- In `local` tracker mode, the promoted repo-local ledger directory is the real Product Requirement Work Item.
+- In GitHub tracker mode, promotion creates or binds the GitHub Product Requirement issue before approving the local PRD. The GitHub issue number is the stable Work Item ID and the promoted directory name uses that number, not a local `GADD-0004` style ID.
 - Linear and Jira are follow-on optional collaboration surfaces; do not invent Linear or Jira mutation behavior in this command.
-- External Product Requirement tickets must be readable without opening the repo. Use `.gadd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and GADD links.
-- Before updating an existing external ticket, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.
-- Before approval, set `execution_context.current_gate: prd_approval`, `execution_context.next_command: /gadd:approve <ticket-id>`, and `execution_context.next_human_action: /gadd:approve <ticket-id>` when those fields are available.
-- PRD PR reviewer prompt: "Is this ready for engineering design? If yes, run `/gadd:approve <ticket-id>`."
+- External Product Requirement issues must be readable without opening the repo. Use `.gadd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and GADD links.
+- Before updating an existing External Issue, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.
+- Before approval, set `execution_context.current_gate: prd_approval`, `execution_context.next_command: /gadd:approve <work-item-id>`, and `execution_context.next_human_action: /gadd:approve <work-item-id>` when those fields are available.
+- PRD PR reviewer prompt: "Is this ready for engineering design? If yes, run `/gadd:approve <work-item-id>`."
 
 ## Stop Conditions
 

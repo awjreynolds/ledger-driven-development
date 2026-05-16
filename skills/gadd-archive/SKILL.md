@@ -1,32 +1,32 @@
 ---
 name: gadd-archive
-description: Run /gadd:archive for closed GADD tickets. Use when the user says /gadd:archive or wants optional local cleanup after /gadd:close has completed.
+description: Run /gadd:archive for closed GADD Work Items. Use when the user says /gadd:archive or wants optional local cleanup after /gadd:close has completed.
 ---
 
 # /gadd:archive
 
-Move already-closed local GADD ticket packages into the configured archive directory. This command is storage hygiene only; it does not decide closure readiness and does not mutate external trackers.
+Move already-closed local Work Item packages into the configured archive directory. This command is storage hygiene only; it does not decide closure readiness and does not mutate external trackers.
 
 ## Inputs
 
 ```text
-/gadd:archive <child-ticket-id>
-/gadd:archive <parent-ticket-id>
+/gadd:archive <work-item-id>
+/gadd:archive <parent-work-item-id>
 ```
 
-If no ticket ID is provided, stop and ask for one.
+If no Work Item ID is provided, stop and ask for one.
 
 ## Reads
 
-- target ticket `ledger.yml`
-- parent ticket `ledger.yml` when archiving a child
-- child ticket ledgers when archiving a parent
+- target Work Item `ledger.yml`
+- parent Work Item `ledger.yml` when archiving a child
+- child Work Item ledgers when archiving a parent
 - `.gadd/config.yml`
 - configured `archive_directory`
 
 ## Writes
 
-- target ticket ledger archive state
+- target Work Item ledger archive state
 - parent ledger child paths when archiving children
 - local filesystem moves under configured `archive_directory`
 
@@ -36,8 +36,8 @@ No external tracker writes are allowed.
 
 Required input standard before archiving:
 
-- requested ticket exists and has a readable ledger
-- requested ticket is already closed with `closure.status: closed | externally_closed | archived`
+- requested Work Item exists and has a readable ledger
+- requested Work Item is already closed with `closure.status: closed | externally_closed | archived`
 - parent archive requested only when every child is already closed, externally closed, or archived
 - configured archive directory is known
 - archive move will not overwrite an existing directory
@@ -49,16 +49,16 @@ If inputs fail this standard, do not move anything. The earliest GADD command th
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation, but this command never performs external mutations.
-- Archive only after closure. Do not archive verified-but-unclosed tickets.
+- Archive only after closure. Do not archive verified-but-unclosed Work Items.
 - Preserve the ledger, ticket body, PRD, SDD, plan, verification reports, and implementation evidence.
-- Move files only under configured `archive_directory`; default is `docs/tickets/_archive`.
+- Move files only under configured Work Item archive directory; default is `docs/work-items/_archive`.
 - Do not archive drafts from this command.
 - Keep references readable by rewriting moved paths in the moved ledgers and the parent ledger.
 - Archiving is optional cleanup. It must not be required for `/gadd:next` to report done after closure.
 
 ## Child Workflow
 
-1. Resolve the child ticket directory and read its `ledger.yml`.
+1. Resolve the child Work Item directory and read its `ledger.yml`.
 2. Confirm `closure.status: closed | externally_closed | archived`.
 3. Read the parent ledger referenced by the child.
 4. Resolve the archive target under `archive_directory`.
@@ -123,9 +123,9 @@ events:
 
 ## Stop Conditions
 
-- requested ticket is missing
+- requested Work Item is missing
 - ledger cannot be parsed
-- ticket is not closed yet
+- Work Item is not closed yet
 - child verification exists but closure has not been applied
 - parent archive requested while any child is not closed or archived
 - archive directory is missing and cannot be created safely

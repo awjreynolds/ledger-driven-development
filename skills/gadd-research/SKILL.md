@@ -12,10 +12,12 @@ This command is a standalone, agent-agnostic GADD command. Follow this file dire
 ## Input
 
 ```text
-/gadd:research [new|draft-id|ticket-id] [trigger or context]
+/gadd:research [new|draft-id|work-item-id] [trigger or context]
 ```
 
-If no trigger, draft, ticket, or context source is provided, ask one direct question for the source product trigger or context. Do not invent a product problem from repository structure alone.
+This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
+
+If no trigger, draft, Work Item, or context source is provided, ask one direct question for the source product trigger or context. Do not invent a product problem from repository structure alone.
 
 ## Reads
 
@@ -31,7 +33,7 @@ GitNexus is strongly recommended when the trigger needs codebase investigation, 
 
 ## Produces
 
-- `research.md` in the draft or ticket directory
+- `research.md` in the draft or Work Item directory
 - optional `artifacts.research.path/status` ledger state when a ledger is available
 - compact ledger event: `research_completed`, `research_blocked`, `research_split_recommended`, or `research_not_product_requirement`
 
@@ -106,7 +108,7 @@ Private/local context may inform research, but committed and GitHub-visible arti
 
 ## Workflow
 
-1. Resolve or create the draft/ticket directory when requested. If no directory context is available, prepare research content and ask where to store it.
+1. Resolve or create the draft or Work Item directory when requested. If no directory context is available, prepare research content and ask where to store it.
 2. Read the repo, docs, artifacts, and supplied private/local context read-only.
 3. When code reality matters, prefer GitNexus code intelligence if available. Record whether GitNexus was used, indexed repositories considered, relevant indexed commits or staleness notes, evidence classes used, and limitations.
 4. Classify input sensitivity before drafting any committed output.
@@ -117,7 +119,7 @@ Private/local context may inform research, but committed and GitHub-visible arti
    - `artifacts.research.status`
    - `execution_context.phase: research`
    - `execution_context.current_gate: research`
-   - `execution_context.next_command` to `/gadd:scope <draft-id-or-ticket-id>` only for `ready_for_scope`
+   - `execution_context.next_command` to `/gadd:scope <draft-id-or-work-item-id>` only for `ready_for_scope`
 8. Report the readiness decision, artifact path, redaction notes, GitNexus usage or limitation, and next command or stop reason.
 
 ## Rules

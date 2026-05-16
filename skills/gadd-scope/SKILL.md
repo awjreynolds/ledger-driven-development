@@ -1,15 +1,17 @@
 ---
 name: gadd-scope
-description: Run /gadd:scope for a GADD ticket. Use when the user says /gadd:scope or wants to create or update PRD scope boundaries for a draft Product Requirement.
+description: Run /gadd:scope for a GADD Product Requirement Work Item. Use when the user says /gadd:scope or wants to create or update PRD scope boundaries for a draft Product Requirement.
 ---
 
 # /gadd:scope
 
-Create or update `prd.md` scope boundaries for a draft Product Requirement. If no draft is selected, create a new draft ticket directory.
+Create or update `prd.md` scope boundaries for a draft Product Requirement. If no draft is selected, create a new draft Work Item directory.
 
 ## Input
 
-`/gadd:scope [new|draft-id|ticket-id] [short title or context]`
+`/gadd:scope [new|draft-id|work-item-id] [short title or context]`
+
+This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
 
 ## Owns
 
@@ -95,14 +97,14 @@ After writing scope, set `execution_context.phase: scope`, `execution_context.cu
 - External mutations require human confirmation.
 - Product Manager command: preserve product intent and do not read the codebase as a design input.
 - If scope changes the product meaning of an approved PRD, keep the stable ticket ID but mark the PRD artifact as draft, clear `approved_artifacts.prd`, route `execution_context` back to the owning PM command, record an approval-invalidated event, and require `/gadd:refine` plus human approval before `/gadd:design`.
-- Existing promoted Product Requirement tickets do not block new scoping work. GADD may have multiple active promoted tickets at different phases.
-- Keep at most one active local draft in `docs/tickets/_drafts/`.
+- Existing promoted Product Requirement Work Items do not block new scoping work. GADD may have multiple active promoted Work Items at different phases.
+- Keep at most one active local draft in `docs/work-items/_drafts/`.
 - If no target is provided and exactly one active draft exists, update that draft.
-- If no target is provided and no active draft exists, create a new draft under `docs/tickets/_drafts/YYYY-MM-DD-short-slug/` using `.gadd/templates/ledger.yml` and `.gadd/templates/prd.md` when present.
+- If no target is provided and no active draft exists, create a new draft under `docs/work-items/_drafts/YYYY-MM-DD-short-slug/` using `.gadd/templates/work-item-ledger.yml` and `.gadd/templates/prd.md` when present.
 - If the user asks to start new scope and no active draft exists, create a draft under the configured draft directory even when other promoted tickets are incomplete.
 - If the user asks to start new scope while an active draft already exists, stop and ask whether to continue, rename, promote, or discard the existing draft first.
 - If multiple active drafts exist, stop and ask the human to reconcile them back to one active draft before continuing.
-- Do not update a promoted ticket unless the user explicitly identifies that ticket. Promoted tickets are stable workflow records; new product ideas should normally start as new drafts.
+- Do not update a promoted Work Item unless the user explicitly identifies that Work Item. Promoted Work Items are stable workflow records; new product ideas should normally start as new drafts.
 - Use the PRD template as a quality contract. Fill only the sections owned by this command; leave later-stage sections blank or marked as not yet addressed.
 - Do not fill implementation detail, acceptance criteria, success metrics, or user stories.
 - If code facts appear during discussion, capture them only as constraints, dependencies, or open questions.
@@ -113,5 +115,5 @@ After writing scope, set `execution_context.phase: scope`, `execution_context.cu
 - product ambiguity blocks useful scope
 - a new draft is requested while an active draft already exists
 - multiple active drafts exist
-- requested promoted ticket does not exist
+- requested promoted Work Item does not exist
 - requested work belongs to `/gadd:elaborate`, `/gadd:refine`, or a technical design step

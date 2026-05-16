@@ -1,29 +1,34 @@
 ---
 name: gadd-implement
-description: Run /gadd:implement for a GADD child vertical-slice ticket. Use when the user says /gadd:implement or wants to execute an approved child ticket with code and tests.
+description: Run /gadd:implement for a GADD Work Item. Use when the user says /gadd:implement or wants to execute an approved Work Item with code and tests.
 ---
 
 # /gadd:implement
 
-Execute one ready child vertical-slice ticket.
+Execute one ready Work Item.
 
 ## Reads
 
-- child ticket ledger
+- Work Item ledger
 - parent Product Requirement ledger
-- approved PRD
-- approved SDD
-- approved `plan.md`
+- approved triage outcome, PRD, SDD, and/or `plan.md` as required by Work Item type
 
 ## Input Quality Gate
 
 Required input standard before implementation:
 
-- a ready child ticket that is not blocked by unfinished dependencies
-- readable child ticket body and child ledger
-- approved parent PRD, SDD, and plan boundaries
-- acceptance criteria and plan slice specific enough to implement and test
-- documentation impact expectation from the child ticket or parent plan, or enough context to record `updated`, `not_needed`, or `blocked`
+- a ready Work Item that is not blocked by unfinished dependencies
+- readable Work Item body and ledger
+- approved boundaries required by Work Item type
+- done criteria, acceptance criteria, or plan slice specific enough to implement and test
+- documentation impact expectation from the Work Item, triage outcome, or parent plan, or enough context to record `updated`, `not_needed`, or `blocked`
+
+Required inputs by Work Item type:
+
+- `bug_fix`: approved triage outcome, GitNexus or approved fallback evidence, done criteria, documentation impact.
+- `task`: approved triage outcome, GitNexus or approved fallback evidence, done criteria, documentation impact.
+- `engineering_change`: approved triage outcome, approved SDD, optional approved plan when the SDD requires one.
+- `product_requirement`: approved PRD, approved SDD, approved plan, and ready decomposed Work Item slice when decomposition exists.
 
 If inputs fail this standard, do not edit product code or package artifacts. The earliest GADD command that can repair missing child work is `/gadd:decompose`; missing or wrong plan/design/product boundaries route to `/gadd:plan`, `/gadd:design`, `/gadd:refine`, `/gadd:scope`, or `/gadd:research` depending on the gap.
 
@@ -31,29 +36,29 @@ If inputs fail this standard, do not edit product code or package artifacts. The
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
-- Follow the approved child ticket and parent plan, and preserve approved PRD, SDD, and plan boundaries. Do not silently update `plan.md` from implementation.
-- Do not auto-decompose. If no ready child tickets exist, report that there are no tickets to implement. If the plan is approved but no child tickets exist, report that `/gadd:decompose` is required.
+- Follow the approved Work Item and parent plan when present, and preserve approved PRD, SDD, and plan boundaries. Do not silently update `plan.md` from implementation.
+- Do not auto-decompose. If no ready child Work Items exist, report that there are no Work Items to implement. If the plan is approved but no child Work Items exist, report that `/gadd:decompose` is required.
 - If the plan is wrong, stop and return to the earliest affected `/gadd:design` or `/gadd:plan` step.
-- The implementation PR contains product code, tests, and documentation updates required by the child work. Do not write `progress.md`.
+- The implementation PR contains product code, tests, and documentation updates required by the Work Item. Do not write `progress.md`.
 - Run configured checks before PR.
 - Account for documentation impact before marking implementation complete. The only valid documentation statuses are `updated`, `not_needed`, and `blocked`.
 - If documentation impact is `updated`, record the changed documentation paths in implementation evidence. If documentation impact is `not_needed`, record the direct rationale. If documentation impact is `blocked`, do not mark implementation completed; report the blocking documentation question and the earliest command or human decision that can repair it.
 - Update relevant documentation when the child changes user-facing behavior, command behavior, public APIs, configuration, setup flow, templates, integration contracts, or operational workflow.
 - Use the implementation PR body template to summarize plan adherence, tests/checks, and any approved deviations.
-- In GitHub tracker mode, the implementation PR is a managed projection for review. Ask before creating or updating it, stop on external drift, and keep the child ledger canonical.
-- Record implementation completion evidence in the child ledger, including changed-file summary, check evidence, documentation impact status and paths or rationale, and any implementation PR or local diff reference available.
-- Mark the child as implemented but not closed by setting `artifacts.implementation.status: completed`, `ticket.status: verification_required`, `closure.status: verification_required`, and `execution_context.next_command: /gadd:verify <child-ticket-id>` when those fields are available.
-- If the ledger lacks verification or closure fields, record equivalent implementation completion evidence and state that `/gadd:verify <child-ticket-id>` is the next gate so `/gadd:next` can derive the same state.
-- Do not archive child tickets.
-- Do not close external child work items.
-- Do not mark child work done, archived, externally closed, or verified from this command; `/gadd:verify` decides closure readiness after implementation completion.
+- In GitHub tracker mode, the implementation PR is a managed projection for review. Ask before creating or updating it, stop on external drift, and keep the Work Item ledger canonical.
+- Record implementation completion evidence in the Work Item ledger, including changed-file summary, check evidence, documentation impact status and paths or rationale, and any implementation PR or local diff reference available.
+- Mark the Work Item as implemented but not closed by setting `artifacts.implementation.status: completed`, `work_item.status: verification_required`, `closure.status: verification_required`, and `execution_context.next_command: /gadd:verify <work-item-id>` when those fields are available.
+- If the ledger lacks verification or closure fields, record equivalent implementation completion evidence and state that `/gadd:verify <work-item-id>` is the next gate so `/gadd:next` can derive the same state.
+- Do not archive Work Items.
+- Do not close external Work Item projections.
+- Do not mark Work Items done, archived, externally closed, or verified from this command; `/gadd:verify` decides closure readiness after implementation completion.
 - Implementation PR reviewer prompt: "Does this implementation follow the approved plan?"
 
 ## Built-in TDD Loop
 
 GADD is standalone. Run this loop directly from this skill; do not delegate it to another installed skill, command, or methodology package.
 
-For each behavior in the child ticket:
+For each behavior in the Work Item:
 
 1. Identify the next acceptance criterion or plan verification point.
 2. Write the smallest focused test that proves the behavior is missing.
@@ -68,9 +73,9 @@ If no test harness exists, create the smallest credible harness first. If a beha
 
 ## Stop Conditions
 
-- child ticket missing
-- no ready child tickets exist
-- plan is approved but `/gadd:decompose` has not created child tickets
+- Work Item missing
+- no ready Work Items exist
+- plan is approved but `/gadd:decompose` has not created child Work Items
 - plan is wrong
 - tests/checks fail
 - documentation impact is blocked
