@@ -82,7 +82,7 @@ Do not write outside the Work Item directory and ledger except for the narrowly 
 - Verification is specific to Work Item closure. It is not a general repository healthcheck.
 - Verification checks documentation impact for the implemented Work Item only. It is not a repository-wide documentation audit.
 - GitNexus may be used for optional blast-radius or change-impact checks, but missing GitNexus evidence must not block closure unless the approved plan explicitly required it.
-- Keep implementation completion separate from ticket closure.
+- Keep implementation completion separate from Work Item closure.
 - Treat external tracker state as a projection. If external metadata shows unresolved drift, block closure and ask for human reconciliation.
 - Treat PR review, approval, merge, close, and branch deletion as external actions. Do not infer them from the conversation, local branch state, or the user's statement. If implementation evidence references a PR, read the external PR state before deciding verification.
 - If the implementation PR is open, closed without merge, or cannot be checked, classify verification as `override_required`.

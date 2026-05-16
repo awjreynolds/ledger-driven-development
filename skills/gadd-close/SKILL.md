@@ -158,7 +158,7 @@ If the child has an external tracker projection, `/gadd:close` may close or sync
 In GitHub tracker mode:
 
 - Close the matching GitHub issue only after confirmation and drift checks.
-- Do not close implementation PRs from this command; PR merge is implementation evidence, not ticket closure.
+- Do not close implementation PRs from this command; PR merge is implementation evidence, not Work Item closure.
 - Do not rely on GitHub auto-close keywords from PR bodies. GADD keeps verification and closure as separate gates.
 - Record the GitHub issue closed state in `external_closed_at` and use `closure.status: externally_closed` only after the external close succeeds.
 

@@ -37,7 +37,7 @@ If inputs fail this standard, do not edit product code or package artifacts. The
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - Follow the approved Work Item and parent plan when present, and preserve approved PRD, SDD, and plan boundaries. Do not silently update `plan.md` from implementation.
-- Do not auto-decompose. If no ready child Work Items exist, report that there are no Work Items to implement. If the plan is approved but no child Work Items exist, report that `/gadd:decompose` is required.
+- Do not auto-decompose. For `product_requirement` or planned `engineering_change` work that depends on decomposed slices, report that there are no child Work Items to implement when no ready child Work Items exist. For `bug_fix`, `task`, or a single-slice `engineering_change` routed directly to implementation, implement the target Work Item itself. If the plan is approved but decomposition-dependent child Work Items do not exist, report that `/gadd:decompose` is required.
 - If the plan is wrong, stop and return to the earliest affected `/gadd:design` or `/gadd:plan` step.
 - The implementation PR contains product code, tests, and documentation updates required by the Work Item. Do not write `progress.md`.
 - Run configured checks before PR.
