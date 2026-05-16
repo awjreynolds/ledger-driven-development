@@ -7,7 +7,17 @@ description: Run /gadd:refine for a GADD Product Requirement Work Item. Use when
 
 Polish `prd.md` in the active draft or promoted Work Item directory for the Product-to-engineering handoff, then use human approval as the gate that turns the draft into a real Product Requirement Work Item.
 
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
 This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
+
+## Input
+
+```text
+/gadd:refine <work-item-id>
+```
+
+If no Work Item ID is provided, target the single active draft Work Item directory. If neither a Work Item ID nor an active draft exists, stop and route to `/gadd:scope` or `/gadd:elaborate`. Do not infer a target from unrelated modified files.
 
 ## Owns
 
@@ -112,7 +122,7 @@ Use this reviewer prompt exactly: "Is this ready for engineering design? If yes,
 - External Product Requirement issues must be readable without opening the repo. Use `gadd/templates/issue-body-prd.md` and include the PRD problem, goals, non-goals, users, user stories, acceptance criteria, success metrics, dependencies, open questions, and GADD links.
 - Before updating an existing External Issue, re-read it. If its body changed since the last recorded sync hash or timestamp, stop and ask the human to reconcile the external contribution.
 - Before approval, set `execution_context.current_gate: prd_approval`, `execution_context.next_command: /gadd:approve <work-item-id>`, and `execution_context.next_human_action: /gadd:approve <work-item-id>` when those fields are available.
-- PRD PR reviewer prompt: "Is this ready for engineering design? If yes, run `/gadd:approve <work-item-id>`."
+- GitHub PR body reviewer prompt for the PRD PR: "Does this PRD describe the right product outcome for engineering design? If yes, run `/gadd:approve <work-item-id>`."
 
 ## Stop Conditions
 

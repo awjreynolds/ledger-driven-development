@@ -58,7 +58,7 @@
       "command": "/gadd:approve",
       "skill": "gadd-approve",
       "path": "skills/gadd-approve",
-      "purpose": "Approve a PRD or SDD gate from repo-local ledger state."
+      "purpose": "Approve exactly one PRD, SDD, or plan gate from repo-local ledger state."
     },
     {
       "command": "/gadd:design",

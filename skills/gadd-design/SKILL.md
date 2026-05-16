@@ -1,11 +1,21 @@
 ---
 name: gadd-design
-description: Run /gadd:design for a GADD Work Item. Use when the user says /gadd:design or wants an SDD and ADR check from an approved GADD PRD or approved engineering triage outcome.
+description: Run /gadd:design for a GADD Work Item to create or update the repo-scoped Software Design Document (SDD) from an approved PRD or approved engineering triage outcome. Use when the user says /gadd:design, asks for an SDD, wants to "create or update the SDD", needs an ADR threshold check, asks about architecture for a Work Item, requests the `## Structure` header-file summary, or otherwise needs to translate an approved product or engineering boundary into a repo-scoped technical design.
 ---
 
 # /gadd:design
 
 Create or update `sdd.md` in the promoted Work Item directory.
+
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
+## Input
+
+```text
+/gadd:design <work-item-id>
+```
+
+If no Work Item ID is provided, stop and ask for the target Work Item ID. Raw external references must route through `/gadd:triage <external-ref>` first; do not infer a Work Item from unrelated modified files.
 
 ## Reads
 
@@ -73,3 +83,6 @@ After writing the SDD, stop at explicit SDD approval:
 - required approved PRD or approved triage outcome is missing
 - code reality contradicts the approved boundary
 - ADR-worthy decision cannot be resolved
+- external drift detected on a managed SDD projection
+- team policy requires GitNexus evidence but GitNexus is unavailable, stale, or outside the configured related repositories
+- SDD template is missing from the configured templates directory
