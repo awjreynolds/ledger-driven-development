@@ -54,6 +54,14 @@ Set exactly one state:
 - `out_of_scope`
 - `not_gadd_work`
 
+## Rules
+
+- Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
+- External mutations require human confirmation.
+- External issues and tickets are tracker-native collaboration surfaces, not GADD workflow state.
+- Do not route code-impacting Work Items without GitNexus evidence or explicit human-approved fallback.
+- Do not treat a poor-quality external issue as implementation-ready until the Triage Quality Loop has repaired the missing problem statement, evidence, done criteria, or route decision.
+
 ## Input Quality Gate
 
 Required input standard before routing:

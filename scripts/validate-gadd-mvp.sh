@@ -127,7 +127,7 @@ grep -q 'Execution Context' CONTEXT.md
 grep -q 'Bounded Shared Understanding Gate' CONTEXT.md
 grep -q 'Verification' CONTEXT.md
 grep -q 'Closure' CONTEXT.md
-grep -q 'Ticket Promotion' CONTEXT.md
+grep -q 'Work Item Promotion' CONTEXT.md
 grep -q 'Work Item' CONTEXT.md
 grep -q 'Triage Quality Loop' CONTEXT.md
 grep -q 'External Issue' CONTEXT.md
