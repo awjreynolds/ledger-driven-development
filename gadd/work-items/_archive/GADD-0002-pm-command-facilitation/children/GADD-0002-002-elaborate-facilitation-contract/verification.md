@@ -19,7 +19,7 @@
 ## Execution Context
 
 - Current gate: verification
-- Boundary: child-ticket closure only, not repository health
+- Boundary: child Work Item closure only, not repository health
 - Next command: /gadd:close GADD-0002-002
 - Next human action: approve local closure/archive if desired
 - Reason: Verification passed and external tracker mode is local.

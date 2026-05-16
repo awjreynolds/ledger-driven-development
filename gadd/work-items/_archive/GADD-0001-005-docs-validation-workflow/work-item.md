@@ -21,7 +21,7 @@ Expected touch points:
 - Public docs show `/gadd:verify` as part of the MVP workflow after implementation and before closure/archive.
 - Glossary terms and relationships cover execution context, verification, closure, and verified child work.
 - MVP design notes reflect the new verification gate without introducing a global ledger, `progress.md`, or external sync engine.
-- Validation enforces the new command package surface and key child-ticket closure language.
+- Validation enforces the new command package surface and key child Work Item closure language.
 - Active GADD ledger state remains consistent with completed child work and the next required gate.
 - `./scripts/validate-gadd-mvp.sh`, `git diff --check`, and a `/gadd:next` sanity check pass.
 

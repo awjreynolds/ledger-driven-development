@@ -504,4 +504,10 @@ if rg -n --glob '!docs/superpowers/**' 'GADD ticket|docs/tickets|docs/work-items
   exit 1
 fi
 
+if rg -n '\b[Tt]ickets?\b|ticket[_-]' gadd/work-items >/tmp/gadd-work-item-ticket-language.txt; then
+  echo "dogfood Work Item runtime state must not use ticket vocabulary:" >&2
+  cat /tmp/gadd-work-item-ticket-language.txt >&2
+  exit 1
+fi
+
 echo "GADD MVP installable skills validated"

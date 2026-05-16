@@ -127,7 +127,7 @@ events:
     type: decomposition_approved
     actor: human
   - at: 2026-05-13T00:00:00Z
-    type: child_tickets_created
+    type: child_work_items_created
     actor: agent
   - at: 2026-05-13T11:00:35Z
     type: child_implementations_completed

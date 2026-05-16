@@ -14,7 +14,7 @@ Expected touch point:
 
 ## Acceptance criteria
 
-- `/gadd:scope` states that promoted Product Requirement tickets do not block new scoping work.
+- `/gadd:scope` states that promoted Product Requirement Work Items do not block new scoping work.
 - `/gadd:scope` explains that a new draft is created when no active draft exists.
 - `/gadd:scope` stops when an active draft already exists and asks the user to resolve it before creating another.
 - `/gadd:scope` includes Guided, Context dump, and Best guess modes.

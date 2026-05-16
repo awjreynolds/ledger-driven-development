@@ -26,7 +26,7 @@ This creates friction during dogfooding. Product work can stall when `/gadd:scop
 - Make `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` stronger guided Product Manager workflows, not just thin ownership checklists.
 - Preserve GADD's Product Manager boundary: product-scope commands must not smuggle in technical design, implementation mechanics, or codebase-derived design decisions.
 - Add a self-contained PM facilitation protocol to the three commands so they can guide users through ambiguity without depending on external skills.
-- Support starting a new draft Product Requirement from source context when no active draft exists, even if other promoted tickets are still in later workflow phases.
+- Support starting a new draft Product Requirement from source context when no active draft exists, even if other promoted Work Items are still in later workflow phases.
 - Make each PM command end with an explicit handoff gate that states the updated artifact, unresolved questions, recommended next GADD command, and human decision needed.
 
 ## Non-goals
@@ -35,29 +35,29 @@ This creates friction during dogfooding. Product work can stall when `/gadd:scop
 - Do not merge `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` into a single monolithic PRD command.
 - Do not change downstream engineering ownership for `/gadd:design`, `/gadd:plan`, `/gadd:decompose`, `/gadd:implement`, or `/gadd:verify`.
 - Do not introduce duplicate workflow state such as `progress.md`, session logs, or global ledgers.
-- Do not let an incomplete promoted ticket block creation of a separate new draft Product Requirement.
-- Do not make `/gadd:scope` mutate a promoted ticket unless the user explicitly identifies that ticket.
+- Do not let an incomplete promoted Work Item block creation of a separate new draft Product Requirement.
+- Do not make `/gadd:scope` mutate a promoted Work Item unless the user explicitly identifies that Work Item.
 
 ## Users / Personas
 
 - Product author - needs the PM commands to turn rough context into a clean Product Requirement without forcing them to know the GADD workflow internals.
 - Product reviewer - needs confidence that scope, elaboration, and refinement preserve product intent without adding hidden design or implementation decisions.
 - Agent running a GADD PM command - needs enough self-contained guidance to ask focused questions, label assumptions, and stop at the correct handoff boundary.
-- Maintainer dogfooding GADD - needs new Product Requirement drafts to start cleanly while other promoted tickets continue through later workflow phases.
+- Maintainer dogfooding GADD - needs new Product Requirement drafts to start cleanly while other promoted Work Items continue through later workflow phases.
 
 ## User Stories
 
-1. As a product author, I want `/gadd:scope` to start a new draft Product Requirement from source context when no active draft exists, so that new product work is not blocked by unrelated promoted tickets.
+1. As a product author, I want `/gadd:scope` to start a new draft Product Requirement from source context when no active draft exists, so that new product work is not blocked by unrelated promoted Work Items.
 2. As a product author, I want the PM commands to offer guided, context-dump, and best-guess modes, so that I can choose the right level of interaction for the situation.
 3. As an agent running a GADD PM command, I want a self-contained facilitation protocol, so that I can ask focused questions, preserve assumptions, and avoid relying on external skills.
 4. As a product reviewer, I want scope, elaboration, and refinement to reject solution-smuggling language, so that engineering design starts from product outcomes rather than hidden implementation choices.
 5. As a maintainer, I want each PM command to end with an explicit handoff gate, so that the next GADD action and required human decision are visible from the artifact state.
-6. As a maintainer dogfooding GADD, I want incomplete promoted tickets to remain separate from new draft Product Requirements, so that parallel product discovery does not corrupt active workflow records.
+6. As a maintainer dogfooding GADD, I want incomplete promoted Work Items to remain separate from new draft Product Requirements, so that parallel product discovery does not corrupt active workflow records.
 
 ## Acceptance Criteria
 
-- [ ] A user can start new scoping work from source context when no active draft exists, even if an unrelated promoted ticket is incomplete.
-- [ ] New scoping work does not mutate a promoted ticket unless the user explicitly identifies that ticket.
+- [ ] A user can start new scoping work from source context when no active draft exists, even if an unrelated promoted Work Item is incomplete.
+- [ ] New scoping work does not mutate a promoted Work Item unless the user explicitly identifies that Work Item.
 - [ ] If a user tries to start new scoping work while an active draft already exists, GADD asks the user to continue, promote, rename, or discard the existing draft before creating another draft.
 - [ ] The PM commands provide a self-contained guided interaction pattern that does not require external PM, facilitation, grill, or orchestration skills.
 - [ ] The PM commands offer guided, context-dump, and best-guess modes, and make assumptions visible when best-guess mode is used.
@@ -67,12 +67,12 @@ This creates friction during dogfooding. Product work can stall when `/gadd:scop
 - [ ] GADD continues to use repo-local ledgers as canonical workflow state and does not introduce duplicate progress logs, session logs, or global workflow state.
 
 ```gherkin
-Scenario: New scope starts while another promoted ticket is incomplete
+Scenario: New scope starts while another promoted Work Item is incomplete
   Given an unrelated promoted Product Requirement is still active
   And no draft Product Requirement is active
   When a user starts new scoping work from source context
   Then GADD creates a new draft Product Requirement
-  And the unrelated promoted ticket remains unchanged
+  And the unrelated promoted Work Item remains unchanged
 ```
 
 ```gherkin
@@ -92,10 +92,10 @@ Scenario: Product Manager command reaches a handoff gate
 
 ## Success Metrics
 
-- A maintainer can start a new PM-command Product Requirement while another promoted ticket remains in verification, without modifying the promoted ticket.
+- A maintainer can start a new PM-command Product Requirement while another promoted Work Item remains in verification, without modifying the promoted Work Item.
 - A reviewer can identify the next recommended GADD command and required human decision from the draft ledger and PRD in under two minutes without relying on chat history.
 - The refined Product Requirement contains zero acceptance criteria that require codebase inspection to understand.
-- Dogfooding sessions for `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` have no recurring confusion about whether incomplete promoted tickets block new draft scoping.
+- Dogfooding sessions for `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` have no recurring confusion about whether incomplete promoted Work Items block new draft scoping.
 - Product reviewers can answer "Is this ready for engineering design?" from the PRD without asking which PM command owns each remaining question.
 
 ## Dependencies
@@ -103,8 +103,8 @@ Scenario: Product Manager command reaches a handoff gate
 - GADD skills must remain standalone and agent-agnostic.
 - Repo-local ledger state remains canonical; external trackers stay optional review and sync surfaces.
 - The existing scope/elaborate/refine research update is the source context for this Product Requirement.
-- Scope must preserve the GADD distinction between Product Requirement drafts and promoted ticket workflow records.
-- The active `GADD-0001` ticket is still in verification and should not be modified by this new Product Requirement.
+- Scope must preserve the GADD distinction between Product Requirement drafts and promoted Work Item workflow records.
+- The active `GADD-0001` Work Item is still in verification and should not be modified by this new Product Requirement.
 
 ## Open Questions
 

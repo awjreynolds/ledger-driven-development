@@ -172,7 +172,7 @@ events:
     type: external_child_sub_issues_created
     actor: agent
   - at: "2026-05-14T22:37:34Z"
-    type: child_tickets_created
+    type: child_work_items_created
     actor: agent
   - at: "2026-05-14T22:51:10Z"
     type: child_implementations_completed

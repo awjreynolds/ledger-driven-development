@@ -97,7 +97,7 @@ Acceptance coverage:
 
 ### Slice 4: Shared-understanding guardrails and validation
 
-Preserve and validate the PM shared-understanding behavior that motivated this ticket.
+Preserve and validate the PM shared-understanding behavior that motivated this Work Item.
 
 Files and modules:
 

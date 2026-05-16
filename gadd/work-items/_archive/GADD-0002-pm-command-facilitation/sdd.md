@@ -18,7 +18,7 @@ No new runtime subsystem, shared installed skill, external agent dependency, or 
 
 - GADD commands are standalone skill files under `skills/gadd-*/SKILL.md`.
 - `commands/gadd/*.md` and `commands/gadd/*.toml` are thin adapters that point to canonical skill files.
-- `/gadd:scope` already supports creating a new draft when no active draft exists and prevents unrelated promoted tickets from blocking new scoping.
+- `/gadd:scope` already supports creating a new draft when no active draft exists and prevents unrelated promoted Work Items from blocking new scoping.
 - `/gadd:elaborate` already protects existing scope and keeps acceptance criteria draft-quality.
 - `/gadd:refine` already handles handoff-quality checks, approval prompting, and draft promotion.
 - The PRD template already warns against implementation detail and solution-smuggling.
@@ -76,7 +76,7 @@ Each command ends with the same handoff shape:
 ## Data Flow
 
 1. User invokes a GADD PM command.
-2. Command identifies the active draft or promoted ticket according to its existing target rules.
+2. Command identifies the active draft or promoted Work Item according to its existing target rules.
 3. Command states its PM boundary and interaction mode.
 4. Command fills only owned PRD sections.
 5. If ambiguity changes scope or ownership, command returns to the earliest affected PM command.
@@ -119,7 +119,7 @@ No ADR is required. The design updates existing command contracts with clearer t
 
 - Rollout is immediate once the skill files are updated and committed.
 - Backout is a revert of the skill-file text changes for `gadd-scope`, `gadd-elaborate`, and `gadd-refine`.
-- Existing tickets and ledgers remain valid because no schema change is introduced.
+- Existing Work Items and ledgers remain valid because no schema change is introduced.
 
 ## Review Checklist
 

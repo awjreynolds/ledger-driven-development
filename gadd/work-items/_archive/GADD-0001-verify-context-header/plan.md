@@ -18,7 +18,7 @@ This plan translates the approved PRD and SDD into executable slices. It does no
 
 - Source: `gadd/work-items/_archive/GADD-0001-verify-context-header/prd.md`
 - Goals covered:
-  - Add a compact GADD execution context/header for active tickets.
+  - Add a compact GADD execution context/header for active Work Items.
   - Add a verification gate after implementation and before closure.
   - Keep GADD local-ledger-first, standalone, and agent-agnostic.
   - Improve resume, audit, and handoff across agents.
@@ -29,19 +29,19 @@ This plan translates the approved PRD and SDD into executable slices. It does no
   - No global ledger or `progress.md`.
   - No SDD-owned workflow state.
 - Acceptance criteria:
-  - Active tickets expose compact phase, boundary, approved-input, and next-gate context.
+  - Active Work Items expose compact phase, boundary, approved-input, and next-gate context.
   - Implementation completion and closure are separate states.
   - Verification reports whether child work is ready to mark done, archive, and close externally.
   - Closure is blocked by missing evidence, failed checks, drift, or unresolved external changes.
   - `/gadd:next` identifies verification as the next gate when implementation is complete but closure is unverified.
-  - Verification is specific to child-ticket closure, not general repository health.
+  - Verification is specific to child Work Item closure, not general repository health.
   - The workflow remains local-ledger-first and standalone.
 
 ### SDD Summary
 
 - Source: `gadd/work-items/_archive/GADD-0001-verify-context-header/sdd.md`
 - Design decisions to implement:
-  - Add optional `execution_context` to each ticket ledger.
+  - Add optional `execution_context` to each Work Item ledger.
   - Add standalone `/gadd:verify`.
   - Store human-readable verification results in `verification.md` and machine-readable state in child ledgers.
   - Keep closure/archive/external close separate from verification pass.
@@ -54,7 +54,7 @@ This plan translates the approved PRD and SDD into executable slices. It does no
 - Migration/compatibility requirements:
   - No mandatory migration before use.
   - Template updates affect new installations.
-  - Active dogfood ticket can be backfilled by the current GADD command flow.
+  - Active dogfood Work Item can be backfilled by the current GADD command flow.
 
 ### ADR Summary
 
@@ -86,12 +86,12 @@ Slice quality bar:
 
 | Acceptance criterion | Slice(s) | Verification |
 | --- | --- | --- |
-| Active ticket exposes compact context identifying current phase, approved inputs, boundaries, and next gate. | 2, 3, 5 | Ledger template contains `execution_context`; active ledger is backfilled; `/gadd:next` uses or derives the context. |
-| Implementation completion and ticket closure are separate workflow states. | 2, 3, 4 | Child ledger template includes `closure.status`; `/gadd:implement` marks verification required rather than closed; `/gadd:verify` marks verified separately. |
+| Active Work Item exposes compact context identifying current phase, approved inputs, boundaries, and next gate. | 2, 3, 5 | Ledger template contains `execution_context`; active ledger is backfilled; `/gadd:next` uses or derives the context. |
+| Implementation completion and Work Item closure are separate workflow states. | 2, 3, 4 | Child ledger template includes `closure.status`; `/gadd:implement` marks verification required rather than closed; `/gadd:verify` marks verified separately. |
 | Verification reports whether child work is ready to mark done, archive, and close externally. | 1, 4 | `/gadd:verify` skill and `verification.md` template include closure recommendation and evidence summary. |
-| Closure is blocked when evidence is missing, checks fail, drift is detected, or external ticket drift is unresolved. | 3, 4 | `/gadd:verify` stop conditions and report sections cover each blocker; validation checks command text. |
+| Closure is blocked when evidence is missing, checks fail, drift is detected, or external issue drift is unresolved. | 3, 4 | `/gadd:verify` stop conditions and report sections cover each blocker; validation checks command text. |
 | When implementation evidence exists but closure is unapproved, GADD indicates verification as the next gate. | 3 | `/gadd:next` decision tree prioritizes verification-required child work. |
-| Verification is specific to child-ticket closure and not a general healthcheck. | 1, 4, 5 | Command description, README, and validation use child-ticket closure language and avoid healthcheck framing. |
+| Verification is specific to child Work Item closure and not a general healthcheck. | 1, 4, 5 | Command description, README, and validation use child Work Item closure language and avoid healthcheck framing. |
 | Workflow remains local-ledger-first and does not require external skills or agent-specific orchestration. | 1, 4, 5 | Validation continues to ban external skill dependency language; command package includes standalone verify instructions. |
 
 ## Files / Modules
@@ -128,7 +128,7 @@ Describe the minimum credible test set before coding starts.
 - Integration/contract tests:
   - Extend `./scripts/validate-gadd-mvp.sh` to require `/gadd:verify` package files, adapters, manifest entries, template files, and standalone command contract wording.
   - Keep existing JSON validation for package manifests.
-  - Add validation checks for `execution_context`, `closure`, `verification.md`, and child-ticket closure language.
+  - Add validation checks for `execution_context`, `closure`, `verification.md`, and child Work Item closure language.
 - Regression tests:
   - Existing validation must still pass for setup/next/scope/elaborate/refine/design/plan/decompose/implement.
   - Existing external skill dependency ban remains active.

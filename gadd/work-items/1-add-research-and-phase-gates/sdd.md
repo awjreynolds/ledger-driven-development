@@ -16,7 +16,7 @@ The approved PRD requires GADD to stop producing PRDs from weak context, add a f
 - PRD: `gadd/work-items/1-add-research-and-phase-gates/prd.md`
 - Existing entry points: `skills/gadd-*/SKILL.md`, `commands/gadd/*.md`, `commands/gadd/*.toml`, `agent-skills.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, `skills/gadd-setup/assets/templates/*`, and `scripts/validate-gadd-mvp.sh`
 - Relevant ADRs: none found under `docs/`
-- Terms from the codebase/domain glossary: Repo-local Ledger, Execution Context, Product Requirement, GitHub-first Projection, Standalone Skill Contract, Bounded Shared Understanding Gate, Ticket Promotion
+- Terms from the codebase/domain glossary: Repo-local Ledger, Execution Context, Product Requirement, GitHub-first Projection, Standalone Skill Contract, Bounded Shared Understanding Gate, Work Item Promotion
 
 ## Constraints
 
@@ -50,7 +50,7 @@ The package is a collection of standalone skills. Each command owns its workflow
 
 Current PRD creation moves through `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, and `/gadd:approve`. Scope, elaborate, and refine currently use bounded shared-understanding gates, but there is no first-class research phase before scope and no uniform phase input-gate contract across all commands. `/gadd:scope` explicitly avoids reading the codebase as design input, while `/gadd:design` is allowed to read code and ADRs.
 
-The ledger template tracks PRD, SDD, plan, implementation, verification, child Work Items, closure, execution context, sync state, and events. It has no research artifact field today. Because the ledger is YAML consumed by humans and agents rather than strict generated code, optional additive fields are compatible with existing tickets.
+The ledger template tracks PRD, SDD, plan, implementation, verification, child Work Items, closure, execution context, sync state, and events. It has no research artifact field today. Because the ledger is YAML consumed by humans and agents rather than strict generated code, optional additive fields are compatible with existing Work Items.
 
 GitHub projection support now treats PRD approval as GitHub issue creation or binding in GitHub tracker mode. SDD approval creates a child SDD issue referencing the PRD issue, and decomposition creates implementation issues referencing the SDD issue.
 
@@ -59,7 +59,7 @@ GitHub projection support now treats PRD approval as GitHub issue creation or bi
 | Decision | Rationale | Source |
 | --- | --- | --- |
 | Add `/gadd:research` as a standalone command-shaped skill with the same adapter surfaces as other commands. | The package model has no shared command runtime; adding a normal skill preserves the existing installation and adapter pattern. | PRD / code |
-| Model research as an optional ledger artifact: `artifacts.research.path` and `artifacts.research.status`. | Research must become durable enough to hand off to scope, while existing tickets without research must keep working. | PRD / code |
+| Model research as an optional ledger artifact: `artifacts.research.path` and `artifacts.research.status`. | Research must become durable enough to hand off to scope, while existing Work Items without research must keep working. | PRD / code |
 | Keep raw sensitive PM inputs out of committed artifacts; store only sanitized conclusions, source classes, and redaction notes in `research.md`. | The PRD explicitly permits private inputs but excludes sensitive material from GitHub and tracked artifacts. | PRD |
 | Allow `/gadd:research` full read-only code visibility, but keep `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` in the PM boundary. | Research needs code visibility to inform readiness; PM commands should still avoid technical design and solution-smuggling. | PRD / existing skill rules |
 | Add an "Input Quality Gate" section to every command skill. | The current quality gates are command-specific and uneven; the PRD requires similar controls at each phase. | PRD |
@@ -253,11 +253,11 @@ Any new research content must not be projected to GitHub unless later PRD/SDD ar
 
 ## Migration / Compatibility
 
-- Migration required: none for existing tickets. `artifacts.research` is optional.
-- Rollout/backout: adding the research command is additive. Backout removes the command surface and optional template without changing existing approved tickets.
+- Migration required: none for existing Work Items. `artifacts.research` is optional.
+- Rollout/backout: adding the research command is additive. Backout removes the command surface and optional template without changing existing approved Work Items.
 - Default behavior: `/gadd:scope` can still proceed without research when supplied context meets the PM-grade input bar.
 - Compatibility tests:
-  - Existing promoted ticket with no `artifacts.research` remains readable by `/gadd:next` and later commands.
+  - Existing promoted Work Item with no `artifacts.research` remains readable by `/gadd:next` and later commands.
   - New setup installs research template and ledger field.
   - Manifests list `/gadd:research` consistently for Codex, Claude, and Gemini.
 
@@ -275,7 +275,7 @@ Any new research content must not be projected to GitHub unless later PRD/SDD ar
 ## Security / Privacy
 
 - Data touched:
-  - Repository source, docs, tickets, setup templates, adapter manifests.
+  - Repository source, docs, Work Items, setup templates, adapter manifests.
   - Optional human-supplied private PM context during research.
 - Permissions/authz:
   - Research is read-only over code and local context.

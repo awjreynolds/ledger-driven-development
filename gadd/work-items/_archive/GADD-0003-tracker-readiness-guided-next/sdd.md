@@ -24,7 +24,7 @@ This design implements the approved PRD for `GADD-0003`. GADD already has comman
   - `skills/gadd-setup/assets/templates/*`
   - `scripts/validate-gadd-mvp.sh`
 - Relevant ADRs: none. No ADR directory exists yet.
-- Terms from the codebase/domain glossary: Ledger, Product Requirement, Software Design Document, Execution Context, Ticket Promotion, External Tracker, External Drift, Standalone Skill Contract, Human-approved Closure.
+- Terms from the codebase/domain glossary: Ledger, Product Requirement, Software Design Document, Execution Context, Work Item Promotion, External Tracker, External Drift, Standalone Skill Contract, Human-approved Closure.
 
 ## Constraints
 
@@ -113,7 +113,7 @@ This design implements the approved PRD for `GADD-0003`. GADD already has comman
 
 - `/gadd:approve`
   - New standalone command-shaped skill under `skills/gadd-approve/`.
-  - Reads a target ticket ledger and determines the active approval gate.
+  - Reads a target Work Item ledger and determines the active approval gate.
   - Approves PRD when `current_gate: prd_approval` or `artifacts.prd.status: draft` and no SDD approval gate is active.
   - Approves SDD when `current_gate: design_review` or `artifacts.sdd.status: draft` and the PRD is already approved.
   - Updates frontmatter/status, ledger artifact status, `approved_artifacts`, `execution_context`, and events.
@@ -196,7 +196,7 @@ sync:
   managed_body_version: 1
 ```
 
-If implementation needs per-artifact external URLs later, design should add them narrowly during planning only if one URL per ticket is insufficient for PRD issue plus SDD/plan PR references.
+If implementation needs per-artifact external URLs later, design should add them narrowly during planning only if one URL per Work Item is insufficient for PRD issue plus SDD/plan PR references.
 
 ### Boundary changes
 
@@ -216,7 +216,7 @@ If implementation needs per-artifact external URLs later, design should add them
 
 ### Backwards compatibility
 
-- Existing tickets with `prd_approved` or `sdd_approved` events remain approved.
+- Existing Work Items with `prd_approved` or `sdd_approved` events remain approved.
 - Existing commands that mention "approve PRD" remain understandable, but new prompt text should prefer `/gadd:approve <work-item-id>`.
 - Local-only mode continues to work without GitHub.
 - Ledgers without `next_human_action` can still be interpreted by `/gadd:next` using artifact statuses.
@@ -270,7 +270,7 @@ If implementation needs per-artifact external URLs later, design should add them
 
 ## Migration / Compatibility
 
-- Migration required: none for existing local tickets.
+- Migration required: none for existing local Work Items.
 - Rollout:
   - Add `/gadd:approve` package surface.
   - Update `/gadd:next`, `/gadd:refine`, and `/gadd:design` to route approval gates to `/gadd:approve`.
@@ -324,7 +324,7 @@ No ADR is required. The design extends established command and ledger convention
 | Question | Impact | Owner | Next action |
 | --- | --- | --- | --- |
 | Should `/gadd:approve` accept explicit artifact arguments in addition to inference? | Could help ambiguous edge cases, but not needed for the approved PRD. | Engineering design | Treat as follow-on unless implementation finds unavoidable ambiguity. |
-| Should GitHub external state eventually support separate URLs per PRD issue, SDD/plan PR, and implementation PR? | Current ledger has one external URL slot per ticket; richer tracking may need additive fields. | Engineering design | Defer until planning slices GitHub visibility. |
+| Should GitHub external state eventually support separate URLs per PRD issue, SDD/plan PR, and implementation PR? | Current ledger has one external URL slot per Work Item; richer tracking may need additive fields. | Engineering design | Defer until planning slices GitHub visibility. |
 
 These questions do not block planning because the first implementation can use inference-only `/gadd:approve` and existing tracker fields, adding fields only if required by the GitHub slice.
 

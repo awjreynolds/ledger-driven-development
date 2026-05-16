@@ -64,7 +64,7 @@ This plan translates the approved PRD and SDD into executable slices. It adds `/
 - Migration/compatibility requirements:
   - Existing ledgers without `artifacts.research` remain valid.
   - Research is optional when `/gadd:scope` receives equivalent adequate inputs.
-  - Setup installs the new research template and ledger field for future tickets.
+  - Setup installs the new research template and ledger field for future Work Items.
 
 ### ADR Summary
 
@@ -80,7 +80,7 @@ Use these slices as the planned `/gadd:decompose` input. Each slice leaves the p
 | Slice | Outcome | Files/modules | Tests/checks | Dependencies |
 | --- | --- | --- | --- | --- |
 | 1. Research command surface | `/gadd:research` is discoverable and installable across Codex, Claude, and Gemini. | `skills/gadd-research/SKILL.md`, `skills/gadd-research/agents/openai.yaml`, `commands/gadd/research.md`, `commands/gadd/research.toml`, `agent-skills.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, `README.md`, `GEMINI.md` | `./scripts/validate-gadd-mvp.sh`; manifest JSON validation; grep checks for `/gadd:research` command coverage. | None. |
-| 2. Research artifact, ledger, and setup templates | New setup installs `research.md`; ledgers can record optional research state without breaking old tickets. | `skills/gadd-setup/assets/templates/research.md`, `gadd/templates/research.md`, `skills/gadd-setup/assets/templates/ledger.yml`, `gadd/templates/ledger.yml`, `skills/gadd-setup/SKILL.md`, `README.md`, `CONTEXT.md` | Validation checks template presence and `artifacts.research`; manual check that existing ticket `1` remains readable without a research artifact. | Slice 1 can run in parallel, but validation is cleaner after command surface exists. |
+| 2. Research artifact, ledger, and setup templates | New setup installs `research.md`; ledgers can record optional research state without breaking old Work Items. | `skills/gadd-setup/assets/templates/research.md`, `gadd/templates/research.md`, `skills/gadd-setup/assets/templates/ledger.yml`, `gadd/templates/ledger.yml`, `skills/gadd-setup/SKILL.md`, `README.md`, `CONTEXT.md` | Validation checks template presence and `artifacts.research`; manual check that existing Work Item `1` remains readable without a research artifact. | Slice 1 can run in parallel, but validation is cleaner after command surface exists. |
 | 3. Research workflow and privacy contract | `/gadd:research` prompts for PM-grade inputs, reads code/docs read-only, writes sanitized research output, and reports readiness. | `skills/gadd-research/SKILL.md`, `skills/gadd-setup/assets/templates/research.md`, `gadd/templates/research.md`, `CONTEXT.md` | Review hostile examples: weak input, split feature, non-PR, private financial input; grep checks for readiness labels and sensitivity handling. | Slice 1 and Slice 2. |
 | 4. Scope adequacy gate and PM command gates | `/gadd:scope` rejects weak inputs before writing scope; PM commands state input standards and route to research/scope/elaboration as appropriate. | `skills/gadd-scope/SKILL.md`, `skills/gadd-elaborate/SKILL.md`, `skills/gadd-refine/SKILL.md`, related command adapters only if wording needs routing updates | Validation greps for `Input Quality Gate`; manual checks for scope refusing unclear problem/outcome and not reading code as design input. | Slice 3 for research labels and handoff language. |
 | 5. Downstream phase gates and GitHub hierarchy safeguards | Design, plan, decompose, implement, verify, close, approve, next, and setup state their input standards and route gaps without mutating artifacts incorrectly. | `skills/gadd-design/SKILL.md`, `skills/gadd-plan/SKILL.md`, `skills/gadd-decompose/SKILL.md`, `skills/gadd-implement/SKILL.md`, `skills/gadd-verify/SKILL.md`, `skills/gadd-close/SKILL.md`, `skills/gadd-approve/SKILL.md`, `skills/gadd-next/SKILL.md`, `skills/gadd-setup/SKILL.md` | Validation greps for phase gates, SDD issue requirement before decomposition in GitHub mode, and copyable next command behavior; inspect approve/decompose hierarchy language. | Slices 1-4 establish the shared gate vocabulary. |
@@ -120,7 +120,7 @@ Slice quality bar:
 | `.claude-plugin/plugin.json` | Add research command adapter path. | Claude plugin install surface. |
 | `gemini-extension.json` | Add `/gadd:research`. | Gemini extension install surface. |
 | `skills/gadd-setup/assets/templates/research.md` and `gadd/templates/research.md` | New research artifact template. | Durable sanitized research output. |
-| `skills/gadd-setup/assets/templates/ledger.yml` and `gadd/templates/ledger.yml` | Add optional `artifacts.research`. | Future tickets can record research state. |
+| `skills/gadd-setup/assets/templates/ledger.yml` and `gadd/templates/ledger.yml` | Add optional `artifacts.research`. | Future Work Items can record research state. |
 | `skills/gadd-scope/SKILL.md` | Add input adequacy gate and research routing. | Prevent weak source inputs becoming scope. |
 | `skills/gadd-elaborate/SKILL.md`, `skills/gadd-refine/SKILL.md` | Add PM input gates and repair routing. | Protect PRD handoff quality. |
 | `skills/gadd-approve/SKILL.md`, `skills/gadd-design/SKILL.md`, `skills/gadd-plan/SKILL.md`, `skills/gadd-decompose/SKILL.md`, `skills/gadd-implement/SKILL.md`, `skills/gadd-verify/SKILL.md`, `skills/gadd-close/SKILL.md`, `skills/gadd-next/SKILL.md`, `skills/gadd-setup/SKILL.md` | Add input-quality gate sections and reject behavior. | Apply controls at each phase. |
@@ -140,7 +140,7 @@ If implementation discovers different touch points, explain the variance in the 
   - Keep JSON manifest validation for `agent-skills.json`, `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
 - Regression tests:
   - Validate existing commands remain listed and installable.
-  - Confirm existing ledgers without `artifacts.research` are still compatible by inspecting this ticket and archived tickets.
+  - Confirm existing ledgers without `artifacts.research` are still compatible by inspecting this Work Item and archived Work Items.
   - Confirm `/gadd:next` still emits a copyable command block.
   - Confirm GitHub issue numbering remains the approved Work Item IDentity in GitHub tracker mode.
 - Manual checks:

@@ -28,7 +28,7 @@ artifacts:
     status: completed
     completed_at: 2026-05-13T11:05:28Z
     evidence:
-      - Expanded skills/gadd-verify/SKILL.md with the standalone child-ticket closure verification workflow.
+      - Expanded skills/gadd-verify/SKILL.md with the standalone child Work Item closure verification workflow.
       - Defined verification status outcomes passed, failed, and override_required plus closure.status updates.
       - Updated source and copied verification.md templates with evidence, drift, finding, and human-confirmation fields.
       - Extended validate-gadd-mvp.sh checks for verify report and closure contract wording.

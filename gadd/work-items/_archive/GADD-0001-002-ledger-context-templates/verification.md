@@ -19,7 +19,7 @@ Verification status: passed
 
 ## Execution Context
 
-Boundary: child-ticket closure only, not repository health.
+Boundary: child Work Item closure only, not repository health.
 
 ## Implementation Evidence
 

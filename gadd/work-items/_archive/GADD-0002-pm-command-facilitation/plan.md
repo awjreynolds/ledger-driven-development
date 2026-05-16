@@ -21,14 +21,14 @@ This plan translates the approved PRD and SDD into executable slices. It does no
   - Strengthen `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` as guided Product Manager workflows.
   - Preserve Product Manager boundaries and prevent solution-smuggling.
   - Keep PM facilitation self-contained inside each command-shaped skill.
-  - Allow new draft scoping when no active draft exists, even if promoted tickets are incomplete.
+  - Allow new draft scoping when no active draft exists, even if promoted Work Items are incomplete.
   - End each PM command with an explicit handoff gate.
 - Non-goals to protect:
   - No external skill dependency.
   - No monolithic PRD command.
   - No changes to downstream engineering command ownership.
   - No duplicate workflow state.
-  - No accidental mutation of unrelated promoted tickets.
+  - No accidental mutation of unrelated promoted Work Items.
 
 ### SDD Summary
 
@@ -45,7 +45,7 @@ This plan translates the approved PRD and SDD into executable slices. It does no
   - External tracker mutations still require human confirmation.
 - Migration/compatibility requirements:
   - No schema migration.
-  - Existing active tickets remain valid.
+  - Existing active Work Items remain valid.
 
 ### ADR Summary
 
@@ -72,15 +72,15 @@ Slice quality bar:
 
 | Acceptance criterion | Slice(s) | Verification |
 | --- | --- | --- |
-| New scoping can start when no active draft exists even if another promoted ticket is incomplete. | 1 | `/gadd:scope` contract states promoted tickets do not block new scoping and no active draft creates a draft. |
-| New scoping does not mutate a promoted ticket unless explicitly identified. | 1 | `/gadd:scope` contract states promoted tickets are not updated unless identified. |
+| New scoping can start when no active draft exists even if another promoted Work Item is incomplete. | 1 | `/gadd:scope` contract states promoted Work Items do not block new scoping and no active draft creates a draft. |
+| New scoping does not mutate a promoted Work Item unless explicitly identified. | 1 | `/gadd:scope` contract states promoted Work Items are not updated unless identified. |
 | Existing active draft blocks accidental duplicate scoping. | 1 | `/gadd:scope` stop conditions require resolving the existing draft. |
 | PM commands provide self-contained guided interaction without external skills. | 1, 2, 3 | Each command embeds the facilitation protocol and no external skill dependency language is introduced. |
 | PM commands offer guided, context-dump, and best-guess modes. | 1, 2, 3 | Each command names the three modes and assumption handling. |
 | PM commands preserve ownership boundaries. | 1, 2, 3 | Each command has a phase-specific quality bar and anti-pattern list. |
 | Product-facing acceptance criteria avoid technical design or command mechanics. | 2, 3 | `/gadd:elaborate` and `/gadd:refine` preserve product-facing criteria rules. |
 | Each PM command ends with an explicit handoff gate. | 1, 2, 3 | Each command states artifact, ledger transition, questions, next command, and human decision. |
-| No duplicate progress logs, session logs, or global workflow state. | 1, 2, 3, 4 | No implementation slice introduces new state files; verification checks focus on skill text and ticket ledgers. |
+| No duplicate progress logs, session logs, or global workflow state. | 1, 2, 3, 4 | No implementation slice introduces new state files; verification checks focus on skill text and Work Item ledgers. |
 
 ## Files / Modules
 
@@ -102,9 +102,9 @@ If implementation discovers different touch points, explain the variance in the 
   - grep for external skill dependency language and confirm none was introduced
 - Regression checks:
   - Run `./scripts/validate-gadd-mvp.sh` if unrelated working-tree changes do not block it.
-  - If unrelated working-tree changes block the full validator, report that separately and run targeted checks for this ticket.
+  - If unrelated working-tree changes block the full validator, report that separately and run targeted checks for this Work Item.
 - Manual review:
-  - Ensure `/gadd:scope` still creates one active draft and protects promoted tickets.
+  - Ensure `/gadd:scope` still creates one active draft and protects promoted Work Items.
   - Ensure `/gadd:elaborate` does not expand goals/non-goals.
   - Ensure `/gadd:refine` keeps acceptance criteria product-facing and asks for PRD approval.
 

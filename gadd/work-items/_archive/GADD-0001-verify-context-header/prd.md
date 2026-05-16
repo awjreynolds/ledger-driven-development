@@ -17,13 +17,13 @@ Capture technical uncertainty only as a dependency, constraint, or open question
 
 ## Problem
 
-GADD now has a clear SDLC flow, rich external tickets, and standalone command-shaped skills, but downstream agents still lack a compact phase header that tells them what is approved, what context is authoritative, and what gate must be satisfied next.
+GADD now has a clear SDLC flow, rich external issues, and standalone command-shaped skills, but downstream agents still lack a compact phase header that tells them what is approved, what context is authoritative, and what gate must be satisfied next.
 
 Implementation closure is also underspecified. `/gadd:implement` can produce code and tests, but GADD does not yet have a separate closure gate that decides whether a child Work Item is verified, ready to archive, and safe to close externally.
 
 ## Goals
 
-- Define a compact GADD execution context/header that summarizes approved artifacts, phase state, boundaries, and the next gate for a ticket.
+- Define a compact GADD execution context/header that summarizes approved artifacts, phase state, boundaries, and the next gate for a Work Item.
 - Add an explicit verification gate after implementation and before archive/external close.
 - Preserve GADD's existing separation between product scope, software design, planning, decomposition, implementation, and closure.
 - Keep the feature agent-agnostic and standalone; it must not depend on external skills or a specific host agent.
@@ -36,7 +36,7 @@ Implementation closure is also underspecified. `/gadd:implement` can produce cod
 - Do not add multi-agent orchestration or swarm execution.
 - Do not replace PRD, SDD, or plan artifacts with a single large state file.
 - Do not make the SDD responsible for cross-phase workflow state.
-- Do not introduce global ledger state outside per-ticket GADD artifacts.
+- Do not introduce global ledger state outside per-Work Item GADD artifacts.
 
 ## Users / Personas
 
@@ -47,20 +47,20 @@ Implementation closure is also underspecified. `/gadd:implement` can produce cod
 
 ## User Stories
 
-1. As an implementation agent, I want a compact GADD context/header for the active ticket, so that I know which artifacts are approved, which boundaries apply, and what gate must be satisfied next.
+1. As an implementation agent, I want a compact GADD context/header for the active Work Item, so that I know which artifacts are approved, which boundaries apply, and what gate must be satisfied next.
 2. As an engineering reviewer, I want implementation work to pass a dedicated GADD verification gate before closure, so that code is not treated as done until evidence is checked against the child Work Item, PRD, SDD, and plan.
 3. As a maintainer resuming work, I want workflow state and next action to be visible without reconstructing the whole history from conversation, so that I can continue the correct GADD phase safely.
 4. As a product reviewer, I want verification to preserve product scope boundaries, so that implementation does not silently add scope or bypass the approved Product Requirement.
-5. As an external tracker user, I want closure state to remain consistent with the repo-local ledger, so that external tickets do not appear complete before GADD verification has passed.
+5. As an external tracker user, I want closure state to remain consistent with the repo-local ledger, so that external issues do not appear complete before GADD verification has passed.
 
 ## Acceptance Criteria
 
-- [ ] For an active ticket, GADD exposes compact context that lets an agent or maintainer identify the ticket's current phase, approved inputs, product/design/plan boundaries, and next required gate without relying on chat history.
-- [ ] GADD treats implementation completion and ticket closure as separate workflow states.
+- [ ] For an active Work Item, GADD exposes compact context that lets an agent or maintainer identify the Work Item's current phase, approved inputs, product/design/plan boundaries, and next required gate without relying on chat history.
+- [ ] GADD treats implementation completion and Work Item closure as separate workflow states.
 - [ ] GADD provides a verification gate that reports whether child work is ready to mark done, archive, and close externally.
-- [ ] GADD blocks closure when required evidence is missing, checks have not passed, scope/design drift is detected, or external ticket drift is unresolved.
+- [ ] GADD blocks closure when required evidence is missing, checks have not passed, scope/design drift is detected, or external issue drift is unresolved.
 - [ ] When implementation evidence exists but closure has not been approved, GADD indicates that verification is the next required gate.
-- [ ] The verification gate is specific to GADD child-ticket closure and is not presented as a general repository healthcheck.
+- [ ] The verification gate is specific to GADD child Work Item closure and is not presented as a general repository healthcheck.
 - [ ] The workflow remains local-ledger-first and does not require external skills, agent-specific orchestration, or a broad repository healthcheck.
 
 ```gherkin
@@ -82,7 +82,7 @@ Scenario: Verification blocks closure when evidence is incomplete
 
 ## Success Metrics
 
-- A maintainer can identify the active ticket's current phase and next gate from GADD artifacts in under two minutes without relying on chat history.
+- A maintainer can identify the active Work Item's current phase and next gate from GADD artifacts in under two minutes without relying on chat history.
 - Child work is not archived or externally closed in the documented workflow until verification has passed or a human explicitly overrides the finding.
 - Verification output is understandable to product and engineering reviewers without reading every source artifact end to end.
 - Hostile tests cover attempted gate bypasses, including implementation without verification and closure with missing evidence.
@@ -92,13 +92,13 @@ Scenario: Verification blocks closure when evidence is incomplete
 - GADD must remain repo-local-ledger-first.
 - GADD skills must remain standalone and agent-agnostic.
 - The context/header must be usable before, during, and after SDD creation, so it cannot be owned only by the SDD.
-- Verification must be specific to child-ticket closure, not broad repository health.
+- Verification must be specific to child Work Item closure, not broad repository health.
 
 ## Open Questions
 
-- Should the execution context be a separate per-ticket file or a section inside the existing ledger? Owner: engineering design.
+- Should the execution context be a separate per-Work Item file or a section inside the existing ledger? Owner: engineering design.
 - What minimum evidence is required before the verification gate can recommend closure? Owner: engineering design.
-- Parent Product Requirement closure is out of scope for this MVP unless engineering design identifies a minimal roll-up state needed to support child-ticket verification.
+- Parent Product Requirement closure is out of scope for this MVP unless engineering design identifies a minimal roll-up state needed to support child Work Item verification.
 
 ## PRD Handoff Checklist
 

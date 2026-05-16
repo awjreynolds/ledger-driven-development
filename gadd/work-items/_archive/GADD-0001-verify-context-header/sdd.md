@@ -10,7 +10,7 @@ adrs: []
 
 ## Context
 
-This design implements the approved PRD for `GADD-0001`. The existing MVP already has command-shaped skills, repo-local per-ticket ledgers, rich issue templates, and a local archive directory. It does not yet expose a compact execution context/header for a ticket, and it does not yet have a separate verification gate between implementation completion and ticket closure.
+This design implements the approved PRD for `GADD-0001`. The existing MVP already has command-shaped skills, repo-local per-Work Item ledgers, rich issue templates, and a local archive directory. It does not yet expose a compact execution context/header for a Work Item, and it does not yet have a separate verification gate between implementation completion and Work Item closure.
 
 - PRD: `gadd/work-items/_archive/GADD-0001-verify-context-header/prd.md`
 - Existing entry points:
@@ -22,15 +22,15 @@ This design implements the approved PRD for `GADD-0001`. The existing MVP alread
   - `gemini-extension.json`
   - `scripts/validate-gadd-mvp.sh`
 - Relevant ADRs: none. No ADR directory exists yet.
-- Terms from the codebase/domain glossary: Ledger, Product Requirement, Child Work Item, Vertical Slice, Workflow Navigation, Standalone Skill Contract, External Drift, Ticket Archive.
+- Terms from the codebase/domain glossary: Ledger, Product Requirement, Child Work Item, Vertical Slice, Workflow Navigation, Standalone Skill Contract, External Drift, Work Item Archive.
 
 ## Constraints
 
 - Product constraints from the PRD:
   - GADD remains local-ledger-first.
   - The context/header must work before, during, and after SDD creation; it cannot be owned only by the SDD.
-  - Verification is specific to child-ticket closure, not a general repository healthcheck.
-  - Implementation completion and ticket closure are separate states.
+  - Verification is specific to child Work Item closure, not a general repository healthcheck.
+  - Implementation completion and Work Item closure are separate states.
   - The feature must be standalone and agent-agnostic.
 - Technical constraints from existing code:
   - Every installed command must carry its own workflow contract; there is no shared installed `gadd-core`.
@@ -53,7 +53,7 @@ This design implements the approved PRD for `GADD-0001`. The existing MVP alread
 ## Existing System
 
 - Current flow:
-  - `/gadd:setup` installs config, templates, and ticket directories.
+  - `/gadd:setup` installs config, templates, and Work Item directories.
   - `/gadd:scope`, `/gadd:elaborate`, and `/gadd:refine` create and approve a Product Requirement.
   - `/gadd:design` writes this SDD.
   - `/gadd:plan` writes `plan.md` and `plan.html`.
@@ -81,7 +81,7 @@ This design implements the approved PRD for `GADD-0001`. The existing MVP alread
 
 | Decision | Rationale | Source |
 | --- | --- | --- |
-| Add an `execution_context` section to each ticket ledger rather than a separate context file. | The PRD rejects global state and says the context cannot be owned only by the SDD. The existing ledger is already the canonical per-Work Item state and avoids another artifact to keep synchronized. | PRD, `CONTEXT.md`, local ledger MVP design |
+| Add an `execution_context` section to each Work Item ledger rather than a separate context file. | The PRD rejects global state and says the context cannot be owned only by the SDD. The existing ledger is already the canonical per-Work Item state and avoids another artifact to keep synchronized. | PRD, `CONTEXT.md`, local ledger MVP design |
 | Add `/gadd:verify` as a standalone command-shaped skill. | Verification is a distinct gate between implementation completion and closure. Folding it into `/gadd:implement` would hide the human closure boundary. | PRD |
 | Store verification results as `verification.md` plus ledger status fields on child work items. | Reviewers need readable output, while workflow navigation needs machine-readable status. | PRD, existing artifact pattern |
 | Keep closure/archive/external close separate from verification pass. | The PRD requires implementation completion, verification, and closure to be distinct. Verification can recommend closure, but external mutation and archive still require human approval. | PRD, existing external mutation rule |
@@ -92,7 +92,7 @@ This design implements the approved PRD for `GADD-0001`. The existing MVP alread
 
 | Alternative | Why not | Tradeoff accepted |
 | --- | --- | --- |
-| Separate `context.yml` per ticket. | It creates a second canonical state surface and increases drift risk with `ledger.yml`. | The ledger grows slightly, but remains the single machine-readable Work Item state. |
+| Separate `context.yml` per Work Item. | It creates a second canonical state surface and increases drift risk with `ledger.yml`. | The ledger grows slightly, but remains the single machine-readable Work Item state. |
 | Put execution context only in SDD frontmatter. | The PRD says context must be usable before, during, and after SDD creation. SDD-only context would not help early phases or child Work Items. | SDDs stay focused on engineering design. |
 | Treat verification as part of `/gadd:implement`. | That would collapse implementation completion and closure verification into one phase. | A new command adds package surface but preserves the gate. |
 | Add a general `/gadd:healthcheck`. | The PRD explicitly excludes a broad repository healthcheck. | Verification remains narrower and easier to test. |
@@ -161,7 +161,7 @@ closure:
   override_reason: null
 ```
 
-Existing ledgers without these fields remain valid. Commands derive equivalent context from `ticket.status`, artifact statuses, `children`, and sync state.
+Existing ledgers without these fields remain valid. Commands derive equivalent context from `Work Item.status`, artifact statuses, `children`, and sync state.
 
 ### Boundary changes
 
@@ -181,16 +181,16 @@ Existing ledgers without these fields remain valid. Commands derive equivalent c
 
 - Existing target repos do not need migration before normal commands run.
 - `/gadd:setup` updates templates for new installations only.
-- The implementation plan should include a narrow template-update slice and a separate active-ledger backfill slice for this repo's dogfood ticket.
+- The implementation plan should include a narrow template-update slice and a separate active-ledger backfill slice for this repo's dogfood Work Item.
 
 ## Data Flow / Control Flow
 
-1. Main parent-ticket path:
+1. Main parent Work Item path:
    1. `/gadd:design` writes `sdd.md`.
    2. The ledger records `artifacts.sdd.status: draft` and updates `execution_context.next_human_action` to design approval.
    3. `/gadd:plan` writes `plan.md` and `plan.html`.
    4. `/gadd:decompose` previews and then creates child work items.
-2. Main child-ticket implementation path:
+2. Main child Work Item implementation path:
    1. `/gadd:implement <child-id>` completes implementation evidence and checks.
    2. Child ledger records implementation completion and `closure.status: verification_required`.
    3. `/gadd:next` reports `/gadd:verify <child-id>`.
@@ -222,7 +222,7 @@ Minimum evidence for `/gadd:verify` to recommend closure:
 - Child acceptance criteria and covered user stories.
 - Implementation evidence such as commit, diff, PR, or local changed-file summary.
 - Check evidence such as automated test output, validation command output, or explicit manual verification notes.
-- Drift evidence showing no unresolved external ticket body change when an external tracker is configured.
+- Drift evidence showing no unresolved external issue body change when an external tracker is configured.
 
 ## Migration / Compatibility
 
@@ -251,7 +251,7 @@ Minimum evidence for `/gadd:verify` to recommend closure:
 ## Security / Privacy
 
 - Data touched:
-  - Repo-local ticket metadata, artifact paths, implementation evidence summaries, and verification reports.
+  - Repo-local Work Item metadata, artifact paths, implementation evidence summaries, and verification reports.
   - External tracker IDs, URLs, timestamps, and body hashes when configured.
 - Permissions/authz:
   - No new permissions are required for local mode.
@@ -260,7 +260,7 @@ Minimum evidence for `/gadd:verify` to recommend closure:
   - No secrets are stored in the ledger, `execution_context`, or `verification.md`.
 - Abuse cases:
   - A generated verification report could overstate evidence. The command must list concrete evidence paths/commands and block when evidence is missing.
-  - An external ticket could be closed despite local failure. The command must not mutate external trackers unless the ledger says verification passed or the human explicitly records an override.
+  - An external issue could be closed despite local failure. The command must not mutate external trackers unless the ledger says verification passed or the human explicitly records an override.
 
 ## ADRs
 

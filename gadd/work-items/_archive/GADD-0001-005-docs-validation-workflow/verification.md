@@ -19,7 +19,7 @@ Verification status: passed
 
 ## Execution Context
 
-Boundary: child-ticket closure only, not repository health.
+Boundary: child Work Item closure only, not repository health.
 
 ## Implementation Evidence
 
@@ -34,7 +34,7 @@ Boundary: child-ticket closure only, not repository health.
 - Public docs show `/gadd:verify` after implementation and before closure/archive.
 - Glossary covers execution context, verification, closure, and verified child work.
 - MVP design notes describe the verification gate without adding a global ledger, `progress.md`, or an external sync engine.
-- Validation enforces command package surface and child-ticket closure language.
+- Validation enforces command package surface and child Work Item closure language.
 - Active ledger state remains consistent with completed child work and verification gates.
 
 ## Check Evidence

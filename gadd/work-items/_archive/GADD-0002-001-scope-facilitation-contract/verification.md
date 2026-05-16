@@ -19,7 +19,7 @@
 ## Execution Context
 
 - Current gate: verification
-- Boundary: child-ticket closure only, not repository health
+- Boundary: child Work Item closure only, not repository health
 - Next command: /gadd:close GADD-0002-001
 - Next human action: approve local closure/archive if desired
 - Reason: Verification passed and external tracker mode is local.
@@ -27,7 +27,7 @@
 ## Implementation Evidence
 
 - Changed files: skills/gadd-scope/SKILL.md
-- Implementation notes: Added Facilitation Protocol, Product Quality Bar, and Exit Gate sections while preserving new-draft and promoted-ticket protection rules.
+- Implementation notes: Added Facilitation Protocol, Product Quality Bar, and Exit Gate sections while preserving new-draft and promoted Work Item protection rules.
 - Traceability to acceptance criteria: complete
 - Evidence complete: yes
 

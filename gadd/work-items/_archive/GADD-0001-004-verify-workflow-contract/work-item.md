@@ -17,11 +17,11 @@ Expected touch points:
 
 ## Acceptance criteria
 
-- `/gadd:verify` is explicitly scoped to child-ticket closure, not repository health.
+- `/gadd:verify` is explicitly scoped to child Work Item closure, not repository health.
 - The command reads child ledger, parent ledger, approved PRD, approved SDD, approved plan, child Work Item, implementation evidence, check evidence, and external drift metadata.
 - The command writes a human-readable `verification.md` report.
 - The command updates child ledger verification status to `passed`, `failed`, or `override_required`.
-- The command blocks closure when evidence is missing, checks fail, scope/design/plan drift is detected, or external ticket drift is unresolved.
+- The command blocks closure when evidence is missing, checks fail, scope/design/plan drift is detected, or external issue drift is unresolved.
 - The command never mutates external trackers without human confirmation.
 - `./scripts/validate-gadd-mvp.sh` and `git diff --check` pass.
 

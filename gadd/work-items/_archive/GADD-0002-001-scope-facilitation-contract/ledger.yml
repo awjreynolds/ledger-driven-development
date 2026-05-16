@@ -29,7 +29,7 @@ artifacts:
     completed_at: 2026-05-13T11:31:26Z
     evidence:
       - Updated skills/gadd-scope/SKILL.md with Facilitation Protocol, Product Quality Bar, and Exit Gate sections.
-      - Preserved new-draft behavior and promoted-ticket protection in /gadd:scope.
+      - Preserved new-draft behavior and promoted Work Item protection in /gadd:scope.
       - Targeted grep confirmed the new facilitation contract text exists.
       - git diff --check passed for the changed PM skill files.
       - ./scripts/validate-gadd-mvp.sh passed.
