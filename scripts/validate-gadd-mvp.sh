@@ -510,4 +510,10 @@ if rg -n '\b[Tt]ickets?\b|ticket[_-]' gadd/work-items >/tmp/gadd-work-item-ticke
   exit 1
 fi
 
+if find gadd/work-items -name 'ticket.md' -print | grep -q .; then
+  echo "dogfood Work Item runtime state must use work-item.md, not ticket.md" >&2
+  find gadd/work-items -name 'ticket.md' -print >&2
+  exit 1
+fi
+
 echo "GADD MVP installable skills validated"

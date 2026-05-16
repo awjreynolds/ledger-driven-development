@@ -1,27 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1220" viewBox="0 0 1800 1220" role="img" aria-labelledby="title desc">
-  <title id="title">GADD Work Item triage and delivery workflow</title>
-  <desc id="desc">A workflow diagram showing unclassified intake entering triage, triage outcomes routing Work Items to implementation, design, Product Requirement discovery, or terminal handling, and known product discovery entering the Product Requirement lane directly.</desc>
+  <title id="title">Where GADD fits within the Software Development Life Cycle</title>
+  <desc id="desc">A role-aware workflow diagram showing GADD from intake and triage through product requirements, technical design, software engineering, and engineering review.</desc>
   <defs>
     <style>
       .bg { fill: #f7f9fc; }
-      .title { font: 800 46px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .title { font: 800 45px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
       .subtitle { font: 400 23px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
-      .card-title { font: 800 26px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
-      .card-subtitle { font: 600 17px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
-      .section { font: 800 15px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; text-transform: uppercase; }
+      .stage-title { font: 800 25px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .stage-subtitle { font: 600 16px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #e0f2fe; }
+      .card-title { font: 800 27px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
+      .role-pill { font: 700 16px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .section { font: 800 15px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
       .body { font: 500 18px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1f2937; }
+      .small { font: 700 15px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
       .mono { font: 700 17px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; fill: #0f172a; }
-      .small { font: 700 16px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .mini-title { font: 800 20px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
+      .mini-body { font: 600 16px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
       .bar-title { font: 800 22px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
       .bar-body { font: 500 19px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
-      .outline { fill: #ffffff; stroke: #dbe4ef; stroke-width: 2; }
-      .intake { fill: #eef6ff; stroke: #bfdbfe; stroke-width: 2; }
-      .triage { fill: #ecfdf5; stroke: #86efac; stroke-width: 2; }
-      .route { fill: #fff7ed; stroke: #fed7aa; stroke-width: 2; }
-      .terminal { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
-      .lane { fill: #ffffff; stroke: #dbe4ef; stroke-width: 2; }
+      .card { fill: #ffffff; stroke: #dbe4ef; stroke-width: 2; }
+      .pill-blue { fill: #eff6ff; stroke: #bfdbfe; stroke-width: 1.6; }
+      .pill-green { fill: #ecfdf5; stroke: #86efac; stroke-width: 1.6; }
+      .mini { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .triage-mini { fill: #ecfdf5; stroke: #86efac; stroke-width: 2; }
+      .route-mini { fill: #fff7ed; stroke: #fed7aa; stroke-width: 2; }
+      .gate { fill: #dcfce7; stroke: #86efac; stroke-width: 1.8; }
       .arrow { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrowhead); }
-      .soft-arrow { fill: none; stroke: #94a3b8; stroke-width: 2.4; marker-end: url(#arrowhead-soft); }
+      .soft-arrow { fill: none; stroke: #94a3b8; stroke-width: 2.2; marker-end: url(#arrowhead-soft); }
     </style>
     <marker id="arrowhead" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto">
       <path d="M0,0 L11,4 L0,8 Z" fill="#64748b"/>
@@ -29,108 +34,154 @@
     <marker id="arrowhead-soft" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto">
       <path d="M0,0 L11,4 L0,8 Z" fill="#94a3b8"/>
     </marker>
+    <linearGradient id="stageGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
     <linearGradient id="ledgerGrad" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#e0f2fe"/>
       <stop offset="50%" stop-color="#ecfdf5"/>
       <stop offset="100%" stop-color="#fef9c3"/>
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="130%">
       <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.12"/>
     </filter>
   </defs>
 
   <rect class="bg" width="1800" height="1220"/>
 
-  <text x="70" y="70" class="title">GADD routes Work Items from intake to verified delivery</text>
-  <text x="70" y="112" class="subtitle">Unclassified intake goes through triage. Known product discovery can enter the Product Requirement lane directly.</text>
+  <text x="70" y="68" class="title">Where GADD fits within the Software Development Life Cycle</text>
+  <text x="70" y="110" class="subtitle">GADD governs the requirements-to-verified-implementation slice: intake, role-aware skills, approved artifacts, and evidence.</text>
 
   <g filter="url(#shadow)">
-    <rect x="70" y="165" width="360" height="190" rx="20" class="intake"/>
-    <rect x="530" y="165" width="390" height="190" rx="20" class="triage"/>
-    <rect x="1040" y="165" width="360" height="210" rx="20" class="route"/>
+    <rect x="70" y="145" width="410" height="112" rx="20" class="mini"/>
+    <rect x="520" y="145" width="390" height="112" rx="20" class="triage-mini"/>
+    <rect x="950" y="145" width="790" height="112" rx="20" class="route-mini"/>
   </g>
-
-  <text x="100" y="215" class="card-title">Unclassified intake</text>
-  <text x="100" y="250" class="body">External issues, bug reports,</text>
-  <text x="100" y="278" class="body">tasks, support signals,</text>
-  <text x="100" y="306" class="body">and ambiguous requests</text>
-  <text x="100" y="332" class="small">Source or create a Work Item</text>
-
-  <text x="560" y="215" class="card-title">/gadd:triage</text>
-  <text x="560" y="250" class="body">Normalize intake quality</text>
-  <text x="560" y="278" class="body">Use GitNexus when code reality matters</text>
-  <text x="560" y="306" class="body">Record type, state, route, and evidence</text>
-  <text x="560" y="332" class="small">Project narrative to External issues after approval</text>
-
-  <text x="1070" y="215" class="card-title">triage outcome</text>
-  <text x="1070" y="250" class="body">Approved route decision</text>
-  <text x="1070" y="278" class="body">Stored in repo-local ledger</text>
-  <text x="1070" y="306" class="body">External issue remains a</text>
-  <text x="1070" y="332" class="body">collaboration surface</text>
-  <text x="1070" y="350" class="small">Work Item state drives next command</text>
-
-  <path d="M430 260 H530" class="arrow"/>
-  <path d="M920 260 H1040" class="arrow"/>
+  <text x="100" y="186" class="mini-title">Incoming work</text>
+  <text x="100" y="214" class="mini-body">External issues, bug reports, tasks,</text>
+  <text x="100" y="240" class="mini-body">support signals, or PM-led discovery</text>
+  <text x="550" y="186" class="mini-title">/gadd:triage</text>
+  <text x="550" y="214" class="mini-body">Normalizes poor input quality</text>
+  <text x="550" y="240" class="mini-body">Routes by type, evidence, and impact</text>
+  <text x="980" y="186" class="mini-title">Work Item route</text>
+  <text x="980" y="214" class="mini-body">Direct implementation, SDD-only engineering change, Product Requirement lane, or terminal handling</text>
+  <text x="980" y="240" class="mini-body">Known product discovery can enter research/scope directly without hiding the role boundary.</text>
+  <path d="M480 201 H520" class="arrow"/>
+  <path d="M910 201 H950" class="arrow"/>
 
   <g filter="url(#shadow)">
-    <rect x="70" y="430" width="360" height="160" rx="20" class="intake"/>
+    <rect x="60" y="290" width="405" height="86" rx="18" fill="url(#stageGrad)"/>
+    <rect x="485" y="290" width="405" height="86" rx="18" fill="url(#stageGrad)"/>
+    <rect x="910" y="290" width="405" height="86" rx="18" fill="url(#stageGrad)"/>
+    <rect x="1335" y="290" width="405" height="86" rx="18" fill="url(#stageGrad)"/>
   </g>
-  <text x="100" y="480" class="card-title">Known product discovery</text>
-  <text x="100" y="515" class="mono">/gadd:research</text>
-  <text x="100" y="543" class="mono">/gadd:scope</text>
-  <text x="100" y="570" class="small">PM-led Product Requirement entry path</text>
+  <text x="85" y="329" class="stage-title">Requirements Analysis</text>
+  <text x="85" y="356" class="stage-subtitle">repo-informed product scope</text>
+  <text x="510" y="329" class="stage-title">Design</text>
+  <text x="510" y="356" class="stage-subtitle">architecture, interfaces, plan</text>
+  <text x="935" y="329" class="stage-title">Development</text>
+  <text x="935" y="356" class="stage-subtitle">TDD, code, refactor, docs impact</text>
+  <text x="1360" y="329" class="stage-title">Testing / Verification</text>
+  <text x="1360" y="356" class="stage-subtitle">evidence and closure readiness</text>
 
   <g filter="url(#shadow)">
-    <rect x="70" y="670" width="360" height="230" rx="22" class="lane"/>
-    <rect x="515" y="670" width="360" height="230" rx="22" class="lane"/>
-    <rect x="960" y="670" width="360" height="230" rx="22" class="lane"/>
-    <rect x="1405" y="670" width="320" height="230" rx="22" class="terminal"/>
+    <rect x="60" y="425" width="405" height="535" rx="20" class="card"/>
+    <rect x="485" y="425" width="405" height="535" rx="20" class="card"/>
+    <rect x="910" y="425" width="405" height="535" rx="20" class="card"/>
+    <rect x="1335" y="425" width="405" height="535" rx="20" class="card"/>
   </g>
 
-  <text x="100" y="720" class="card-title">ready_for_implementation</text>
-  <text x="100" y="760" class="mono">/gadd:implement</text>
-  <text x="100" y="794" class="body">Bug fixes and focused tasks</text>
-  <text x="100" y="822" class="body">use the approved triage outcome</text>
-  <text x="100" y="850" class="body">as implementation boundary.</text>
+  <text x="90" y="466" class="card-title">Product + Repo Context</text>
+  <rect x="90" y="490" width="224" height="34" rx="17" class="pill-blue"/>
+  <text x="108" y="512" class="role-pill">PMs / EMs / Tech Leads</text>
+  <text x="90" y="561" class="section">Inputs</text>
+  <text x="90" y="593" class="body">customer pain or external issue</text>
+  <text x="90" y="622" class="body">business goal and roadmap context</text>
+  <text x="90" y="651" class="body">current workflow and constraints</text>
+  <text x="90" y="680" class="body">repo docs and code context</text>
+  <text x="90" y="733" class="section">GADD skills</text>
+  <text x="90" y="765" class="mono">/gadd:research</text>
+  <text x="90" y="794" class="mono">/gadd:scope</text>
+  <text x="90" y="823" class="mono">/gadd:elaborate</text>
+  <text x="90" y="852" class="mono">/gadd:refine</text>
+  <text x="90" y="881" class="mono">/gadd:approve</text>
+  <text x="90" y="910" class="section">Outputs</text>
+  <text x="190" y="910" class="mono">approved prd.md</text>
+  <text x="90" y="938" class="body">acceptance criteria, non-goals, risks</text>
 
-  <text x="545" y="720" class="card-title">needs_sdd</text>
-  <text x="545" y="760" class="mono">/gadd:design</text>
-  <text x="545" y="794" class="body">Engineering changes get an SDD</text>
-  <text x="545" y="822" class="body">without requiring a PRD first.</text>
-  <text x="545" y="850" class="body">Approval controls SDD and plan gates.</text>
+  <text x="515" y="466" class="card-title">Technical Design</text>
+  <rect x="515" y="490" width="286" height="34" rx="17" class="pill-blue"/>
+  <text x="533" y="512" class="role-pill">Architect / Tech Lead / Senior SEs</text>
+  <text x="515" y="561" class="section">Inputs</text>
+  <text x="515" y="593" class="body">approved PRD or triage outcome</text>
+  <text x="515" y="622" class="body">repo context and related repos</text>
+  <text x="515" y="651" class="body">Architecture Decision Records</text>
+  <text x="515" y="680" class="body">contract and sequencing risks</text>
+  <text x="515" y="733" class="section">GADD skills</text>
+  <text x="515" y="765" class="mono">/gadd:design</text>
+  <text x="515" y="794" class="mono">/gadd:plan</text>
+  <text x="515" y="823" class="mono">/gadd:approve</text>
+  <text x="515" y="852" class="mono">/gadd:decompose</text>
+  <text x="515" y="910" class="section">Outputs</text>
+  <text x="615" y="910" class="mono">repo-scoped sdd.md</text>
+  <text x="515" y="938" class="mono">plan.md + plan.html</text>
 
-  <text x="990" y="720" class="card-title">needs_prd</text>
-  <text x="990" y="760" class="mono">/gadd:research or /gadd:scope</text>
-  <text x="990" y="794" class="body">Product Requirement lane owns</text>
-  <text x="990" y="822" class="body">scope, elaboration, refinement,</text>
-  <text x="990" y="850" class="body">and PRD approval.</text>
+  <text x="940" y="466" class="card-title">Software Engineering</text>
+  <rect x="940" y="490" width="190" height="34" rx="17" class="pill-green"/>
+  <text x="958" y="512" class="role-pill">Software Engineers</text>
+  <text x="940" y="561" class="section">Inputs</text>
+  <text x="940" y="593" class="body">ready Work Item</text>
+  <text x="940" y="622" class="body">approved boundary or plan</text>
+  <text x="940" y="651" class="body">codebase and tests</text>
+  <text x="940" y="680" class="body">documentation obligation</text>
+  <text x="940" y="733" class="section">GADD skills</text>
+  <text x="940" y="765" class="mono">/gadd:implement &lt;work-item&gt;</text>
+  <text x="940" y="794" class="mono">/gadd:implement ALL</text>
+  <rect x="940" y="818" width="315" height="42" rx="15" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="958" y="845" class="role-pill">built-in Test-Driven Development</text>
+  <text x="940" y="910" class="section">Outputs</text>
+  <text x="1040" y="910" class="body">bounded code diff or PR</text>
+  <text x="940" y="938" class="body">tests, implementation evidence, docs impact</text>
 
-  <text x="1435" y="720" class="card-title">terminal or waiting</text>
-  <text x="1435" y="760" class="mono">needs_info</text>
-  <text x="1435" y="788" class="mono">duplicate</text>
-  <text x="1435" y="816" class="mono">out_of_scope</text>
-  <text x="1435" y="844" class="mono">not_gadd_work</text>
-  <text x="1435" y="872" class="small">or blocked on a human decision</text>
+  <text x="1365" y="466" class="card-title">Engineering Review</text>
+  <rect x="1365" y="490" width="298" height="34" rx="17" class="pill-blue"/>
+  <text x="1383" y="512" class="role-pill">Peer review + QA where applicable</text>
+  <text x="1365" y="561" class="section">Inputs</text>
+  <text x="1365" y="593" class="body">implementation evidence</text>
+  <text x="1365" y="622" class="body">required checks</text>
+  <text x="1365" y="651" class="body">approved artifacts</text>
+  <text x="1365" y="680" class="body">Pull Request state and drift metadata</text>
+  <text x="1365" y="733" class="section">GADD skills</text>
+  <text x="1365" y="765" class="mono">/gadd:verify</text>
+  <text x="1365" y="794" class="mono">/gadd:close</text>
+  <text x="1365" y="823" class="mono">/gadd:archive</text>
+  <text x="1365" y="910" class="section">Outputs</text>
+  <text x="1465" y="910" class="mono">verification.md</text>
+  <text x="1365" y="938" class="body">closure readiness and closed ledger state</text>
 
-  <path d="M1220 375 C1220 485 250 520 250 670" class="soft-arrow"/>
-  <path d="M1220 375 C1220 505 695 520 695 670" class="soft-arrow"/>
-  <path d="M1220 375 C1220 505 1140 520 1140 670" class="soft-arrow"/>
-  <path d="M1220 375 C1220 500 1565 520 1565 670" class="soft-arrow"/>
-  <path d="M430 510 C690 510 885 555 1060 670" class="arrow"/>
+  <path d="M465 695 H485" class="arrow"/>
+  <path d="M890 695 H910" class="arrow"/>
+  <path d="M1315 695 H1335" class="arrow"/>
+  <rect x="390" y="982" width="200" height="40" rx="20" class="gate"/>
+  <text x="415" y="1008" class="small" fill="#065f46">PRD approval gate</text>
+  <rect x="790" y="982" width="235" height="40" rx="20" class="gate"/>
+  <text x="820" y="1008" class="small" fill="#065f46">SDD + plan approval gate</text>
+  <rect x="1225" y="982" width="198" height="40" rx="20" class="gate"/>
+  <text x="1250" y="1008" class="small" fill="#065f46">verification gate</text>
 
   <g filter="url(#shadow)">
-    <rect x="70" y="965" width="1655" height="64" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="60" y="1045" width="1680" height="60" rx="21" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
   </g>
-  <text x="100" y="1002" class="bar-title">Delivery visibility</text>
-  <text x="325" y="1002" class="bar-body">External issues and Pull Requests project approved narratives, review context, implementation evidence, and closure decisions.</text>
+  <text x="90" y="1082" class="bar-title">Delivery visibility</text>
+  <text x="315" y="1082" class="bar-body">EMs, TPMs, PMs, and stakeholders track sequencing, capacity, dependencies, roadmap, review load, and status.</text>
 
   <g filter="url(#shadow)">
-    <rect x="70" y="1048" width="1655" height="62" rx="22" fill="url(#ledgerGrad)" stroke="#bae6fd" stroke-width="2"/>
+    <rect x="60" y="1124" width="1680" height="58" rx="21" fill="url(#ledgerGrad)" stroke="#bae6fd" stroke-width="2"/>
   </g>
-  <text x="100" y="1086" class="bar-title">Canonical workflow state</text>
-  <text x="405" y="1086" class="bar-body">repo-local </text>
-  <text x="505" y="1086" class="mono">gadd/work-items/**/ledger.yml</text>
-  <text x="815" y="1086" class="bar-body">records Work Item type, route, approvals, evidence, external binding, and next action.</text>
-
-  <text x="100" y="1162" class="bar-body">Outside this slice, release operations and long-term maintenance remain in the team's existing deployment, operations, and support processes.</text>
+  <text x="90" y="1160" class="bar-title">Canonical workflow state</text>
+  <text x="405" y="1160" class="bar-body">repo-local </text>
+  <text x="505" y="1160" class="mono">gadd/work-items/**/ledger.yml</text>
+  <text x="815" y="1160" class="bar-body">records Work Item type, route, approvals, evidence, external binding, and next action.</text>
+  <text x="90" y="1210" class="small">Outside this slice, release operations and long-term maintenance remain in the team's existing deployment, operations, and support processes.</text>
 </svg>
