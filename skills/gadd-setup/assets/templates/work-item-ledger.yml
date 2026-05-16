@@ -20,6 +20,15 @@ external:
     observed: []
     managed: []
 triage:
+  approved_outcome:
+    status: null
+    boundary_source: null
+    local_path: null
+    external_projection_url: null
+    approved_at: null
+    approved_by: null
+    approved_hash: null
+    summary: null
   projection:
     mode: null
     url: null

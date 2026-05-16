@@ -27,7 +27,7 @@ Required inputs by Work Item type:
 
 - `bug_fix`: approved triage outcome, GitNexus or approved fallback evidence, done criteria, documentation impact.
 - `task`: approved triage outcome, GitNexus or approved fallback evidence, done criteria, documentation impact.
-- `engineering_change`: approved triage outcome, approved SDD, optional approved plan when the SDD requires one.
+- `engineering_change`: `triage.approved_outcome.status: approved`, approved SDD, and `artifacts.sdd.implementation_route: single` for direct implementation or an optional approved plan when the SDD requires one.
 - `product_requirement`: approved PRD, approved SDD, approved plan, and ready decomposed Work Item slice when decomposition exists.
 
 If inputs fail this standard, do not edit product code or package artifacts. The earliest GADD command that can repair missing child work is `/gadd:decompose`; missing or wrong plan/design/product boundaries route to `/gadd:plan`, `/gadd:design`, `/gadd:refine`, `/gadd:scope`, or `/gadd:research` depending on the gap.

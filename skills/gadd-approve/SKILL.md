@@ -60,7 +60,7 @@ Do not write child Work Items, verification reports, archive locations, or unrel
 - External mutations require human confirmation.
 - Approve only when exactly one approval gate is active.
 - PRD approval is allowed only for a draft PRD gate.
-- SDD approval is allowed when either the Work Item type is `product_requirement` and the PRD is approved, or the Work Item type is `engineering_change` and the approved triage outcome is recorded in the ledger.
+- SDD approval is allowed when either the Work Item type is `product_requirement` and the PRD is approved, or the Work Item type is `engineering_change` and `triage.approved_outcome.status: approved` plus `triage.approved_outcome.approved_hash` are recorded in the ledger.
 - Do not require an approved PRD for `engineering_change` SDD approval; allow this path without requiring an approved PRD. Do require the SDD `## Structure` quality gate in both paths.
 - Plan approval is allowed when the Work Item type is `product_requirement` and the PRD and SDD are already approved, or when the Work Item type is `engineering_change` and the approved SDD is already approved.
 - `/gadd:approve` does not approve decomposition review, closure, verification overrides, external close, PR creation, PR update, or PR merge.
@@ -80,7 +80,7 @@ Determine candidate gates from ledger state:
 - SDD candidate:
   - `execution_context.current_gate: design_review`, or
   - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`, or
-  - `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and the approved triage outcome is recorded.
+  - `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and `triage.approved_outcome.status: approved` plus `triage.approved_outcome.approved_hash` are recorded.
 - Plan candidate:
   - `execution_context.current_gate: plan_review`, or
   - `artifacts.plan.status: draft` and `artifacts.sdd.status: approved`.
@@ -101,7 +101,7 @@ Stop when:
 - more than one candidate remains
 - the candidate artifact is missing
 - the PRD is not approved before SDD approval for a `product_requirement`
-- the approved triage outcome is missing before SDD approval for an `engineering_change`
+- `triage.approved_outcome.status: approved`, `triage.approved_outcome.approved_hash`, or a concrete `triage.approved_outcome.boundary_source` is missing before SDD approval for an `engineering_change`
 - the SDD is not approved before plan approval
 - the current gate is decomposition review, implementation, verification, closure, or external mutation confirmation
 
@@ -136,7 +136,7 @@ When blocked, report the gate candidates and the next command that owns the stat
 
 1. Confirm the SDD approval boundary in the ledger:
    - for `product_requirement`, the PRD is approved.
-   - for `engineering_change`, the approved triage outcome is recorded.
+   - for `engineering_change`, `triage.approved_outcome.status: approved`, `triage.approved_outcome.approved_hash`, and a concrete `triage.approved_outcome.boundary_source` are recorded.
 2. Confirm the SDD exists and passes the SDD review checklist.
 3. Confirm `## Structure` is present, non-placeholder, and synchronized with the detailed design. Treat missing or stale `## Structure` as approval-blocking for SDD approval. Block approval when the structure summary contradicts the detailed design, omits a material component, boundary, interface, or explicit non-change described later in the SDD, or only restates product scope.
 4. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
@@ -149,15 +149,15 @@ When blocked, report the gate candidates and the next command that owns the stat
 6. Update ledger:
    - `work_item.state: designed`
    - `artifacts.sdd.status: approved`
-   - `execution_context.phase: plan`
-   - `execution_context.current_gate: plan`
-   - `execution_context.next_command: /gadd:plan <work-item-id>`
+   - For `product_requirement`, or for `engineering_change` with `artifacts.sdd.implementation_route: plan_required`, set `execution_context.phase: plan`, `execution_context.current_gate: plan`, and `execution_context.next_command: /gadd:plan <work-item-id>`.
+   - For `engineering_change` with `artifacts.sdd.implementation_route: single`, set `execution_context.phase: implement`, `execution_context.current_gate: implementation`, and `execution_context.next_command: /gadd:implement <work-item-id>`.
    - `execution_context.next_human_action: null`
-   - `execution_context.next_reason: Software Design Document is approved and ready for implementation planning.`
+   - `execution_context.next_reason: Software Design Document is approved and ready for implementation planning.` when routing to `/gadd:plan`.
+   - `execution_context.next_reason: Software Design Document is approved for single-route implementation.` when routing directly to `/gadd:implement`.
    - `execution_context.approved_artifacts.sdd` to the SDD path
    - `execution_context.boundaries.design` to the SDD path
 7. Append an `sdd_approved` event with `actor: human`.
-8. Report the next command: `/gadd:plan <work-item-id>`.
+8. Report the next command: `/gadd:plan <work-item-id>` or `/gadd:implement <work-item-id>` according to the approved SDD implementation route.
 
 ## Plan Approval Workflow
 
@@ -211,7 +211,7 @@ events:
     actor: human
 ```
 
-For SDD approval, use existing ledger fields:
+For SDD approval that routes to implementation planning, use existing ledger fields:
 
 ```yaml
 artifacts:
@@ -221,6 +221,32 @@ execution_context:
   phase: plan
   current_gate: plan
   next_command: /gadd:plan 123
+  next_human_action: null
+events:
+  - at: 2026-05-13T00:00:00Z
+    type: sdd_approved
+    actor: human
+```
+
+For small `engineering_change` SDD approval that explicitly chooses a single implementation route, use:
+
+```yaml
+work_item:
+  type: engineering_change
+  state: designed
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: external_projection
+    approved_hash: abc123
+artifacts:
+  sdd:
+    status: approved
+    implementation_route: single
+execution_context:
+  phase: implement
+  current_gate: implementation
+  next_command: /gadd:implement 123
   next_human_action: null
 events:
   - at: 2026-05-13T00:00:00Z
@@ -255,7 +281,7 @@ Preserve existing unrelated ledger fields and events.
 - missing SDD for SDD approval
 - missing plan for plan approval
 - PRD is not approved before SDD approval for a `product_requirement`
-- approved triage outcome is missing before SDD approval for an `engineering_change`
+- `triage.approved_outcome` approval state, approved hash, or boundary source is missing before SDD approval for an `engineering_change`
 - SDD is not approved before plan approval
 - no active PRD, SDD, or plan approval gate
 - multiple active approval gates

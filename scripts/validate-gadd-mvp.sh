@@ -236,7 +236,9 @@ grep -q 'Approve exactly one PRD, SDD, or plan gate' skills/gadd-approve/SKILL.m
 grep -q 'Plan Approval Workflow' skills/gadd-approve/SKILL.md
 grep -q 'Plan candidate' skills/gadd-approve/SKILL.md
 grep -q 'work_item.type: engineering_change' skills/gadd-approve/SKILL.md
-grep -q 'approved triage outcome is recorded' skills/gadd-approve/SKILL.md
+grep -q 'triage.approved_outcome.status: approved' skills/gadd-approve/SKILL.md
+grep -q 'triage.approved_outcome.approved_hash' skills/gadd-approve/SKILL.md
+grep -q 'execution_context.next_command: /gadd:implement <work-item-id>' skills/gadd-approve/SKILL.md
 grep -q 'next_command: /gadd:decompose 123' skills/gadd-approve/SKILL.md
 grep -q 'exactly one approval gate is active' skills/gadd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/gadd-approve/SKILL.md
@@ -282,6 +284,9 @@ grep -q 'type: external_issue_intake' skills/gadd-setup/assets/templates/work-it
 grep -q 'state: needs_info' skills/gadd-setup/assets/templates/work-item-ledger.yml
 grep -q 'external:' skills/gadd-setup/assets/templates/work-item-ledger.yml
 grep -q 'triage:' skills/gadd-setup/assets/templates/work-item-ledger.yml
+grep -q 'approved_outcome:' skills/gadd-setup/assets/templates/work-item-ledger.yml
+grep -q 'boundary_source:' skills/gadd-setup/assets/templates/work-item-ledger.yml
+grep -q 'approved_hash:' skills/gadd-setup/assets/templates/work-item-ledger.yml
 grep -q '# Triage Narrative' skills/gadd-setup/assets/templates/triage.md
 grep -q 'What we have established' skills/gadd-setup/assets/templates/triage.md
 grep -q 'What we still need' skills/gadd-setup/assets/templates/triage.md
@@ -309,6 +314,8 @@ grep -q 'Avoid: Gherkin/Cucumber syntax here' skills/gadd-setup/assets/templates
 grep -q 'Given/When/Then' skills/gadd-setup/assets/templates/prd.md
 grep -q '# Software Design Document:' skills/gadd-setup/assets/templates/sdd.md
 grep -q '## Structure' skills/gadd-setup/assets/templates/sdd.md
+grep -q '## Implementation Route' skills/gadd-setup/assets/templates/sdd.md
+grep -q 'Route: `single` | `plan_required`' skills/gadd-setup/assets/templates/sdd.md
 grep -q 'Design intent:' skills/gadd-setup/assets/templates/sdd.md
 grep -q 'Primary components / modules:' skills/gadd-setup/assets/templates/sdd.md
 grep -q 'Responsibility boundaries:' skills/gadd-setup/assets/templates/sdd.md
@@ -442,6 +449,7 @@ grep -q 'approved boundary source, SDD, and plan' skills/gadd-setup/assets/templ
 grep -q 'Treat <code>plan.md</code> as the source of truth' skills/gadd-setup/assets/templates/plan.html
 
 grep -q 'approved triage outcome' skills/gadd-design/SKILL.md
+grep -q 'artifacts.sdd.implementation_route: single' skills/gadd-design/SKILL.md
 grep -q 'Raw external issues must route through /gadd:triage' skills/gadd-design/SKILL.md
 grep -q 'engineering_change' skills/gadd-approve/SKILL.md
 grep -q 'without requiring an approved PRD' skills/gadd-approve/SKILL.md
@@ -451,6 +459,7 @@ grep -q 'needs_prd' skills/gadd-next/SKILL.md
 grep -q 'bug_fix' skills/gadd-implement/SKILL.md
 grep -q 'task' skills/gadd-implement/SKILL.md
 grep -q 'approved triage outcome' skills/gadd-implement/SKILL.md
+grep -q 'artifacts.sdd.implementation_route: single' skills/gadd-implement/SKILL.md
 grep -q 'verify Work Items, not only implementation slices' skills/gadd-verify/SKILL.md
 grep -q 'Work Item archive directory' skills/gadd-archive/SKILL.md
 

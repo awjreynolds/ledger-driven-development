@@ -71,6 +71,16 @@ Record the chosen design decisions. Each decision should have a reason and an in
 
 Quality bar: the table distinguishes decisions from observations. If a decision changes architecture, add or link an ADR.
 
+## Implementation Route
+
+Choose the route that this SDD approval should enable.
+
+- Route: `single` | `plan_required`
+- Rationale:
+- Review-load notes:
+
+Quality bar: use `single` only when the approved design can be implemented as one direct Work Item without plan/decompose. Use `plan_required` when multiple reviewable slices, sequencing, dependency management, or review-load control are needed.
+
 ## Alternatives Considered
 
 List credible alternatives, not strawmen.

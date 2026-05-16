@@ -42,6 +42,7 @@ If inputs fail this standard, write nothing and name the blocking gap. The earli
 After writing the SDD, stop at explicit SDD approval:
 
 - Set `artifacts.sdd.status: draft`.
+- For `engineering_change`, set `artifacts.sdd.implementation_route: single` only when the SDD explicitly says the approved design can be implemented as one direct Work Item without plan/decompose; otherwise set `artifacts.sdd.implementation_route: plan_required`.
 - Set `execution_context.current_gate: design_review`.
 - Set `execution_context.next_command: /gadd:approve <work-item-id>`.
 - Set `execution_context.next_human_action: /gadd:approve <work-item-id>`.
@@ -63,6 +64,7 @@ After writing the SDD, stop at explicit SDD approval:
 - Mandatory ADR support does not mean mandatory ADR creation.
 - Commit locally after design. Do not push/update PRs unless explicitly approved.
 - SDD approval must be recorded through `/gadd:approve <work-item-id>`, not conversational shorthand.
+- Small `engineering_change` Work Items may skip `/gadd:plan` and `/gadd:decompose` only when the SDD records `artifacts.sdd.implementation_route: single`.
 - In GitHub tracker mode, prepare SDD/plan review PR content only as a managed projection and ask for explicit human confirmation before any PR create or update.
 - GitHub PRs are the first external review surface for SDD/plan review; Linear and Jira review surfaces are follow-on and optional.
 

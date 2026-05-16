@@ -59,7 +59,11 @@ If inputs fail this standard, do not mutate anything and report the ambiguity or
 
 ## Work Item Routing
 
-Evaluate Work Item type and state before existing PRD-led routing.
+Evaluate downstream phase state before initial triage route state. `work_item.state` records the route selected by `/gadd:triage`, but later commands advance the workflow through `execution_context` and artifact statuses. Do not let stale triage states such as `needs_prd` or `needs_sdd` override a PRD, SDD, or plan gate that has already been written.
+
+When `execution_context.next_command` is present and its gate still matches artifact state, prefer that command over the initial triage route. For example, a `needs_sdd` Work Item with `artifacts.sdd.status: draft` and `execution_context.current_gate: design_review` routes to `/gadd:approve <work-item-id>`, not back to `/gadd:design`.
+
+Use `work_item.state` routing only when no later phase state is present or when the recorded later phase state is inconsistent and must be reported as a blocker.
 
 If `work_item.state: needs_info`, report:
 
@@ -156,7 +160,10 @@ Else if plan exists but is not approved:
   next: /gadd:approve <work-item-id>
   next_human_action: /gadd:approve <work-item-id>
 Else if SDD is approved:
-  next: /gadd:plan
+  if work_item.type is engineering_change and the SDD records implementation_route: single:
+    next: /gadd:implement <work-item-id>
+  else:
+    next: /gadd:plan
 Else if SDD exists but is not approved:
   next: /gadd:approve <work-item-id>
   next_human_action: /gadd:approve <work-item-id>
@@ -189,7 +196,7 @@ Treat an SDD as waiting for approval when either:
 
 - `execution_context.current_gate: design_review`
 - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`
-- `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and the approved triage outcome is recorded
+- `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and `triage.approved_outcome.status: approved` plus `triage.approved_outcome.approved_hash` are recorded
 
 Report:
 

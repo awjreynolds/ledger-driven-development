@@ -106,6 +106,23 @@ In local-only mode, the approved triage outcome is `triage.md` plus the local le
 
 The durable GADD workflow state is the Work Item ledger. The human-facing triage narrative should live where the humans work: the external issue body or comments when an external tracker is configured.
 
+Record the approved boundary explicitly in the ledger under `triage.approved_outcome`:
+
+```yaml
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: external_projection | local_triage
+    local_path: docs/work-items/<work-item-id>/triage.md | null
+    external_projection_url: <external comment-or-body-url> | null
+    approved_at: <timestamp>
+    approved_by: human
+    approved_hash: <hash of the approved projected or local triage outcome>
+    summary: <one-sentence route boundary>
+```
+
+Downstream commands must treat `triage.approved_outcome.status: approved` plus `approved_hash` and one concrete boundary source as the machine-readable proof that triage is approved. Do not rely on the external issue text alone, a conversational approval, or `work_item.state` by itself.
+
 ## External Projection
 
 Before posting a comment, rewriting a body, applying labels, or closing an issue:
@@ -115,6 +132,7 @@ Before posting a comment, rewriting a body, applying labels, or closing an issue
 3. Present the exact proposed body/comment/label/close action.
 4. Ask for human approval.
 5. Record the projected URL, timestamp, hash, and managed labels in the ledger after success.
+6. When the projected body/comment is the approved route boundary, also update `triage.approved_outcome` with `status: approved`, `boundary_source: external_projection`, the projection URL, approval timestamp, approver, approved hash, and summary.
 
 External comments should be normal engineering triage:
 
