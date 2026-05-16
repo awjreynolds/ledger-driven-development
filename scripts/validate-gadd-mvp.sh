@@ -219,6 +219,9 @@ grep -q 'optional_cleanup_command: /gadd:archive <parent-work-item-id>' skills/g
 grep -q 'optional cleanup, not as `next_command`' skills/gadd-next/SKILL.md
 grep -q 'next_human_action' skills/gadd-next/SKILL.md
 grep -q '/gadd:approve <work-item-id>' skills/gadd-next/SKILL.md
+grep -q 'triage.approved_outcome.status: approved' skills/gadd-next/SKILL.md
+grep -q 'approve or repair the triage outcome boundary' skills/gadd-next/SKILL.md
+grep -q 'work_item.state: blocked_on_human_decision' skills/gadd-next/SKILL.md
 grep -q 'does not perform mutations' skills/gadd-next/SKILL.md
 grep -q 'Do not infer them from the conversation' skills/gadd-next/SKILL.md
 grep -q 'implementation PR state is checked' skills/gadd-next/SKILL.md

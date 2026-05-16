@@ -65,6 +65,19 @@ When `execution_context.next_command` is present and its gate still matches arti
 
 Use `work_item.state` routing only when no later phase state is present or when the recorded later phase state is inconsistent and must be reported as a blocker.
 
+For route states that leave triage (`ready_for_implementation`, `needs_sdd`, or `needs_prd`), first require all approved outcome fields:
+
+- `triage.approved_outcome.status: approved`
+- `triage.approved_outcome.approved_hash`
+- a concrete `triage.approved_outcome.boundary_source`
+
+If any approved outcome field is missing, report:
+
+```text
+next_command: /gadd:triage <work-item-id>
+next_human_action: approve or repair the triage outcome boundary
+```
+
 If `work_item.state: needs_info`, report:
 
 ```text
@@ -84,6 +97,8 @@ next_command: /gadd:design <work-item-id>
 ```
 
 If `work_item.state: needs_prd`, route to `/gadd:research <work-item-id>` when research is absent or blocked; otherwise route to `/gadd:scope <work-item-id>`.
+
+If `work_item.state: blocked_on_human_decision`, report no downstream command, set `next_command: blocked`, and name the recorded human decision required before `/gadd:triage <work-item-id>` can continue.
 
 If `work_item.state` is `duplicate`, `out_of_scope`, or `not_gadd_work`, report no implementation command and show the recorded terminal reason.
 
