@@ -169,7 +169,7 @@ If external drift exists, stop and ask the human to reconcile before closing.
 - missing parent ledger when the requested Work Item is a child or parent roll-up
 - missing `verification.md`
 - `artifacts.verification.status` is not `passed`
-- requested child `closure.status` is not `verified`
+- requested Work Item `closure.status` is not `verified`
 - parent close requested while any child Work Item is not verified and closeable
 - unresolved external drift
 - external close requested without explicit human confirmation

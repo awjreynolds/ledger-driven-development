@@ -354,11 +354,13 @@ grep -q 'approved PRD, SDD, and plan boundaries' skills/gadd-implement/SKILL.md
 grep -q 'closure.status: verification_required' skills/gadd-implement/SKILL.md
 grep -q 'Do not archive Work Items' skills/gadd-implement/SKILL.md
 grep -q 'Do not close external Work Item projections' skills/gadd-implement/SKILL.md
+grep -q 'decomposition-dependent plan is approved' skills/gadd-implement/SKILL.md
 grep -q 'implementation PR is a managed projection' skills/gadd-implement/SKILL.md
 grep -q 'documentation impact status and paths or rationale' skills/gadd-implement/SKILL.md
 grep -q 'documentation impact is `blocked`' skills/gadd-implement/SKILL.md
 grep -q 'Work Item closure' skills/gadd-verify/SKILL.md
 grep -q 'Work Item ledger verification state' skills/gadd-verify/SKILL.md
+grep -q 'Work Item ledger as verification evidence' skills/gadd-verify/SKILL.md
 grep -q 'parent ledger is missing when the verified Work Item is a child or parent roll-up' skills/gadd-verify/SKILL.md
 grep -q 'not a general repository healthcheck' skills/gadd-verify/SKILL.md
 grep -q 'documentation impact evidence' skills/gadd-verify/SKILL.md
@@ -380,6 +382,7 @@ grep -q 'Direct Work Item Workflow' skills/gadd-close/SKILL.md
 grep -q 'work_item_closed' skills/gadd-close/SKILL.md
 grep -q 'artifacts.verification.status: passed' skills/gadd-close/SKILL.md
 grep -q 'closure.status: verified' skills/gadd-close/SKILL.md
+grep -q 'requested Work Item `closure.status` is not `verified`' skills/gadd-close/SKILL.md
 grep -q 'External mutations require human confirmation' skills/gadd-close/SKILL.md
 grep -q 'does not archive local Work Item files' skills/gadd-close/SKILL.md
 grep -q 'Do not archive or move local Work Item directories' skills/gadd-close/SKILL.md

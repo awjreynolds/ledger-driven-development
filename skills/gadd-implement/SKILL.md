@@ -75,7 +75,7 @@ If no test harness exists, create the smallest credible harness first. If a beha
 
 - Work Item missing
 - no ready Work Items exist
-- plan is approved but `/gadd:decompose` has not created child Work Items
+- decomposition-dependent plan is approved but `/gadd:decompose` has not created child Work Items
 - plan is wrong
 - tests/checks fail
 - documentation impact is blocked

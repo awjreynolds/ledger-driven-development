@@ -86,7 +86,7 @@ Do not write outside the Work Item directory and ledger except for the narrowly 
 - Treat external tracker state as a projection. If external metadata shows unresolved drift, block closure and ask for human reconciliation.
 - Treat PR review, approval, merge, close, and branch deletion as external actions. Do not infer them from the conversation, local branch state, or the user's statement. If implementation evidence references a PR, read the external PR state before deciding verification.
 - If the implementation PR is open, closed without merge, or cannot be checked, classify verification as `override_required`.
-- If the implementation PR is merged and there is no conflict with recorded ledger state, record the observed `mergedAt` and merge commit in `verification.md` and the child ledger as verification evidence; do not block merely because the ledger lacked that evidence before verification.
+- If the implementation PR is merged and there is no conflict with recorded ledger state, record the observed `mergedAt` and merge commit in `verification.md` and the Work Item ledger as verification evidence; do not block merely because the ledger lacked that evidence before verification.
 - If the implementation PR is merged but conflicts with recorded ledger merge evidence, classify verification as `override_required` and route to human reconciliation before closure can be recommended.
 - Do not mutate external trackers, archive Work Items, close external Work Item projections, push branches, or create PRs from this command.
 - Recommend closure only when the Work Item acceptance or done criteria, approved inputs, implementation evidence, documentation impact evidence, check evidence, and drift checks all support closure.
