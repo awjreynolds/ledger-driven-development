@@ -18,6 +18,8 @@ This command is a standalone, agent-agnostic GADD command. Follow this file dire
 
 Use `/gadd:triage` for unclassified incoming work: external issues, bug reports, engineer tasks, support reports, ambiguous requests, and "what should we do with this?" items. It also accepts a plain-language prompt as the source intake, for example `/gadd:triage create a new release of this package`. Treat that prompt as incoming work to normalize, not as a subcommand. Do not require triage before deliberate PM-led Product Requirement discovery; `/gadd:research` and `/gadd:scope` remain valid direct entry points.
 
+When both a Work Item ID and a free-form prompt are supplied (`/gadd:triage <work-item-id> <prompt>`), treat the free-form prompt as additional triage context for the existing Work Item. Do not replace the existing triage narrative or approved outcome without explicit human confirmation.
+
 ## Reads
 
 - `gadd/config.yml` when present
@@ -60,7 +62,7 @@ Set exactly one state:
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
 - External issues and tickets are tracker-native collaboration surfaces, not GADD workflow state.
-- Do not route code-impacting Work Items without GitNexus evidence or explicit human-approved fallback.
+- Do not route code-impacting Work Items without GitNexus evidence or recorded human-approved fallback, because triage routing depends on blast-radius evidence; downstream commands treat GitNexus as advisory.
 - Do not treat a poor-quality external issue as implementation-ready until the Triage Quality Loop has repaired the missing problem statement, evidence, done criteria, or route decision.
 
 ## Input Quality Gate
@@ -97,7 +99,25 @@ Do not visibly switch the user into brainstorming, grill-me, or another skill. T
 - `needs_sdd` routes to `/gadd:design <work-item-id>`.
 - `needs_prd` routes to `/gadd:research <work-item-id>` or `/gadd:scope <work-item-id>`.
 - `needs_info` remains in `/gadd:triage <work-item-id>`.
-- terminal states may lead to external update, label, comment, or close only after human approval and drift checks.
+- `duplicate` is terminal: record the duplicated Work Item reference, set no downstream command, and project externally only after human approval and drift checks.
+- `out_of_scope` is terminal: record the scope reason, set no downstream command, and project externally only after human approval and drift checks.
+- `not_gadd_work` is terminal: record why the request is not GADD-governed, set no downstream command, and project externally only after human approval and drift checks.
+- `blocked_on_human_decision` is terminal until the human decides: record the named human decision required, set no downstream command, and project externally only after human approval and drift checks.
+
+On every triage completion, write `execution_context.next_command` and `execution_context.next_human_action` in the ledger per this route table:
+
+| Triage state | `execution_context.next_command` | `execution_context.next_human_action` |
+| --- | --- | --- |
+| `ready_for_implementation` | `/gadd:implement <work-item-id>` | `/gadd:implement <work-item-id>` |
+| `needs_sdd` | `/gadd:design <work-item-id>` | `/gadd:design <work-item-id>` |
+| `needs_prd` | `/gadd:research <work-item-id>` or `/gadd:scope <work-item-id>` (whichever the route picked) | the same command |
+| `needs_info` | `/gadd:triage <work-item-id>` | answer the focused triage question |
+| `duplicate` | `blocked` | reference the duplicated Work Item; close terminally after human approval (`next_reason: duplicate`) |
+| `out_of_scope` | `blocked` | confirm the recorded scope reason (`next_reason: out_of_scope`) |
+| `not_gadd_work` | `blocked` | confirm the request is not GADD-governed (`next_reason: not_gadd_work`) |
+| `blocked_on_human_decision` | `blocked` | name the recorded human decision (`next_reason: blocked_on_human_decision`) |
+
+Terminal states must name the terminal reason in `execution_context.next_reason` and must not invent a downstream `/gadd:*` command.
 
 ## Approved Triage Outcome
 
