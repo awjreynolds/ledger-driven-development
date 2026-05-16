@@ -378,7 +378,7 @@ for command in $commands; do
   grep -q 'earliest GADD command' "skills/gadd-$command/SKILL.md"
 done
 grep -q 'Verification status: pending | passed | failed | override_required' skills/gadd-setup/assets/templates/verification.md
-grep -q 'Boundary: child-ticket closure only, not repository health' skills/gadd-setup/assets/templates/verification.md
+grep -q 'Boundary: Work Item closure only, not repository health' skills/gadd-setup/assets/templates/verification.md
 grep -q 'External tracker drift: pending' skills/gadd-setup/assets/templates/verification.md
 grep -q 'Human confirmation required before external mutation: yes' skills/gadd-setup/assets/templates/verification.md
 grep -q 'Product Boundary' skills/gadd-setup/assets/templates/pr-body-prd.md
