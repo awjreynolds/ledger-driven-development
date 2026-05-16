@@ -43,7 +43,7 @@ If inputs fail this standard, do not edit product code or package artifacts. The
 - Run configured checks before PR.
 - Account for documentation impact before marking implementation complete. The only valid documentation statuses are `updated`, `not_needed`, and `blocked`.
 - If documentation impact is `updated`, record the changed documentation paths in implementation evidence. If documentation impact is `not_needed`, record the direct rationale. If documentation impact is `blocked`, do not mark implementation completed; report the blocking documentation question and the earliest command or human decision that can repair it.
-- Update relevant documentation when the child changes user-facing behavior, command behavior, public APIs, configuration, setup flow, templates, integration contracts, or operational workflow.
+- Update relevant documentation when the Work Item changes user-facing behavior, command behavior, public APIs, configuration, setup flow, templates, integration contracts, or operational workflow.
 - Use the implementation PR body template to summarize plan adherence, tests/checks, and any approved deviations.
 - In GitHub tracker mode, the implementation PR is a managed projection for review. Ask before creating or updating it, stop on external drift, and keep the Work Item ledger canonical.
 - Record implementation completion evidence in the Work Item ledger, including changed-file summary, check evidence, documentation impact status and paths or rationale, and any implementation PR or local diff reference available.

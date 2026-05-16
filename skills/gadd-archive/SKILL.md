@@ -56,30 +56,30 @@ If inputs fail this standard, do not move anything. The earliest GADD command th
 - Keep references readable by rewriting moved paths in the moved ledgers and the parent ledger.
 - Archiving is optional cleanup. It must not be required for `/gadd:next` to report done after closure.
 
-## Child Workflow
+## Direct Work Item Workflow
 
-1. Resolve the child Work Item directory and read its `ledger.yml`.
+1. Resolve the Work Item directory and read its `ledger.yml`.
 2. Confirm `closure.status: closed | externally_closed | archived`.
-3. Read the parent ledger referenced by the child.
+3. Read the parent ledger only when the Work Item records one.
 4. Resolve the archive target under `archive_directory`.
 5. Stop if the archive target already exists.
-6. Update the child ledger:
+6. Update the Work Item ledger:
    - set `closure.status: archived`
    - preserve `closed_at`, `verified_at`, and `external_closed_at`
    - set `archived_at`
-   - add a `child_archived` event
+   - add a `work_item_archived` event
    - update artifact paths to the archive target
-7. Move the child directory to the archive target.
-8. Update the parent ledger child entry:
+7. Move the Work Item directory to the archive target.
+8. If a parent ledger exists, update the parent ledger child entry:
    - set child `status: archived`
    - update child `path` to the archive ledger path
-9. Recompute parent `execution_context` without creating new workflow work.
+9. If a parent ledger was updated, recompute parent `execution_context` without creating new workflow work.
 
 ## Parent Roll-up Workflow
 
 1. Read the parent ledger and every child ledger path listed in `children`.
 2. Stop if any child is verified but not closed, or otherwise not closed, externally closed, or archived.
-3. Archive any remaining closed child using the child workflow.
+3. Archive any remaining closed child using the direct Work Item workflow.
 4. Update the parent ledger:
    - set `closure.status: archived`
    - preserve `closed_at` and `external_closed_at`
@@ -92,7 +92,7 @@ If inputs fail this standard, do not move anything. The earliest GADD command th
 
 ## Ledger Update Contract
 
-After archiving a child, child ledger state should be equivalent to:
+After archiving a Work Item, Work Item ledger state should be equivalent to:
 
 ```yaml
 closure:
@@ -104,7 +104,7 @@ closure:
   override_reason: null
 events:
   - at: 2026-05-13T00:00:00Z
-    type: child_archived
+    type: work_item_archived
     actor: agent
 ```
 

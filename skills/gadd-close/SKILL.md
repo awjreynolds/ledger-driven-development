@@ -24,7 +24,7 @@ If no Work Item ID is provided, stop and ask for one.
 
 - Work Item `ledger.yml`
 - Work Item `verification.md`
-- parent Work Item `ledger.yml`
+- parent Work Item `ledger.yml` when the Work Item is a child or a parent roll-up is requested
 - `.gadd/config.yml`
 - external drift metadata when configured
 
@@ -32,7 +32,7 @@ If no Work Item ID is provided, stop and ask for one.
 
 - Work Item ledger `closure.status`
 - Work Item ledger `closure.closed_at` and optional `closure.external_closed_at`
-- parent ledger child status and `execution_context`
+- parent ledger child status and `execution_context` when the closed Work Item is a child
 - parent ledger closure status when closing a parent
 - external tracker close/sync only after explicit human confirmation
 
@@ -61,31 +61,30 @@ If inputs fail this standard, do not close anything. The earliest GADD command t
 - Preserve the Work Item ledger, Work Item body, verification report, and implementation evidence.
 - Update `/gadd:next` state by pointing the parent ledger to the next close, verify, implement, decompose, done, or optional archive gate.
 
-## Child Workflow
+## Direct Work Item Workflow
 
 1. Resolve the Work Item directory and read its `ledger.yml`.
-2. Read the parent ledger.
-3. Confirm verification passed:
+2. Confirm verification passed:
    - `artifacts.verification.status: passed`
    - `closure.status: verified`
    - `verification.md` exists
-4. Check external drift metadata. If drift is unresolved, stop.
-5. If an external tracker is configured, confirm the requested close action authorizes closing the matching external issue. If not clear, ask for explicit confirmation before mutating it.
-6. Update the Work Item ledger:
+3. Check external drift metadata. If drift is unresolved, stop.
+4. If an external tracker is configured, confirm the requested close action authorizes closing the matching external issue. If not clear, ask for explicit confirmation before mutating it.
+5. Update the Work Item ledger:
    - set `closure.status: closed` for local-only closure
    - set `closure.status: externally_closed` when the matching external issue was actually closed
    - set `closed_at`
    - set `external_closed_at` only if an external close actually occurred
-   - add a `child_closed` event
-7. Keep the child directory in place.
-8. Update the parent ledger child Work Item entry to `closed` or `externally_closed` and keep `path` unchanged.
-9. Recompute parent `execution_context`:
+   - add a `work_item_closed` event
+6. Keep the Work Item directory in place.
+7. If the Work Item has a parent ledger, update the parent ledger child Work Item entry to `closed` or `externally_closed` and keep `path` unchanged.
+8. If a parent ledger was updated, recompute parent `execution_context`:
    - verified but unclosed child Work Item: `/gadd:close <work-item-id>`
    - implemented but unverified child Work Item: `/gadd:verify <work-item-id>`
    - ready child Work Item: `/gadd:implement <work-item-id>`
    - approved plan with no children: `/gadd:decompose`
    - all children closed: report parent ready for final close or done
-10. Report the closure result and next command.
+9. Report the closure result and next command.
 
 ## Parent Roll-up Workflow
 
@@ -98,7 +97,7 @@ Use this workflow only when the requested Work Item ID is a parent Product Requi
    - closeable: `artifacts.verification.status: passed`, `closure.status: verified`, and `verification.md` exists
    - blocked: anything else
 4. If any child is blocked, stop and report the blocking child IDs with the next command for each child.
-5. If every child is closed or closeable, close any remaining closeable child using the child workflow.
+5. If every child is closed or closeable, close any remaining closeable child using the direct Work Item workflow.
 6. After all child entries are closed, update the parent ledger:
    - set `closure.status: closed` for local-only parent closure
    - set `closure.status: externally_closed` when the matching external parent issue was actually closed
@@ -111,7 +110,7 @@ Use this workflow only when the requested Work Item ID is a parent Product Requi
 
 ## Ledger Update Contract
 
-After local-only closure, child ledger state should be equivalent to:
+After local-only closure, Work Item ledger state should be equivalent to:
 
 ```yaml
 closure:
@@ -123,7 +122,7 @@ closure:
   override_reason: null
 events:
   - at: 2026-05-13T00:00:00Z
-    type: child_closed
+    type: work_item_closed
     actor: agent
 ```
 
@@ -167,7 +166,7 @@ If external drift exists, stop and ask the human to reconcile before closing.
 ## Stop Conditions
 
 - missing Work Item
-- missing parent ledger
+- missing parent ledger when the requested Work Item is a child or parent roll-up
 - missing `verification.md`
 - `artifacts.verification.status` is not `passed`
 - requested child `closure.status` is not `verified`

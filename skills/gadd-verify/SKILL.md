@@ -109,7 +109,7 @@ Do not write outside the Work Item directory and ledger except for the narrowly 
    - plan drift: implementation does not match the approved plan slice or dependencies
 11. Review external drift metadata. If External Issue or PR drift is unresolved, block closure and identify the human reconciliation needed.
 12. Write or update `verification.md` as a human-readable report.
-13. Update only the child ledger verification state and compact event history.
+13. Update only the Work Item ledger verification state and compact event history.
 14. Report the result and next action to the user.
 
 ## Verification Status Contract
@@ -135,7 +135,7 @@ Do not set `closure.status` to `archived` or `externally_closed` from this comma
 Block Work Item closure when any of these are true:
 
 - Work Item or Work Item ledger is missing
-- parent ledger is missing
+- parent ledger is missing when the verified Work Item is a child or parent roll-up
 - required approved inputs for the Work Item type are missing or not approved
 - implementation evidence is missing or does not trace to the Work Item acceptance or done criteria
 - documentation impact evidence is missing, `blocked`, or inconsistent with a user-facing behavior, command behavior, public API, configuration, setup flow, template, integration contract, or operational workflow change

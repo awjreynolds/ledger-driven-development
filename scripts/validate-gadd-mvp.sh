@@ -183,6 +183,12 @@ grep -q 'short_description: "Approve a PRD, SDD, or plan gate"' skills/gadd-appr
 grep -q 'default_prompt: "Use $gadd-approve to approve the active gate for Work Item GADD-123."' skills/gadd-approve/agents/openai.yaml
 grep -q 'short_description: "Design from a PRD or triage outcome"' skills/gadd-design/agents/openai.yaml
 grep -q 'default_prompt: "Use $gadd-design to create an SDD for Work Item GADD-123."' skills/gadd-design/agents/openai.yaml
+grep -q 'short_description: "Scope a Product Requirement Work Item"' skills/gadd-scope/agents/openai.yaml
+grep -q 'default_prompt: "Use $gadd-scope to scope Product Requirement Work Item GADD-123."' skills/gadd-scope/agents/openai.yaml
+grep -q 'short_description: "Elaborate a Product Requirement Work Item"' skills/gadd-elaborate/agents/openai.yaml
+grep -q 'default_prompt: "Use $gadd-elaborate to elaborate Product Requirement Work Item GADD-123."' skills/gadd-elaborate/agents/openai.yaml
+grep -q 'short_description: "Refine a Product Requirement Work Item"' skills/gadd-refine/agents/openai.yaml
+grep -q 'default_prompt: "Use $gadd-refine to refine Product Requirement Work Item GADD-123."' skills/gadd-refine/agents/openai.yaml
 grep -q 'short_description: "Implement a ready Work Item"' skills/gadd-implement/agents/openai.yaml
 grep -q 'default_prompt: "Use $gadd-implement to implement Work Item GADD-123."' skills/gadd-implement/agents/openai.yaml
 grep -q 'short_description: "Plan implementation for an approved design"' skills/gadd-plan/agents/openai.yaml
@@ -352,6 +358,8 @@ grep -q 'implementation PR is a managed projection' skills/gadd-implement/SKILL.
 grep -q 'documentation impact status and paths or rationale' skills/gadd-implement/SKILL.md
 grep -q 'documentation impact is `blocked`' skills/gadd-implement/SKILL.md
 grep -q 'Work Item closure' skills/gadd-verify/SKILL.md
+grep -q 'Work Item ledger verification state' skills/gadd-verify/SKILL.md
+grep -q 'parent ledger is missing when the verified Work Item is a child or parent roll-up' skills/gadd-verify/SKILL.md
 grep -q 'not a general repository healthcheck' skills/gadd-verify/SKILL.md
 grep -q 'documentation impact evidence' skills/gadd-verify/SKILL.md
 grep -q 'GitNexus may be used for optional blast-radius' skills/gadd-verify/SKILL.md
@@ -368,6 +376,8 @@ grep -q 'records the observed `mergedAt` and merge commit as evidence' skills/ga
 grep -q 'verification.md' skills/gadd-verify/SKILL.md
 grep -q 'Do not mutate external trackers' skills/gadd-verify/SKILL.md
 grep -q 'Apply closure for one verified Work Item' skills/gadd-close/SKILL.md
+grep -q 'Direct Work Item Workflow' skills/gadd-close/SKILL.md
+grep -q 'work_item_closed' skills/gadd-close/SKILL.md
 grep -q 'artifacts.verification.status: passed' skills/gadd-close/SKILL.md
 grep -q 'closure.status: verified' skills/gadd-close/SKILL.md
 grep -q 'External mutations require human confirmation' skills/gadd-close/SKILL.md
@@ -380,11 +390,13 @@ grep -q 'every child Work Item is verified and closeable' skills/gadd-close/SKIL
 grep -q 'Keep the parent directory in place' skills/gadd-close/SKILL.md
 grep -q 'parent close requested while any child Work Item is not verified and closeable' skills/gadd-close/SKILL.md
 grep -q 'Move already-closed local Work Item packages' skills/gadd-archive/SKILL.md
+grep -q 'Direct Work Item Workflow' skills/gadd-archive/SKILL.md
+grep -q 'work_item_archived' skills/gadd-archive/SKILL.md
 grep -q 'storage hygiene only' skills/gadd-archive/SKILL.md
 grep -q 'No external tracker writes are allowed' skills/gadd-archive/SKILL.md
 grep -q 'closure.status: closed | externally_closed | archived' skills/gadd-archive/SKILL.md
 grep -q 'archive_directory' skills/gadd-archive/SKILL.md
-grep -q 'child_archived' skills/gadd-archive/SKILL.md
+grep -q 'work_item_archived' skills/gadd-archive/SKILL.md
 grep -q 'parent_archived' skills/gadd-archive/SKILL.md
 grep -q 'standard PM inputs' skills/gadd-research/SKILL.md
 grep -q 'full read-only' skills/gadd-research/SKILL.md
