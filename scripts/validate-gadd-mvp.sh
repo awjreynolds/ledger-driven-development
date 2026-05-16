@@ -67,7 +67,7 @@ if [ -d .gadd ]; then
 fi
 
 grep -q '"canonicalSkillRoot": "skills"' agent-skills.json
-grep -q '"stateSource": "docs/work-items/**/ledger.yml"' agent-skills.json
+grep -Fq '"stateSource": "docs/work-items/**/ledger.yml"' agent-skills.json
 grep -q '"command": "/gadd:setup"' agent-skills.json
 grep -q '"command": "/gadd:triage"' agent-skills.json
 grep -q '"command": "/gadd:research"' agent-skills.json
@@ -177,7 +177,8 @@ for command in $commands; do
 done
 
 grep -q '`.gadd/config.yml`' skills/gadd-setup/SKILL.md
-grep -q 'GitNexus is the strongly recommended code-intelligence surface' skills/gadd-setup/SKILL.md
+grep -q 'GitNexus is expected for normal GADD operation' skills/gadd-setup/SKILL.md
+grep -q 'required for impact-aware triage routing' skills/gadd-setup/SKILL.md
 
 grep -q 'Read-only' skills/gadd-next/SKILL.md
 grep -q 'It never mutates GitHub or local files' skills/gadd-next/SKILL.md
