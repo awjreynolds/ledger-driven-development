@@ -7,7 +7,17 @@ description: Run /gadd:elaborate for a GADD Product Requirement Work Item. Use w
 
 Update `prd.md` in the active draft or promoted Work Item directory with product detail inside existing scope.
 
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
 This is a Product Requirement lane command. It accepts direct PM-led product discovery or Work Items routed from triage with `state: needs_prd`. Reject `bug_fix`, `task`, and `engineering_change` Work Items with a clear route back to `/gadd:next <work-item-id>` or `/gadd:triage <work-item-id>`.
+
+## Input
+
+```text
+/gadd:elaborate <work-item-id>
+```
+
+If no Work Item ID is provided, target the single active draft Work Item directory. If neither a Work Item ID nor an active draft exists, stop and route to `/gadd:scope` to create scope first. Do not infer a target from unrelated modified files.
 
 ## Owns
 
@@ -111,3 +121,6 @@ After writing elaboration, set `execution_context.phase: elaborate`, `execution_
 - missing scoped PRD
 - elaboration would change goals or non-goals
 - unresolved product question blocks useful detail
+- scoped goals or non-goals missing
+- no covering acceptance signal draftable for a scoped goal
+- supplied content describes architecture or file paths the user refuses to capture as constraints, dependencies, or open questions

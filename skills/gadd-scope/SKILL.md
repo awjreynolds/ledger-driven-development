@@ -7,6 +7,8 @@ description: Run /gadd:scope for a GADD Product Requirement Work Item. Use when 
 
 Create or update `prd.md` scope boundaries for a draft Product Requirement. If no draft is selected, create a new draft Work Item directory.
 
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
 ## Input
 
 `/gadd:scope [new|draft-id|work-item-id] [short title or context]`
@@ -105,6 +107,7 @@ After writing scope, set `execution_context.phase: scope`, `execution_context.cu
 - If the user asks to start new scope while an active draft already exists, stop and ask whether to continue, rename, promote, or discard the existing draft first.
 - If multiple active drafts exist, stop and ask the human to reconcile them back to one active draft before continuing.
 - Do not update a promoted Work Item unless the user explicitly identifies that Work Item. Promoted Work Items are stable workflow records; new product ideas should normally start as new drafts.
+- Promotion is owned by `/gadd:refine` and `/gadd:approve`; do not promote here.
 - Use the PRD template as a quality contract. Fill only the sections owned by this command; leave later-stage sections blank or marked as not yet addressed.
 - Do not fill implementation detail, acceptance criteria, success metrics, or user stories.
 - If code facts appear during discussion, capture them only as constraints, dependencies, or open questions.

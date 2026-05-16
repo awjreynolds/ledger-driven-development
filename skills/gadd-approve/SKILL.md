@@ -206,7 +206,7 @@ execution_context:
   next_command: /gadd:design 123
   next_human_action: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: prd_approved
     actor: human
 ```
@@ -223,7 +223,7 @@ execution_context:
   next_command: /gadd:plan 123
   next_human_action: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: sdd_approved
     actor: human
 ```
@@ -249,7 +249,7 @@ execution_context:
   next_command: /gadd:implement 123
   next_human_action: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: sdd_approved
     actor: human
 ```
@@ -266,7 +266,7 @@ execution_context:
   next_command: /gadd:decompose 123
   next_human_action: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: plan_approved
     actor: human
 ```
