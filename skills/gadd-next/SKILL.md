@@ -7,6 +7,8 @@ description: Run /gadd:next for a GADD Work Item. Use when the user says /gadd:n
 
 Read repo-local ledger state and report the next explicit GADD command and next human action.
 
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
 ## Input
 
 `/gadd:next [work-item-id]`
@@ -150,11 +152,13 @@ Copy: not available
 
 ## Decision Tree
 
+The per-gate Detection sections below are authoritative; this tree is a navigation summary.
+
 ```text
 If no ledger exists:
   next: /gadd:setup
 Else if draft PRD exists:
-  inspect PRD completeness and recommend /gadd:scope, /gadd:elaborate, /gadd:refine, or /gadd:approve <work-item-id> for PRD approval
+  route to the owning phase by execution_context.phase: scope -> /gadd:scope, elaborate -> /gadd:elaborate, refine -> /gadd:refine. Do not route a scope or elaborate draft to /gadd:approve; see Approval Gate Detection for the exact PRD-approval condition
 Else if parent Work Item is closed, externally closed, archived, or done:
   done
   optional_cleanup_command: /gadd:archive <parent-work-item-id> only when the Work Item is closed in the active tree and the human wants local cleanup

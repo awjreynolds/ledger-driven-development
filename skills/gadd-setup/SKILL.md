@@ -7,6 +7,8 @@ description: Run /gadd:setup to bootstrap a target repository for GADD. Use when
 
 Bootstrap the current target repository for the GADD MVP workflow.
 
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
 ## Preflight
 
 - Confirm this is a target project, not the GADD skill source repo. If `skills/gadd-setup/SKILL.md` or another GADD skill source exists in the repo, stop and ask whether the user intends to dogfood GADD here.
@@ -83,3 +85,7 @@ If these inputs are missing or conflict with existing setup state, write nothing
 ## Stop Conditions
 
 - `gadd/config.yml` exists with conflicting settings
+- a bundled template asset is missing or unreadable
+- the configured archive target already exists and would be overwritten without human approval
+- the requested setup mode differs from existing config and the human has not explicitly approved the mode change
+- a GitNexus install, index, or refresh action is requested without explicit human approval
