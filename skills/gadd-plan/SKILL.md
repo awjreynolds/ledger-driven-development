@@ -1,11 +1,21 @@
 ---
 name: gadd-plan
-description: Run /gadd:plan for a GADD Work Item. Use when the user says /gadd:plan or wants an implementation plan and generated plan.html from an approved GADD SDD.
+description: Run /gadd:plan to create or update the implementation plan for a GADD Work Item with an approved SDD. Use when the user says /gadd:plan, asks for an implementation plan, wants plan.md or plan.html generated, needs slices traced to acceptance criteria, or says things like "plan the work", "draft a plan", "turn the SDD into a plan", or "produce reviewable slices for this design". This is the Technical Design lane gate after /gadd:design; it does not split slices into child Work Items (that is /gadd:decompose) and it must route to /gadd:approve <work-item-id> for plan approval before any decomposition.
 ---
 
 # /gadd:plan
 
 Create or update `plan.md` and generated `plan.html` in the promoted Work Item directory.
+
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
+## Input
+
+```text
+/gadd:plan <work-item-id>
+```
+
+If no Work Item ID is provided, stop and ask for the target Work Item ID.
 
 ## Reads
 
@@ -26,6 +36,8 @@ Create or update `plan.md` and generated `plan.html` in the promoted Work Item d
 - test strategy
 - review checklist
 - planned vertical slices for later `/gadd:decompose`
+
+Each implementation slice in `plan.md` must surface the fields that `/gadd:decompose` will turn into child Work Items. The canonical schema is the slice table in `skills/gadd-setup/assets/templates/plan.md` (`Slice` number/title, `Outcome`, `Files/modules`, `Documentation impact`, `Tests/checks`, `Dependencies`, `Review load`). Plans must also record per-slice information that the decomposition preview consumes: a `type` of `Autonomous` or `Human-review`, `blocked by` (dependency on other slices or external work), the user stories or acceptance criteria covered, and a one or two sentence `summary`. If a field is genuinely not applicable, mark it explicitly rather than omitting it.
 
 ## Input Quality Gate
 
@@ -61,3 +73,6 @@ If inputs fail this standard, write nothing and name the blocking gap. The earli
 - missing SDD
 - planning discovers a new architecture decision
 - slices cannot trace to acceptance criteria or approved triage outcome
+- external drift detected on a managed SDD/Plan PR or related external projection
+- planning discovers a missing ADR or design rule that should live in the SDD/ADR record before slicing
+- a proposed slice cannot fit the cognitive-load budget for a single focused human review

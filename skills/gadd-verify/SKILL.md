@@ -1,6 +1,6 @@
 ---
 name: gadd-verify
-description: Run /gadd:verify for an implemented GADD Work Item. Use when the user says /gadd:verify or wants to verify Work Item closure readiness after implementation completion.
+description: Run /gadd:verify on one implemented GADD Work Item to check whether it is ready to close. Use when the user says /gadd:verify, asks to verify a Work Item, asks whether a Work Item is ready to close, wants the verification.md report written, or says things like "run the checks", "the PR merged, is this verified?", "confirm this Work Item is done", or "check closure readiness". Verification reads ledger evidence, external implementation PR state, configured checks, and documentation impact, then writes verification.md and updates artifacts.verification plus closure.status. It is not a repository healthcheck and does not perform closure; it hands off to /gadd:close <work-item-id> on pass.
 ---
 
 # /gadd:verify
@@ -178,10 +178,13 @@ artifacts:
     status: passed
 closure:
   status: verified
-  verified_at: 2026-05-13T00:00:00Z
+  verified_at: <iso8601-timestamp>
   override_reason: null
+execution_context:
+  next_command: /gadd:close <work-item-id>
+  next_human_action: /gadd:close <work-item-id>
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: verification_passed
     actor: agent
 ```
@@ -196,8 +199,11 @@ artifacts:
 closure:
   status: verification_required
   verified_at: null
+execution_context:
+  next_command: /gadd:implement <work-item-id>
+  next_human_action: reconcile failed verification
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: verification_failed
     actor: agent
 ```
@@ -213,8 +219,11 @@ closure:
   status: verification_required
   verified_at: null
   override_reason: Human reconciliation required before closure.
+execution_context:
+  next_command: blocked
+  next_human_action: review and merge implementation PR
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: verification_override_required
     actor: agent
 ```
@@ -242,6 +251,8 @@ When Work Item implementation evidence records an implementation PR, for example
 Never treat a conversational claim such as "merged" as merge evidence. The claim may explain why verification should check the external tracker, but it is not workflow state.
 
 ## Package Surface Contract
+
+_Informational: package boundary, not a runtime rule. The runtime contract for verification is the Rules, Workflow, Verification Status Contract, Report Contract, and Ledger Update Contract sections above._
 
 This initial package surface establishes `/gadd:verify` as an installable command. Later GADD slices may expand the detailed report contract, but they must preserve these invariants:
 
