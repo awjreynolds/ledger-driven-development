@@ -36,6 +36,8 @@ skills/gadd-setup/assets/templates/pr-body-implementation.md
 docs/assets/gadd-sdlc-workflow.svg
 docs/assets/gadd-sdlc-workflow.source.svg
 docs/assets/gadd-sdlc-workflow.png
+gadd/work-items/_drafts/.gitkeep
+gadd/work-items/_archive/.gitkeep
 '
 
 for command in $commands; do
@@ -59,6 +61,21 @@ done
 
 if [ -f gadd-skills.json ]; then
   echo "gadd-skills.json must not exist; use agent-skills.json" >&2
+  exit 1
+fi
+
+if [ -d docs/tickets ]; then
+  echo "docs/tickets must not exist; GADD runtime state belongs under gadd/work-items" >&2
+  exit 1
+fi
+
+if [ -d docs/work-items ]; then
+  echo "docs/work-items must not exist; GADD runtime state belongs under gadd/work-items" >&2
+  exit 1
+fi
+
+if [ -d .gadd ]; then
+  echo ".gadd must not exist; GADD runtime state belongs under gadd/" >&2
   exit 1
 fi
 
@@ -90,7 +107,7 @@ grep -q 'Product Requirement lane' docs/skills.md
 grep -q '/gadd:implement <work-item-id>' docs/skills.md
 grep -q 'Software Engineering owns implementation quality' docs/skills.md
 grep -q 'npx skills add awjreynolds/gadd' docs/package-model.md
-grep -q 'This package does not include repo-root `gadd/` runtime state' docs/package-model.md
+grep -q 'dogfoods the same shape under `gadd/work-items/`' docs/package-model.md
 grep -q 'gadd/work-items/' docs/package-model.md
 grep -q 'Unclassified intake' docs/workflow.md
 grep -q 'triage outcome' docs/workflow.md
@@ -481,7 +498,7 @@ if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external 
   exit 1
 fi
 
-if rg -n --glob '!docs/superpowers/**' --glob '!docs/tickets/**' 'GADD ticket|docs/tickets|docs/work-items|\.gadd|child ticket|parent ticket|ticket directory|ticket-id|<ticket>|issue #1' README.md CONTEXT.md docs skills commands agent-skills.json gemini-extension.json GEMINI.md >/tmp/gadd-ticket-language.txt; then
+if rg -n --glob '!docs/superpowers/**' 'GADD ticket|docs/tickets|docs/work-items|\.gadd|child ticket|parent ticket|ticket directory|ticket-id|<ticket>|issue #1' README.md CONTEXT.md docs gadd skills commands agent-skills.json gemini-extension.json GEMINI.md >/tmp/gadd-ticket-language.txt; then
   echo "legacy ticket language, docs-hosted Work Item paths, or hidden .gadd runtime paths remain outside historical context:" >&2
   cat /tmp/gadd-ticket-language.txt >&2
   exit 1

@@ -1,0 +1,87 @@
+schema_version: 1
+
+work item:
+  id: GADD-0002-003
+  parent_id: GADD-0002
+  title: Add refine facilitation contract and evidence checks
+  kind: child_work_item
+  type: autonomous
+  status: archived
+
+parent:
+  id: GADD-0002
+  ledger: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/ledger.yml
+  prd: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/prd.md
+  sdd: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/sdd.md
+  plan: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/plan.md
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  work item:
+    path: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/children/GADD-0002-003-refine-facilitation-contract/work-item.md
+    status: ready
+  implementation:
+    status: completed
+    completed_at: 2026-05-13T11:31:26Z
+    evidence:
+      - Updated skills/gadd-refine/SKILL.md with Facilitation Protocol, Product Quality Bar, and Exit Gate sections.
+      - Added handoff-quality questions, systematic checks, and exact engineering-design reviewer prompt for /gadd:refine.
+      - Targeted grep confirmed all three PM skills include the facilitation protocol and exit gate.
+      - Targeted grep confirmed no external skill dependency references were introduced.
+      - git diff --check passed for the changed PM skill files.
+      - ./scripts/validate-gadd-mvp.sh passed.
+  verification:
+    path: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/children/GADD-0002-003-refine-facilitation-contract/verification.md
+    status: passed
+
+closure:
+  status: archived
+  verified_at: 2026-05-13T11:33:00Z
+  archived_at: 2026-05-13T14:05:48Z
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: [GADD-0002-001, GADD-0002-002]
+user_stories_covered: [2, 3, 4, 5]
+plan_slice: "3. Refine facilitation and handoff contract"
+
+execution_context:
+  phase: done
+  current_gate: closure
+  next_command: null
+  next_human_action: null
+  next_reason: Child work item is locally archived.
+  approved_artifacts:
+    prd: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/prd.md
+    sdd: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/sdd.md
+    plan: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/plan.md
+  boundaries:
+    product: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/prd.md
+    design: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/sdd.md
+    plan: gadd/work-items/_archive/GADD-0002-pm-command-facilitation/plan.md
+  updated_at: 2026-05-13T14:05:48Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T11:28:43Z
+    type: child_created
+    actor: agent
+  - at: 2026-05-13T11:31:26Z
+    type: implementation_completed
+    actor: agent
+  - at: 2026-05-13T11:33:00Z
+    type: verification_passed
+    actor: agent
+  - at: 2026-05-13T14:05:48Z
+    type: child_archived
+    actor: agent

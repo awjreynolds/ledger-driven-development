@@ -56,7 +56,7 @@ gadd/work-items/_drafts/
 gadd/work-items/_archive/
 ```
 
-This package does not include repo-root `gadd/` runtime state. `/gadd:setup` generates that state in consumer repositories.
+The GADD source repository dogfoods the same shape under `gadd/work-items/`. Consumer repositories get their own `gadd/` runtime tree when `/gadd:setup` runs.
 
 ## Compatibility Surfaces
 

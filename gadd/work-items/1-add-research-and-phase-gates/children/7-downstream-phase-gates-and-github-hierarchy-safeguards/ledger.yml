@@ -1,0 +1,115 @@
+schema_version: 1
+
+work item:
+  id: "7"
+  parent_id: "1"
+  title: "SDD #2 Slice 5: Downstream phase gates and GitHub hierarchy safeguards"
+  kind: child_work_item
+  type: autonomous
+  status: verified
+
+parent:
+  id: "1"
+  ledger: "gadd/work-items/1-add-research-and-phase-gates/ledger.yml"
+  prd: "gadd/work-items/1-add-research-and-phase-gates/prd.md"
+  sdd: "gadd/work-items/1-add-research-and-phase-gates/sdd.md"
+  plan: "gadd/work-items/1-add-research-and-phase-gates/plan.md"
+
+tracker:
+  mode: github
+  external_id: "7"
+  external_url: "https://github.com/awjreynolds/gadd/issues/7"
+  parent_external_id: "2"
+  parent_external_url: "https://github.com/awjreynolds/gadd/issues/2"
+  relationship: native_sub_issue
+
+artifacts:
+  work item:
+    path: "gadd/work-items/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/work-item.md"
+    status: ready
+  implementation:
+    status: completed
+    completed_at: "2026-05-14T22:51:10Z"
+    evidence:
+      implementation_pr:
+        number: 9
+        url: "https://github.com/awjreynolds/gadd/pull/9"
+        state: merged
+        merged_at: "2026-05-14T23:11:19Z"
+        merge_commit: "c104f3cafabf650798e451728b27a992787f495c"
+        checked_at: "2026-05-14T23:41:12Z"
+        mode: aggregate
+        addresses: ["3", "4", "5", "6", "7", "8"]
+      changed_files:
+        - "skills/gadd-approve/SKILL.md"
+        - "skills/gadd-design/SKILL.md"
+        - "skills/gadd-plan/SKILL.md"
+        - "skills/gadd-decompose/SKILL.md"
+        - "skills/gadd-implement/SKILL.md"
+        - "skills/gadd-verify/SKILL.md"
+        - "skills/gadd-close/SKILL.md"
+        - "skills/gadd-next/SKILL.md"
+        - "skills/gadd-setup/SKILL.md"
+        - "scripts/validate-gadd-mvp.sh"
+      checks:
+        - command: "./scripts/validate-gadd-mvp.sh"
+          result: passed
+        - command: "git diff --check"
+          result: passed
+  verification:
+    path: "gadd/work-items/1-add-research-and-phase-gates/children/7-downstream-phase-gates-and-github-hierarchy-safeguards/verification.md"
+    status: passed
+
+closure:
+  status: verified
+  verified_at: "2026-05-14T23:41:12Z"
+  archived_at: null
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: ["6"]
+user_stories_covered: [4, 5]
+plan_slice: "5. Downstream phase gates and GitHub hierarchy safeguards"
+
+execution_context:
+  phase: verification
+  current_gate: verification
+  next_command: /gadd:verify 7
+  next_human_action: null
+  next_reason: Dependency was implemented in this run; implementation completed and needs verification.
+  approved_artifacts:
+    prd: "gadd/work-items/1-add-research-and-phase-gates/prd.md"
+    sdd: "gadd/work-items/1-add-research-and-phase-gates/sdd.md"
+    plan: "gadd/work-items/1-add-research-and-phase-gates/plan.md"
+  boundaries:
+    product: "gadd/work-items/1-add-research-and-phase-gates/prd.md"
+    design: "gadd/work-items/1-add-research-and-phase-gates/sdd.md"
+    plan: "gadd/work-items/1-add-research-and-phase-gates/plan.md"
+  updated_at: "2026-05-14T23:41:12Z"
+
+sync:
+  status: synced
+  last_checked_at: "2026-05-14T22:37:34Z"
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: "2026-05-14T22:37:34Z"
+    type: child_created
+    actor: agent
+  - at: "2026-05-14T22:37:34Z"
+    type: external_child_issue_created
+    actor: agent
+  - at: "2026-05-14T22:37:34Z"
+    type: external_sub_issue_attached
+    actor: agent
+  - at: "2026-05-14T22:51:10Z"
+    type: implementation_completed
+    actor: agent
+  - at: "2026-05-14T23:09:22Z"
+    type: implementation_pr_created
+    actor: agent
+  - at: "2026-05-14T23:41:12Z"
+    type: verification_passed
+    actor: agent

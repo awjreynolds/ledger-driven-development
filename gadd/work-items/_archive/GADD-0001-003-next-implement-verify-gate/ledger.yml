@@ -1,0 +1,86 @@
+schema_version: 1
+
+work item:
+  id: GADD-0001-003
+  parent_id: GADD-0001
+  title: Teach /gadd:next and /gadd:implement the verification gate
+  kind: child_work_item
+  type: autonomous
+  status: archived
+
+parent:
+  id: GADD-0001
+  ledger: gadd/work-items/_archive/GADD-0001-verify-context-header/ledger.yml
+  prd: gadd/work-items/_archive/GADD-0001-verify-context-header/prd.md
+  sdd: gadd/work-items/_archive/GADD-0001-verify-context-header/sdd.md
+  plan: gadd/work-items/_archive/GADD-0001-verify-context-header/plan.md
+
+tracker:
+  mode: local
+  external_id: null
+  external_url: null
+
+artifacts:
+  work item:
+    path: gadd/work-items/_archive/GADD-0001-003-next-implement-verify-gate/work-item.md
+    status: ready
+  implementation:
+    status: completed
+    completed_at: 2026-05-13T11:04:34Z
+    evidence:
+      - Updated /gadd:next to prioritize implemented-but-unverified child work by reporting /gadd:verify <child-work-item-id>.
+      - Updated /gadd:next to prefer execution_context when present and derive equivalent verification-required state when absent.
+      - Updated /gadd:implement to record implementation completion and closure.status: verification_required without archiving or externally closing child work.
+      - Added validation checks for next/implement verification gate wording.
+      - Preserved approved PRD, SDD, and plan boundary rules in the command contracts.
+  verification:
+    path: gadd/work-items/_archive/GADD-0001-003-next-implement-verify-gate/verification.md
+    status: passed
+
+closure:
+  status: archived
+  verified_at: 2026-05-14T08:42:52Z
+  archived_at: 2026-05-14T08:50:00Z
+  external_closed_at: null
+  override_reason: null
+
+blocked_by: [GADD-0001-001, GADD-0001-002]
+user_stories_covered: [1, 2, 3, 5]
+plan_slice: "3. Teach /gadd:next and /gadd:implement the verification gate"
+
+execution_context:
+  phase: done
+  current_gate: archived
+  next_command: null
+  next_human_action: null
+  next_reason: Child Work Item is archived locally.
+  approved_artifacts:
+    prd: gadd/work-items/_archive/GADD-0001-verify-context-header/prd.md
+    sdd: gadd/work-items/_archive/GADD-0001-verify-context-header/sdd.md
+    plan: gadd/work-items/_archive/GADD-0001-verify-context-header/plan.md
+  boundaries:
+    product: gadd/work-items/_archive/GADD-0001-verify-context-header/prd.md
+    design: gadd/work-items/_archive/GADD-0001-verify-context-header/sdd.md
+    plan: gadd/work-items/_archive/GADD-0001-verify-context-header/plan.md
+  updated_at: 2026-05-14T08:50:00Z
+
+sync:
+  status: local_only
+  last_checked_at: null
+  external_updated_at: null
+  external_body_hash: null
+  managed_body_version: 1
+
+events:
+  - at: 2026-05-13T00:00:00Z
+    type: child_created
+    actor: agent
+  - at: 2026-05-13T11:04:34Z
+    type: implementation_completed
+    actor: agent
+  - at: 2026-05-14T08:42:52Z
+    type: verification_passed
+    actor: agent
+  - at: 2026-05-14T08:50:00Z
+    type: child_archived
+    actor: agent
