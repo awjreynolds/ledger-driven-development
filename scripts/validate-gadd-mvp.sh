@@ -424,7 +424,7 @@ if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external 
   exit 1
 fi
 
-if rg -n 'GADD ticket|docs/tickets|child ticket|parent ticket|ticket directory|ticket-id|<ticket>' README.md CONTEXT.md docs skills commands agent-skills.json gemini-extension.json >/tmp/gadd-ticket-language.txt; then
+if rg -n --glob '!docs/superpowers/**' --glob '!docs/tickets/**' 'GADD ticket|docs/tickets|child ticket|parent ticket|ticket directory|ticket-id|<ticket>' README.md CONTEXT.md docs skills commands agent-skills.json gemini-extension.json GEMINI.md >/tmp/gadd-ticket-language.txt; then
   echo "legacy ticket language remains outside external tracker context:" >&2
   cat /tmp/gadd-ticket-language.txt >&2
   exit 1

@@ -1,4 +1,4 @@
-description = "Write the GADD SDD and apply the ADR threshold."
+description = "Create or update an SDD from an approved PRD or approved triage outcome."
 prompt = """
 Run `/gadd:design` using the `gadd-design` Agent Skill.
 

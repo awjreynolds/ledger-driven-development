@@ -1,4 +1,4 @@
-description = "Report the next GADD command for one ticket ledger."
+description = "Report the next GADD command for one Work Item ledger."
 prompt = """
 Run `/gadd:next` using the `gadd-next` Agent Skill.
 

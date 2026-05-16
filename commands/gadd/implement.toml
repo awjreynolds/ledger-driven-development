@@ -1,4 +1,4 @@
-description = "Execute an approved GADD implementation plan."
+description = "Implement a ready GADD Work Item with code, tests, docs impact, and evidence."
 prompt = """
 Run `/gadd:implement` using the `gadd-implement` Agent Skill.
 

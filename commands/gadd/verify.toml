@@ -1,4 +1,4 @@
-description = "Verify an implemented GADD child ticket for closure readiness."
+description = "Verify an implemented GADD Work Item for closure readiness."
 prompt = """
 Run `/gadd:verify` using the `gadd-verify` Agent Skill.
 

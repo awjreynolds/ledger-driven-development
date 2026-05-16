@@ -1,4 +1,4 @@
-description = "Create child vertical-slice tickets from an approved GADD plan."
+description = "Create reviewable Work Item slices from an approved GADD plan."
 prompt = """
 Run `/gadd:decompose` using the `gadd-decompose` Agent Skill.
 

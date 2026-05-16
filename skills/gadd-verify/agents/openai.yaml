@@ -1,7 +1,7 @@
 interface:
   display_name: "GADD Verify"
-  short_description: "Verify child ticket closure readiness"
-  default_prompt: "Use $gadd-verify to run /gadd:verify for issue #1."
+  short_description: "Verify Work Item closure readiness"
+  default_prompt: "Use $gadd-verify to verify Work Item GADD-123."
 
 policy:
   allow_implicit_invocation: true
