@@ -189,6 +189,7 @@ Treat an SDD as waiting for approval when either:
 
 - `execution_context.current_gate: design_review`
 - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`
+- `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and the approved triage outcome is recorded
 
 Report:
 

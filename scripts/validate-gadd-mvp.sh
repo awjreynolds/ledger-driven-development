@@ -235,6 +235,8 @@ fi
 grep -q 'Approve exactly one PRD, SDD, or plan gate' skills/gadd-approve/SKILL.md
 grep -q 'Plan Approval Workflow' skills/gadd-approve/SKILL.md
 grep -q 'Plan candidate' skills/gadd-approve/SKILL.md
+grep -q 'work_item.type: engineering_change' skills/gadd-approve/SKILL.md
+grep -q 'approved triage outcome is recorded' skills/gadd-approve/SKILL.md
 grep -q 'next_command: /gadd:decompose 123' skills/gadd-approve/SKILL.md
 grep -q 'exactly one approval gate is active' skills/gadd-approve/SKILL.md
 grep -q 'GitHub is the first external tracker dogfooding path' skills/gadd-approve/SKILL.md
@@ -351,7 +353,9 @@ grep -q 'native GitHub sub-issue' skills/gadd-decompose/SKILL.md
 grep -q 'POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues' skills/gadd-decompose/SKILL.md
 grep -q 'sub_issue_id' skills/gadd-decompose/SKILL.md
 grep -q 'body-only linked issue fallback requires a separate explicit human confirmation' skills/gadd-decompose/SKILL.md
-grep -q 'grandchildren of the PRD issue' skills/gadd-decompose/SKILL.md
+grep -q 'grandchildren of a PRD issue only for `product_requirement` work' skills/gadd-decompose/SKILL.md
+grep -q 'parent boundary source' skills/gadd-decompose/SKILL.md
+grep -q 'approved triage outcome projection' skills/gadd-decompose/SKILL.md
 grep -q 'Built-in TDD Loop' skills/gadd-implement/SKILL.md
 grep -q 'Run this loop directly from this skill' skills/gadd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/gadd-implement/SKILL.md

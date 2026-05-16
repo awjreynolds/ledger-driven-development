@@ -79,7 +79,8 @@ Determine candidate gates from ledger state:
   - `execution_context.current_gate: prd_approval` and `execution_context.next_command` is `/gadd:approve <work-item-id>`.
 - SDD candidate:
   - `execution_context.current_gate: design_review`, or
-  - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`.
+  - `artifacts.sdd.status: draft` and `artifacts.prd.status: approved`, or
+  - `work_item.type: engineering_change`, `artifacts.sdd.status: draft`, and the approved triage outcome is recorded.
 - Plan candidate:
   - `execution_context.current_gate: plan_review`, or
   - `artifacts.plan.status: draft` and `artifacts.sdd.status: approved`.
