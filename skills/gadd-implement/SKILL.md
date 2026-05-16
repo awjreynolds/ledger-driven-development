@@ -47,7 +47,7 @@ If inputs fail this standard, do not edit product code or package artifacts. The
 - Use the implementation PR body template to summarize plan adherence, tests/checks, and any approved deviations.
 - In GitHub tracker mode, the implementation PR is a managed projection for review. Ask before creating or updating it, stop on external drift, and keep the Work Item ledger canonical.
 - Record implementation completion evidence in the Work Item ledger, including changed-file summary, check evidence, documentation impact status and paths or rationale, and any implementation PR or local diff reference available.
-- Mark the Work Item as implemented but not closed by setting `artifacts.implementation.status: completed`, `work_item.status: verification_required`, `closure.status: verification_required`, and `execution_context.next_command: /gadd:verify <work-item-id>` when those fields are available.
+- Mark the Work Item as implemented but not closed by setting `artifacts.implementation.status: completed`, `work_item.state: verification_required`, `closure.status: verification_required`, and `execution_context.next_command: /gadd:verify <work-item-id>` when those fields are available.
 - If the ledger lacks verification or closure fields, record equivalent implementation completion evidence and state that `/gadd:verify <work-item-id>` is the next gate so `/gadd:next` can derive the same state.
 - Do not archive Work Items.
 - Do not close external Work Item projections.

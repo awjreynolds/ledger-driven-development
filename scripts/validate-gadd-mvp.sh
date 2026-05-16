@@ -242,6 +242,9 @@ grep -q 'GitHub issue number as the stable Work Item ID' skills/gadd-approve/SKI
 grep -q 'Do not invent or preserve an `GADD-0004` style ID in GitHub tracker mode' skills/gadd-approve/SKILL.md
 grep -q 'GitHub SDD issue' skills/gadd-approve/SKILL.md
 grep -q 'PRD #<prd_issue_number> SDD:' skills/gadd-approve/SKILL.md
+grep -q 'Engineering Change SDD:' skills/gadd-approve/SKILL.md
+grep -q 'must not require a parent PRD issue' skills/gadd-approve/SKILL.md
+grep -q 'work_item.state: designed' skills/gadd-approve/SKILL.md
 grep -q 'SDD Work Item projection' skills/gadd-approve/SKILL.md
 grep -q 'missing or stale `## Structure`' skills/gadd-approve/SKILL.md
 grep -q 'structure summary' skills/gadd-approve/SKILL.md
@@ -351,6 +354,7 @@ grep -q 'Run this loop directly from this skill' skills/gadd-implement/SKILL.md
 grep -q 'Write the smallest focused test' skills/gadd-implement/SKILL.md
 grep -q 'Run the focused test and confirm it fails' skills/gadd-implement/SKILL.md
 grep -q 'approved PRD, SDD, and plan boundaries' skills/gadd-implement/SKILL.md
+grep -q 'work_item.state: verification_required' skills/gadd-implement/SKILL.md
 grep -q 'closure.status: verification_required' skills/gadd-implement/SKILL.md
 grep -q 'Do not archive Work Items' skills/gadd-implement/SKILL.md
 grep -q 'Do not close external Work Item projections' skills/gadd-implement/SKILL.md

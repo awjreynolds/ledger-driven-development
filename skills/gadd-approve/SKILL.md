@@ -119,7 +119,7 @@ When blocked, report the gate candidates and the next command that owns the stat
 3. If tracker mode is local and the Work Item is still in a draft directory, assign the next local ID according to the configured local ledger convention.
 4. Mark PRD frontmatter `work_item` to the stable Work Item ID, set `status: approved`, and update `updated`.
 5. Update ledger:
-   - `work_item.status: approved`
+   - `work_item.state: approved`
    - `artifacts.prd.status: approved`
    - `execution_context.phase: design`
    - `execution_context.current_gate: design`
@@ -140,13 +140,13 @@ When blocked, report the gate candidates and the next command that owns the stat
 3. Confirm `## Structure` is present, non-placeholder, and synchronized with the detailed design. Treat missing or stale `## Structure` as approval-blocking for SDD approval. Block approval when the structure summary contradicts the detailed design, omits a material component, boundary, interface, or explicit non-change described later in the SDD, or only restates product scope.
 4. In GitHub tracker mode, create or bind the GitHub SDD issue before marking the SDD approved:
    - Build the issue from the current SDD content and `.gadd/templates/issue-body-sdd.md`.
-   - Title the SDD issue `PRD #<prd_issue_number> SDD: <short title>` so tracker issue lists visibly show which Product Requirement the design belongs to.
-   - Reference the approved parent PRD issue number and URL in the SDD issue body.
+   - For `product_requirement`, title the SDD issue `PRD #<prd_issue_number> SDD: <short title>` and reference the approved parent PRD issue number and URL in the SDD issue body.
+   - For `engineering_change`, title the SDD issue `Engineering Change SDD: <short title>` and reference the approved triage outcome projection instead of a parent PRD issue.
    - Record the SDD issue number and URL under `artifacts.sdd.external_id` and `artifacts.sdd.external_url`.
    - Treat this SDD issue as the GitHub SDD Work Item projection.
 5. Mark SDD frontmatter `status: approved` and update `updated`.
 6. Update ledger:
-   - `work_item.status: approved`
+   - `work_item.state: designed`
    - `artifacts.sdd.status: approved`
    - `execution_context.phase: plan`
    - `execution_context.current_gate: plan`
@@ -184,7 +184,7 @@ GitHub is the first external tracker dogfooding path, but it is still a projecti
 - GitHub PRs represent implementation review.
 - The local ledger remains canonical for phase state, approvals, and closure.
 - PRD approval in GitHub tracker mode creates or binds the Product Requirement issue and uses the GitHub issue number as the promoted Work Item ID.
-- SDD approval in GitHub tracker mode creates or binds an SDD issue that references the PRD issue in both the issue title and body. The title must start with `PRD #<prd_issue_number> SDD:`. Decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren.
+- SDD approval in GitHub tracker mode creates or binds an SDD issue. For `product_requirement`, it references the PRD issue in both the issue title and body and the title must start with `PRD #<prd_issue_number> SDD:`. For `engineering_change`, it references the approved triage outcome projection and must not require a parent PRD issue. Decomposition-created implementation issues must be attached as native sub-issues of the SDD issue when supported, so the PRD issue has grandchildren only for PRD-backed work.
 - Plan approval is repo-local gate approval. It does not create GitHub child issues; `/gadd:decompose` owns child issue preview and creation after its own explicit human confirmation.
 - Every GitHub update, comment, label, close, or PR mutation after issue creation needs explicit human confirmation from the owning command.
 - Before updating a managed GitHub body, re-read the external body and compare recorded hash/timestamp. If it changed, stop and ask the human to reconcile.
