@@ -1,4 +1,4 @@
-description = "Normalize unclassified GADD intake and route the Work Item."
+description = "Normalize unclassified GADD intake, including free-form prompts, and route the Work Item."
 prompt = """
 Run `/gadd:triage` using the `gadd-triage` Agent Skill.
 

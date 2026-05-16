@@ -4,7 +4,7 @@ This extension provides GADD commands for Gemini CLI. GADD applies the Governed 
 
 Canonical command instructions live in `skills/gadd-*/SKILL.md`. When a user invokes an `/gadd:*` command, read the matching skill file first and follow it as the source of truth.
 
-GADD's canonical work unit is a Work Item. External issues and tickets are tracker-native collaboration surfaces. Use `/gadd:triage` for unclassified intake and `/gadd:research` or `/gadd:scope` for known PM-led Product Requirement discovery.
+GADD's canonical work unit is a Work Item. External issues and tickets are tracker-native collaboration surfaces. Use `/gadd:triage` for unclassified intake, including free-form prompts, and `/gadd:research` or `/gadd:scope` for known PM-led Product Requirement discovery.
 
 GADD invariants:
 

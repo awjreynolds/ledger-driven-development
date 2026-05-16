@@ -26,7 +26,7 @@ skills/gadd-<command>/
 
 | Skill | Lane | Purpose | Primary inputs | Primary outputs | Usual next handoff |
 | --- | --- | --- | --- | --- | --- |
-| `/gadd:triage` | Intake | Normalize unclassified intake and route a Work Item. | External issue, bug report, task, support signal, ambiguous request, optional GitNexus context | Work Item ledger, approved triage outcome, optional external comment/body/labels after approval | `/gadd:implement`, `/gadd:design`, `/gadd:research`, `/gadd:scope`, or terminal state |
+| `/gadd:triage` | Intake | Normalize unclassified intake and route a Work Item. | Free-form prompt, external issue, bug report, task, support signal, ambiguous request, optional GitNexus context | Work Item ledger, approved triage outcome, optional external comment/body/labels after approval | `/gadd:implement`, `/gadd:design`, `/gadd:research`, `/gadd:scope`, or terminal state |
 | `/gadd:research` | Product Requirement Lane | Gather sanitized product and repo evidence before scoping when inputs are weak, sensitive, or need investigation. | Product trigger, repository files/docs, existing GADD artifacts, Work Item routed from triage with `needs_prd`, optional GitNexus context | `research.md`, readiness decision, explicit uncertainties | `/gadd:scope` |
 | `/gadd:scope` | Product Requirement Lane | Define Product Requirement scope boundaries without moving into design or implementation. | Product change, goals, non-goals, constraints, draft context, Work Item routed from triage with `needs_prd` | draft `prd.md` scope sections, dependencies, open questions | `/gadd:elaborate` |
 | `/gadd:elaborate` | Product Requirement Lane | Fill product detail inside approved Product Requirement scope. | scoped draft PRD, user/persona context, workflow detail, acceptance signals | richer `prd.md` with users, stories, draft acceptance criteria, draft metrics | `/gadd:refine` |
@@ -51,7 +51,7 @@ Product Requirement lane commands reject non-product Work Item types. `/gadd:res
 
 ## Ownership Boundaries
 
-- Intake owns unclassified external issues, bug reports, tasks, support signals, and ambiguous requests until they route to implementation, SDD, Product Requirement discovery, or terminal handling.
+- Intake owns unclassified free-form prompts, external issues, bug reports, tasks, support signals, and ambiguous requests until they route to implementation, SDD, Product Requirement discovery, or terminal handling.
 - Product Requirement Lane owns requirements analysis and the approved PRD. It can inspect repo context, but it does not decide architecture or implementation.
 - Technical Design owns the repo-scoped SDD, plan, and decomposition. Senior Engineers, Tech Leads, and Architects are expected participants.
 - Software Engineering owns implementation quality inside the approved boundary: Test-Driven Development, code, refactoring, local design choices, documentation impact, and implementation evidence.

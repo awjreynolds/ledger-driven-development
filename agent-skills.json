@@ -28,7 +28,7 @@
       "command": "/gadd:triage",
       "skill": "gadd-triage",
       "path": "skills/gadd-triage",
-      "purpose": "Normalize unclassified intake and route a Work Item to implementation, SDD, PRD discovery, or a terminal state."
+      "purpose": "Normalize unclassified intake, including free-form prompts, and route a Work Item to implementation, SDD, PRD discovery, or a terminal state."
     },
     {
       "command": "/gadd:research",

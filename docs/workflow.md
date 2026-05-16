@@ -19,9 +19,9 @@ GitNexus is the strongly recommended code-intelligence surface when code reality
 GADD has two entry paths:
 
 - Known product discovery starts with `/gadd:research` or `/gadd:scope`.
-- Unclassified intake starts with `/gadd:triage`.
+- Unclassified intake starts with `/gadd:triage`, including free-form prompts such as `/gadd:triage create a new release of this package`.
 
-`/gadd:triage` creates or binds a Work Item, normalizes poor-quality external issues, uses GitNexus for blast-radius evidence when code reality matters, and records the route decision in the Work Item ledger.
+`/gadd:triage` creates or binds a Work Item, normalizes poor-quality prompts or external issues, uses GitNexus for blast-radius evidence when code reality matters, and records the route decision in the Work Item ledger.
 
 Triage routes:
 
@@ -36,7 +36,7 @@ In external-tracker mode, the human-facing triage narrative is projected to the 
 
 | Lane | SDLC focus | Inputs | GADD skills | Outputs |
 | --- | --- | --- | --- | --- |
-| Intake | Requirements Analysis | External issues, bug reports, tasks, support signals, ambiguous requests, optional GitNexus context | `/gadd:triage`, `/gadd:next` | Work Item ledger, approved triage outcome, optional external projection |
+| Intake | Requirements Analysis | Free-form prompts, external issues, bug reports, tasks, support signals, ambiguous requests, optional GitNexus context | `/gadd:triage`, `/gadd:next` | Work Item ledger, approved triage outcome, optional external projection |
 | Product Requirement Lane | Requirements Analysis | Customer pain, business goal, roadmap context, current workflow, constraints, existing product behavior, repository context, Work Items routed with `needs_prd` | `/gadd:research`, `/gadd:scope`, `/gadd:elaborate`, `/gadd:refine`, `/gadd:approve` | approved `prd.md` with acceptance criteria, non-goals, constraints, and repo-informed risks |
 | Technical Design | Design | Approved PRD or approved triage outcome, repo context, Architecture Decision Records, technical constraints, related repositories | `/gadd:design`, `/gadd:plan`, `/gadd:approve`, `/gadd:decompose` | repo-scoped `sdd.md`, `plan.md`, `plan.html`, Work Item slices |
 | Software Engineering | Development | Ready Work Item, approved boundary, codebase, tests, documentation obligation | `/gadd:implement <work-item-id>`, `/gadd:implement ALL` with built-in Test-Driven Development (TDD) | bounded code diff or Pull Request, tests, refactoring, implementation evidence, documentation impact evidence |

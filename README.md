@@ -26,7 +26,7 @@ npx skills add awjreynolds/gadd --all -y
 
 - `/gadd:setup` - Bootstrap GADD config, templates, Work Item directories, and optional external projection settings.
 - `/gadd:next` - Read repo-local ledger state and report the next command or human action.
-- `/gadd:triage` - Normalize unclassified intake into a Work Item and route it to implementation, SDD, PRD discovery, or a terminal state.
+- `/gadd:triage` - Normalize unclassified intake, including free-form prompts, into a Work Item and route it to implementation, SDD, PRD discovery, or a terminal state.
 - `/gadd:research` - Gather sanitized product and repo evidence before scoping.
 - `/gadd:scope` - Define Product Requirement scope boundaries.
 - `/gadd:elaborate` - Fill product detail inside approved scope.
@@ -43,7 +43,7 @@ npx skills add awjreynolds/gadd --all -y
 ## Entry Paths
 
 - Known product discovery starts with `/gadd:research` or `/gadd:scope`.
-- Unclassified intake starts with `/gadd:triage`.
+- Unclassified intake starts with `/gadd:triage`, including free-form prompts such as `/gadd:triage create a new release of this package`.
 - Existing Work Items continue with `/gadd:next`.
 
 ## Workflow

@@ -1,6 +1,6 @@
 ---
 name: gadd-triage
-description: Run /gadd:triage for unclassified GADD intake. Use when the user says /gadd:triage, provides an external issue, reports a bug, asks what to do with an issue, or wants to route a task, bug, engineering change, or ambiguous request into GADD.
+description: Run /gadd:triage for unclassified GADD intake. Use when the user says /gadd:triage, provides a free-form work prompt or external issue, reports a bug, asks what to do with an issue, or wants to route a task, bug, engineering change, or ambiguous request into GADD.
 ---
 
 # /gadd:triage
@@ -13,9 +13,10 @@ This command is a standalone, agent-agnostic GADD command. Follow this file dire
 
 ```text
 /gadd:triage [new|work-item-id|external-ref] [context]
+/gadd:triage <free-form intake prompt>
 ```
 
-Use `/gadd:triage` for unclassified incoming work: external issues, bug reports, engineer tasks, support reports, ambiguous requests, and "what should we do with this?" items. Do not require triage before deliberate PM-led Product Requirement discovery; `/gadd:research` and `/gadd:scope` remain valid direct entry points.
+Use `/gadd:triage` for unclassified incoming work: external issues, bug reports, engineer tasks, support reports, ambiguous requests, and "what should we do with this?" items. It also accepts a plain-language prompt as the source intake, for example `/gadd:triage create a new release of this package`. Treat that prompt as incoming work to normalize, not as a subcommand. Do not require triage before deliberate PM-led Product Requirement discovery; `/gadd:research` and `/gadd:scope` remain valid direct entry points.
 
 ## Reads
 
