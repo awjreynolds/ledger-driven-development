@@ -1,6 +1,6 @@
 ---
 name: gadd-archive
-description: Run /gadd:archive for closed GADD Work Items. Use when the user says /gadd:archive or wants optional local cleanup after /gadd:close has completed.
+description: Run /gadd:archive to move already-closed GADD Work Item packages into the local archive directory after /gadd:close. Use when the user says /gadd:archive, asks for cleanup after close, asks to move closed Work Items out of the active tree, asks to tidy gadd/work-items, or says things like "archive this closed Work Item", "clean up after close", or "shrink the active Work Item list". Archive is optional storage hygiene; it never decides closure readiness and never mutates external trackers.
 ---
 
 # /gadd:archive
@@ -97,13 +97,13 @@ After archiving a Work Item, Work Item ledger state should be equivalent to:
 ```yaml
 closure:
   status: archived
-  verified_at: 2026-05-13T00:00:00Z
-  closed_at: 2026-05-13T00:00:00Z
-  archived_at: 2026-05-13T00:00:00Z
+  verified_at: <iso8601-timestamp>
+  closed_at: <iso8601-timestamp>
+  archived_at: <iso8601-timestamp>
   external_closed_at: null
   override_reason: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: work_item_archived
     actor: agent
 ```
@@ -113,10 +113,10 @@ After archiving a parent, parent ledger state should be equivalent to:
 ```yaml
 closure:
   status: archived
-  closed_at: 2026-05-13T00:00:00Z
-  archived_at: 2026-05-13T00:00:00Z
+  closed_at: <iso8601-timestamp>
+  archived_at: <iso8601-timestamp>
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: parent_archived
     actor: agent
 ```

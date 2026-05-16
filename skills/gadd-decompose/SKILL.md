@@ -1,11 +1,21 @@
 ---
 name: gadd-decompose
-description: Run /gadd:decompose after an approved GADD plan. Use when the user says /gadd:decompose or needs plan slices turned into child vertical-slice Work Items for implementation.
+description: Run /gadd:decompose after an approved GADD plan to split it into reviewable child Work Items. Use when the user says /gadd:decompose, asks to split a plan into slices, wants vertical slices created as child Work Items, asks to turn a plan into reviewable slices, or says things like "decompose this plan", "create the child Work Items", "slice the plan for implementation", or "make sub-issues from the plan". This is the post-approval Technical Design step that hands off to /gadd:implement <work-item-id> or /gadd:implement ALL; it does not implement code and does not approve the plan itself.
 ---
 
 # /gadd:decompose
 
 Turn an approved `plan.md` into child vertical-slice Work Items.
+
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
+## Input
+
+```text
+/gadd:decompose <work-item-id>
+```
+
+If no Work Item ID is provided, stop and ask for the target parent Work Item ID.
 
 ## Reads
 
@@ -59,7 +69,14 @@ Ask:
 - Should any Work Items be merged or split?
 ```
 
-Only after approval may the command create child ledgers or external child Work Items. When stopping before approval, set `execution_context.next_human_action` to the decomposition review decision.
+Only after approval may the command create child ledgers or external child Work Items. When stopping before approval, set `execution_context.next_human_action` to "approve proposed child Work Item set" so `/gadd:next` can surface the same blocking decision.
+
+After the proposed child Work Item set is approved and all child ledgers (and any external child issues) are created, update the parent ledger `execution_context`:
+
+- set `execution_context.next_command: /gadd:implement <work-item-id>` for the first ready child Work Item, or `/gadd:implement ALL` when the team prefers batched implementation across every ready child
+- set `execution_context.next_human_action: null` because the next step is an agent action
+
+If creation cannot complete (for example external sub-issue attachment fails or the human rejects part of the set), leave `next_command` pointing at the unfinished step and set `next_human_action` to the named reconciliation.
 
 ## Rules
 
@@ -79,7 +96,7 @@ Only after approval may the command create child ledgers or external child Work 
 - Each child Work Item must reference the parent Product Requirement or engineering_change design Work Item and approved plan slice.
 - Each child Work Item must include documentation impact: documentation to update, not needed with reason, or a blocked documentation question.
 - In GitHub tracker mode, each child work item must be created as a native GitHub sub-issue of the approved SDD issue. Body traceability to the SDD issue is required, but body links alone are not enough when GitHub sub-issues are available.
-- To create the GitHub relationship, create the child issue first, capture its numeric REST `id`, then call GitHub's sub-issues endpoint on the SDD issue: `POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues` with `sub_issue_id`. Verify the relationship with the parent/sub-issues REST endpoints before recording the child as externally synced.
+- To create the GitHub relationship, create the child issue first, capture its numeric REST `id`, then call GitHub's sub-issues endpoint on the SDD issue: `POST /repos/{owner}/{repo}/issues/{sdd_issue_number}/sub_issues` with `sub_issue_id`. Verify the relationship with the parent/sub-issues REST endpoints before recording the child as externally synced. This is the current GitHub REST sub-issues endpoint as of 2026 and may change; verify the path and request shape against the latest GitHub REST API documentation before relying on it.
 - In GitHub tracker mode, native sub-issues make implementation child Work Items children of the SDD issue. They are grandchildren of a PRD issue only for `product_requirement` work.
 - External child Work Item bodies use GADD's standalone child issue shape: Parent, What to build, Acceptance criteria, Blocked by, User stories covered, plus minimal GADD Traceability.
 - In GitHub tracker mode, child Work Items may be projected as GitHub issues after explicit human confirmation. Each projected child issue must record its parent boundary source, SDD issue reference, plan slice, native parent/sub-issue relationship status, and local ledger path. For `product_requirement`, the parent boundary source includes the PRD issue reference; for `engineering_change`, it includes the approved triage outcome projection. The child ledger remains canonical.

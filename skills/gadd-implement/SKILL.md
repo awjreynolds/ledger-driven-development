@@ -1,11 +1,22 @@
 ---
 name: gadd-implement
-description: Run /gadd:implement for a GADD Work Item. Use when the user says /gadd:implement or wants to execute an approved Work Item with code and tests.
+description: Run /gadd:implement to execute one ready GADD Work Item or every ready Work Item under an approved boundary, with built-in Test-Driven Development. Use when the user says /gadd:implement, /gadd:implement <work-item-id>, or /gadd:implement ALL, asks to build, code, test, or ship the next approved Work Item, asks to implement an approved plan slice or vertical slice, or asks to work the child Work Items created by /gadd:decompose. Phrasings to recognize include "build the next approved Work Item", "code and test the ready slice", "implement everything that is ready", and "work the decomposed children". This is the Software Engineering lane gate after /gadd:approve and /gadd:decompose; it hands off to /gadd:verify <work-item-id> and does not close or archive Work Items.
 ---
 
 # /gadd:implement
 
-Execute one ready Work Item.
+Execute one ready Work Item, or every ready Work Item under an approved boundary.
+
+This command is a standalone, agent-agnostic GADD command. Follow this file directly; do not require any other installed skill.
+
+## Input
+
+```text
+/gadd:implement <work-item-id>
+/gadd:implement ALL
+```
+
+The `<work-item-id>` form selects exactly that Work Item. The `ALL` form selects every ready Work Item under the current approved boundary and implements them in dependency-safe order. If neither form is provided, stop and ask which target the user wants.
 
 ## Reads
 
@@ -36,6 +47,7 @@ If inputs fail this standard, do not edit product code or package artifacts. The
 
 - Repo-local ledger is canonical. External trackers are optional sync/review surfaces.
 - External mutations require human confirmation.
+- `ALL` selects every ready Work Item and implements them in dependency-safe order; a Work Item ID selects exactly that Work Item.
 - Follow the approved Work Item and parent plan when present, and preserve approved PRD, SDD, and plan boundaries. Do not silently update `plan.md` from implementation.
 - Do not auto-decompose. For `product_requirement` or planned `engineering_change` work that depends on decomposed slices, report that there are no child Work Items to implement when no ready child Work Items exist. For `bug_fix`, `task`, or a single-slice `engineering_change` routed directly to implementation, implement the target Work Item itself. If the plan is approved but decomposition-dependent child Work Items do not exist, report that `/gadd:decompose` is required.
 - If the plan is wrong, stop and return to the earliest affected `/gadd:design` or `/gadd:plan` step.

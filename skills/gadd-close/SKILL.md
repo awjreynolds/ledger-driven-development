@@ -1,6 +1,6 @@
 ---
 name: gadd-close
-description: Run /gadd:close for verified GADD Work Items or parent roll-up closure. Use when the user says /gadd:close or wants to apply human-approved workflow closure after /gadd:verify passed.
+description: Run /gadd:close to wrap up a verified GADD Work Item or apply parent roll-up closure once every child is verified and closeable. Use when the user says /gadd:close, asks to mark a Work Item complete or done, asks to apply human-approved workflow closure after /gadd:verify passed, asks to close the parent after all children are verified, or says things like "this is verified, close it", "roll up the parent", or "we're done with this Work Item". Closure is the Engineering Review gate after /gadd:verify; it does not archive local files (use /gadd:archive) and mutates external trackers only after explicit human confirmation.
 ---
 
 # /gadd:close
@@ -115,13 +115,13 @@ After local-only closure, Work Item ledger state should be equivalent to:
 ```yaml
 closure:
   status: closed
-  verified_at: 2026-05-13T00:00:00Z
-  closed_at: 2026-05-13T00:00:00Z
+  verified_at: <iso8601-timestamp>
+  closed_at: <iso8601-timestamp>
   archived_at: null
   external_closed_at: null
   override_reason: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: work_item_closed
     actor: agent
 ```
@@ -142,10 +142,10 @@ After parent roll-up closure, parent ledger state should be equivalent to:
 ```yaml
 closure:
   status: closed
-  closed_at: 2026-05-13T00:00:00Z
+  closed_at: <iso8601-timestamp>
   archived_at: null
 events:
-  - at: 2026-05-13T00:00:00Z
+  - at: <iso8601-timestamp>
     type: parent_closed
     actor: agent
 ```
