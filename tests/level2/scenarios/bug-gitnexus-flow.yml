@@ -1,0 +1,13 @@
+id: bug-gitnexus-flow
+name: Bug triage with GitNexus
+requires:
+  - issues
+  - comments
+  - labels
+  - gitnexus
+quality_gates:
+  - reproduction
+  - gitnexus_evidence
+  - route_decision
+  - implementation_ready_or_precise_block
+  - no_stale_gitnexus_claim

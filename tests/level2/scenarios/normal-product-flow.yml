@@ -1,0 +1,13 @@
+id: normal-product-flow
+name: Normal product flow
+requires:
+  - issues
+  - labels
+  - sub_issues
+  - repo_artifacts
+quality_gates:
+  - concise_prd_projection
+  - repo_specific_sdd_projection
+  - child_ticket_handoff
+  - artifact_links
+  - expected_labels

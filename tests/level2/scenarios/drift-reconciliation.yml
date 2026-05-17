@@ -1,0 +1,12 @@
+id: drift-reconciliation
+name: Drift and reconciliation
+requires:
+  - issues
+  - comments
+  - labels
+quality_gates:
+  - body_drift_detected
+  - comment_drift_detected
+  - label_drift_detected
+  - stale_update_blocked
+  - reconciliation_action_clear

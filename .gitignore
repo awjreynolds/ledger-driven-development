@@ -3,3 +3,4 @@
 .superpowers/
 skills-lock.json
 .worktrees/
+tests/level2/.runs/

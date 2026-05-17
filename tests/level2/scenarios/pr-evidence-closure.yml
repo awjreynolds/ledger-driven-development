@@ -1,0 +1,11 @@
+id: pr-evidence-closure
+name: PR evidence and closure
+requires:
+  - pulls
+  - branches
+  - repo_artifacts
+quality_gates:
+  - pr_state_recorded
+  - pr_not_treated_as_closure
+  - verification_required_before_closure
+  - closed_ticket_has_evidence

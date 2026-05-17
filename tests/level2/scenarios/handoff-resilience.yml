@@ -1,0 +1,12 @@
+id: handoff-resilience
+name: Agent handoff resilience
+requires:
+  - issues
+  - repo_artifacts
+quality_gates:
+  - ticket_has_canonical_artifact_path
+  - artifact_contains_boundary
+  - artifact_contains_acceptance_criteria
+  - artifact_contains_verification
+  - next_action_unambiguous
+  - no_hidden_context_required
