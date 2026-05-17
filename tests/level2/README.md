@@ -1,83 +1,88 @@
-# GADD Level 2 Live-Style Tests
+# GADD Level 2 Tests
 
-Level 2 tests validate GADD behavior in disposable target repositories seeded
-from Level 1 fixtures. They are automated, but they intentionally avoid real
-external tracker mutations.
+Level 2 has two parts:
 
-The suite sits between deterministic Level 1 routing tests and future full
-agent smoke tests:
+- `fixture-next`: offline smoke coverage for deterministic `/gadd:next` routing.
+- Live GitHub quality suite: opt-in checks for GitHub ticket mechanics, ticket quality, artifact quality, drift handling, PR evidence, and agent handoff resilience.
 
-- Level 1 derives workflow routing from fixture ledgers only.
-- Level 2 creates a target repo, installs the GADD package surface, seeds a
-  fixture, runs a runner adapter, and asserts observable output plus repo diffs.
-- Later runner adapters can call Codex, Claude, Gemini, or another agent CLI
-  without changing the scenario language.
-
-## Run
+## Offline Smoke
 
 ```sh
 python3 scripts/run-gadd-level2.py --runner fixture-next
 ```
 
-The `fixture-next` runner is deterministic and read-only. It exercises the
-Level 2 harness by deriving `/gadd:next` output from the seeded repo state.
-Transcripts are written to a temp artifact directory reported by the runner.
+The offline runner creates a disposable target repo from Level 1 fixtures and asserts the derived `/gadd:next` output plus repo diffs. It does not mutate GitHub.
 
-## Scenario Format
+## Live GitHub Quality Suite
 
-Scenario files live in `tests/level2/scenarios/`.
+Required:
 
-```yaml
-id: next-smoke
-steps:
-  - name: seeded needs_prd routes to research
-    source_scenario: full-prd-workflow
-    fixture: 01-needs-prd
-    work_item: GADD-L1-PRD
-    prompt: Use /gadd:next for GADD-L1-PRD.
-    runner_command: /gadd:next GADD-L1-PRD
-    expect_output_contains:
-      - text: /gadd:research GADD-L1-PRD
-    expect_changed_files: []
-    expect_no_external_mutation: true
+```sh
+GADD_L2_GITHUB_REPO=owner/product-sandbox
 ```
 
-Fields:
+Optional:
 
-- `source_scenario` and `fixture` select a Level 1 fixture to seed into the
-  target repo.
-- `work_item` names the Work Item under test.
-- `prompt` records the live-agent prompt for transcript parity.
-- `runner_command` records the intended GADD command.
-- `expect_output_contains` checks transcript text. Use `text:` entries for
-  command strings because the repo-local YAML subset parser treats colons as
-  mapping separators inside list items.
-- `expect_changed_files` asserts the full repo diff after the runner executes.
-- `expect_no_external_mutation` requires the runner to report no external
-  tracker writes.
+```sh
+GADD_L2_GITHUB_TOKEN=...
+GADD_L2_RENDER_REPO=owner/render-sandbox
+GADD_L2_PRODUCT_REPO_PATH=/path/to/product/repo
+GADD_L2_RENDER_REPO_PATH=/path/to/render/repo
+GADD_L2_RUN_ID=gadd-l2-manual-001
+GADD_L2_CLEANUP=success
+```
 
-## Adding Cases
+When `GADD_L2_GITHUB_TOKEN` is omitted, the harness uses the current authenticated `gh` keyring state.
 
-For read-only navigation cases, start with `fixture-next` and assert no changed
-files. For mutating command cases, add a runner adapter that executes the target
-agent in the disposable repo, then assert exact changed files and ledger paths.
-Keep external tracker calls behind explicit human approval in the runner.
+Run live creation and quality gates:
 
-## GitHub Projection Smoke
+```sh
+python3 scripts/validate-gadd-level2-github.py
+```
 
-GitHub issue projection is a Level 2 live-adapter concern because it requires
-valid `gh` API authentication. A projection smoke should use disposable issues,
-record the created URLs, verify native sub-issue attachment when expected, and
-close the issues after evidence is captured.
+Audit existing sandbox tickets without creating new issues:
 
-The exercised shape is:
+```sh
+python3 scripts/validate-gadd-level2-github.py --audit-existing
+```
 
-- create one PRD issue with `gh issue create`
-- create one SDD issue per affected repository
-- attach SDD issues under the PRD with
-  `gh api -X POST repos/<owner>/<repo>/issues/<prd-number>/sub_issues -F sub_issue_id=<issue-id>`
-- verify `sub_issues_summary.total`
-- close the disposable child issues and parent issue
+Clean up a run:
 
-Do not print, commit, or pass GitHub tokens through scenario files. Use the
-current authenticated `gh` keyring state.
+```sh
+python3 tests/level2/harness/cleanup_level2.py --run-id <run-id>
+```
+
+## Quality Gate
+
+The suite fails tickets that are vague, stale, missing labels, missing traceability, missing repo artifact links, closed with unchecked checklist items, or impossible for an engineer or external agent to pick up safely from GitHub plus the repository.
+
+Ticket quality and artifact quality are checked together. A concise ticket can pass when it clearly points to strong repo-local artifacts. A long ticket can fail when it hides the boundary, next action, or verification evidence.
+
+## Skill Hardening Loop
+
+1. Run `--audit-existing`.
+2. Run live Level 2 creation.
+3. Fix GADD skills and templates.
+4. Push the skill package.
+5. Reinstall skills into sandbox repositories.
+6. Rerun until ticket and artifact quality pass.
+
+Print the push/reinstall commands:
+
+```sh
+python3 tests/level2/harness/skill_refresh.py
+```
+
+Execute them only when you intend to mutate the remote and sandboxes:
+
+```sh
+python3 tests/level2/harness/skill_refresh.py --execute
+```
+
+## Safety
+
+- Only configured sandbox repositories may be mutated.
+- Every live issue carries `gadd-l2` and `gadd-l2:<run-id>` labels.
+- Cleanup refuses to touch issues missing those labels.
+- Failed runs remain open by default for inspection.
+- Tokens must not be committed, printed, or stored in scenario files.

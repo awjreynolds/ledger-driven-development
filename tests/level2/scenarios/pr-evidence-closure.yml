@@ -1,5 +1,6 @@
 id: pr-evidence-closure
 name: PR evidence and closure
+steps: []
 requires:
   - pulls
   - branches

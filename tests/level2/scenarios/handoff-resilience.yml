@@ -1,5 +1,6 @@
 id: handoff-resilience
 name: Agent handoff resilience
+steps: []
 requires:
   - issues
   - repo_artifacts

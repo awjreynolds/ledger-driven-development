@@ -1,5 +1,6 @@
 id: bug-gitnexus-flow
 name: Bug triage with GitNexus
+steps: []
 requires:
   - issues
   - comments

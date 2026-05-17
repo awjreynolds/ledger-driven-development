@@ -1,5 +1,6 @@
 id: normal-product-flow
 name: Normal product flow
+steps: []
 requires:
   - issues
   - labels
