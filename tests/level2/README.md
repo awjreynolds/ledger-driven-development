@@ -62,3 +62,22 @@ For read-only navigation cases, start with `fixture-next` and assert no changed
 files. For mutating command cases, add a runner adapter that executes the target
 agent in the disposable repo, then assert exact changed files and ledger paths.
 Keep external tracker calls behind explicit human approval in the runner.
+
+## GitHub Projection Smoke
+
+GitHub issue projection is a Level 2 live-adapter concern because it requires
+valid `gh` API authentication. A projection smoke should use disposable issues,
+record the created URLs, verify native sub-issue attachment when expected, and
+close the issues after evidence is captured.
+
+The exercised shape is:
+
+- create one PRD issue with `gh issue create`
+- create one SDD issue per affected repository
+- attach SDD issues under the PRD with
+  `gh api -X POST repos/<owner>/<repo>/issues/<prd-number>/sub_issues -F sub_issue_id=<issue-id>`
+- verify `sub_issues_summary.total`
+- close the disposable child issues and parent issue
+
+Do not print, commit, or pass GitHub tokens through scenario files. Use the
+current authenticated `gh` keyring state.
