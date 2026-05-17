@@ -1,4 +1,5 @@
 from pathlib import Path
+from unittest import mock
 import tempfile
 import unittest
 
@@ -53,6 +54,43 @@ class RunLevel3MainTests(unittest.TestCase):
             )
 
             self.assertEqual(0, exit_code)
+
+    def test_github_tracker_without_env_skips_in_non_strict_mode(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            with mock.patch.dict("os.environ", {}, clear=True):
+                exit_code = main(
+                    [
+                        "--adapter",
+                        "scripted",
+                        "--tracker",
+                        "github",
+                        "--case",
+                        "approval-gate-stop",
+                        "--runs-dir",
+                        temp_dir,
+                    ]
+                )
+
+        self.assertEqual(0, exit_code)
+
+    def test_github_tracker_without_env_fails_in_strict_mode(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            with mock.patch.dict("os.environ", {}, clear=True):
+                exit_code = main(
+                    [
+                        "--adapter",
+                        "scripted",
+                        "--tracker",
+                        "github",
+                        "--case",
+                        "approval-gate-stop",
+                        "--runs-dir",
+                        temp_dir,
+                        "--strict-tracker",
+                    ]
+                )
+
+        self.assertEqual(1, exit_code)
 
 
 if __name__ == "__main__":

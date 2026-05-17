@@ -19,6 +19,17 @@ Live GitHub remains opt-in and should reuse Level 2 configuration once the local
 
 Run artifacts are written to `tests/level3/.runs/<run-id>/`. Failed runs are preserved by default.
 
+## GitHub Tracker Mode
+
+GitHub tracker mode is explicit and skip-safe:
+
+```sh
+GADD_L3_GITHUB_REPO=owner/sandbox \
+python3 scripts/run-gadd-level3.py --adapter scripted --tracker github
+```
+
+When `GADD_L3_GITHUB_REPO` is omitted, `--tracker github` skips without mutation. Use `--strict-tracker` when a missing GitHub sandbox should fail the run. `GADD_L2_GITHUB_REPO` and `GADD_L2_GITHUB_TOKEN` are accepted as fallbacks so Level 3 can reuse the Level 2 sandbox configuration.
+
 ## MVP Validation
 
 `scripts/validate-gadd-mvp.sh` runs only the deterministic `scripted` Level 3 approval-gate scenario. Real agent execution remains opt-in through `--adapter codex` and `GADD_L3_CODEX_COMMAND`.

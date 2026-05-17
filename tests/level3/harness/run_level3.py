@@ -11,6 +11,7 @@ import sys
 
 from tests.level3.harness.agent_adapter import AdapterRegistry, AgentExecutionRequest
 from tests.level3.harness.assertions import evaluate_expectations
+from tests.level3.harness.github_tracker import GitHubTracker, load_github_tracker_config
 from tests.level3.harness.local_tracker import LocalIssue, LocalTracker
 from tests.level3.harness.sandbox import create_sandbox
 from tests.level3.harness.scripted_adapter import ScriptedAgentAdapter
@@ -27,6 +28,7 @@ class Config:
     tracker: str
     run_id: str
     strict_adapter: bool
+    strict_tracker: bool
 
 
 class Level3Error(Exception):
@@ -45,6 +47,7 @@ def load_config(env: dict[str, str] | None = None) -> Config:
         tracker=tracker,
         run_id=run_id,
         strict_adapter=values.get("GADD_L3_STRICT_ADAPTER", "false").lower() == "true",
+        strict_tracker=values.get("GADD_L3_STRICT_TRACKER", "false").lower() == "true",
     )
 
 
@@ -55,6 +58,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--case", help="Scenario file stem or name to run.")
     parser.add_argument("--runs-dir", type=Path, default=RUNS_DIR, help="Directory for Level 3 run artifacts.")
     parser.add_argument("--strict-adapter", action="store_true", help="Fail when the requested adapter is unavailable.")
+    parser.add_argument("--strict-tracker", action="store_true", help="Fail when the requested tracker is unavailable.")
     return parser.parse_args(argv)
 
 
@@ -113,7 +117,7 @@ def write_manifest(path: Path, manifest: dict) -> None:
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _create_scripted_issues(step: dict, tracker: LocalTracker) -> None:
+def _create_scripted_issues(step: dict, tracker) -> None:
     for issue in step.get("scripted_issues", []):
         tracker.create_issue(
             LocalIssue(
@@ -125,10 +129,24 @@ def _create_scripted_issues(step: dict, tracker: LocalTracker) -> None:
         )
 
 
+def _create_tracker(config: Config, sandbox_path: Path):
+    if config.tracker == "local":
+        return LocalTracker(sandbox_path), None
+    github_config = load_github_tracker_config(env=None, run_id=config.run_id, strict=config.strict_tracker)
+    if github_config.skip_live:
+        return None, "Skipping Level 3 GitHub tracker run: set GADD_L3_GITHUB_REPO or GADD_L2_GITHUB_REPO."
+    return GitHubTracker(github_config), None
+
+
 def run_scenario(config: Config, scenario: dict, runs_dir: Path, adapter_name: str, tracker_mode: str) -> list[str]:
     run_root = runs_dir / config.run_id / scenario["id"]
     sandbox = create_sandbox(run_root, scenario["id"], scenario.get("seed_files", {}))
-    tracker = LocalTracker(sandbox.path)
+    tracker, skip_message = _create_tracker(config, sandbox.path)
+    if skip_message:
+        print(skip_message)
+        return []
+    if tracker is None:
+        raise Level3Error("tracker was not initialized")
     adapter = build_registry().create(adapter_name)
     findings: list[str] = []
     step_results = []
@@ -185,6 +203,7 @@ def main(argv: list[str] | None = None) -> int:
         tracker=args.tracker or base_config.tracker,
         run_id=base_config.run_id,
         strict_adapter=args.strict_adapter or base_config.strict_adapter,
+        strict_tracker=args.strict_tracker or base_config.strict_tracker,
     )
     try:
         scenarios = load_scenarios(args.case)
