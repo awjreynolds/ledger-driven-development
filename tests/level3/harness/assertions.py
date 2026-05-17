@@ -34,6 +34,9 @@ def evaluate_expectations(
             relative = str(expectation["artifact_exists"])
             if not (sandbox_path / relative).is_file():
                 findings.append(Level3Finding(f"missing expected artifact: {relative}"))
+        elif "no_files_changed" in expectation:
+            if expectation["no_files_changed"] and result.files_changed:
+                findings.append(Level3Finding(f"expected no changed files, got {result.files_changed}"))
         elif "tickets_pass_quality" in expectation:
             if expectation["tickets_pass_quality"]:
                 findings.extend(_evaluate_local_ticket_quality(tracker))

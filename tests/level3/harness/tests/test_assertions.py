@@ -30,6 +30,31 @@ class Level3AssertionTests(unittest.TestCase):
 
             self.assertEqual(["missing expected artifact: gadd/work-items/ITEM/prd.md"], [finding.message for finding in findings])
 
+    def test_no_files_changed_passes_for_approval_gate_stop(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            transcript = root / "transcript.md"
+            transcript.write_text("Approval required before writing scope artifacts.\n", encoding="utf-8")
+            result = AgentExecutionResult(0, transcript, None, None, [], 0.1)
+
+            findings = evaluate_expectations(root, result, [{"no_files_changed": True}], LocalTracker(root))
+
+            self.assertEqual([], findings)
+
+    def test_no_files_changed_fails_when_agent_writes_before_approval(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            transcript = root / "transcript.md"
+            transcript.write_text("Approval required before writing scope artifacts.\n", encoding="utf-8")
+            result = AgentExecutionResult(0, transcript, None, None, ["gadd/work-items/draft/prd.md"], 0.1)
+
+            findings = evaluate_expectations(root, result, [{"no_files_changed": True}], LocalTracker(root))
+
+            self.assertEqual(
+                ["expected no changed files, got ['gadd/work-items/draft/prd.md']"],
+                [finding.message for finding in findings],
+            )
+
     def test_ticket_quality_reuses_level2_rubric(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
