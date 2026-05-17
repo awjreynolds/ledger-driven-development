@@ -18,3 +18,7 @@ python3 scripts/run-gadd-level3.py --adapter codex --tracker local --strict-adap
 Live GitHub remains opt-in and should reuse Level 2 configuration once the local tracker path passes.
 
 Run artifacts are written to `tests/level3/.runs/<run-id>/`. Failed runs are preserved by default.
+
+## MVP Validation
+
+`scripts/validate-gadd-mvp.sh` runs only the deterministic `scripted` Level 3 approval-gate scenario. Real agent execution remains opt-in through `--adapter codex` and `GADD_L3_CODEX_COMMAND`.

@@ -544,6 +544,7 @@ grep -q 'repo-local ledger as canonical workflow state' docs/superpowers/specs/2
 
 python3 scripts/validate-gadd-level1.py
 python3 scripts/run-gadd-level2.py --runner fixture-next
+python3 scripts/run-gadd-level3.py --adapter scripted --tracker local --case approval-gate-stop
 python3 scripts/validate-gadd-docs.py
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then
