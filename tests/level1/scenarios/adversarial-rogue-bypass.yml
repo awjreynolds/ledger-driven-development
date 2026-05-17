@@ -1,0 +1,16 @@
+id: adversarial-rogue-bypass
+description: Rogue developer mutations that skip GADD gates must route to repair or block instead of allowing verification, closure, or done states.
+work_item: GADD-L1-ROGUE
+steps:
+  - name: implementation without approved boundary routes back to triage repair
+    fixture: 01-implementation-without-approved-boundary
+    expect_next_command: /gadd:triage GADD-L1-ROGUE
+    expect_next_human_action: approve or repair the triage outcome boundary
+  - name: closed without verification is blocked for reconciliation
+    fixture: 02-closed-without-verification
+    expect_next_command: blocked
+    expect_next_human_action: reconcile rogue Work Item state before continuing
+  - name: verified without implementation evidence is blocked for reconciliation
+    fixture: 03-verified-without-implementation
+    expect_next_command: blocked
+    expect_next_human_action: reconcile rogue Work Item state before continuing

@@ -48,6 +48,7 @@ If inputs fail this standard, do not mutate anything and report the ambiguity or
 - Ignore `gadd/work-items/_archive/` unless the user explicitly asks to inspect archived Work Items.
 - Use `gadd/config.yml` when present.
 - Prefer `execution_context` when present, but verify it against ledger artifact state before reporting the next command.
+- Treat closed, archived, or verified ledger statuses as inconsistent when completed implementation evidence, passed verification evidence, or a required verification report is missing. Report `next_command: blocked` and `next_human_action: reconcile rogue Work Item state before continuing` instead of accepting a direct status edit as proof that GADD gates ran.
 - Report both `execution_context.next_command` and `execution_context.next_human_action` when present. If `next_human_action` is missing, derive it from the active gate.
 - If `execution_context` is absent, derive equivalent state from Work Item status, artifact statuses, child ledgers, `closure.status`, sync metadata, and archived-child location.
 - Preserve approved PRD, SDD, and plan boundaries. If the next step would change those boundaries, report the earliest affected `/gadd:scope`, `/gadd:design`, or `/gadd:plan` gate instead of routing implementation or verification.

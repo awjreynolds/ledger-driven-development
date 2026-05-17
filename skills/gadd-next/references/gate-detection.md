@@ -63,7 +63,9 @@ Treat an active child as ready to close when either of these is true:
 - `execution_context.current_gate: closure` or `execution_context.next_command` is `/gadd:close <work-item-id>`.
 - Derived state shows verification passed while closure has not been applied.
 
-Derived state means `artifacts.verification.status: passed`, `closure.status: verified`, and the child directory is still in the active Work Item tree rather than `_archive/`.
+Derived state means `artifacts.verification.status: passed`, `closure.status: verified`, a readable `verification.md`, and the child directory is still in the active Work Item tree rather than `_archive/`.
+
+If `closure.status: verified | closed | externally_closed | archived` appears without completed implementation evidence, passed verification evidence, and the required verification report for a closeable state, report `next_command: blocked` and `next_human_action: reconcile rogue Work Item state before continuing`. Do not treat a direct ledger status edit as proof that GADD gates ran.
 
 Do not route children with `closure.status: closed | archived | externally_closed` to `/gadd:close`.
 

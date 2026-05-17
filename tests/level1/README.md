@@ -19,6 +19,7 @@ The initial suite covers the three route families:
 - `sdd-engineering-change.yml`: `needs_sdd` -> SDD approval -> single implementation or plan/decompose route
 - `full-prd-workflow.yml`: `needs_prd` -> research/scope/elaborate/refine -> PRD approval -> design -> SDD approval -> plan -> plan approval -> decompose -> child implementation/verification/closure -> parent roll-up closure
 - `terminal-triage.yml`: duplicate, out-of-scope, and not-GADD-work routes remain blocked terminal states
+- `adversarial-rogue-bypass.yml`: direct ledger or code mutations that skip approved boundaries, implementation evidence, or verification remain blocked or route back to repair
 
 ## Scenario Format
 

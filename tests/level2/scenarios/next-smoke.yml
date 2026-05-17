@@ -1,0 +1,13 @@
+id: next-smoke
+description: Live-style smoke coverage for /gadd:next against a disposable target repo seeded from a Level 1 fixture.
+steps:
+  - name: seeded needs_prd routes to research
+    source_scenario: full-prd-workflow
+    fixture: 01-needs-prd
+    work_item: GADD-L1-PRD
+    prompt: Use /gadd:next for GADD-L1-PRD.
+    runner_command: /gadd:next GADD-L1-PRD
+    expect_output_contains:
+      - text: /gadd:research GADD-L1-PRD
+    expect_changed_files: []
+    expect_no_external_mutation: true

@@ -171,10 +171,52 @@ def archive_cleanup_available(ledger: dict) -> bool:
     return closure_status(ledger) in {"closed", "externally_closed"}
 
 
+def boundary_missing(ledger: dict) -> bool:
+    return get(ledger, "work_item.state") in {
+        "ready_for_implementation",
+        "needs_sdd",
+        "needs_prd",
+        "verification_required",
+        "verified",
+        "closed",
+        "archived",
+    } and not approved_triage(ledger)
+
+
+def terminal_state_inconsistent(ledger: dict) -> bool:
+    status = closure_status(ledger)
+    if status in {"verified", "closed", "externally_closed", "archived"} and not implemented(ledger):
+        return True
+    if status in {"verified", "closed", "externally_closed", "archived"} and not verification_passed(ledger):
+        return True
+    if get(ledger, "work_item.state") in {"closed", "archived"} and status not in {
+        "closed",
+        "externally_closed",
+        "archived",
+    }:
+        return True
+    return False
+
+
+def blocked(reason: str) -> dict:
+    return {
+        "next_command": "blocked",
+        "next_human_action": reason,
+    }
+
+
 def derive_child_next(children: list[dict]) -> dict | None:
     active_children = [child for child in children if not closed(child)]
     if not active_children:
         return None
+    for child in active_children:
+        if boundary_missing(child):
+            return {
+                "next_command": command("triage", get(child, "work_item.id")),
+                "next_human_action": "approve or repair the triage outcome boundary",
+            }
+        if terminal_state_inconsistent(child):
+            return blocked("reconcile rogue Work Item state before continuing")
     if children and all(closed(child) or closeable(child) for child in children):
         return None
     for child in active_children:
@@ -202,6 +244,15 @@ def derive_next(parent: dict, children: list[dict]) -> dict:
     parent_id = get(parent, "work_item.id")
     if not parent_id:
         raise ScenarioError("parent ledger is missing work_item.id")
+
+    if boundary_missing(parent):
+        return {
+            "next_command": command("triage", parent_id),
+            "next_human_action": "approve or repair the triage outcome boundary",
+        }
+
+    if terminal_state_inconsistent(parent):
+        return blocked("reconcile rogue Work Item state before continuing")
 
     if closed(parent):
         result = {

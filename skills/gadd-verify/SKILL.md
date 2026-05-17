@@ -69,7 +69,7 @@ Required evidence:
 - Work Item ledger artifact path, acceptance or done criteria, parent link when present, blocked-by state, covered user stories, and plan slice when present
 - parent ledger artifact statuses and paths for the approved PRD, SDD, and plan when required
 - approved PRD, approved SDD, approved plan, approved triage outcome, and Work Item body as required by type
-- implementation evidence from the Work Item ledger, local diff summary, commit/PR reference, or implementation notes recorded by `/gadd:implement`
+- implementation evidence recorded in the Work Item ledger by `/gadd:implement`, including `artifacts.implementation.status: completed` and concrete evidence entries; local diff summaries, commits, PRs, or user claims may corroborate ledger evidence but must not substitute for it
 - implementation PR evidence from the external tracker when a PR URL or number is recorded, including state, merge time, and merge commit when available
 - check evidence from automated command output, validation output, or explicit manual verification notes
 - documentation impact evidence with status `updated`, `not_needed`, or `blocked`, plus changed documentation paths or direct rationale
@@ -89,7 +89,8 @@ Required evidence:
 - If the implementation PR is merged and there is no conflict with recorded ledger state, record the observed `mergedAt` and merge commit in `verification.md` and the Work Item ledger as verification evidence; do not block merely because the ledger lacked that evidence before verification.
 - If the implementation PR is merged but conflicts with recorded ledger merge evidence, classify verification as `override_required` and route to human reconciliation before closure can be recommended.
 - Do not mutate external trackers, archive Work Items, close external Work Item projections, push branches, or create PRs from this command.
-- Recommend closure only when the Work Item acceptance or done criteria, approved inputs, implementation evidence, documentation impact evidence, check evidence, and drift checks all support closure.
+- Recommend closure only when the Work Item acceptance or done criteria, approved inputs, ledger implementation evidence, documentation impact evidence, check evidence, and drift checks all support closure.
+- If code, commits, PRs, or local diffs exist but `/gadd:implement` did not record completed implementation evidence in the Work Item ledger, classify verification as `failed` or `override_required` and route to `/gadd:implement <work-item-id>` or human reconciliation. Do not pass verification from rogue direct changes alone.
 - If evidence is missing or checks failed, write the blocking reason to `verification.md` and leave `closure.status` unclosed.
 
 ## Workflow
@@ -98,7 +99,7 @@ Required evidence:
 2. Read the parent ledger referenced by the Work Item ledger when present.
 3. Confirm required approved inputs by Work Item type.
 4. Read the approved inputs and Work Item body.
-5. Collect implementation evidence for the Work Item. Prefer ledger implementation evidence, then current diff/commit/PR evidence if referenced by the user.
+5. Collect implementation evidence for the Work Item. Require completed Work Item ledger implementation evidence recorded by `/gadd:implement`; use current diff/commit/PR evidence only as corroboration or as a reason to fail/override verification when the ledger was bypassed.
 6. If implementation evidence references a PR, read the external PR state. For GitHub, inspect at least `state`, `mergedAt`, and merge commit. Do not treat conversational claims such as "merged" as evidence.
 7. Collect check evidence. Include exact commands and results when available; otherwise record the missing evidence as a blocker.
 8. Collect documentation impact evidence. Accept only `updated`, `not_needed`, or `blocked`; require changed documentation paths for `updated` and a direct rationale for `not_needed`.
