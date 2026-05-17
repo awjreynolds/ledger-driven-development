@@ -297,6 +297,22 @@ def run_live_scenarios(config: Config, client: GitHubClient) -> dict:
     return manifest
 
 
+def fail_on_quality_findings(findings: list[dict]) -> int:
+    return 1 if findings else 0
+
+
+def evaluate_manifest_issues(client: GitHubClient, manifest: dict) -> list[dict]:
+    findings: list[dict] = []
+    for item in manifest.get("issues", []):
+        repo = RepoRef.parse(item["repo"])
+        issue = client.get_issue(repo, int(item["number"]))
+        issue["comments"] = client.list_comments(repo, int(item["number"]))
+        ticket = _ticket_from_issue(issue, item["role"], gitnexus_available=item["role"] == "Bug")
+        for finding in evaluate_ticket(ticket):
+            findings.append({"target": f"{repo.full_name}#{item['number']}", "message": finding.message})
+    return findings
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
     try:
@@ -318,7 +334,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if findings else 0
 
     manifest = run_live_scenarios(config, client)
-    print(f"GADD Level 2 GitHub scenarios created for run {config.run_id}")
+    findings = evaluate_manifest_issues(client, manifest)
+    manifest["quality_findings"] = findings
+    manifest["status"] = "failed" if findings else "passed"
+    write_manifest(config.run_id, manifest)
+    for finding in findings:
+        print(f"{finding['target']}: {finding['message']}", file=sys.stderr)
+    print(f"GADD Level 2 GitHub scenarios evaluated for run {config.run_id}: {summarize_findings(findings)}")
     print(f"Manifest: {manifest_path(config.run_id)}")
     print(f"Issues: {len(manifest['issues'])}")
-    return 0
+    return fail_on_quality_findings(findings)

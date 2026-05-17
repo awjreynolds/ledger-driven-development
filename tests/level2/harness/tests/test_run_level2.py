@@ -1,6 +1,6 @@
 import unittest
 
-from tests.level2.harness.run_level2 import load_config, summarize_findings
+from tests.level2.harness.run_level2 import fail_on_quality_findings, load_config, summarize_findings
 
 
 class RunLevel2ConfigTests(unittest.TestCase):
@@ -40,6 +40,14 @@ class FindingSummaryTests(unittest.TestCase):
             {"target": "issue/2", "message": "closed ticket has unchecked checklist items"},
         ]
         self.assertEqual("2 quality findings", summarize_findings(findings))
+
+
+class QualityFailureTests(unittest.TestCase):
+    def test_fail_on_quality_findings_returns_one(self):
+        self.assertEqual(1, fail_on_quality_findings([{"target": "issue/1", "message": "missing label"}]))
+
+    def test_fail_on_quality_findings_returns_zero_without_findings(self):
+        self.assertEqual(0, fail_on_quality_findings([]))
 
 
 if __name__ == "__main__":
