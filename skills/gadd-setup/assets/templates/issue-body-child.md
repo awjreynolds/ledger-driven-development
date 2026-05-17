@@ -26,6 +26,16 @@
 
 {documentation_impact}
 
+## Next Action
+
+Implement this slice inside the approved boundary. Start with the acceptance criteria, use the verification command from the linked Work Item artifact, and do not expand scope without updating the parent plan.
+
+## Reviewer Focus
+
+- The slice is independently implementable.
+- Acceptance criteria and blocked-by links are clear.
+- A non-GADD engineer or agent can find the ledger, parent SDD, plan slice, and verification expectations from this issue.
+
 ## GADD Traceability
 
 - Work Item: `{work_item_id}`
@@ -43,6 +53,7 @@
 - Ledger: `{ledger_path}`
 - Canonical state: repo-local ledger
 - External tracker role: native child/sub-issue projection for implementation visibility when supported
+- Expected labels: `gadd`, `type:task`, `phase:implementation`
 
 ## External Notes
 

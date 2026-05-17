@@ -27,6 +27,16 @@
 
 {open_design_questions}
 
+## Next Action
+
+Review the design boundary and verification strategy. If the design is sound, continue with `/gadd:plan {work_item_id}`. If the design is unclear, comment with the missing engineering decision before planning starts.
+
+## Reviewer Focus
+
+- Repository ownership and boundary source are clear.
+- The SDD is specific enough for implementation planning.
+- A non-GADD engineer or agent can find the canonical SDD, plan, and ledger from this issue.
+
 ## GADD Status
 
 - Phase: SDD approved / plan ready
@@ -39,6 +49,7 @@
 - Work Item: `{work_item_id}`
 - Work Item type: `{work_item_type}`
 - Local ledger: `gadd/work-items/{work_item_id}/ledger.yml`
+- Expected labels: `gadd`, `type:engineering-change`, `phase:planning`
 
 ## GADD Links
 

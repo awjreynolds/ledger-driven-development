@@ -65,7 +65,10 @@ def _role_in_title(ticket: Ticket) -> bool:
 
 
 def _has_trace(body: str) -> bool:
-    return "gadd trace" in body.lower() and "artifact:" in body.lower()
+    lower = body.lower()
+    return ("gadd trace" in lower or "gadd traceability" in lower) and (
+        "artifact:" in lower or "ledger:" in lower or "local ledger:" in lower
+    )
 
 
 def _has_next_action(body: str) -> bool:
