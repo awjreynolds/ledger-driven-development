@@ -1,0 +1,14 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-TERMINAL
+  title: Terminal duplicate fixture
+  type: not_gadd_work
+  state: duplicate
+execution_context:
+  phase: triage
+  current_gate: terminal
+  next_command: blocked
+  next_human_action: reference duplicated Work Item
+  next_reason: duplicate
+closure:
+  status: open

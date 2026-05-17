@@ -1,0 +1,18 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-PRD-001
+  title: Full PRD workflow child fixture
+  type: task
+  state: verification_required
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: parent-plan
+    approved_hash: child-implemented
+artifacts:
+  implementation:
+    status: completed
+  verification:
+    status: null
+closure:
+  status: verification_required

@@ -1,0 +1,28 @@
+id: sdd-engineering-change
+description: Engineering change work can require SDD approval and then either direct implementation or plan/decompose.
+work_item: GADD-L1-SDD
+steps:
+  - name: approved triage outcome routes to design
+    fixture: 01-needs-sdd
+    expect_next_command: /gadd:design GADD-L1-SDD
+    expect_next_human_action: none
+  - name: draft SDD routes to approval
+    fixture: 02-draft-sdd
+    expect_next_command: /gadd:approve GADD-L1-SDD
+    expect_next_human_action: /gadd:approve GADD-L1-SDD
+  - name: approved single-route SDD routes to implementation
+    fixture: 03-approved-single
+    expect_next_command: /gadd:implement GADD-L1-SDD
+    expect_next_human_action: none
+  - name: approved plan-required SDD routes to planning
+    fixture: 04-approved-plan-required
+    expect_next_command: /gadd:plan GADD-L1-SDD
+    expect_next_human_action: none
+  - name: draft plan routes to approval
+    fixture: 05-draft-plan
+    expect_next_command: /gadd:approve GADD-L1-SDD
+    expect_next_human_action: /gadd:approve GADD-L1-SDD
+  - name: approved plan routes to decomposition
+    fixture: 06-approved-plan
+    expect_next_command: /gadd:decompose GADD-L1-SDD
+    expect_next_human_action: none

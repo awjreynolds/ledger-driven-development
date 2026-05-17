@@ -51,7 +51,7 @@
   <rect class="bg" width="1800" height="1220"/>
 
   <text x="70" y="68" class="title">Where GADD fits within the Software Development Life Cycle</text>
-  <text x="70" y="110" class="subtitle">GADD governs the requirements-to-verified-implementation slice: intake, role-aware skills, approved artifacts, and evidence.</text>
+  <text x="70" y="110" class="subtitle">GADD (Governed Autonomy) governs requirements through verified closure: intake, role-aware skills, approved artifacts, evidence, and optional cleanup.</text>
 
   <g filter="url(#shadow)">
     <rect x="70" y="145" width="410" height="112" rx="20" class="mini"/>
@@ -125,7 +125,7 @@
   <text x="515" y="852" class="mono">/gadd:decompose</text>
   <text x="515" y="910" class="section">Outputs</text>
   <text x="615" y="910" class="mono">repo-scoped sdd.md</text>
-  <text x="515" y="938" class="mono">plan.md + plan.html</text>
+  <text x="515" y="938" class="mono">plan.md, plan.html, child Work Items</text>
 
   <text x="940" y="466" class="card-title">Software Engineering</text>
   <rect x="940" y="490" width="190" height="34" rx="17" class="pill-green"/>
@@ -155,20 +155,21 @@
   <text x="1365" y="733" class="section">GADD skills</text>
   <text x="1365" y="765" class="mono">/gadd:verify</text>
   <text x="1365" y="794" class="mono">/gadd:close</text>
-  <text x="1365" y="823" class="mono">/gadd:archive</text>
+  <text x="1365" y="823" class="mono">/gadd:archive optional</text>
   <text x="1365" y="910" class="section">Outputs</text>
   <text x="1465" y="910" class="mono">verification.md</text>
-  <text x="1365" y="938" class="body">closure readiness and closed ledger state</text>
+  <text x="1365" y="936" class="body">closure readiness and closed ledger state</text>
+  <text x="1365" y="960" class="body">optional archived storage state</text>
 
   <path d="M465 695 H485" class="arrow"/>
   <path d="M890 695 H910" class="arrow"/>
   <path d="M1315 695 H1335" class="arrow"/>
   <rect x="390" y="982" width="200" height="40" rx="20" class="gate"/>
   <text x="415" y="1008" class="small" fill="#065f46">PRD approval gate</text>
-  <rect x="790" y="982" width="235" height="40" rx="20" class="gate"/>
-  <text x="820" y="1008" class="small" fill="#065f46">SDD + plan approval gate</text>
-  <rect x="1225" y="982" width="198" height="40" rx="20" class="gate"/>
-  <text x="1250" y="1008" class="small" fill="#065f46">verification gate</text>
+  <rect x="790" y="982" width="250" height="40" rx="20" class="gate"/>
+  <text x="815" y="1008" class="small" fill="#065f46">SDD and plan approval gates</text>
+  <rect x="1210" y="982" width="250" height="40" rx="20" class="gate"/>
+  <text x="1235" y="1008" class="small" fill="#065f46">verification + closure gates</text>
 
   <g filter="url(#shadow)">
     <rect x="60" y="1045" width="1680" height="60" rx="21" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
@@ -182,6 +183,6 @@
   <text x="90" y="1160" class="bar-title">Canonical workflow state</text>
   <text x="405" y="1160" class="bar-body">repo-local </text>
   <text x="505" y="1160" class="mono">gadd/work-items/**/ledger.yml</text>
-  <text x="815" y="1160" class="bar-body">records Work Item type, route, approvals, evidence, external binding, and next action.</text>
+  <text x="815" y="1160" class="bar-body">records Work Item type, route, approvals, evidence, external binding, and next action; /gadd:next reads it.</text>
   <text x="90" y="1210" class="small">Outside this slice, release operations and long-term maintenance remain in the team's existing deployment, operations, and support processes.</text>
 </svg>

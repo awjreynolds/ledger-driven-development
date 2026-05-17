@@ -1,0 +1,28 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-PRD
+  title: Full PRD workflow fixture
+  type: product_requirement
+  state: planned
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: triage.md
+    approved_hash: prd-approved-plan
+artifacts:
+  prd:
+    path: prd.md
+    status: approved
+  sdd:
+    path: sdd.md
+    status: approved
+  plan:
+    path: plan.md
+    status: approved
+closure:
+  status: open
+execution_context:
+  phase: decompose
+  current_gate: decompose
+  next_command: /gadd:decompose GADD-L1-PRD
+  next_human_action: null

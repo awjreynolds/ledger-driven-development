@@ -1,0 +1,18 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-SDD
+  title: SDD engineering change fixture
+  type: engineering_change
+  state: designed
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: triage.md
+    approved_hash: sdd-plan-required
+artifacts:
+  sdd:
+    path: sdd.md
+    status: approved
+    implementation_route: plan_required
+closure:
+  status: open

@@ -1,0 +1,60 @@
+id: full-prd-workflow
+description: Product Requirement work moves through PRD discovery, PRD approval, design, plan approval, decomposition, child implementation, verification, and parent roll-up closure.
+work_item: GADD-L1-PRD
+steps:
+  - name: needs_prd without research routes to research
+    fixture: 01-needs-prd
+    expect_next_command: /gadd:research GADD-L1-PRD
+    expect_next_human_action: none
+  - name: research-ready work routes to scope
+    fixture: 02-researched
+    expect_next_command: /gadd:scope GADD-L1-PRD
+    expect_next_human_action: none
+  - name: scope draft routes to elaborate
+    fixture: 03-scope-draft
+    expect_next_command: /gadd:elaborate GADD-L1-PRD
+    expect_next_human_action: none
+  - name: elaborated draft routes to refine
+    fixture: 04-elaborated
+    expect_next_command: /gadd:refine GADD-L1-PRD
+    expect_next_human_action: none
+  - name: refined PRD routes to approval
+    fixture: 05-refined
+    expect_next_command: /gadd:approve GADD-L1-PRD
+    expect_next_human_action: /gadd:approve GADD-L1-PRD
+  - name: approved PRD routes to design
+    fixture: 06-prd-approved
+    expect_next_command: /gadd:design GADD-L1-PRD
+    expect_next_human_action: none
+  - name: draft SDD routes to approval
+    fixture: 07-draft-sdd
+    expect_next_command: /gadd:approve GADD-L1-PRD
+    expect_next_human_action: /gadd:approve GADD-L1-PRD
+  - name: approved SDD routes to planning
+    fixture: 08-sdd-approved
+    expect_next_command: /gadd:plan GADD-L1-PRD
+    expect_next_human_action: none
+  - name: draft plan routes to approval
+    fixture: 09-draft-plan
+    expect_next_command: /gadd:approve GADD-L1-PRD
+    expect_next_human_action: /gadd:approve GADD-L1-PRD
+  - name: approved plan without children routes to decomposition
+    fixture: 10-approved-plan
+    expect_next_command: /gadd:decompose GADD-L1-PRD
+    expect_next_human_action: none
+  - name: approved plan with ready child routes to child implementation
+    fixture: 11-child-ready
+    expect_next_command: /gadd:implement GADD-L1-PRD-001
+    expect_next_human_action: none
+  - name: implemented child routes to child verification
+    fixture: 12-child-implemented
+    expect_next_command: /gadd:verify GADD-L1-PRD-001
+    expect_next_human_action: none
+  - name: verified child routes to child closure
+    fixture: 13-child-verified
+    expect_next_command: /gadd:close GADD-L1-PRD-001
+    expect_next_human_action: human-approved closure
+  - name: closeable children route parent to roll-up closure
+    fixture: 14-parent-rollup
+    expect_next_command: /gadd:close GADD-L1-PRD
+    expect_next_human_action: human-approved parent roll-up closure

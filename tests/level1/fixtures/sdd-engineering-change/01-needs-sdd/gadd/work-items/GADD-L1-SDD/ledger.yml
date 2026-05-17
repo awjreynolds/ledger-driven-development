@@ -1,0 +1,16 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-SDD
+  title: SDD engineering change fixture
+  type: engineering_change
+  state: needs_sdd
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: triage.md
+    approved_hash: sdd-needs-design
+artifacts:
+  sdd:
+    status: null
+closure:
+  status: open

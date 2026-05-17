@@ -1,0 +1,18 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-DIRECT
+  title: Direct implementation fixture
+  type: bug_fix
+  state: ready_for_implementation
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: triage.md
+    approved_hash: direct-ready
+artifacts:
+  implementation:
+    status: null
+  verification:
+    status: null
+closure:
+  status: open

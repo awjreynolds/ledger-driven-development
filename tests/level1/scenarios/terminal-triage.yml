@@ -1,0 +1,16 @@
+id: terminal-triage
+description: Terminal triage outcomes remain blocked terminal states and do not invent downstream work.
+work_item: GADD-L1-TERMINAL
+steps:
+  - name: duplicate remains terminal
+    fixture: 01-duplicate
+    expect_next_command: blocked
+    expect_next_human_action: reference duplicated Work Item
+  - name: out of scope remains terminal
+    fixture: 02-out-of-scope
+    expect_next_command: blocked
+    expect_next_human_action: confirm recorded scope reason
+  - name: not GADD work remains terminal
+    fixture: 03-not-gadd-work
+    expect_next_command: blocked
+    expect_next_human_action: confirm request is not GADD-governed

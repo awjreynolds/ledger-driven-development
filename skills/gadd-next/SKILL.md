@@ -102,7 +102,7 @@ If `work_item.state: needs_prd`, route to `/gadd:research <work-item-id>` when r
 
 If `work_item.state: blocked_on_human_decision`, report no downstream command, set `next_command: blocked`, and name the recorded human decision required before `/gadd:triage <work-item-id>` can continue.
 
-If `work_item.state` is `duplicate`, `out_of_scope`, or `not_gadd_work`, report no implementation command and show the recorded terminal reason.
+If `work_item.state` is `duplicate`, `out_of_scope`, or `not_gadd_work`, report `next_command: blocked`, show the recorded terminal reason, and do not invent a downstream `/gadd:*` command.
 
 ## Report Contract
 
@@ -159,9 +159,11 @@ If no ledger exists:
   next: /gadd:setup
 Else if draft PRD exists:
   route to the owning phase by execution_context.phase: scope -> /gadd:scope, elaborate -> /gadd:elaborate, refine -> /gadd:refine. Do not route a scope or elaborate draft to /gadd:approve; see Approval Gate Detection for the exact PRD-approval condition
-Else if parent Work Item is closed, externally closed, archived, or done:
+Else if parent Work Item is archived or done:
   done
-  optional_cleanup_command: /gadd:archive <parent-work-item-id> only when the Work Item is closed in the active tree and the human wants local cleanup
+Else if parent Work Item is closed or externally closed:
+  done
+  optional_cleanup_command: /gadd:archive <parent-work-item-id> only when the Work Item is still in the active tree and the human wants local cleanup
 Else if parent has children and every child is verified and closeable or already closed:
   next: /gadd:close <parent-work-item-id>
 Else if any active child is verified but not closed or archived:

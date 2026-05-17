@@ -1,0 +1,24 @@
+id: direct-implementation
+description: Direct implementation work moves from approved triage to implementation, verification, closure, and optional archive cleanup.
+work_item: GADD-L1-DIRECT
+steps:
+  - name: approved triage routes to implementation
+    fixture: 01-ready
+    expect_next_command: /gadd:implement GADD-L1-DIRECT
+    expect_next_human_action: none
+  - name: implementation evidence routes to verification
+    fixture: 02-implemented
+    expect_next_command: /gadd:verify GADD-L1-DIRECT
+    expect_next_human_action: none
+  - name: passed verification routes to closure
+    fixture: 03-verified
+    expect_next_command: /gadd:close GADD-L1-DIRECT
+    expect_next_human_action: human-approved closure
+  - name: closed direct work is complete
+    fixture: 04-closed
+    expect_next_command: done
+    expect_optional_cleanup_command: /gadd:archive GADD-L1-DIRECT
+  - name: archived direct work is complete with no cleanup command
+    fixture: 05-archived
+    expect_next_command: done
+    expect_optional_cleanup_command: absent

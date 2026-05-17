@@ -1,0 +1,16 @@
+schema_version: 1
+work_item:
+  id: GADD-L1-PRD
+  title: Full PRD workflow fixture
+  type: product_requirement
+  state: needs_prd
+triage:
+  approved_outcome:
+    status: approved
+    boundary_source: triage.md
+    approved_hash: prd-needs-research
+artifacts:
+  research:
+    status: null
+closure:
+  status: open
