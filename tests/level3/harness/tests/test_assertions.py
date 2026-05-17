@@ -56,6 +56,55 @@ class Level3AssertionTests(unittest.TestCase):
 
             self.assertEqual([], findings)
 
+    def test_transcript_contains_required_text(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            transcript = root / "transcript.md"
+            transcript.write_text("Drift detected. Reconciliation required before update.\n", encoding="utf-8")
+            result = AgentExecutionResult(0, transcript, None, None, [], 0.1)
+
+            findings = evaluate_expectations(root, result, [{"transcript_contains": "Reconciliation required"}], LocalTracker(root))
+
+            self.assertEqual([], findings)
+
+    def test_artifact_quality_reuses_level2_rubric(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            path = root / "gadd/work-items/BUG-0001/triage.md"
+            path.parent.mkdir(parents=True)
+            path.write_text(
+                "# Triage\n\n"
+                "## Source\nLocal tracker issue.\n\n"
+                "## Reproduction\nRun npm test.\n\n"
+                "## GitNexus Evidence\nOne affected symbol.\n\n"
+                "## Route Decision\nready_for_implementation\n\n"
+                "## Verification\nRun npm test.\n",
+                encoding="utf-8",
+            )
+            transcript = root / "transcript.md"
+            transcript.write_text("Created triage artifact.\n", encoding="utf-8")
+            result = AgentExecutionResult(0, transcript, None, None, [], 0.1)
+
+            findings = evaluate_expectations(
+                root,
+                result,
+                [{"artifacts_pass_quality": [{"path": "gadd/work-items/BUG-0001/triage.md", "kind": "triage"}]}],
+                LocalTracker(root),
+            )
+
+            self.assertEqual([], findings)
+
+    def test_secret_like_transcript_fails(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            transcript = root / "transcript.md"
+            transcript.write_text("GH_TOKEN=ghp_abcdefghijklmnopqrstuvwxyz123456\n", encoding="utf-8")
+            result = AgentExecutionResult(0, transcript, None, None, [], 0.1)
+
+            findings = evaluate_expectations(root, result, [{"transcript_safe": True}], LocalTracker(root))
+
+            self.assertEqual(["token-like value detected"], [finding.message for finding in findings])
+
 
 if __name__ == "__main__":
     unittest.main()
