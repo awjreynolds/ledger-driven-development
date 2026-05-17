@@ -343,4 +343,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"GADD Level 2 GitHub scenarios evaluated for run {config.run_id}: {summarize_findings(findings)}")
     print(f"Manifest: {manifest_path(config.run_id)}")
     print(f"Issues: {len(manifest['issues'])}")
+    if config.cleanup in {"success", "always"} and not findings:
+        from tests.level2.harness.cleanup_level2 import cleanup_run
+
+        cleanup_run(config.run_id)
     return fail_on_quality_findings(findings)
