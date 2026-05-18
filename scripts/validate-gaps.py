@@ -175,8 +175,9 @@ def semantic_checks(spec: Any, source: Path) -> list[str]:
         errors.append("$.standardsAlignment: stale field; use standards_alignment")
     if "standards_alignment" not in spec:
         errors.append("$.standards_alignment: missing required field")
-    elif "standard_aliases" not in spec["standards_alignment"]:
-        errors.append("$.standards_alignment.standard_aliases: missing required field")
+    elif isinstance(spec["standards_alignment"], dict):
+        if "standard_aliases" not in spec["standards_alignment"]:
+            errors.append("$.standards_alignment.standard_aliases: missing required field")
 
     require_non_empty_object(spec, "roles", errors)
     require_non_empty_object(spec, "lanes", errors)

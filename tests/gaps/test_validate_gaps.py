@@ -80,6 +80,17 @@ class ValidateGapsTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("standards_alignment", result.stderr)
 
+    def test_malformed_standards_alignment_fails_without_traceback(self) -> None:
+        def mutate(data: dict) -> None:
+            data["standards_alignment"] = None
+
+        spec = self.write_invalid_spec(mutate)
+        result = self.run_validator(spec)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("GAPS validation failed:", result.stderr)
+        self.assertIn("$.standards_alignment", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
