@@ -2,7 +2,7 @@
 
 This page collects adjacent standards, principles, research, and market writing that informed the Governed Autonomy documentation.
 
-Governed Autonomy is not presented here as an exclusively owned term or a wholly new philosophy. The phrase and related ideas already appear in AI-governance discussions, and its ingredients already exist across business process management, Responsible AI, risk management, auditability, operating model design, and human oversight. The distinctive emphasis in this repository is the business process as the unit of design under AI autonomy pressure.
+Governed Autonomy is not presented here as an exclusively owned term or a new philosophy. The phrase and related ideas already appear in AI-governance discussions, and its ingredients already exist across business process management, Responsible AI, risk management, auditability, operating model design, and human oversight. The distinctive emphasis in this repository is the business process as the unit of design under AI autonomy pressure.
 
 ## Standards And Principles
 
