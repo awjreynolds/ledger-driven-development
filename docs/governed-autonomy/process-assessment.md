@@ -89,3 +89,9 @@ Measure both efficiency and control. Without the second half, the first half eat
 - user or citizen satisfaction
 - cost-to-serve
 - audit findings
+
+## Read next
+
+- [Uncontrolled AI risk patterns](uncontrolled-ai-risk-patterns.md) explains the risks to look for during assessment.
+- [Case study: GADD](case-study-gadd.md) shows the assessment ideas applied to software delivery.
+- [Governed Autonomy overview](README.md) returns to the main section index.

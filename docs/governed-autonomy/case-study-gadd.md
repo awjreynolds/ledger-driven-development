@@ -58,3 +58,9 @@ External planning and review tools (GitHub Issues, Jira, Linear, Asana, and simi
 ## What this shows
 
 GADD is one demonstration of the pattern in a domain where, left alone, autonomous execution tends to collapse planning, design, implementation, and review into a single chat loop. The point isn't software-specific. A process becomes safer to delegate when its roles, boundaries, evidence requirements, escalation conditions, approval gates, and canonical state are defined *before* execution accelerates, not after.
+
+## Read next
+
+- [Related landscape](related-landscape.md) positions Governed Autonomy alongside adjacent AI and process-governance disciplines.
+- [References](references.md) lists the standards, research, and market writing that informed the framing.
+- [Governed Autonomy overview](README.md) returns to the main section index.

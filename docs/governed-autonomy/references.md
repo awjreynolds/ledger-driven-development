@@ -23,3 +23,9 @@ Adjacent standards, principles, research, and market writing that informed the G
 ## Market direction
 
 - [SAP: The future enterprise is autonomous](https://news.sap.com/2026/05/future-enterprise-autonomous/) - Vendor framing around agents anchored in business processes, governance, approval flows, compliance, identity, and auditability.
+
+## Read next
+
+- [Related landscape](related-landscape.md) explains how these references relate to Governed Autonomy.
+- [Case study: GADD](case-study-gadd.md) shows one concrete application of the framing.
+- [Governed Autonomy overview](README.md) returns to the main section index.

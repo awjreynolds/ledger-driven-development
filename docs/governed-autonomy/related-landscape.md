@@ -27,3 +27,9 @@ Business analysis and process improvement supply the practical vocabulary the re
 ## Distinction
 
 The unit of design here is the business process, and the question being asked is how autonomous systems participate in it without dissolving human accountability, evidence, escalation, and approval. Controls, decision rights, evidence, and escalation are not invented here. What's specific to this work is making them operational together once an AI system can move from recommendation to action inside a real process.
+
+## Read next
+
+- [References](references.md) lists the standards, research, and market writing that informed this landscape.
+- [Operating model](operating-model.md) turns the landscape into a practical process-design model.
+- [Governed Autonomy overview](README.md) returns to the main section index.
