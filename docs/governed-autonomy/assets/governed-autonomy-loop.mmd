@@ -1,0 +1,9 @@
+flowchart LR
+  A[Map the process] --> B[Define delegation boundary]
+  B --> C[Autonomous execution]
+  C --> D[Capture evidence]
+  D --> E{Boundary reached?}
+  E -- No --> F[Measure outcome]
+  E -- Yes --> G[Escalate or approve]
+  G --> C
+  F --> A
