@@ -2,6 +2,48 @@ schemaVersion: "0.1"
 status: exploratory
 formatWarning: "GAPS v0.1 is not stable. This file is a reference process, not a formal schema or compliance artifact."
 
+standards_alignment:
+  posture: "GAPS is a Governed Autonomy profile, not a replacement for BPMN, CMMN, DMN, or OSCAL."
+  compatible_concepts:
+    - standard: bpmn
+      applies_to:
+        - process states
+        - governed transitions
+        - phase gates
+      status: candidate
+    - standard: dmn
+      applies_to:
+        - route decisions
+        - approval conditions
+        - triage state selection
+      status: candidate
+    - standard: oscal
+      applies_to:
+        - control mappings
+        - evidence references
+        - implementation status
+      status: candidate
+  standard_aliases:
+    - concept: phase gate
+      aliases:
+        - standard: bpmn
+          term: gateway
+        - standard: gaps
+          term: gate
+      status: name_review_pending
+    - concept: evidence reference
+      aliases:
+        - standard: oscal
+          term: evidence
+        - standard: gaps
+          term: evidence
+      status: candidate
+  gaps_extensions:
+    - autonomy_tier
+    - authority_plane
+    - drift_freshness
+    - governed_autonomy_risk_patterns
+
 process:
   id: gadd
   name: Governed Autonomy for Software Delivery
@@ -22,32 +64,6 @@ process:
       - deployment operations
       - long-term maintenance operations
       - non-software business processes
-  standardsAlignment:
-    posture: "GAPS is a Governed Autonomy profile, not a replacement for BPMN, CMMN, DMN, or OSCAL."
-    compatibleConcepts:
-      - standard: bpmn
-        appliesTo:
-          - process states
-          - governed transitions
-          - phase gates
-        status: candidate
-      - standard: dmn
-        appliesTo:
-          - route decisions
-          - approval conditions
-          - triage state selection
-        status: candidate
-      - standard: oscal
-        appliesTo:
-          - control mappings
-          - evidence references
-          - implementation status
-        status: candidate
-    gapsExtensions:
-      - autonomy_tier
-      - authority_plane
-      - drift_freshness
-      - governed_autonomy_risk_patterns
 
 canonicalState:
   source: repo-local-ledger
