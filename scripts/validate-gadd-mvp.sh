@@ -40,8 +40,13 @@ tests/level2/scenarios/next-smoke.yml
 docs/assets/gadd-sdlc-workflow.svg
 docs/assets/gadd-sdlc-workflow.source.svg
 docs/assets/gadd-sdlc-workflow.png
+gaps/README.md
+gaps/schema/ga-process.schema.json
+gaps/examples/gadd/ga-process.yml
+gaps/examples/compliance-review/ga-process.yml
 gadd/work-items/_drafts/.gitkeep
 gadd/work-items/_archive/.gitkeep
+scripts/validate-gaps.py
 '
 
 for command in $commands; do
@@ -546,6 +551,7 @@ python3 scripts/validate-gadd-level1.py
 python3 scripts/run-gadd-level2.py --runner fixture-next
 python3 scripts/run-gadd-level3.py --adapter scripted --tracker local --case approval-gate-stop
 python3 scripts/validate-gadd-docs.py
+python3 scripts/validate-gaps.py
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then
   echo "GADD command package must not depend on external skills" >&2

@@ -708,6 +708,7 @@ controlMappings:
   - source: NIST AI RMF
     controlId: GOVERN
     mappingStatus: candidate
+    implementationStatus: partial
     reviewStatus: unreviewed
     evidenceReferences:
       - case-record.yml
@@ -717,6 +718,7 @@ controlMappings:
   - source: ISO/IEC 42001
     controlId: Annex A
     mappingStatus: candidate
+    implementationStatus: unreviewed
     reviewStatus: unreviewed
     evidenceReferences:
       - autonomy-boundary-register
@@ -725,6 +727,7 @@ controlMappings:
   - source: OSCAL
     controlId: assessment-results
     mappingStatus: reviewed
+    implementationStatus: structural_alignment_only
     reviewStatus: process-owner-reviewed
     evidenceReferences:
       - controlMappings
@@ -734,6 +737,7 @@ controlMappings:
   - source: Local compliance policy
     controlId: deadline-and-delegation-matrix
     mappingStatus: unmapped
+    implementationStatus: not_bound_to_local_policy
     reviewStatus: pending-policy-owner-review
     evidenceReferences: []
     note: "Placeholder for local policy mapping; no local policy compliance is claimed."

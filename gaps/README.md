@@ -6,15 +6,17 @@ GADD is the concrete software-delivery methodology. GAPS is the emerging profile
 
 ## Status
 
-GAPS v0.1 is exploratory.
+GAPS remains exploratory. The current incubating validation profile is built from two reference processes.
 
-The current v0.1 surface is intentionally small:
+The current surface is intentionally small:
 
 - `examples/gadd/ga-process.yml` expresses GADD as the first reference process.
 - `examples/compliance-review/ga-process.yml` expresses a second, unlike casework reference process.
+- `schema/ga-process.schema.json` defines the exploratory machine-readable shape.
+- `../scripts/validate-gaps.py` validates reference processes against the schema and GAPS-specific semantic checks.
 - This README explains the incubation model and boundaries.
 
-There is no GAPS schema, validator, command suite, generator, or runtime target yet.
+There is no GAPS command suite, generator, BPMN/CMMN/DMN/OSCAL exporter, or runtime target yet.
 
 ## Relationship to existing standards
 
@@ -67,7 +69,20 @@ The second reference process is intentionally unlike GADD.
 
 The compliance review example stresses adaptive case flow, long-running state, statutory or policy deadlines, named human identities, multiple authority levels, budget or resource gates, and event-driven escalation.
 
+## Validation
+
+Run:
+
+```bash
+python3 scripts/validate-gaps.py
+```
+
+The validator checks every `gaps/examples/*/ga-process.yml` file against `gaps/schema/ga-process.schema.json` and GAPS-specific semantic rules.
+
+Validator success means the reference processes conform to this repository's current exploratory GAPS profile. It is not regulatory compliance, certification, proof of executable correctness, legal sufficiency, or a BPMN/CMMN/DMN/OSCAL export.
+
 ## Files
 
 - `examples/gadd/ga-process.yml` - GADD as the first GAPS reference process.
 - `examples/compliance-review/ga-process.yml` - Compliance review casework as the second GAPS reference process.
+- `schema/ga-process.schema.json` - Exploratory schema for the GAPS process profile.
