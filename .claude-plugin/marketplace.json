@@ -1,6 +1,6 @@
 {
   "name": "gadd",
-  "description": "GADD governed autonomy plugin marketplace.",
+  "description": "GADD governed autonomy and GAPS validation plugin marketplace.",
   "version": "0.1.0",
   "owner": {
     "name": "awjreynolds"
@@ -9,7 +9,7 @@
     {
       "name": "gadd",
       "source": "./",
-      "description": "GADD governed autonomy workflow skills for repo-local ledgers, verification gates, and optional external trackers.",
+      "description": "GADD governed autonomy workflow skills with GAPS process specification validation.",
       "version": "0.1.0",
       "author": {
         "name": "awjreynolds"
@@ -24,7 +24,8 @@
         "planning",
         "prd",
         "sdd",
-        "verification"
+        "verification",
+        "gaps"
       ]
     }
   ]
