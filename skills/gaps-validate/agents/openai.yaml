@@ -1,0 +1,7 @@
+interface:
+  display_name: "GAPS Validate"
+  short_description: "Validate GAPS specs and implementation maps"
+  default_prompt: "Use $gaps-validate to validate the GAPS specs and GADD implementation map."
+
+policy:
+  allow_implicit_invocation: true

@@ -17,6 +17,8 @@
     "/gadd:implement",
     "/gadd:verify",
     "/gadd:close",
-    "/gadd:archive"
+    "/gadd:archive",
+    "/gaps:author",
+    "/gaps:validate"
   ]
 }

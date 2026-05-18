@@ -3,7 +3,7 @@
   "name": "gadd",
   "displayName": "GADD",
   "version": "0.1.0",
-  "description": "Governed Autonomy skills for product, design, planning, decomposition, implementation, verification, and closure handoffs.",
+  "description": "Governed Autonomy skills for product, design, planning, decomposition, implementation, verification, closure handoffs, and GAPS process specification validation.",
   "license": "MIT",
   "repository": "https://github.com/awjreynolds/gadd",
   "canonicalSkillRoot": "skills",
@@ -101,6 +101,18 @@
       "skill": "gadd-archive",
       "path": "skills/gadd-archive",
       "purpose": "Optionally archive closed GADD Work Item files after workflow closure."
+    },
+    {
+      "command": "/gaps:author",
+      "skill": "gaps-author",
+      "path": "skills/gaps-author",
+      "purpose": "Author or revise a GAPS process specification from an existing governed process."
+    },
+    {
+      "command": "/gaps:validate",
+      "skill": "gaps-validate",
+      "path": "skills/gaps-validate",
+      "purpose": "Validate GAPS process specifications and implementation maps."
     }
   ],
   "adapters": {
@@ -112,13 +124,13 @@
       "type": "claude-code-plugin",
       "pluginManifest": ".claude-plugin/plugin.json",
       "marketplaceManifest": ".claude-plugin/marketplace.json",
-      "commands": "commands/gadd/*.md"
+      "commands": "commands/{gadd,gaps}/*.md"
     },
     "gemini": {
       "type": "gemini-cli-extension",
       "extensionManifest": "gemini-extension.json",
       "context": "GEMINI.md",
-      "commands": "commands/gadd/*.toml"
+      "commands": "commands/{gadd,gaps}/*.toml"
     }
   }
 }

@@ -1,0 +1,7 @@
+interface:
+  display_name: "GAPS Author"
+  short_description: "Author a GAPS process spec"
+  default_prompt: "Use $gaps-author to express a governed process as a GAPS ga-process.yml file."
+
+policy:
+  allow_implicit_invocation: true

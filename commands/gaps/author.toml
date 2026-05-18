@@ -1,0 +1,9 @@
+description = "Author or revise a GAPS process specification."
+prompt = """
+Run `/gaps:author` using the `gaps-author` Agent Skill.
+
+If the `gaps-author` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
+
+User arguments:
+{{args}}
+"""

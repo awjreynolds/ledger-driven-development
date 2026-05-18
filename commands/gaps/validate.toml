@@ -1,0 +1,9 @@
+description = "Validate GAPS process specs and implementation maps."
+prompt = """
+Run `/gaps:validate` using the `gaps-validate` Agent Skill.
+
+If the `gaps-validate` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
+
+User arguments:
+{{args}}
+"""
