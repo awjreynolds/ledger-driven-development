@@ -1,0 +1,181 @@
+schemaVersion: "0.1"
+processSpec: gaps/examples/gadd/ga-process.yml
+processId: gadd
+implementationType: agent_skill_package
+packageManifest: agent-skills.json
+skillsRoot: skills
+commandsRoot: commands
+
+adapterManifests:
+  claude: .claude-plugin/plugin.json
+  gemini: gemini-extension.json
+
+validators:
+  - scripts/validate-gaps.py
+  - scripts/validate-gaps-implementation.py
+  - scripts/validate-gadd-mvp.sh
+
+globalSkillContract:
+  requiredSections:
+    - Input Quality Gate
+    - Rules
+    - Stop Conditions
+  requiredPhrases:
+    - Repo-local ledger is canonical
+    - External mutations require human confirmation
+
+laneImplementations:
+  intake:
+    commands:
+      - /gadd:triage
+      - /gadd:next
+    skills:
+      - gadd-triage
+      - gadd-next
+    gates:
+      - triage_route
+    authorityPhrases:
+      - GitNexus evidence
+      - external mutations require human confirmation
+      - approved triage outcome
+    evidencePhrases:
+      - Work Item ledger
+      - approved triage outcome
+      - next command
+    requiredSkillSections:
+      - Input Quality Gate
+      - Rules
+      - Stop Conditions
+
+  product_requirement:
+    commands:
+      - /gadd:research
+      - /gadd:scope
+      - /gadd:elaborate
+      - /gadd:refine
+      - /gadd:approve
+    skills:
+      - gadd-research
+      - gadd-scope
+      - gadd-elaborate
+      - gadd-refine
+      - gadd-approve
+    gates:
+      - prd_approval
+    authorityPhrases:
+      - Product Manager boundary
+      - approved PRD
+      - Run /gadd:approve <work-item-id> to approve this PRD
+    evidencePhrases:
+      - approved PRD
+      - approval-invalidated event
+      - explicit uncertainties
+    requiredSkillSections:
+      - Input Quality Gate
+      - Rules
+      - Stop Conditions
+
+  technical_design:
+    commands:
+      - /gadd:design
+      - /gadd:plan
+      - /gadd:decompose
+      - /gadd:approve
+    skills:
+      - gadd-design
+      - gadd-plan
+      - gadd-decompose
+      - gadd-approve
+    gates:
+      - sdd_approval
+      - plan_approval
+    authorityPhrases:
+      - SDD approval must be recorded through `/gadd:approve <work-item-id>`
+      - Stop at explicit plan approval through `/gadd:approve <work-item-id>`
+      - Decompose only from an approved plan
+    evidencePhrases:
+      - approved SDD
+      - approved plan
+      - child Work Items
+    requiredSkillSections:
+      - Input Quality Gate
+      - Rules
+      - Stop Conditions
+
+  implementation:
+    commands:
+      - /gadd:implement
+    skills:
+      - gadd-implement
+    gates:
+      - implementation_boundary
+    authorityPhrases:
+      - approved boundary
+      - Do not close external Work Item projections
+      - Do not archive Work Items
+    evidencePhrases:
+      - implementation evidence
+      - check evidence
+      - documentation impact
+    requiredSkillSections:
+      - Input Quality Gate
+      - Built-in TDD Loop
+      - Rules
+      - Stop Conditions
+
+  review_and_closure:
+    commands:
+      - /gadd:verify
+      - /gadd:close
+      - /gadd:archive
+    skills:
+      - gadd-verify
+      - gadd-close
+      - gadd-archive
+    gates:
+      - verification
+      - closure
+    authorityPhrases:
+      - Work Item closure
+      - human-approved closure
+      - No external tracker writes are allowed
+    evidencePhrases:
+      - verification.md
+      - work_item_closed
+      - work_item_archived
+    requiredSkillSections:
+      - Input Quality Gate
+      - Rules
+      - Stop Conditions
+
+controlPlaneImplementations:
+  - action: /gadd:setup
+    command: /gadd:setup
+    skill: gadd-setup
+    requiredPhrases:
+      - Bootstrap the current target repository
+      - GitNexus is expected for normal GADD operation
+  - action: /gadd:approve
+    command: /gadd:approve
+    skill: gadd-approve
+    requiredPhrases:
+      - Approve exactly one PRD, SDD, or plan gate
+      - exactly one approval gate is active
+  - action: /gadd:close
+    command: /gadd:close
+    skill: gadd-close
+    requiredPhrases:
+      - Apply closure for one verified Work Item
+      - External mutations require human confirmation
+
+conformance:
+  status: implemented_profile
+  claim: "GADD is implemented as a GAPS-described agent skill package in this repository."
+  nonClaims:
+    - regulatory compliance
+    - certification
+    - legal sufficiency
+    - BPMN export
+    - CMMN export
+    - DMN export
+    - OSCAL export

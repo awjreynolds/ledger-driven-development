@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/awjreynolds/gadd/gaps/schema/implementation.schema.json",
+  "title": "GAPS Implementation Map",
+  "description": "Exploratory schema for mapping a GAPS process specification to concrete implementation artifacts. This is not a runtime execution contract or compliance claim.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "processSpec",
+    "processId",
+    "implementationType",
+    "packageManifest",
+    "skillsRoot",
+    "commandsRoot",
+    "adapterManifests",
+    "validators",
+    "laneImplementations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["0.1"]
+    },
+    "processSpec": {
+      "type": "string"
+    },
+    "processId": {
+      "type": "string"
+    },
+    "implementationType": {
+      "type": "string",
+      "enum": ["agent_skill_package"]
+    },
+    "packageManifest": {
+      "type": "string"
+    },
+    "skillsRoot": {
+      "type": "string"
+    },
+    "commandsRoot": {
+      "type": "string"
+    },
+    "adapterManifests": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": ["claude", "gemini"]
+    },
+    "validators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "globalSkillContract": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "laneImplementations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["commands", "skills", "gates"],
+        "properties": {
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authorityPhrases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidencePhrases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredSkillSections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "controlPlaneImplementations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["action", "command", "skill"],
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "skill": {
+            "type": "string"
+          },
+          "requiredPhrases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "conformance": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["status", "claim", "nonClaims"],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "nonClaims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
