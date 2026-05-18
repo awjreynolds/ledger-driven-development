@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520" role="img" aria-labelledby="title desc">
+  <title id="title">Uncontrolled AI compared with Governed Autonomy</title>
+  <desc id="desc">Uncontrolled AI has chat-held state, role collapse, evidence drift, tool sprawl, and accountability gaps. Governed Autonomy has canonical state, explicit roles and decision rights, required evidence, projection surfaces, and named human accountability.</desc>
+  <defs>
+    <style>
+      .group{fill:#fff;stroke:#333;stroke-width:2}
+      .item{fill:#f8f8f8;stroke:#333;stroke-width:1.5}
+      .heading{font-family:Arial,Helvetica,sans-serif;font-size:24px;font-weight:bold;fill:#111;text-anchor:middle}
+      .label{font-family:Arial,Helvetica,sans-serif;font-size:16px;fill:#111;text-anchor:middle}
+    </style>
+  </defs>
+  <rect class="group" x="40" y="40" width="410" height="430" rx="4"/>
+  <text class="heading" x="245" y="82">Uncontrolled AI</text>
+  <rect class="item" x="85" y="115" width="320" height="48" rx="4"/>
+  <text class="label" x="245" y="145">Chat holds process state</text>
+  <rect class="item" x="85" y="180" width="320" height="48" rx="4"/>
+  <text class="label" x="245" y="210">Roles collapse</text>
+  <rect class="item" x="85" y="245" width="320" height="48" rx="4"/>
+  <text class="label" x="245" y="275">Evidence drifts</text>
+  <rect class="item" x="85" y="310" width="320" height="48" rx="4"/>
+  <text class="label" x="245" y="340">Tools sprawl</text>
+  <rect class="item" x="85" y="375" width="320" height="48" rx="4"/>
+  <text class="label" x="245" y="405">Accountability gaps</text>
+  <rect class="group" x="530" y="40" width="410" height="430" rx="4"/>
+  <text class="heading" x="735" y="82">Governed Autonomy</text>
+  <rect class="item" x="575" y="115" width="320" height="48" rx="4"/>
+  <text class="label" x="735" y="145">Process has canonical state</text>
+  <rect class="item" x="575" y="180" width="320" height="48" rx="4"/>
+  <text class="label" x="735" y="200"><tspan x="735">Roles and decision rights</tspan><tspan x="735" dy="18">stay explicit</tspan></text>
+  <rect class="item" x="575" y="245" width="320" height="48" rx="4"/>
+  <text class="label" x="735" y="265"><tspan x="735">Evidence is required</tspan><tspan x="735" dy="18">at each step</tspan></text>
+  <rect class="item" x="575" y="310" width="320" height="48" rx="4"/>
+  <text class="label" x="735" y="340">Systems are projection surfaces</text>
+  <rect class="item" x="575" y="375" width="320" height="48" rx="4"/>
+  <text class="label" x="735" y="395"><tspan x="735">Human accountability</tspan><tspan x="735" dy="18">remains named</tspan></text>
+</svg>

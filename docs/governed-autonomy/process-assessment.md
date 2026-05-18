@@ -33,6 +33,8 @@ For each decision, ask:
 
 ## 3. Classify Autonomy Level
 
+![Business process autonomy ladder](assets/business-process-autonomy-ladder.svg)
+
 Use a simple ladder:
 
 | Level | Pattern | Human role |

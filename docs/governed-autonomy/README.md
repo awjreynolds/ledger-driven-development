@@ -30,6 +30,8 @@ The work is to understand the process, decide where autonomy can participate, an
 
 ## What Must Stay Governed
 
+![Governed Autonomy loop](assets/governed-autonomy-loop.svg)
+
 - Purpose: what the process is trying to achieve.
 - Authority: who or what is allowed to act.
 - Scope: what is inside and outside the delegated work.

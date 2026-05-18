@@ -2,6 +2,8 @@
 
 Governed Autonomy exists because uncontrolled AI does not merely produce bad answers. It can alter business processes faster than organizations can inspect, explain, or control.
 
+![Uncontrolled AI compared with Governed Autonomy](assets/uncontrolled-ai-vs-governed-autonomy.svg)
+
 These patterns are warning signs that autonomy is escaping the process design.
 
 ## Chat As A Control Plane
