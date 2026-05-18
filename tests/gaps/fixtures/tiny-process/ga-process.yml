@@ -1,0 +1,145 @@
+schemaVersion: "0.1"
+status: exploratory
+formatWarning: "GAPS v0.1 is not stable. This file is a generator fixture, not a compliance artifact."
+
+standards_alignment:
+  posture: "Generator fixture aligned with GAPS vocabulary only."
+  compatible_concepts:
+    - standard: bpmn
+      applies_to:
+        - simple lanes
+        - gates
+      status: candidate
+  standard_aliases:
+    - concept: gate
+      aliases:
+        - standard: bpmn
+          term: gateway
+        - standard: gaps
+          term: gate
+      status: candidate
+  gaps_extensions:
+    - autonomy_tier
+    - authority_plane
+
+process:
+  id: tiny_process
+  name: Tiny Process
+  purpose: "Exercise GAPS generator output with a small governed process."
+  scope:
+    includes:
+      - fixture intake
+      - fixture review
+    excludes:
+      - production operation
+
+canonicalState:
+  source: fixture-ledger
+  projectionRule: "Generated artifacts are proposed implementation surfaces."
+
+freshness:
+  reviewedAt: "2026-05-18"
+  driftPolicy: "Regenerate preview artifacts when this fixture changes."
+
+roles:
+  process_owner:
+    label: Fixture owner
+    decisionRights:
+      - approve generated package adoption
+  reviewer:
+    label: Fixture reviewer
+    decisionRights:
+      - validate fixture output
+
+autonomyVocabulary:
+  tiers:
+    - assist
+    - recommend
+    - draft
+    - execute_with_approval
+    - execute_within_limits
+    - autonomous_with_monitoring
+  riskTiers:
+    - low
+    - medium
+    - high
+    - human_only
+  gateTypes:
+    - advisory
+    - validating
+    - blocking
+    - escalating
+  authorityPlanes:
+    - data_plane
+    - control_plane
+
+lanes:
+  intake:
+    purpose: Capture and normalize fixture work.
+    autonomousResponsibilities:
+      - draft intake summary
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: low
+      allowed:
+        - draft fixture notes
+      prohibited:
+        - approve fixture work
+    evidence:
+      input:
+        - fixture request
+      completion:
+        - intake summary
+    gates:
+      - id: intake_review
+        gateType: validating
+        approvalRole: process_owner
+        approvalCondition: "Fixture owner accepts intake summary."
+        escalationCondition: "Fixture scope is unclear."
+
+  review:
+    purpose: Review fixture output.
+    autonomousResponsibilities:
+      - draft review note
+    authority:
+      plane: data_plane
+      autonomyTier: recommend
+      riskTier: medium
+      allowed:
+        - recommend validation outcome
+      prohibited:
+        - close fixture without reviewer decision
+    evidence:
+      input:
+        - intake summary
+      completion:
+        - review note
+    gates:
+      - id: review_approval
+        gateType: blocking
+        approvalRole: reviewer
+        approvalCondition: "Reviewer approves fixture output."
+        escalationCondition: "Fixture output is inconsistent."
+
+controlPlaneActions:
+  - command: /tiny:setup
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Initializes fixture package state."
+
+governedAutonomyRiskPatterns:
+  unbounded_delegation:
+    mitigation: "Generated skills include boundaries and stop conditions."
+
+controlMappings:
+  - source: fixture
+    controlId: generator-fixture
+    mappingStatus: unmapped
+    implementationStatus: not_applicable
+    evidenceReferences: []
+
+knownGaps:
+  - id: fixture-only
+    summary: "This process exists only to test generator output."
