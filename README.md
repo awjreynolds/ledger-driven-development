@@ -59,6 +59,7 @@ The setup templates are bundled with the `gadd-setup` skill under `skills/gadd-s
 ## More Detail
 
 - [docs/governed-autonomy/](docs/governed-autonomy/README.md) explains the broader Governed Autonomy philosophy, operating model, uncontrolled AI risk patterns, and the GADD case study.
+- [gaps/](gaps/README.md) incubates GAPS, the Governed Autonomy Process Specification layer, with GADD as the first reference process.
 - [docs/workflow.md](docs/workflow.md) covers workflow state, external projections, the MVP workflow, and handoff artifact contracts.
 - [docs/skills.md](docs/skills.md) catalogs the `/gadd:*` skills by lane, purpose, input, output, and usual handoff.
 - [docs/package-model.md](docs/package-model.md) covers package layout and compatibility surfaces.
