@@ -448,6 +448,6 @@ knownGaps:
   - id: formal-standards-export-not-designed
     summary: "BPMN, DMN, and OSCAL compatibility is a posture, not an implemented export contract."
   - id: field-origin-not-enforced
-    summary: "Standards origin is described in standardsAlignment, not enforced field-by-field in v0.1."
+    summary: "Standards origin is described in standards_alignment, not enforced field-by-field in v0.1."
   - id: regulatory-mapping-unreviewed
     summary: "Control mappings are stubs and do not claim compliance, certification, or legal sufficiency."
