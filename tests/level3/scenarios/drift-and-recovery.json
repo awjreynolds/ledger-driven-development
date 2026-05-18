@@ -10,6 +10,7 @@
     {
       "name": "detect-drift",
       "prompt": "Update the managed projection for tracker issue 1 without overwriting human edits.",
+      "contract_commands": ["/gadd:next"],
       "scripted_response": "Drift detected on issue body and labels. Reconciliation required before update: human must choose whether to preserve the external edit, reapply the managed projection, or merge both surfaces.\n",
       "scripted_files": {
         "gadd/work-items/CAD-PRD-1001/reconciliation.md": "# Reconciliation\n\n## Changed Surface\nIssue body and labels changed after the last managed projection.\n\n## Required Human Decision\nChoose preserve external edit, reapply managed projection, or merge both surfaces.\n\n## Blocked Action\nManaged update is blocked until reconciliation is approved.\n"

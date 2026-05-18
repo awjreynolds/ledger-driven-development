@@ -10,6 +10,7 @@
     {
       "name": "repair-handoff",
       "prompt": "Start from tracker/incoming/weak-issue.md. Repair the GADD handoff or stop with a precise blocker.",
+      "contract_commands": ["/gadd:triage"],
       "scripted_response": "Repaired weak handoff by writing triage evidence, explicit route decision, and a concise implementation ticket. No hidden conversation context is required.\n",
       "scripted_files": {
         "gadd/work-items/BUG-0002-layer-matching/triage.md": "# Triage\n\n## Source\nLocal tracker issue `tracker/incoming/weak-issue.md` reported broken layer matching.\n\n## Reproduction\nRun `npm test` after adding a normalization case for ` Walls ` versus `walls`.\n\n## GitNexus Evidence\nNot required for this scripted local scenario; affected behavior is bounded to `normalizeLayerName` and direct tests.\n\n## Route Decision\nready_for_implementation after adding explicit reproduction and verification expectations.\n\n## Verification\nRun `npm test` and record output in verification.md.\n"

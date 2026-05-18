@@ -15,6 +15,7 @@ from tests.level3.harness.github_tracker import GitHubTracker, load_github_track
 from tests.level3.harness.local_tracker import LocalIssue, LocalTracker
 from tests.level3.harness.sandbox import create_sandbox
 from tests.level3.harness.scripted_adapter import ScriptedAgentAdapter
+from scripts.gadd_generated_contracts import validate_command_contract
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -153,6 +154,17 @@ def run_scenario(config: Config, scenario: dict, runs_dir: Path, adapter_name: s
 
     for index, step in enumerate(scenario["steps"], start=1):
         step_name = str(step.get("name", index)).replace("/", "-").replace(" ", "-")
+        if os.environ.get("GADD_PACKAGE_ROOT"):
+            contract_findings: list[str] = []
+            for command in step.get("contract_commands", []):
+                contract_errors = validate_command_contract(sandbox.path, str(command))
+                contract_findings.extend(
+                    f"{scenario['id']} / {step_name}: generated package contract failed: {error}"
+                    for error in contract_errors
+                )
+            findings.extend(contract_findings)
+            if contract_findings:
+                break
         request = AgentExecutionRequest(
             run_id=config.run_id,
             scenario_id=str(scenario["id"]),

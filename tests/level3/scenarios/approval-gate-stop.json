@@ -7,6 +7,7 @@
     {
       "name": "intake",
       "prompt": "Use GADD to scope a CAD layer normalization request. Stop when human approval is required.",
+      "contract_commands": ["/gadd:scope", "/gadd:approve"],
       "scripted_response": "Human approval required before writing scope artifacts.\nIs that boundary right? Recommended answer: yes, keep this PRD focused.\n",
       "expect": [
         {"approval_gate_requested": true},

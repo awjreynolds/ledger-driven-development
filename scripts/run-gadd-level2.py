@@ -22,6 +22,7 @@ import tempfile
 sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SCENARIOS = ROOT / "tests" / "level2" / "scenarios"
 LEVEL1_FIXTURES = ROOT / "tests" / "level1" / "fixtures"
 ARTIFACTS = Path(tempfile.gettempdir()) / "gadd-level2-artifacts"
@@ -53,6 +54,8 @@ def load_level1_module():
 
 
 LEVEL1 = load_level1_module()
+
+from gadd_generated_contracts import command_from_text, validate_command_contract
 
 
 def copy_path(source: Path, target: Path) -> None:
@@ -158,6 +161,18 @@ def run_step(runner: str, scenario: dict, step: dict, step_index: int, artifacts
         repo_dir = Path(temp_root) / "repo"
         repo_dir.mkdir(parents=True)
         seed_repo(step, repo_dir)
+
+        if os.environ.get("GADD_PACKAGE_ROOT"):
+            command = command_from_text(str(step.get("runner_command", "")))
+            if command:
+                contract_errors = validate_command_contract(repo_dir, command)
+                errors.extend(
+                    f"{scenario.get('id', 'scenario')} / {step.get('name')}: "
+                    f"generated package contract failed: {error}"
+                    for error in contract_errors
+                )
+                if contract_errors:
+                    return errors
 
         before = snapshot_files(repo_dir)
         if runner == "fixture-next":

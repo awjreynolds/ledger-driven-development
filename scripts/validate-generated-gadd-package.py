@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 
+from gadd_generated_contracts import validate_command_contract
 
 sys.dont_write_bytecode = True
 
@@ -31,7 +32,6 @@ BEHAVIOR_CONTRACTS = {
         "next command",
     ],
     "gadd-implement": [
-        "Built-in TDD Loop",
         "approved boundary",
         "Do not close external Work Item projections",
         "Do not archive Work Items",
@@ -51,6 +51,10 @@ BEHAVIOR_CONTRACTS = {
     ],
 }
 
+REQUIRED_SECTIONS = {
+    "gadd-implement": ["Built-in TDD Loop"],
+}
+
 
 def run(command: list[str], env: dict[str, str] | None = None) -> None:
     result = subprocess.run(
@@ -67,6 +71,15 @@ def run(command: list[str], env: dict[str, str] | None = None) -> None:
 def validate_behavior_contracts(package_root: Path) -> None:
     errors: list[str] = []
     for skill, phrases in BEHAVIOR_CONTRACTS.items():
+        command = f"/gadd:{skill.removeprefix('gadd-')}"
+        errors.extend(
+            validate_command_contract(
+                package_root,
+                command,
+                required_sections=REQUIRED_SECTIONS.get(skill, []),
+                required_section_phrases={"Required Implementation Map Phrases": phrases},
+            )
+        )
         skill_file = package_root / "skills" / skill / "SKILL.md"
         if not skill_file.is_file():
             errors.append(f"{skill}: generated skill missing")

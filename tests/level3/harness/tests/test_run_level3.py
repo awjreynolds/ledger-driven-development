@@ -81,6 +81,116 @@ class SandboxTests(unittest.TestCase):
                     package_root=package_root,
                 )
 
+    def test_run_level3_fails_when_contract_command_skill_is_broken(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            package_root = root / "generated"
+            (package_root / "skills" / "gadd-approve").mkdir(parents=True)
+            (package_root / "skills" / "gadd-approve" / "SKILL.md").write_text(
+                "broken generated skill\n", encoding="utf-8"
+            )
+            (package_root / "commands" / "gadd").mkdir(parents=True)
+            (package_root / "commands" / "gadd" / "approve.md").write_text(
+                "Use the `gadd-approve` skill to run `/gadd:approve`.\n"
+                "\nTreat `skills/gadd-approve/SKILL.md` as canonical.\n",
+                encoding="utf-8",
+            )
+            (package_root / ".claude-plugin").mkdir()
+            (package_root / ".claude-plugin" / "plugin.json").write_text(
+                '{"commands":["./commands/gadd/approve.md"]}\n', encoding="utf-8"
+            )
+            (package_root / "gemini-extension.json").write_text(
+                '{"commands":["/gadd:approve"]}\n', encoding="utf-8"
+            )
+            (package_root / "agent-skills.json").write_text(
+                '{"commands":[{"command":"/gadd:approve","skill":"gadd-approve","path":"skills/gadd-approve"}]}\n',
+                encoding="utf-8",
+            )
+
+            scenario = {
+                "id": "broken-contract",
+                "steps": [
+                    {
+                        "name": "approve",
+                        "prompt": "Approved.",
+                        "contract_commands": ["/gadd:approve"],
+                        "scripted_response": "Approved.\n",
+                        "expect": [],
+                    }
+                ],
+            }
+
+            with mock.patch.dict("os.environ", {"GADD_PACKAGE_ROOT": str(package_root)}):
+                findings = __import__(
+                    "tests.level3.harness.run_level3", fromlist=["run_scenario"]
+                ).run_scenario(
+                    config=load_config(env={}),
+                    scenario=scenario,
+                    runs_dir=root / "runs",
+                    adapter_name="scripted",
+                    tracker_mode="local",
+                )
+
+        self.assertTrue(any("generated package contract failed" in finding for finding in findings), findings)
+        self.assertTrue(any("frontmatter" in finding for finding in findings), findings)
+        self.assertTrue(any("skill heading" in finding for finding in findings), findings)
+
+    def test_run_level3_continues_after_non_contract_findings(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            package_root = root / "generated"
+            (package_root / "skills").mkdir(parents=True)
+            (package_root / "commands").mkdir()
+            (package_root / ".claude-plugin").mkdir()
+            (package_root / "agent-skills.json").write_text('{"commands":[]}\n', encoding="utf-8")
+            (package_root / ".claude-plugin" / "plugin.json").write_text(
+                '{"commands":[]}\n', encoding="utf-8"
+            )
+            (package_root / "gemini-extension.json").write_text(
+                '{"commands":[]}\n', encoding="utf-8"
+            )
+            scenario = {
+                "id": "continue-after-finding",
+                "steps": [
+                    {
+                        "name": "first",
+                        "prompt": "First.",
+                        "scripted_response": "First.\n",
+                        "expect": [{"transcript_contains": "missing expected text"}],
+                    },
+                    {
+                        "name": "second",
+                        "prompt": "Second.",
+                        "scripted_response": "Second ran.\n",
+                        "expect": [{"transcript_contains": "Second ran"}],
+                    },
+                ],
+            }
+            config = load_config(env={})
+
+            with mock.patch.dict("os.environ", {"GADD_PACKAGE_ROOT": str(package_root)}):
+                findings = __import__(
+                    "tests.level3.harness.run_level3", fromlist=["run_scenario"]
+                ).run_scenario(
+                    config=config,
+                    scenario=scenario,
+                    runs_dir=root / "runs",
+                    adapter_name="scripted",
+                    tracker_mode="local",
+                )
+
+            second_transcript = (
+                root
+                / "runs"
+                / config.run_id
+                / "continue-after-finding"
+                / "transcripts"
+                / "continue-after-finding-second.md"
+            )
+
+            self.assertTrue(any("missing expected text" in finding for finding in findings), findings)
+            self.assertTrue(second_transcript.is_file())
+
 
 class RunLevel3ConfigTests(unittest.TestCase):
     def test_default_config_uses_scripted_local(self):

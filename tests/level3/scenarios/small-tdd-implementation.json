@@ -7,6 +7,7 @@
     {
       "name": "implement-child",
       "prompt": "Implement child work item CAD-0001 with TDD and record verification.",
+      "contract_commands": ["/gadd:implement", "/gadd:verify"],
       "scripted_response": "Added failing test, implemented normalizeLayerName, reran npm test, and recorded verification.\n",
       "scripted_files": {
         "cad.test.js": "import { normalizeLayerName } from \"./cad.js\";\n\ntest(\"normalizes layer names for comparison\", () => {\n  expect(normalizeLayerName(\" Walls \")).toBe(\"walls\");\n});\n",
