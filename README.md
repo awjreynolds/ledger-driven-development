@@ -1,6 +1,6 @@
 # GADD [![Install via skills.sh](https://img.shields.io/badge/skills.sh-install-green)](https://skills.sh/awjreynolds/gadd)
 
-GADD is a software-delivery methodology built on [Governed Autonomy](docs/governed-autonomy/README.md): the business-process discipline of delegating work to autonomous systems while keeping accountability, authority, scope, evidence, escalation, approval, and closure boundaries explicit.
+GADD is a software-delivery methodology built on [Governed Autonomy](https://github.com/awjreynolds/governed-autonomy): the business-process discipline of delegating work to autonomous systems while keeping accountability, authority, scope, evidence, escalation, approval, and closure boundaries explicit.
 
 GADD manages Work Items across triage, product scope, engineering design, planning, implementation, verification, and closure. External issues are collaboration surfaces; repo-local ledgers remain canonical workflow state.
 
@@ -61,8 +61,8 @@ The setup templates are bundled with the `gadd-setup` skill under `skills/gadd-s
 
 ## More Detail
 
-- [docs/governed-autonomy/](docs/governed-autonomy/README.md) explains the broader Governed Autonomy philosophy, operating model, uncontrolled AI risk patterns, and the GADD case study.
-- [gaps/](gaps/README.md) incubates GAPS, the Governed Autonomy Process Specification layer, with GADD implemented as the first GAPS-described skill package.
+- [Governed Autonomy](https://github.com/awjreynolds/governed-autonomy) is the canonical home for the broader operating model and GAPS, the Governed Autonomy Process Specification layer.
+- [docs/governed-autonomy/](docs/governed-autonomy/README.md) and [gaps/](gaps/README.md) are retained here as the GADD-facing reference and implementation binding.
 - [docs/workflow.md](docs/workflow.md) covers workflow state, external projections, the MVP workflow, and handoff artifact contracts.
 - [docs/skills.md](docs/skills.md) catalogs the `/gadd:*` skills by lane, purpose, input, output, and usual handoff.
 - [docs/package-model.md](docs/package-model.md) covers package layout and compatibility surfaces.

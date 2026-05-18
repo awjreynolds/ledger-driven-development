@@ -1,12 +1,14 @@
 # GAPS
 
-GAPS is the **Governed Autonomy Process Specification** layer incubating in this repository.
+Canonical home: [awjreynolds/governed-autonomy](https://github.com/awjreynolds/governed-autonomy).
+
+GAPS is the **Governed Autonomy Process Specification** layer. This repository keeps the GADD-facing process spec, implementation binding, generated-skill validation, and compatibility tests for the published GADD skill package.
 
 GADD is the concrete software-delivery methodology. GAPS is the emerging profile for describing how a governed process preserves accountability, authority, autonomy boundaries, evidence, escalation, approval, state, projection, verification, closure, and external control mappings when autonomous systems may participate.
 
 ## Status
 
-GAPS remains exploratory. The current incubating validation profile is built from two reference processes.
+GAPS remains exploratory. The canonical validation profile now lives in `awjreynolds/governed-autonomy`; this repository validates GADD as the first concrete SDLC implementation.
 
 The current surface is intentionally small:
 
