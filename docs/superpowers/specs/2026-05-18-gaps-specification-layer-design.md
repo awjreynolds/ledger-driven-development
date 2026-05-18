@@ -1,4 +1,4 @@
-# GAPS Specification Layer Design
+# GAPS specification layer design
 
 **Date:** 2026-05-18
 **Status:** ready for user review before implementation planning
@@ -8,9 +8,11 @@
 
 GADD should introduce **GAPS: Governed Autonomy Process Specification** as the reusable specification layer behind Governed Autonomy.
 
-GADD remains the concrete SDLC methodology and executable skill suite. GAPS is the emerging process-specification layer: a way to describe roles, authority, autonomy level, gates, evidence, escalation, approval, canonical state, projections, verification, closure, and external governance mappings for a process that includes autonomous systems.
+GADD remains the concrete SDLC methodology and executable skill suite. GAPS is the emerging process-specification layer: a way to describe roles, authority, autonomy level, gates, evidence, escalation, approval, canonical state, projections, verification, closure, and external governance mappings for a governed process where autonomous systems may participate.
 
 GAPS must not present itself as if business-process modeling starts here. BPMN, CMMN, DMN, OSCAL, NIST AI RMF, ISO/IEC 42001, the EU AI Act, workflow runtimes, and structured-output tooling all occupy nearby territory. The v0.1 design should therefore be deliberately small: express GADD as one GAPS reference process, then learn from the mismatch.
+
+Where existing standards already model a concept, GAPS should use their terminology rather than re-derive it. The contribution of GAPS is the agent-governance overlay (autonomy tier, authority plane, trust decay, drift signal, Governed Autonomy risk-pattern coverage) layered on top of process and control plumbing that BPMN, CMMN, DMN, and OSCAL already supply. Authors should use a source-standard term when they know one and mark unknown cases for later review; exact value-shape parity and lossless export are v1+ directions, not v0.1 gates.
 
 ## Problem
 
@@ -24,7 +26,7 @@ Without that layer:
 - Skill authoring risks starting from prompt text rather than from a governed process model.
 - Integrations such as Archon or BAML have no canonical source to consume or assist.
 
-The earlier draft overreached by proposing a new YAML metamodel plus schema, docs, skills, validation, and multiple targets before the model had described more than one process. This revision narrows v0.1 to two artifacts and makes prior art and regulatory anchoring explicit.
+The earlier draft overreached by proposing a new YAML metamodel plus schema, docs, skills, validation, and multiple targets before the model had described more than one process. This revision narrows v0.1 to two GAPS artifacts plus a one-line README pointer, and makes prior art and regulatory anchoring explicit.
 
 ## Goals
 
@@ -37,11 +39,12 @@ The earlier draft overreached by proposing a new YAML metamodel plus schema, doc
   - GAPS is the emerging process specification layer.
 - Defer schema, validator, skill suite, and generation until at least a second unlike process has been attempted.
 
-## Non-Goals
+## Non-goals
 
 - Do not extract GAPS into a separate repository in the first pass.
 - Do not replace existing GADD skills with generated skills.
 - Do not make BPMN, CMMN, DMN, Archon, BAML, or any runtime/tool the canonical GAPS model.
+- Do not re-derive concepts that BPMN, CMMN, DMN, or OSCAL already model. Where a GAPS field corresponds to one of those standards, use the term a reader of that standard would already recognize; if you don't know one, mark the field for later review rather than coining a fresh name. Exact value-shape parity and lossless export are deferred to v1+.
 - Do not claim that GAPS can already model every business process.
 - Do not add a formal JSON Schema in v0.1.
 - Do not add `/gaps:*` skills in v0.1.
@@ -49,7 +52,7 @@ The earlier draft overreached by proposing a new YAML metamodel plus schema, doc
 - Do not add non-SDLC example processes in the first implementation slice, but do require one before schema and validator work.
 - Do not rename GADD or dilute its current public positioning.
 
-## Canonical Language
+## Canonical language
 
 **GAPS**:
 Governed Autonomy Process Specification. The reusable artifact and methodology for describing a business process that includes autonomous systems while preserving accountability, authority, scope, evidence, escalation, approval, and closure.
@@ -73,7 +76,7 @@ In v0.1, conformance means "the process spec explicitly covers the Governed Auto
 
 Avoid using **GASM** publicly. If needed internally, "Governed Autonomy Specification Model" can describe the metamodel, but public-facing language should use GAPS.
 
-## Prior Art And Explicit Non-Adoption
+## Prior art and explicit non-adoption
 
 GAPS should acknowledge the existing landscape instead of silently re-deriving it.
 
@@ -92,7 +95,21 @@ GAPS should acknowledge the existing landscape instead of silently re-deriving i
 
 Useful source anchors for the implementation notes include OMG BPMN/CMMN/DMN material, Camunda agentic BPMN writing, Flowable BPMN/CMMN/DMN AI writing, NIST AI RMF and its ISO/IEC 42001 crosswalk, ISO/IEC 42001, the EU AI Act Article 26 deployer obligations, Oracle runtime governance layers, Microsoft agent governance guidance, Archon, and BAML.
 
-## Layered Architecture
+## Standards compatibility
+
+GAPS uses the *concepts* of BPMN, CMMN, DMN, and OSCAL where they overlap with the v0.1 model. It does not adopt their artifact formats. BPMN's XML and graphical authoring, CMMN's case-flow modeler, DMN's decision tables, and OSCAL's JSON catalog assume tooling and audiences that GADD users do not have. GAPS keeps a git-native YAML authoring form and adds an agent-governance overlay (autonomy tier, authority plane, trust decay, drift signal, GA risk-pattern coverage) that those standards do not cover.
+
+The genuine contribution of GAPS is the overlay. Re-derived process and control plumbing is not worth defending if a standard already does the job. To keep that distinction honest without turning v0.1 into a standards-compliance exercise:
+
+- **Use the source-standard term when you know one.** Where a GAPS field clearly corresponds to a concept in BPMN, DMN, or OSCAL, use the term a reader of that standard would already recognize (`gateway`, `task`, `sequence flow`, `control-id`, `implementation-status`, and so on). If you don't know one and have to coin a name, mark the field in `standards_alignment` as `name_review_pending` so a later mapper pass can rename rather than re-derive. Exact value-shape parity and lossless export are v1+ concerns, not v0.1 gates. The reference process should record the alignment it knows in a top-of-file `standards_alignment` section, not require it on every field.
+- **Mark the overlay at section level.** The agent-governance overlay (autonomy tier, authority plane, trust decay, drift/freshness signal, GA risk-pattern coverage) should be grouped or annotated so the GAPS-specific contribution stays distinguishable from re-derived plumbing. Section-level annotation is enough; per-field origin tags are not required in v0.1.
+- **Lossless export is a v1 direction, not a v0.1 obligation.** Process structure should aim to be exportable to BPMN/DMN, and control mappings should aim to be shape-compatible with OSCAL, but v0.1 field shapes are not held to that bar yet. The goal is to avoid choices that would obviously preclude later export, not to prove export-readiness now.
+- **CMMN compatibility is deferred.** CMMN matters when adaptive case flow becomes load-bearing. GADD is mostly phase/gate workflow, so CMMN alignment should be revisited when the second reference process is selected, not designed against GADD.
+- **Conflict policy.** When BPMN, CMMN, DMN, OSCAL, or other standards name the same concept differently, record the alternate names in a structured `standard_aliases` block inside `standards_alignment`, not in YAML comments (which tools and exporters lose). Recurring conflicts belong in Open Design Questions.
+
+This positioning is also why the spec rejects making BPMN, CMMN, DMN, or OSCAL the GAPS authoring format: alignment with them is the direction, adopting them as the source format is not.
+
+## Layered architecture
 
 GAPS should separate process meaning from runtime enforcement and audit evidence.
 
@@ -107,70 +124,55 @@ V0.1 should use these conceptual layers in the reference process:
 
 This avoids putting validation rules, projection policy, evidence requirements, and authority boundaries into one flat bucket.
 
-## GAPS Model V0.1
+## GAPS model v0.1
 
 The v0.1 model should be expressed through `gaps/examples/gadd/ga-process.yml`, not a JSON Schema.
 
-The file should include:
+The reference process should have a tight required core. It is complete when it faithfully describes GADD and names any gaps, not when it populates every possible future field.
+
+Required for v0.1:
 
 - `schemaVersion: "0.1"`
 - a breakage warning that v0.1 is exploratory and not stable
 - process identity and purpose
 - scope and explicit non-scope
-- roles, named role classes, and decision rights
-- RACI-style gate ownership where a gate has accountable, responsible, consulted, and informed roles
-- autonomous-system responsibilities
-- authority boundaries split by:
-  - `authority_plane: data_plane | control_plane`
-  - allowed actions
-  - prohibited actions
-  - escalation triggers
-  - revocation or trust-decay triggers where known
-- autonomy tier using the existing Governed Autonomy ladder:
-  - `assist`
-  - `recommend`
-  - `draft`
-  - `execute_with_approval`
-  - `execute_within_limits`
-  - `autonomous_with_monitoring`
-- risk tier per transition:
-  - `low`
-  - `medium`
-  - `high`
-  - `human_only`
-- gate taxonomy:
-  - `advisory`
-  - `validating`
-  - `blocking`
-  - `escalating`
+- roles and decision rights
+- autonomous-system responsibilities where GADD delegates work to agents
+- authority plane for autonomous actions: `data_plane` or `control_plane`
+- autonomy tier using the existing Governed Autonomy ladder
+- risk tier per governed transition
+- gate type: `advisory`, `validating`, `blocking`, or `escalating`
 - process states and governed transitions
-- temporal semantics:
-  - must-precede
-  - must-follow
-  - must-happen-within where applicable
-  - deadlock or bypass notes where known
-- required input evidence and completion evidence per transition
-- approval record requirements:
-  - identity
-  - timestamp
-  - approved artifact
-  - prior gate outcomes
-  - budget/resource state where applicable
-- escalation conditions separate from approval conditions
-- dry-run or simulation expectations where a transition can be exercised without business side effects
-- closure conditions
-- canonical state
-- projection surfaces and drift rules
-- implementation freshness checks
-- risk patterns and mitigations
-- regulatory/control mapping placeholders:
-  - NIST AI RMF
-  - ISO/IEC 42001
-  - EU AI Act where applicable
+- required input evidence and completion evidence for governed transitions
+- approval and escalation conditions as separate concepts
+- canonical state and projection surfaces
+- drift/freshness relationship to the GADD skills and ledger templates
+- regulatory/control mapping placeholders with mapping status
+- a top-of-file `standards_alignment` section recording known alignment to BPMN, DMN, or OSCAL (CMMN deferred to the second reference process), with a `standard_aliases` block for naming conflicts
+- known gaps or unmodeled behavior
+
+Fill where natural, but do not force coverage:
+
+- full RACI ownership for every gate
+- allowed/prohibited action lists
+- revocation or trust-decay triggers
+- detailed temporal semantics beyond approval/verification bypass prevention
+- dry-run or simulation expectations
+- budget or resource state
+- OSCAL-shaped control metadata
+
+The optional concepts should appear only when they describe GADD honestly. If a field does not fit GADD yet, the reference process should omit it or record a clear `not_applicable` or `unmodeled` note rather than inventing detail.
+
+The expected vocabulary is:
+
+- autonomy tier: `assist`, `recommend`, `draft`, `execute_with_approval`, `execute_within_limits`, `autonomous_with_monitoring`
+- risk tier: `low`, `medium`, `high`, `human_only`
+- gate type: `advisory`, `validating`, `blocking`, `escalating`
+- mapping status: `unmapped`, `candidate`, `reviewed`
 
 The model should prefer stable process concepts over GADD-specific nouns. GADD terms can appear in the reference process as domain vocabulary, not as generic schema assumptions.
 
-## GADD Reference Process
+## GADD reference process
 
 The first `gaps/examples/gadd/ga-process.yml` should describe GADD end to end:
 
@@ -191,7 +193,21 @@ The first `gaps/examples/gadd/ga-process.yml` should describe GADD end to end:
 
 The file should not try to generate existing skills in v0.1. It should be a faithful, reviewable specification of what already exists or is intentionally being designed.
 
-## GAPS Vs GADD State
+## V0.1 completion criteria
+
+V0.1 is complete when the reference process is faithful to GADD and explicit about uncertainty.
+
+The GADD reference file should be accepted if:
+
+- every current GADD lane and approval boundary is represented
+- the core fields above are present where they apply
+- missing or weak concepts are recorded as known gaps rather than hidden
+- no regulatory, safety, validator, or generation support is claimed
+- optional fields are used only where they describe real GADD behavior
+
+V0.1 should not be rejected merely because optional fields are sparse. Sparse but honest is better than a heroic YAML file full of invented structure.
+
+## GAPS vs GADD state
 
 `ga-process.yml` and `ledger.yml` must not become competing state stores.
 
@@ -208,7 +224,7 @@ The GADD reference process should declare this relationship explicitly and inclu
 
 If the GAPS reference process and GADD skill behavior disagree, the implementation plan should record a finding rather than silently treating either artifact as correct.
 
-## Regulatory And Control Mapping
+## Regulatory and control mapping
 
 GAPS should be designed for audit usefulness, but v0.1 should not overclaim.
 
@@ -219,107 +235,24 @@ The GADD reference process should include placeholder mappings that show where c
 - EU AI Act deployer/operator obligations where applicable.
 - `mapping_status: unmapped | candidate | reviewed`.
 
+Mapping fields should leave room for later OSCAL-style export or crosswalks. Where a mapping is present, prefer a shape that can eventually carry control source, control identifier, parameter values, implementation status, evidence references, and mapping status.
+
 The first implementation should not attempt complete mappings. It should prove that GAPS has a place to store them and that validation findings can later become audit-useful rather than only internally meaningful.
 
-## Future Skill Suite
+## Later work (non-normative)
 
-GAPS should eventually have its own skills, but not in v0.1.
+Later work may add a GAPS skill suite, authoring/extraction tools, runtime emission, validation, assurance reports, and skill scaffolding. Candidate skills are `/gaps:assess`, `/gaps:spec`, `/gaps:validate`, and `/gaps:derive`, but their contracts are deliberately deferred until after the second reference process exists.
 
-Candidate future skills:
+BAML belongs in the authoring and extraction layer: it could help turn process interviews, documents, tracker workflows, or skill contracts into candidate structured specs. Archon belongs in the runtime-emission layer: it could execute deterministic projections of selected transitions once GAPS has stronger formal semantics. Neither tool should shape v0.1 beyond leaving the reference process readable and explicit.
 
-`/gaps:assess`:
-Turn an as-is process description into a Governed Autonomy assessment. This maps current roles, handoffs, decision rights, evidence, failure modes, autonomy levels, and gaps before producing a target process spec.
+Future validation should start as findings-only and should check role ownership, authority plane, autonomy tier, risk tier, gate type, evidence, approval/escalation separation, temporal bypasses, state ownership, projection drift, closure, and external control mappings. The exact rule list, output format, and severity model are deferred.
 
-`/gaps:spec`:
-Author or update a GAPS file from an existing process description, docs, or known process implementation. BAML could assist this step by extracting structured candidate spec fields from interviews or documents.
+## Repository shape
 
-`/gaps:validate`:
-Check a GAPS file for missing or weak governance boundaries, risk-pattern exposure, missing external mappings, drift/freshness gaps, temporal issues, and weak gate ownership. The validator should start as findings-only.
-
-`/gaps:derive`:
-Produce derived artifacts from a validated GAPS file: process docs, role matrix, evidence checklists, state-machine diagrams, validation scenarios, skill scaffolds, Archon workflow YAML, or BAML extraction functions.
-
-Do not add `/gaps:compile` until generation semantics are real enough to support.
-
-## Future Tool Roles
-
-GAPS should treat tools as different layers, not one list of equal compiler targets.
-
-### Authoring And Extraction
-
-BAML can assist `/gaps:spec` by extracting structured candidate fields from:
-
-- process interviews
-- existing documentation
-- skill contracts
-- tracker workflows
-- approval policies
-
-BAML should not be required for reading or authoring a GAPS file.
-
-### Runtime Emission
-
-Archon can be a candidate runtime-emission target once a process has enough formal transition semantics. GAPS would describe the process; Archon would execute a deterministic projection of selected transitions.
-
-### Documentation And Assurance
-
-Future derived outputs may include:
-
-- process overview
-- role and decision-rights matrix
-- state-machine summary
-- evidence checklist
-- escalation and approval map
-- projection policy
-- NIST / ISO / EU AI Act mapping report
-
-### Skill Scaffolding
-
-Future derived skill scaffolds may include:
-
-- `SKILL.md` frontmatter
-- input contract
-- read/write contract
-- input quality gate
-- exit gate
-- rules
-- stop conditions
-- validation behavior
-- command adapter metadata
-
-Existing GADD skills remain manually authored until generation earns trust.
-
-## Future Validation Rules
-
-The first validator should not ship in v0.1, but the reference process should be structured so these checks become possible:
-
-- every process has a named process owner
-- every governed step has an accountable human role
-- every autonomous action declares data-plane or control-plane authority
-- every autonomous action has explicit allowed and prohibited actions
-- every transition declares autonomy tier and risk tier
-- every gate declares `gate_type`
-- every gate has RACI ownership
-- blocking and escalating gates cannot be satisfied by the same actor that performed the governed action unless an exception is declared
-- every state transition has required input and completion evidence
-- approval transitions identify who approves, what artifact they approve, and what record must be kept
-- escalation conditions are separate from approval conditions
-- temporal preconditions prevent bypassing approval or verification
-- dry-run expectations are defined for transitions that can be simulated
-- canonical state is defined
-- projection surfaces are declared as non-canonical unless explicitly justified
-- drift/freshness policy is declared for generated or manually implemented artifacts
-- closure has a verification condition and an acceptance condition
-- high-risk transitions require stronger evidence, approval, and rollback or correction notes
-- findings can map to NIST AI RMF, ISO/IEC 42001, or EU AI Act references where applicable
-
-The validator should report findings clearly without pretending to prove that a process is safe or compliant.
-
-## Repository Shape
-
-V0.1 should add only:
+V0.1 should add two GAPS artifacts and one discoverability pointer:
 
 ```text
+README.md                         # one-line pointer to GAPS
 gaps/
   README.md
   examples/
@@ -336,9 +269,9 @@ skills/gaps-*/
 commands/gaps/
 ```
 
-This layout makes GAPS visible to people already navigating to GADD while avoiding a premature product surface.
+This layout makes GAPS visible to people already navigating to GADD while avoiding a premature product surface. The top-level README change should be limited to one sentence or one bullet; broader public positioning belongs in a later pass.
 
-## Why Incubate In This Repository
+## Why incubate in this repository
 
 GAPS should start in the GADD repository because:
 
@@ -350,9 +283,17 @@ GAPS should start in the GADD repository because:
 
 The `gaps/README.md` should state that GAPS is incubating here because GADD is its first reference process and may move to a standalone repository once the specification and authoring model stabilize.
 
-## Second Reference Process Requirement
+## Second reference process gate
 
 Before adding schema, validation, generation, or GAPS skills, model one unlike process informally.
+
+The repo owner should select the second reference process after the GADD reference file is reviewed. Selection criteria:
+
+- unlike GADD in flow shape
+- has real approval or escalation stakes
+- includes long-running or event-driven state
+- exercises named human identities or authority levels
+- can expose whether CMMN/case semantics, regulatory mapping, budget/resource gates, or temporal constraints need to become first-class
 
 Good candidates:
 
@@ -374,28 +315,28 @@ The second process should stress what GADD does not:
 
 This is the rule-of-three discipline applied early. GADD can justify v0.1. It cannot justify a general schema alone.
 
-## Documentation Changes
+## Documentation changes
 
-In v0.1, do not update the top-level README beyond a minimal link unless the implementation owner explicitly wants public positioning changed.
+V0.1 should keep public GADD positioning stable while making GAPS discoverable:
 
-The first implementation should keep public GADD positioning stable:
-
+- `README.md` gets one concise pointer to `gaps/`.
 - `gaps/README.md` explains GAPS and incubation status.
 - `gaps/examples/gadd/ga-process.yml` is the reference artifact.
-- Main GADD docs can link to GAPS in a later pass after review.
+- Broader GADD docs can link to GAPS in a later pass after review.
 
-## Migration And Compatibility
+## Migration and compatibility
 
 No existing GADD workflow behavior should change in the first implementation.
 
 Existing users should still install and use `/gadd:*` skills exactly as before. GAPS is additive:
 
+- one top-level README pointer
 - one new GAPS README
 - one new GADD reference process spec
 
 The GADD reference process may reveal mismatches between docs and skill behavior. Those should be captured as findings or future Work Items, not silently fixed during the first GAPS slice unless they block the reference spec.
 
-## Extraction Path
+## Extraction path
 
 If GAPS becomes useful outside GADD, extract it later into a standalone repository.
 
@@ -410,22 +351,24 @@ Extraction readiness signals:
 
 Until then, this repository should present GAPS as incubating beside GADD.
 
-## Open Design Questions
+## Open design questions
 
 | Question | Impact | Owner | Next action |
 | --- | --- | --- | --- |
-| Which second unlike process should stress-test GAPS after GADD? | Determines whether CMMN/case semantics or regulatory mapping becomes the next pressure point. | Repo owner | Pick after the GADD reference file exists. |
+| Which second unlike process should stress-test GAPS after GADD, and against what evidence? | This unlocks schema, validator, skills, and generation. Picking poorly would freeze a GADD-shaped model. | Repo owner | Decide after reviewing the GADD reference file, using the second-reference selection criteria above. |
 | How formal should temporal semantics become before validation? | Determines whether GAPS can detect bypasses, deadlocks, and missing preconditions. | Repo owner | Keep v0.1 descriptive; revisit after second process. |
 | Which external mapping should come first: NIST AI RMF, ISO/IEC 42001, or EU AI Act? | Determines whether GAPS optimizes for governance, management-system assurance, or legal deployer obligations. | Repo owner | Add placeholders now; choose first mapping later. |
-| Should GAPS eventually export OSCAL-like control artifacts? | Could make GAPS more audit-useful, but risks pulling the project into compliance tooling too early. | Repo owner | Revisit after control mappings are reviewed. |
+| Should GAPS eventually export OSCAL-like control artifacts? | Could make GAPS more audit-useful, but risks pulling the project into compliance tooling too early. | Repo owner | Shape placeholders for possible OSCAL crosswalk; defer export design. |
 | What should the validator output format be? | Determines whether findings integrate with GADD verification, CI, or standalone review. | Repo owner | Defer until validator design. |
+| When BPMN, CMMN, DMN, and OSCAL name the same concept differently, how is alignment recorded? | Drives later mapper and export design without forcing v0.1 to pick one source as canonical. | Repo owner | Record alternate names in the `standard_aliases` block of `standards_alignment`; revisit when the second reference process or a real exporter exists. |
 
-## Recommended First Implementation Slice
+## Recommended first implementation slice
 
-The first implementation should add exactly two artifacts:
+The first implementation should add two GAPS artifacts and one README pointer:
 
 1. `gaps/README.md`
 2. `gaps/examples/gadd/ga-process.yml`
+3. one concise top-level `README.md` pointer to `gaps/`
 
 The reference process should include `schemaVersion: "0.1"` and an explicit warning that the format is exploratory and expected to break.
 
@@ -445,9 +388,10 @@ Manual review:
 
 - `gaps/README.md` clearly explains GAPS, GADD, incubation status, prior art posture, and v0.1 limits.
 - `gaps/examples/gadd/ga-process.yml` maps every current GADD lane and gate without unexplained gaps.
-- The reference process declares gate type, autonomy tier, authority plane, canonical state, drift policy, and mapping placeholders.
+- The reference process covers the v0.1 required core where applicable and records known gaps where it does not.
+- A `standards_alignment` section records known mappings to BPMN, DMN, or OSCAL and uses a `standard_aliases` block for naming conflicts. Per-field origin tags are not required in v0.1.
 - The reference process does not claim regulatory compliance or generated skill support.
-- README changes do not obscure GADD's current install and usage path. In v0.1, avoid top-level README changes unless explicitly approved.
+- The top-level README change is a minimal pointer and does not obscure GADD's current install and usage path.
 
 Automated checks:
 
@@ -457,6 +401,6 @@ python3 -m json.tool agent-skills.json >/dev/null
 python3 scripts/validate-gadd-level1.py
 ```
 
-## Approval Gate
+## Approval gate
 
-This design should be reviewed before implementation planning. Approval means the next step is an implementation plan for introducing only the `gaps/README.md` and hand-authored GADD reference process file.
+This design should be reviewed before implementation planning. Approval means the next step is an implementation plan for introducing only the two GAPS artifacts and one README pointer.
