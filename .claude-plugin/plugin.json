@@ -35,6 +35,7 @@
     "./commands/gadd/close.md",
     "./commands/gadd/archive.md",
     "./commands/gaps/author.md",
-    "./commands/gaps/validate.md"
+    "./commands/gaps/validate.md",
+    "./commands/gaps/generate.md"
   ]
 }

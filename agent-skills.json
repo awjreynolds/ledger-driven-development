@@ -113,6 +113,12 @@
       "skill": "gaps-validate",
       "path": "skills/gaps-validate",
       "purpose": "Validate GAPS process specifications and implementation maps."
+    },
+    {
+      "command": "/gaps:generate",
+      "skill": "gaps-generate",
+      "path": "skills/gaps-generate",
+      "purpose": "Generate reviewable skill-package skeletons from a GAPS process specification."
     }
   ],
   "adapters": {

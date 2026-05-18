@@ -1,0 +1,85 @@
+---
+name: gaps-generate
+description: Use when the user says /gaps:generate, wants to generate skills from a GAPS process spec, or asks for a GAPS ga-process.yml to produce skill package skeletons.
+---
+
+# /gaps:generate
+
+Generate a reviewable skill-package skeleton from one GAPS process specification.
+
+This command is a standalone, agent-agnostic GAPS command. Follow this file directly; do not require any other installed skill.
+
+## Inputs
+
+Run against one GAPS process file:
+
+```text
+/gaps:generate <path-to-ga-process.yml>
+```
+
+If no process file is supplied, ask for one. Do not infer the target from unrelated repo files.
+
+## Reads
+
+- `gaps/README.md`
+- `gaps/schema/ga-process.schema.json`
+- requested `ga-process.yml`
+- `scripts/validate-gaps.py`
+- `scripts/generate-gaps-skill-package.py`
+
+## Writes
+
+By default, only preview files under:
+
+```text
+gaps/generated/<process-id>/
+```
+
+Adopted package output under `skills/`, `commands/`, and manifest patch files is allowed only when the user explicitly requests write/adopt mode.
+
+## Input Quality Gate
+
+Before generating, run:
+
+```bash
+python3 scripts/validate-gaps.py <path-to-ga-process.yml>
+```
+
+If validation fails, do not generate. Report the validator findings.
+
+## Rules
+
+- Dry-run preview is the default.
+- Adopted output requires explicit user instruction and generator flags `--write --adopt-output`.
+- Generated skills are skeletons for human review, not production-ready process controls.
+- Do not claim regulatory compliance, certification, legal sufficiency, runtime execution, BPMN export, CMMN export, DMN export, or OSCAL export.
+- Do not overwrite existing package roots unless the user explicitly requests adopted output.
+- Preserve known gaps and non-claims in generated artifacts.
+
+## Workflow
+
+1. Resolve the requested `ga-process.yml`.
+2. Run `python3 scripts/validate-gaps.py <path-to-ga-process.yml>`.
+3. For normal preview generation, run:
+
+   ```bash
+   python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml>
+   ```
+
+4. For explicit adopted output only, run:
+
+   ```bash
+   python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml> --write --adopt-output
+   ```
+
+5. Report the output directory and generated artifacts.
+6. Tell the user that `/gaps:validate` is required after adopting generated files.
+
+## Stop Conditions
+
+Stop without generating when:
+
+- the requested process file is missing
+- GAPS validation fails
+- the user asks for direct runtime execution or standards export
+- the user asks for adopted output but does not explicitly authorize writing package roots

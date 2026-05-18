@@ -1,0 +1,9 @@
+description = "Generate a GAPS skill package skeleton."
+prompt = """
+Run `/gaps:generate` using the `gaps-generate` Agent Skill.
+
+If the `gaps-generate` skill is available, activate it and follow its `SKILL.md` exactly. Treat the skill as canonical; this TOML file is only a command router.
+
+User arguments:
+{{args}}
+"""
