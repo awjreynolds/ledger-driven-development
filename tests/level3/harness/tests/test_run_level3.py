@@ -21,6 +21,66 @@ class SandboxTests(unittest.TestCase):
             self.assertTrue((sandbox.path / "cad.js").is_file())
             self.assertEqual("scenario", sandbox.scenario_id)
 
+    def test_create_sandbox_can_seed_package_from_override_root(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            package_root = root / "generated-package"
+            (package_root / "skills" / "generated-skill").mkdir(parents=True)
+            (package_root / "skills" / "generated-skill" / "SKILL.md").write_text(
+                "generated\n", encoding="utf-8"
+            )
+            (package_root / "agent-skills.json").write_text(
+                '{"commands":[]}\n', encoding="utf-8"
+            )
+            (package_root / "commands" / "generated" / "run.md").parent.mkdir(parents=True)
+            (package_root / "commands" / "generated" / "run.md").write_text(
+                "generated command\n", encoding="utf-8"
+            )
+            (package_root / ".claude-plugin").mkdir()
+            (package_root / ".claude-plugin" / "plugin.json").write_text(
+                '{"commands":["./commands/generated/run.md"]}\n', encoding="utf-8"
+            )
+            (package_root / "gemini-extension.json").write_text(
+                '{"commands":["/generated:run"]}\n', encoding="utf-8"
+            )
+
+            sandbox = create_sandbox(
+                run_root=root / "run",
+                scenario_id="scenario",
+                seed_files={},
+                package_root=package_root,
+            )
+
+            self.assertTrue((sandbox.path / "skills" / "generated-skill" / "SKILL.md").is_file())
+            self.assertEqual(
+                "generated\n",
+                (sandbox.path / "skills" / "generated-skill" / "SKILL.md").read_text(
+                    encoding="utf-8"
+                ),
+            )
+            self.assertEqual(
+                "generated command\n",
+                (sandbox.path / "commands" / "generated" / "run.md").read_text(
+                    encoding="utf-8"
+                ),
+            )
+            self.assertTrue((sandbox.path / ".claude-plugin" / "plugin.json").is_file())
+            self.assertTrue((sandbox.path / "gemini-extension.json").is_file())
+
+    def test_create_sandbox_requires_generated_package_surfaces(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            package_root = root / "empty-package"
+            package_root.mkdir()
+
+            with self.assertRaisesRegex(ValueError, "generated package missing"):
+                create_sandbox(
+                    run_root=root / "run",
+                    scenario_id="scenario",
+                    seed_files={},
+                    package_root=package_root,
+                )
+
 
 class RunLevel3ConfigTests(unittest.TestCase):
     def test_default_config_uses_scripted_local(self):

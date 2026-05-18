@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import importlib.util
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -34,6 +35,7 @@ PACKAGE_PATHS = [
     "CONTEXT.md",
     "docs/skills.md",
 ]
+REQUIRED_OVERRIDE_PACKAGE_PATHS = {"skills", "commands", "agent-skills.json"}
 
 
 class Level2Error(Exception):
@@ -61,6 +63,19 @@ def copy_path(source: Path, target: Path) -> None:
     shutil.copy2(source, target)
 
 
+def package_source(relative_path: str, package_root: Path | None) -> Path:
+    if package_root is not None:
+        generated_source = package_root / relative_path
+        if generated_source.exists():
+            return generated_source
+        if relative_path in REQUIRED_OVERRIDE_PACKAGE_PATHS:
+            raise Level2Error(f"generated package missing required path: {generated_source}")
+    source = ROOT / relative_path
+    if not source.exists():
+        raise Level2Error(f"missing package path: {source}")
+    return source
+
+
 def seed_repo(step: dict, repo_dir: Path) -> None:
     source_scenario = step.get("source_scenario")
     fixture = step.get("fixture")
@@ -72,10 +87,9 @@ def seed_repo(step: dict, repo_dir: Path) -> None:
         raise Level2Error(f"missing Level 1 fixture: {fixture_dir}")
 
     shutil.copytree(fixture_dir, repo_dir, dirs_exist_ok=True)
+    package_root = Path(os.environ["GADD_PACKAGE_ROOT"]) if os.environ.get("GADD_PACKAGE_ROOT") else None
     for relative_path in PACKAGE_PATHS:
-        source = ROOT / relative_path
-        if not source.exists():
-            raise Level2Error(f"missing package path: {source}")
+        source = package_source(relative_path, package_root)
         copy_path(source, repo_dir / relative_path)
 
 

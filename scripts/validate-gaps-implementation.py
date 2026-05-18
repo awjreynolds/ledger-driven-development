@@ -286,6 +286,10 @@ def validate_lane(
         if not combined_contains(skill_paths, str(phrase)):
             errors.append(f"{lane_path}: evidence phrase missing from mapped skills: {phrase}")
 
+    for phrase in implementation.get("behaviorPhrases", []):
+        if not combined_contains(skill_paths, str(phrase)):
+            errors.append(f"{lane_path}: behavior phrase missing from mapped skills: {phrase}")
+
 
 def validate_skill_references(
     location: str, implementation: dict[str, Any], skills_root: Path, errors: list[str]

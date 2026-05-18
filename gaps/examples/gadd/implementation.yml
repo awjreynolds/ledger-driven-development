@@ -42,6 +42,18 @@ laneImplementations:
       - Work Item ledger
       - approved triage outcome
       - next command
+    behaviorPhrases:
+      - /gadd:research
+      - /gadd:scope
+      - /gadd:elaborate
+      - /gadd:refine
+      - /gadd:design
+      - /gadd:plan
+      - /gadd:decompose
+      - /gadd:implement
+      - /gadd:verify
+      - /gadd:close
+      - /gadd:archive
     requiredSkillSections:
       - Input Quality Gate
       - Rules

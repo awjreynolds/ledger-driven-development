@@ -122,6 +122,14 @@ Adopted mode writes package files under `skills/` and `commands/`, while review 
 
 Generated output is a starting point for human process-owner review. It is not production-ready by default and does not claim regulatory compliance, certification, legal sufficiency, runtime execution, or standards export.
 
+To validate the generated GADD package against the available deterministic behavior harnesses, run:
+
+```bash
+python3 scripts/validate-generated-gadd-package.py
+```
+
+This command generates a temporary GADD package, validates its generated implementation map, and runs Level 1 plus Level 2/3 scripted harnesses with `GADD_PACKAGE_ROOT` pointing at the generated package.
+
 ## Files
 
 - `examples/gadd/ga-process.yml` - GADD as the first GAPS reference process.

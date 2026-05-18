@@ -597,6 +597,7 @@ python3 -m unittest tests.gaps.test_generate_gaps_skill_package
 python3 scripts/generate-gaps-skill-package.py tests/gaps/fixtures/tiny-process/ga-process.yml --output-root /tmp/gaps-generator-check
 python3 scripts/generate-gaps-skill-package.py gaps/examples/gadd/ga-process.yml --output-root /tmp/gaps-gadd-generator-check
 python3 scripts/validate-gaps-implementation.py /tmp/gaps-gadd-generator-check/gaps/generated/gadd/implementation.yml
+python3 scripts/validate-generated-gadd-package.py
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then
   echo "GADD command package must not depend on external skills" >&2

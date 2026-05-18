@@ -76,6 +76,12 @@ If validation fails, do not generate. Report the validator findings.
    python3 scripts/validate-gaps-implementation.py gaps/generated/<process-id-slug>/implementation.yml
    ```
 
+   For GADD specifically, run generated-package behavior validation:
+
+   ```bash
+   python3 scripts/validate-generated-gadd-package.py
+   ```
+
 4. For explicit adopted output only, run:
 
    ```bash

@@ -784,6 +784,10 @@ def implementation_package(
                     skill.required_phrases,
                     [item for item in lane_impl.get("evidencePhrases", []) if isinstance(item, str)],
                 )
+                extend_unique(
+                    skill.required_phrases,
+                    [item for item in lane_impl.get("behaviorPhrases", []) if isinstance(item, str)],
+                )
 
     control_plane = implementation.get("controlPlaneImplementations", [])
     if isinstance(control_plane, list):
