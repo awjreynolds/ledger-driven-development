@@ -1,12 +1,10 @@
-# Governed Autonomy Operating Model
+# Governed Autonomy operating model
 
-The operating model turns Governed Autonomy from a principle into a repeatable way to design, improve, and govern business processes that include AI or autonomous systems.
+This is the working layer beneath the philosophy. It turns Governed Autonomy from a principle into a repeatable way to design, improve, and govern business processes that include autonomous systems, so that those processes remain inspectable, accountable, and reversible as autonomy increases.
 
-The value is not that AI does work. The value is that autonomous execution becomes governable at organizational scale.
+## 1. Roles and decision rights
 
-## 1. Roles And Decision Rights
-
-Name the roles in the process before assigning autonomy.
+Name the roles in the process before assigning autonomy to anything.
 
 - Process owner: accountable for process outcomes.
 - Domain owner: accountable for policy, service, or business correctness.
@@ -16,41 +14,30 @@ Name the roles in the process before assigning autonomy.
 - Auditor or assurance role: inspects traceability after the fact.
 - Autonomous system: executes bounded work but does not own accountability.
 
-For each role, define what it can decide, what it can delegate, and what it must escalate.
+For each role, write down what it can decide, what it can delegate, and what it must escalate.
 
-## 2. Authority Boundaries
+## 2. Authority boundaries
 
-Authority boundaries define what an autonomous system may do without further approval.
+What an autonomous system is allowed to do without further approval should be documented, not inferred. That means:
 
-Document:
-
-- allowed actions
-- prohibited actions
+- allowed actions and prohibited actions
 - spending, risk, policy, or customer-impact limits
-- systems the autonomous system may read or write
+- systems it may read, and the (usually narrower) set it may write
 - conditions that require human intervention
 
-## 3. Input Quality Gates
+Anything not listed is out of scope. If the agent has to ask "am I allowed to do this?", the answer needs to live in the document, not in the model.
 
-A process step should not start just because a prompt exists.
+## 3. Input quality gates
 
-Define the minimum input needed for safe action:
+A step shouldn't start just because a prompt exists. Decide up front what counts as a viable input: source of request, desired outcome, constraints, relevant records, sensitivity or policy concerns, known risks, and owner or approver.
 
-- source of request
-- desired outcome
-- constraints
-- relevant records
-- sensitivity or policy concerns
-- known risks
-- owner or approver
+Weak input routes to clarification, research, or human decision. It does not route to silent execution.
 
-Weak input should route to clarification, research, or human decision rather than silent execution.
+## 4. Scope and execution boundaries
 
-## 4. Scope And Execution Boundaries
+Boundaries prevent a narrow request from quietly expanding into unmanaged operational change.
 
-Boundaries prevent a narrow request from expanding into unmanaged operational change.
-
-Each delegated step should state:
+For each delegated step, state:
 
 - what is in scope
 - what is out of scope
@@ -58,61 +45,30 @@ Each delegated step should state:
 - what changes require a boundary reset
 - when the system must stop
 
-## 5. Risk And Blast Radius
+## 5. Risk and blast radius
 
-Autonomy should be proportional to risk.
+Autonomy should be proportional to what the step can break. Walk the obvious axes: customer or citizen impact, financial impact, legal or regulatory exposure, reversibility, data sensitivity, operational dependency, and cross-team or cross-system reach.
 
-Assess:
+Higher blast radius requires stronger evidence, more approvals, real monitoring, and a rollback path that someone has actually tried.
 
-- customer or citizen impact
-- financial impact
-- legal, regulatory, or policy exposure
-- reversibility
-- data sensitivity
-- operational dependency
-- reputational risk
-- cross-team or cross-system impact
+## 6. Evidence requirements
 
-Higher blast radius requires stronger evidence, approvals, monitoring, and rollback paths.
+Evidence is what makes a governed step reviewable later. The reviewable artifact varies by process, but typically includes the input received, the data sources consulted, the assumptions made, the decision rationale, the action taken, and the resulting system change. It should be captured as the step runs, not reconstructed afterward.
 
-## 6. Evidence Requirements
+## 7. Escalation and approval
 
-Governed autonomy requires evidence that can be reviewed.
+These get conflated and shouldn't be. Escalation is the system saying "I've hit a boundary, I need help." Approval is a human authorizing a transition the process explicitly reserves for a human. Both need to be defined before deployment, and they should not be the same person clicking the same button.
 
-Evidence may include:
+## 8. State and auditability
 
-- input received
-- data sources consulted
-- assumptions made
-- decision rationale
-- action taken
-- system changes made
-- checks performed
-- escalation or approval records
-- final outcome
+Important process state should not live only in chat. Governed processes need a durable source of truth for current state, evidence, approvals, and closure. Other systems can stay as collaboration surfaces, but the operating model has to be unambiguous about which record is canonical.
 
-## 7. Escalation And Approval
+## 9. Projection into existing systems
 
-Escalation and approval are different.
+Most organizations don't get to invent a new stack. Planning systems, ticketing systems, case-management tools, spreadsheets, workflow platforms, and documents can project status and review information from the canonical record. They will drift into being treated as the source of truth unless the operating model says, in writing, that they aren't.
 
-Escalation means the autonomous system has reached a boundary and needs help. Approval means an accountable human authorizes a transition or action.
+## Read next
 
-Define both before deployment.
-
-## 8. State And Auditability
-
-Important process state should not live only in chat.
-
-Governed processes need a durable source of truth for current state, evidence, approvals, and closure. Existing systems can remain collaboration surfaces, but the process must make clear which record is canonical.
-
-## 9. Projection Into Existing Systems
-
-Governed Autonomy should usually work with the tools an organization already uses.
-
-Planning systems, ticketing systems, case-management tools, spreadsheets, workflow platforms, and documents can project status and review information. They should not become accidental sources of truth unless the operating model explicitly assigns that role.
-
-## Read Next
-
-- [Process Assessment](process-assessment.md) turns this model into an assessment path for a real business process.
-- [Uncontrolled AI Risk Patterns](uncontrolled-ai-risk-patterns.md) names the failure modes this operating model is meant to prevent.
+- [Process assessment](process-assessment.md) turns this model into an assessment path for a real business process.
+- [Uncontrolled AI risk patterns](uncontrolled-ai-risk-patterns.md) names the failure modes this operating model is meant to prevent.
 - [Governed Autonomy overview](README.md) returns to the main section index.

@@ -1,14 +1,14 @@
-# Case Study: GADD
+# Case study: GADD
 
-GADD is a case study in Governed Autonomy applied to software delivery.
+GADD applies Governed Autonomy to software delivery: moving a unit of software work from unclassified intake through requirements, design, planning, implementation, verification, and closure, with explicit boundaries and human approval at the transitions that matter.
 
-It does not define the full scope of Governed Autonomy. It shows how the philosophy can become a concrete methodology for one complex business process: moving software work from intake to verified closure.
+It's one process. Governed Autonomy is broader. GADD is the version that exists in code in this repository, and the rest of this page maps how the abstract pieces show up in the concrete system.
 
 ![GADD case study map](assets/gadd-case-study-map.svg)
 
-## Business Process
+## Business process
 
-GADD governs the software-delivery process from unclassified intake through requirements, design, planning, implementation, verification, closure, and optional archive cleanup.
+The process covered is software delivery, from unclassified intake through requirements, design, planning, implementation, verification, closure, and optional archive cleanup.
 
 ## Roles
 
@@ -24,21 +24,11 @@ GADD governs the software-delivery process from unclassified intake through requ
 
 ## Boundaries
 
-GADD keeps boundaries explicit through:
-
-- triage outcomes
-- Product Requirement scope
-- Software Design Documents
-- implementation plans
-- child Work Items
-- verification reports
-- closure decisions
-
-Each boundary defines what the agent may do next and what evidence or approval is required before progression.
+Boundaries are made explicit through a small set of artifacts: triage outcomes, Product Requirement scope, Software Design Documents, implementation plans, child Work Items, verification reports, and closure decisions. Each one defines what the agent may do next and what evidence or approval has to land before the next step is allowed.
 
 ## Evidence
 
-GADD uses repo-local artifacts as evidence:
+Evidence lives in the repository as committed artifacts, not in chat:
 
 - `ledger.yml` for canonical workflow state
 - `research.md` where pre-scope investigation is needed
@@ -49,13 +39,11 @@ GADD uses repo-local artifacts as evidence:
 - implementation evidence from code, tests, and documentation impact
 - `verification.md` for closure readiness
 
-## Existing Systems
+## Existing systems
 
-GADD treats external planning and review tools as projection surfaces unless explicitly configured otherwise.
+External planning and review tools (GitHub Issues, Jira, Linear, Asana, and similar) are treated as projection surfaces rather than sources of truth. The repo-local ledger stays canonical. They're useful for collaboration and visibility, and the operating model is unambiguous about where state actually lives.
 
-GitHub Issues, Jira, Linear, Asana, and similar systems can be useful collaboration surfaces, but GADD's repo-local ledger remains canonical workflow state in the current model.
-
-## Risk Mitigation
+## Risk mitigation
 
 | Uncontrolled AI risk | GADD mitigation |
 | --- | --- |
@@ -67,14 +55,12 @@ GitHub Issues, Jira, Linear, Asana, and similar systems can be useful collaborat
 | Tool sprawl | external systems are projections, not hidden sources of truth |
 | Scope creep at machine speed | scope gates and decomposition boundaries reset unauthorized expansion |
 
-## What This Shows
+## What this shows
 
-GADD demonstrates the Governed Autonomy pattern in a domain where autonomous execution can otherwise collapse planning, design, implementation, and review into one chat loop.
+GADD is one demonstration of the pattern in a domain where, left alone, autonomous execution tends to collapse planning, design, implementation, and review into a single chat loop. The point isn't software-specific. A process becomes safer to delegate when its roles, boundaries, evidence requirements, escalation conditions, approval gates, and canonical state are defined *before* execution accelerates, not after.
 
-The broader lesson is not software-specific: autonomy becomes safer when the process defines roles, boundaries, evidence, escalation, approval, and canonical state before execution accelerates.
+## Read next
 
-## Read Next
-
-- [Related Landscape](related-landscape.md) positions Governed Autonomy alongside adjacent AI and process-governance disciplines.
+- [Related landscape](related-landscape.md) positions Governed Autonomy alongside adjacent AI and process-governance disciplines.
 - [References](references.md) lists the standards, research, and market writing that informed the framing.
 - [Governed Autonomy overview](README.md) returns to the main section index.

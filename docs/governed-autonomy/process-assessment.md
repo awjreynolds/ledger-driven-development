@@ -1,14 +1,12 @@
-# Governed Autonomy Process Assessment
+# Governed Autonomy process assessment
 
-Use this assessment before introducing or expanding AI autonomy in a business process.
+Run this before introducing or expanding AI autonomy in a business process. It's a structured way to decide which steps can be delegated safely, which need human judgment, and which controls have to exist before autonomy increases.
 
-The goal is not to automate every step. The goal is to decide which steps can be delegated safely, which need human judgment, and which controls must exist before autonomy increases.
+The work moves from the as-is process to the to-be process by making decision rights, handoffs, controls, evidence, and autonomy boundaries explicit.
 
-The assessment moves from the as-is process to the to-be process by making decision rights, handoffs, controls, evidence, and autonomy boundaries explicit.
+## 1. Map the as-is process
 
-## 1. Map The As-Is Process
-
-Capture how work happens today:
+Capture how work actually happens today:
 
 - trigger
 - requester
@@ -21,9 +19,9 @@ Capture how work happens today:
 - current pain points
 - failure modes
 
-## 2. Identify Decision Rights
+## 2. Identify decision rights
 
-For each decision, ask:
+For each decision in the process, ask:
 
 - who owns the decision today?
 - who is accountable if it goes wrong?
@@ -31,11 +29,11 @@ For each decision, ask:
 - can the decision be recommended by AI, drafted by AI, or executed by AI?
 - what would require human review?
 
-## 3. Classify Autonomy Level
+## 3. Classify autonomy level
 
 ![Business process autonomy ladder](assets/business-process-autonomy-ladder.svg)
 
-Use a simple ladder:
+A simple ladder is usually enough:
 
 | Level | Pattern | Human role |
 | --- | --- | --- |
@@ -46,9 +44,9 @@ Use a simple ladder:
 | 5 | Execute within limits | AI acts inside defined boundaries |
 | 6 | Autonomous with monitoring | AI acts continuously with monitoring, audit, and escalation |
 
-Do not skip levels for high-risk process steps.
+For high-risk steps, don't skip levels.
 
-## 4. Define The To-Be Process
+## 4. Define the to-be process
 
 For each step, define:
 
@@ -61,11 +59,11 @@ For each step, define:
 - approval condition
 - completion condition
 
-## 5. Design Controls Into The Process
+## 5. Design controls into the process
 
-Controls should be part of the process design, not added after automation succeeds.
+Controls should be part of the process design, not added once automation is already running.
 
-Controls may include:
+Useful control types include:
 
 - input quality gates
 - authority limits
@@ -77,9 +75,9 @@ Controls may include:
 - rollback or correction paths
 - periodic review
 
-## 6. Measure Outcomes
+## 6. Measure outcomes
 
-Measure both efficiency and control:
+Measure both efficiency and control. Without the second half, the first half eats the process:
 
 - cycle time
 - rework
@@ -92,8 +90,8 @@ Measure both efficiency and control:
 - cost-to-serve
 - audit findings
 
-## Read Next
+## Read next
 
-- [Uncontrolled AI Risk Patterns](uncontrolled-ai-risk-patterns.md) explains the risks to look for during assessment.
-- [Case Study: GADD](case-study-gadd.md) shows the assessment ideas applied to software delivery.
+- [Uncontrolled AI risk patterns](uncontrolled-ai-risk-patterns.md) explains the risks to look for during assessment.
+- [Case study: GADD](case-study-gadd.md) shows the assessment ideas applied to software delivery.
 - [Governed Autonomy overview](README.md) returns to the main section index.
