@@ -24,6 +24,8 @@ class ValidationError(Exception):
 def load_json(path: Path) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
+    except OSError as error:
+        raise ValidationError(f"{path}: unable to read JSON: {error}") from error
     except json.JSONDecodeError as error:
         raise ValidationError(f"{path}: invalid JSON: {error}") from error
 
@@ -65,6 +67,22 @@ def resolve_repo_path(value: str) -> Path:
     return ROOT / path
 
 
+def required_string(data: dict[str, Any], field: str, location: str, errors: list[str]) -> str | None:
+    value = data.get(field)
+    if not isinstance(value, str) or not value:
+        errors.append(f"{location}.{field}: missing required string field")
+        return None
+    return value
+
+
+def required_object(data: dict[str, Any], field: str, location: str, errors: list[str]) -> dict[str, Any] | None:
+    value = data.get(field)
+    if not isinstance(value, dict):
+        errors.append(f"{location}.{field}: missing required object field")
+        return None
+    return value
+
+
 def command_name(command: str) -> str:
     if not command.startswith("/"):
         raise ValidationError(f"invalid command name {command!r}")
@@ -103,20 +121,31 @@ def validate_map(path: Path) -> list[str]:
     if not isinstance(implementation, dict):
         return [f"{path}: expected implementation map object"]
 
-    process_path = resolve_repo_path(str(implementation.get("processSpec", "")))
+    process_spec = required_string(implementation, "processSpec", str(path), errors)
+    package_manifest = required_string(implementation, "packageManifest", str(path), errors)
+    skills_root_value = required_string(implementation, "skillsRoot", str(path), errors)
+    commands_root_value = required_string(implementation, "commandsRoot", str(path), errors)
+    adapter_manifests = required_object(implementation, "adapterManifests", str(path), errors)
+    if adapter_manifests is not None:
+        required_string(adapter_manifests, "claude", f"{path}.adapterManifests", errors)
+        required_string(adapter_manifests, "gemini", f"{path}.adapterManifests", errors)
+    if errors:
+        return errors
+
+    process_path = resolve_repo_path(process_spec or "")
     process = load_structured(process_path)
-    manifest_path = resolve_repo_path(str(implementation.get("packageManifest", "")))
+    manifest_path = resolve_repo_path(package_manifest or "")
     manifest = load_json(manifest_path)
 
     process_id = process.get("process", {}).get("id") if isinstance(process, dict) else None
     if implementation.get("processId") != process_id:
         errors.append(f"{path}: processId {implementation.get('processId')!r} does not match {process_id!r}")
 
-    skills_root = resolve_repo_path(str(implementation.get("skillsRoot", "")))
-    commands_root = resolve_repo_path(str(implementation.get("commandsRoot", "")))
+    skills_root = resolve_repo_path(skills_root_value or "")
+    commands_root = resolve_repo_path(commands_root_value or "")
     manifest_commands = load_manifest_commands(manifest)
-    claude_commands = load_claude_commands(implementation)
-    gemini_commands = load_gemini_commands(implementation)
+    claude_commands = load_claude_commands(adapter_manifests or {})
+    gemini_commands = load_gemini_commands(adapter_manifests or {})
 
     lanes = process.get("lanes", {}) if isinstance(process, dict) else {}
     lane_implementations = implementation.get("laneImplementations", {})
@@ -147,6 +176,8 @@ def validate_map(path: Path) -> list[str]:
         if lane_name not in lanes:
             errors.append(f"{path}: laneImplementations.{lane_name} has no matching process lane")
 
+    validate_global_skill_contract(implementation, skills_root, errors)
+
     validate_control_plane(
         implementation,
         process,
@@ -175,14 +206,14 @@ def validate_map(path: Path) -> list[str]:
 
 
 def load_claude_commands(implementation: dict[str, Any]) -> set[str]:
-    path = resolve_repo_path(str(implementation.get("adapterManifests", {}).get("claude", "")))
+    path = resolve_repo_path(str(implementation.get("claude", "")))
     data = load_json(path)
     commands = data.get("commands", [])
     return {str(command) for command in commands if isinstance(command, str)}
 
 
 def load_gemini_commands(implementation: dict[str, Any]) -> set[str]:
-    path = resolve_repo_path(str(implementation.get("adapterManifests", {}).get("gemini", "")))
+    path = resolve_repo_path(str(implementation.get("gemini", "")))
     data = load_json(path)
     commands = data.get("commands", [])
     return {str(command) for command in commands if isinstance(command, str)}
@@ -205,6 +236,7 @@ def validate_lane(
         return
 
     skill_paths = validate_skill_references(lane_path, implementation, skills_root, errors)
+    validate_process_command_coverage(lane_path, lane, implementation, errors)
     validate_command_references(
         lane_path,
         implementation,
@@ -243,6 +275,45 @@ def validate_skill_references(
     return skill_paths
 
 
+def mapped_skill_files(implementation: dict[str, Any], skills_root: Path) -> dict[str, Path]:
+    files: dict[str, Path] = {}
+    lane_implementations = implementation.get("laneImplementations", {})
+    if isinstance(lane_implementations, dict):
+        for lane in lane_implementations.values():
+            if isinstance(lane, dict):
+                for skill in lane.get("skills", []):
+                    if isinstance(skill, str):
+                        files[skill] = skills_root / skill / "SKILL.md"
+    control_plane = implementation.get("controlPlaneImplementations", [])
+    if isinstance(control_plane, list):
+        for action in control_plane:
+            if isinstance(action, dict) and isinstance(action.get("skill"), str):
+                files[action["skill"]] = skills_root / action["skill"] / "SKILL.md"
+    return files
+
+
+def validate_global_skill_contract(
+    implementation: dict[str, Any], skills_root: Path, errors: list[str]
+) -> None:
+    contract = implementation.get("globalSkillContract", {})
+    if not isinstance(contract, dict):
+        return
+    skill_files = mapped_skill_files(implementation, skills_root)
+    for skill, skill_file in sorted(skill_files.items()):
+        if not skill_file.is_file():
+            continue
+        for section in contract.get("requiredSections", []):
+            if not file_contains(skill_file, f"## {section}"):
+                errors.append(
+                    f"globalSkillContract.requiredSections: {skill} missing section {section}"
+                )
+        for phrase in contract.get("requiredPhrases", []):
+            if not file_contains(skill_file, str(phrase)):
+                errors.append(
+                    f"globalSkillContract.requiredPhrases: {skill} missing phrase {phrase}"
+                )
+
+
 def validate_command_references(
     location: str,
     implementation: dict[str, Any],
@@ -254,7 +325,11 @@ def validate_command_references(
 ) -> None:
     for command in implementation.get("commands", []):
         command = str(command)
-        md_path, toml_path = command_adapter_paths(commands_root, command)
+        try:
+            md_path, toml_path = command_adapter_paths(commands_root, command)
+        except ValidationError as error:
+            errors.append(f"{location}: {error}")
+            continue
         if command not in manifest_commands:
             errors.append(f"{location}: command missing from agent-skills.json: {command}")
         if not md_path.is_file():
@@ -278,6 +353,19 @@ def validate_gate_references(
             errors.append(f"{location}: gate {gate} missing from process lane")
 
 
+def validate_process_command_coverage(
+    location: str, lane: dict[str, Any], implementation: dict[str, Any], errors: list[str]
+) -> None:
+    process_commands = {command for command in lane.get("skills", []) if isinstance(command, str)}
+    implementation_commands = {
+        command for command in implementation.get("commands", []) if isinstance(command, str)
+    }
+    for command in sorted(process_commands - implementation_commands):
+        errors.append(f"{location}: process command {command} missing from implementation commands")
+    for command in sorted(implementation_commands - process_commands):
+        errors.append(f"{location}: implementation command {command} not declared in process lane skills")
+
+
 def validate_control_plane(
     implementation: dict[str, Any],
     process: dict[str, Any],
@@ -293,6 +381,16 @@ def validate_control_plane(
         for action in process.get("controlPlaneActions", [])
         if isinstance(action, dict)
     }
+    implementation_actions = {
+        action.get("command")
+        for action in implementation.get("controlPlaneImplementations", [])
+        if isinstance(action, dict)
+    }
+    for command in sorted(process_actions - implementation_actions):
+        errors.append(f"controlPlaneImplementations: process command {command} missing from controlPlaneImplementations")
+    for command in sorted(implementation_actions - process_actions):
+        errors.append(f"controlPlaneImplementations: implementation command {command} not declared in process controlPlaneActions")
+
     for index, action in enumerate(implementation.get("controlPlaneImplementations", [])):
         location = f"controlPlaneImplementations.{index}"
         if not isinstance(action, dict):
