@@ -32,10 +32,10 @@ If no process file is supplied, ask for one. Do not infer the target from unrela
 By default, only preview files under:
 
 ```text
-gaps/generated/<process-id>/
+gaps/generated/<process-id-slug>/
 ```
 
-Adopted package output under `skills/`, `commands/`, and manifest patch files is allowed only when the user explicitly requests write/adopt mode.
+Adopted package output under `skills/` and `commands/` is allowed only when the user explicitly requests write/adopt mode. Review artifacts remain under `gaps/generated/<process-id-slug>/`.
 
 ## Input Quality Gate
 
@@ -51,9 +51,10 @@ If validation fails, do not generate. Report the validator findings.
 
 - Dry-run preview is the default.
 - Adopted output requires explicit user instruction and generator flags `--write --adopt-output`.
+- Adopted output refuses to replace existing files unless the user explicitly requests `--overwrite`.
 - Generated skills are skeletons for human review, not production-ready process controls.
 - Do not claim regulatory compliance, certification, legal sufficiency, runtime execution, BPMN export, CMMN export, DMN export, or OSCAL export.
-- Do not overwrite existing package roots unless the user explicitly requests adopted output.
+- Do not overwrite existing package files unless the user explicitly requests overwrite mode.
 - Preserve known gaps and non-claims in generated artifacts.
 
 ## Workflow
@@ -72,7 +73,7 @@ If validation fails, do not generate. Report the validator findings.
    python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml> --write --adopt-output
    ```
 
-5. Report the output directory and generated artifacts.
+5. Report the output directory and generated artifacts. If existing files block adoption, ask whether the user wants `--overwrite`.
 6. Tell the user that `/gaps:validate` is required after adopting generated files.
 
 ## Stop Conditions

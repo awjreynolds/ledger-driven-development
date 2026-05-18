@@ -108,13 +108,15 @@ Run:
 python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml>
 ```
 
-Generation is dry-run-first. By default it writes a reviewable package skeleton under `gaps/generated/<process-id>/` with skills, command adapters, manifest patch suggestions, an implementation map, and a validation checklist.
+Generation is dry-run-first. By default it writes a reviewable package skeleton under `gaps/generated/<process-id-slug>/` with skills, command adapters, manifest patch suggestions, an implementation map, and a validation checklist.
 
 Adopting generated files into package roots requires explicit write mode:
 
 ```bash
 python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml> --write --adopt-output
 ```
+
+Adopted mode writes package files under `skills/` and `commands/`, while review artifacts stay under `gaps/generated/<process-id-slug>/`. Existing files are not replaced unless `--overwrite` is also supplied.
 
 Generated output is a starting point for human process-owner review. It is not production-ready by default and does not claim regulatory compliance, certification, legal sufficiency, runtime execution, or standards export.
 

@@ -16,6 +16,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
+GENERATED_DIR = Path("gaps") / "generated"
 
 
 class GenerateError(Exception):
@@ -51,6 +52,32 @@ def slug(value: str) -> str:
     return normalized or "process"
 
 
+def safe_process_dir(process_id: str) -> str:
+    if "/" in process_id or "\\" in process_id or ".." in process_id:
+        raise GenerateError(
+            f"process.id {process_id!r} must not contain path separators or parent traversal"
+        )
+    return slug(process_id)
+
+
+def ensure_under(path: Path, parent: Path, label: str) -> Path:
+    resolved_path = path.resolve()
+    resolved_parent = parent.resolve()
+    try:
+        resolved_path.relative_to(resolved_parent)
+    except ValueError as error:
+        raise GenerateError(f"{label} escapes expected output root: {path}") from error
+    return path
+
+
+def display_path(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(ROOT.resolve()))
+    except ValueError:
+        return str(resolved)
+
+
 def command_namespace(process_id: str) -> str:
     return slug(process_id.replace("_process", "").replace("_", "-")).split("-", 1)[0]
 
@@ -63,10 +90,9 @@ def skill_name(process_id: str, lane_name: str) -> str:
     return f"{slug(process_id)}-{slug(lane_name)}"
 
 
-def output_base(output_root: Path, process_id: str, adopt: bool) -> Path:
-    if adopt:
-        return output_root
-    return output_root / "gaps" / "generated" / process_id
+def review_base(output_root: Path, process_id: str) -> Path:
+    generated_root = output_root / GENERATED_DIR
+    return ensure_under(generated_root / safe_process_dir(process_id), generated_root, "generated output")
 
 
 def render_skill(process: dict[str, Any], lane_name: str, lane: dict[str, Any], command: str) -> str:
@@ -169,11 +195,11 @@ User arguments:
 '''
 
 
-def render_implementation(process: dict[str, Any], namespace: str) -> str:
+def render_implementation(process: dict[str, Any], namespace: str, process_path: Path) -> str:
     process_id = process["process"]["id"]
     lines = [
         'schemaVersion: "0.1"',
-        f"processSpec: gaps/examples/{process_id}/ga-process.yml",
+        f"processSpec: {display_path(process_path)}",
         f"processId: {process_id}",
         "implementationType: agent_skill_package",
         "packageManifest: agent-skills.json",
@@ -257,12 +283,52 @@ def render_checklist(process: dict[str, Any], namespace: str) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_text(path: Path, content: str) -> None:
+def write_text(path: Path, content: str, overwrite: bool) -> None:
+    if path.exists() and not overwrite:
+        raise GenerateError(f"{path}: already exists; pass --overwrite to replace it")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
 
 
-def generate(process_path: Path, output_root: Path, adopt: bool) -> list[Path]:
+def preflight_writes(artifacts: dict[Path, str], overwrite: bool) -> None:
+    directory_targets = sorted([path for path in artifacts if path.is_dir()], key=str)
+    if directory_targets:
+        target_list = "\n".join(f"- {path}" for path in directory_targets[:10])
+        if len(directory_targets) > 10:
+            target_list += f"\n- ... and {len(directory_targets) - 10} more"
+        raise GenerateError("generated output target is a directory:\n" f"{target_list}")
+
+    blockers = sorted(
+        {
+            ancestor
+            for path in artifacts
+            for ancestor in [*path.parents]
+            if ancestor.exists() and not ancestor.is_dir()
+        },
+        key=str,
+    )
+    if blockers:
+        blocker_list = "\n".join(f"- {path}" for path in blockers[:10])
+        if len(blockers) > 10:
+            blocker_list += f"\n- ... and {len(blockers) - 10} more"
+        raise GenerateError(
+            "generated output parent path is not a directory:\n" f"{blocker_list}"
+        )
+
+    if overwrite:
+        return
+    collisions = [path for path in artifacts if path.exists()]
+    if collisions:
+        collision_list = "\n".join(f"- {path}" for path in collisions[:10])
+        if len(collisions) > 10:
+            collision_list += f"\n- ... and {len(collisions) - 10} more"
+        raise GenerateError(
+            "generated output would replace existing files; pass --overwrite to replace them:\n"
+            f"{collision_list}"
+        )
+
+
+def generate(process_path: Path, output_root: Path, adopt: bool, overwrite: bool) -> tuple[Path, list[Path]]:
     process = load_yaml(process_path)
     if not isinstance(process, dict) or not isinstance(process.get("process"), dict):
         raise GenerateError(f"{process_path}: missing process object")
@@ -270,39 +336,44 @@ def generate(process_path: Path, output_root: Path, adopt: bool) -> list[Path]:
     if not isinstance(process_id, str) or not process_id:
         raise GenerateError(f"{process_path}: process.id is required")
     namespace = command_namespace(process_id)
-    base = output_base(output_root, process_id, adopt)
+    generated_base = review_base(output_root, process_id)
+    package_base = output_root if adopt else generated_base
     written: list[Path] = []
 
-    if not adopt and base.exists():
-        shutil.rmtree(base)
+    if not adopt and generated_base.exists():
+        shutil.rmtree(generated_base)
 
+    artifacts: dict[Path, str] = {}
     for lane_name, lane in process.get("lanes", {}).items():
         if not isinstance(lane, dict):
             continue
         command = lane_command(namespace, lane_name)
         skill = skill_name(process_id, lane_name)
-        skill_root = base / "skills" / skill
-        command_root = base / "commands" / namespace
-        artifacts = {
-            skill_root / "SKILL.md": render_skill(process, lane_name, lane, command),
-            skill_root / "agents" / "openai.yaml": render_openai_yaml(process, lane_name, command),
-            command_root / f"{slug(lane_name)}.md": render_command_md(skill, command),
-            command_root / f"{slug(lane_name)}.toml": render_command_toml(skill, command),
-        }
-        for path, content in artifacts.items():
-            write_text(path, content)
-            written.append(path)
+        skill_root = package_base / "skills" / skill
+        command_root = package_base / "commands" / namespace
+        artifacts.update(
+            {
+                skill_root / "SKILL.md": render_skill(process, lane_name, lane, command),
+                skill_root / "agents" / "openai.yaml": render_openai_yaml(
+                    process, lane_name, command
+                ),
+                command_root / f"{slug(lane_name)}.md": render_command_md(skill, command),
+                command_root / f"{slug(lane_name)}.toml": render_command_toml(skill, command),
+            }
+        )
 
-    top_level = {
-        base / "README.generated.md": render_generated_readme(process, adopt),
-        base / "implementation.yml": render_implementation(process, namespace),
-        base / "agent-skills.patch.json": render_manifest_patch(process, namespace),
-        base / "validation-checklist.md": render_checklist(process, namespace),
-    }
-    for path, content in top_level.items():
-        write_text(path, content)
+    artifacts.update({
+        generated_base / "README.generated.md": render_generated_readme(process, adopt),
+        generated_base / "implementation.yml": render_implementation(process, namespace, process_path),
+        generated_base / "agent-skills.patch.json": render_manifest_patch(process, namespace),
+        generated_base / "validation-checklist.md": render_checklist(process, namespace),
+    })
+
+    preflight_writes(artifacts, overwrite)
+    for path, content in artifacts.items():
+        write_text(path, content, overwrite)
         written.append(path)
-    return written
+    return generated_base, written
 
 
 def render_generated_readme(process: dict[str, Any], adopt: bool) -> str:
@@ -338,6 +409,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="Write directly under package roots instead of gaps/generated/<process-id>",
     )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Allow adopted output to replace existing generated files.",
+    )
     return parser.parse_args(argv)
 
 
@@ -346,18 +422,24 @@ def main(argv: list[str] | None = None) -> int:
     if args.adopt_output and not args.write:
         print("--adopt-output requires --write", file=sys.stderr)
         return 2
+    if args.write and not args.adopt_output:
+        print("--write is only valid with --adopt-output", file=sys.stderr)
+        return 2
+    if args.overwrite and not args.adopt_output:
+        print("--overwrite is only valid with --adopt-output", file=sys.stderr)
+        return 2
 
     process_path = args.process if args.process.is_absolute() else ROOT / args.process
     output_root = args.output_root if args.output_root.is_absolute() else ROOT / args.output_root
     try:
-        written = generate(process_path, output_root, args.adopt_output)
+        base, written = generate(process_path, output_root, args.adopt_output, args.overwrite)
     except GenerateError as error:
         print(f"GAPS generation failed: {error}", file=sys.stderr)
         return 1
 
     mode = "adopted" if args.adopt_output else "preview"
     print(f"GAPS skill package generation completed ({mode}, {len(written)} files)")
-    print(f"Output root: {output_base(output_root, load_yaml(process_path)['process']['id'], args.adopt_output)}")
+    print(f"Output root: {base}")
     return 0
 
 
