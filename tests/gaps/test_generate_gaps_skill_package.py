@@ -8,7 +8,9 @@ from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[2]
 GENERATOR = ROOT / "scripts" / "generate-gaps-skill-package.py"
+IMPLEMENTATION_VALIDATOR = ROOT / "scripts" / "validate-gaps-implementation.py"
 FIXTURE = ROOT / "tests" / "gaps" / "fixtures" / "tiny-process" / "ga-process.yml"
+GADD_SPEC = ROOT / "gaps" / "examples" / "gadd" / "ga-process.yml"
 
 
 class GenerateGapsSkillPackageTests(unittest.TestCase):
@@ -202,6 +204,109 @@ class GenerateGapsSkillPackageTests(unittest.TestCase):
             self.assertIn("no certification", readme)
             self.assertIn("no legal sufficiency", readme)
             self.assertIn("Do not claim regulatory compliance", skill)
+
+    def test_gadd_generation_uses_implementation_map_for_command_level_skills(self) -> None:
+        with TemporaryDirectory(prefix="gaps-generator-") as temp_dir:
+            output_root = Path(temp_dir)
+            result = self.run_generator("--output-root", output_root, fixture=GADD_SPEC)
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            generated = output_root / "gaps" / "generated" / "gadd"
+            for skill in [
+                "gadd-triage",
+                "gadd-refine",
+                "gadd-approve",
+                "gadd-implement",
+                "gadd-verify",
+                "gadd-close",
+            ]:
+                self.assertTrue((generated / "skills" / skill / "SKILL.md").is_file(), skill)
+            for command in ["triage", "refine", "approve", "implement", "verify", "close"]:
+                self.assertTrue((generated / "commands" / "gadd" / f"{command}.md").is_file(), command)
+                self.assertTrue(
+                    (generated / "commands" / "gadd" / f"{command}.toml").is_file(), command
+                )
+            self.assertFalse((generated / "skills" / "gadd-product-requirement").exists())
+
+    def test_generated_gadd_implementation_map_validates_against_generated_preview(self) -> None:
+        with TemporaryDirectory(prefix="gaps-generator-") as temp_dir:
+            output_root = Path(temp_dir)
+            result = self.run_generator("--output-root", output_root, fixture=GADD_SPEC)
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+
+            generated = output_root / "gaps" / "generated" / "gadd"
+            validation = subprocess.run(
+                ["python3", str(IMPLEMENTATION_VALIDATOR), str(generated / "implementation.yml")],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+            self.assertEqual(validation.returncode, 0, validation.stderr + validation.stdout)
+            self.assertTrue((generated / "agent-skills.json").is_file())
+            self.assertTrue((generated / ".claude-plugin" / "plugin.json").is_file())
+            self.assertTrue((generated / "gemini-extension.json").is_file())
+
+    def test_implementation_map_rejects_unsafe_skill_name_before_writing(self) -> None:
+        with TemporaryDirectory(prefix="gaps-generator-") as temp_dir:
+            output_root = Path(temp_dir) / "out"
+            implementation = Path(temp_dir) / "implementation.yml"
+            implementation.write_text(
+                (ROOT / "gaps" / "examples" / "gadd" / "implementation.yml")
+                .read_text(encoding="utf-8")
+                .replace("gadd-triage", "../../escape", 1),
+                encoding="utf-8",
+            )
+
+            result = self.run_generator(
+                "--implementation-map", implementation, "--output-root", output_root, fixture=GADD_SPEC
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("skill name", result.stderr)
+            self.assertFalse((Path(temp_dir) / "escape").exists())
+            self.assertFalse((output_root / "gaps").exists())
+
+    def test_implementation_map_rejects_unpaired_unsafe_skill_name_before_writing(self) -> None:
+        with TemporaryDirectory(prefix="gaps-generator-") as temp_dir:
+            output_root = Path(temp_dir) / "out"
+            implementation = Path(temp_dir) / "implementation.yml"
+            implementation.write_text(
+                (ROOT / "gaps" / "examples" / "gadd" / "implementation.yml")
+                .read_text(encoding="utf-8")
+                .replace("      - gadd-implement", "      - gadd-implement\n      - ../../escape", 1),
+                encoding="utf-8",
+            )
+
+            result = self.run_generator(
+                "--implementation-map", implementation, "--output-root", output_root, fixture=GADD_SPEC
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("skill name", result.stderr)
+            self.assertFalse((Path(temp_dir) / "escape").exists())
+            self.assertFalse((output_root / "gaps").exists())
+
+    def test_implementation_map_rejects_unsafe_command_name_before_writing(self) -> None:
+        with TemporaryDirectory(prefix="gaps-generator-") as temp_dir:
+            output_root = Path(temp_dir) / "out"
+            implementation = Path(temp_dir) / "implementation.yml"
+            implementation.write_text(
+                (ROOT / "gaps" / "examples" / "gadd" / "implementation.yml")
+                .read_text(encoding="utf-8")
+                .replace("/gadd:triage", "/gadd:../../escape", 1),
+                encoding="utf-8",
+            )
+
+            result = self.run_generator(
+                "--implementation-map", implementation, "--output-root", output_root, fixture=GADD_SPEC
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("command name", result.stderr)
+            self.assertFalse((Path(temp_dir) / "escape").exists())
+            self.assertFalse((output_root / "gaps").exists())
 
 
 if __name__ == "__main__":

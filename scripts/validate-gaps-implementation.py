@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 from typing import Any
@@ -84,15 +85,40 @@ def required_object(data: dict[str, Any], field: str, location: str, errors: lis
 
 
 def command_name(command: str) -> str:
-    if not command.startswith("/"):
+    return command_parts(command)[1]
+
+
+def safe_path_segment(value: str, label: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", value):
+        raise ValidationError(f"invalid {label} {value!r}")
+    return value
+
+
+def command_parts(command: str) -> tuple[str, str]:
+    if not command.startswith("/") or command.count(":") != 1:
         raise ValidationError(f"invalid command name {command!r}")
-    return command.rsplit(":", 1)[-1]
+    namespace, name = command[1:].split(":", 1)
+    return safe_path_segment(namespace, "command namespace"), safe_path_segment(name, "command name")
 
 
 def command_adapter_paths(commands_root: Path, command: str) -> tuple[Path, Path]:
-    name = command_name(command)
-    namespace = command.strip("/").split(":", 1)[0]
+    namespace, name = command_parts(command)
     return commands_root / namespace / f"{name}.md", commands_root / namespace / f"{name}.toml"
+
+
+def display_path(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(path)
+
+
+def command_manifest_path(md_path: Path, commands_root: Path) -> str:
+    package_root = commands_root.parent
+    try:
+        return f"./{md_path.relative_to(package_root).as_posix()}"
+    except ValueError:
+        return f"./{display_path(md_path)}"
 
 
 def file_contains(path: Path, phrase: str) -> bool:
@@ -266,7 +292,13 @@ def validate_skill_references(
 ) -> list[Path]:
     skill_paths: list[Path] = []
     for skill in implementation.get("skills", []):
-        skill_dir = skills_root / str(skill)
+        skill_value = str(skill)
+        try:
+            safe_path_segment(skill_value, "skill name")
+        except ValidationError as error:
+            errors.append(f"{location}: {error}")
+            continue
+        skill_dir = skills_root / skill_value
         skill_file = skill_dir / "SKILL.md"
         if not skill_file.is_file():
             errors.append(f"{location}: skill file missing for {skill}")
@@ -333,10 +365,10 @@ def validate_command_references(
         if command not in manifest_commands:
             errors.append(f"{location}: command missing from agent-skills.json: {command}")
         if not md_path.is_file():
-            errors.append(f"{location}: command markdown adapter missing: {md_path.relative_to(ROOT)}")
+            errors.append(f"{location}: command markdown adapter missing: {display_path(md_path)}")
         if not toml_path.is_file():
-            errors.append(f"{location}: command TOML adapter missing: {toml_path.relative_to(ROOT)}")
-        claude_path = f"./{md_path.relative_to(ROOT).as_posix()}"
+            errors.append(f"{location}: command TOML adapter missing: {display_path(toml_path)}")
+        claude_path = command_manifest_path(md_path, commands_root)
         if claude_path not in claude_commands:
             errors.append(f"{location}: command missing from Claude plugin: {claude_path}")
         if command not in gemini_commands:

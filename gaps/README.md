@@ -110,6 +110,8 @@ python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml>
 
 Generation is dry-run-first. By default it writes a reviewable package skeleton under `gaps/generated/<process-id-slug>/` with skills, command adapters, manifest patch suggestions, an implementation map, and a validation checklist.
 
+When `implementation.yml` exists beside the input `ga-process.yml`, the generator uses it to produce command-level skill skeletons that match the implementation map. For GADD, that means generated skills such as `gadd-refine`, `gadd-implement`, and `gadd-verify`, not only broad lane skills. Use `--no-implementation-map` to force the older lane-level preview mode, or `--implementation-map <path>` to supply a map explicitly.
+
 Adopting generated files into package roots requires explicit write mode:
 
 ```bash

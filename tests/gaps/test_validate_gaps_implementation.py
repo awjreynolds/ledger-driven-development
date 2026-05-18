@@ -64,6 +64,16 @@ class ValidateGapsImplementationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("missing-skill", result.stderr)
 
+    def test_unsafe_skill_name_fails_without_traceback(self) -> None:
+        def mutate(data: dict) -> None:
+            data["laneImplementations"]["implementation"]["skills"].append("../../escape")
+
+        spec = self.write_invalid_map(mutate)
+        result = self.run_validator(spec)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("invalid skill name", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
     def test_unmapped_process_lane_fails(self) -> None:
         def mutate(data: dict) -> None:
             data["laneImplementations"].pop("implementation")
@@ -82,6 +92,16 @@ class ValidateGapsImplementationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("/gadd:nope", result.stderr)
         self.assertIn("command markdown adapter missing", result.stderr)
+
+    def test_unsafe_command_name_fails_without_traceback(self) -> None:
+        def mutate(data: dict) -> None:
+            data["laneImplementations"]["implementation"]["commands"] = ["/gadd:../../escape"]
+
+        spec = self.write_invalid_map(mutate)
+        result = self.run_validator(spec)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("invalid command name", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
 
     def test_omitted_process_command_fails(self) -> None:
         def mutate(data: dict) -> None:
