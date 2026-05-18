@@ -72,3 +72,9 @@ GitHub Issues, Jira, Linear, Asana, and similar systems can be useful collaborat
 GADD demonstrates the Governed Autonomy pattern in a domain where autonomous execution can otherwise collapse planning, design, implementation, and review into one chat loop.
 
 The broader lesson is not software-specific: autonomy becomes safer when the process defines roles, boundaries, evidence, escalation, approval, and canonical state before execution accelerates.
+
+## Read Next
+
+- [Related Landscape](related-landscape.md) positions Governed Autonomy alongside adjacent AI and process-governance disciplines.
+- [References](references.md) lists the standards, research, and market writing that informed the framing.
+- [Governed Autonomy overview](README.md) returns to the main section index.

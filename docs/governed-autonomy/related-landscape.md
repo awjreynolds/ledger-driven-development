@@ -39,3 +39,9 @@ Governed Autonomy uses that language for AI transformation. It does not start wi
 Governed Autonomy centers the business process as the unit of design. It asks how autonomous systems participate in a process without dissolving human accountability, evidence, escalation, and approval boundaries.
 
 Its useful contribution is not claiming that controls, decision rights, evidence, or escalation are new. Its contribution is making those ideas operational when AI systems can move from recommendation to action inside real processes.
+
+## Read Next
+
+- [References](references.md) lists the standards, research, and market writing that informed this landscape.
+- [Operating Model](operating-model.md) turns the landscape into a practical process-design model.
+- [Governed Autonomy overview](README.md) returns to the main section index.

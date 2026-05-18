@@ -110,3 +110,9 @@ Governed processes need a durable source of truth for current state, evidence, a
 Governed Autonomy should usually work with the tools an organization already uses.
 
 Planning systems, ticketing systems, case-management tools, spreadsheets, workflow platforms, and documents can project status and review information. They should not become accidental sources of truth unless the operating model explicitly assigns that role.
+
+## Read Next
+
+- [Process Assessment](process-assessment.md) turns this model into an assessment path for a real business process.
+- [Uncontrolled AI Risk Patterns](uncontrolled-ai-risk-patterns.md) names the failure modes this operating model is meant to prevent.
+- [Governed Autonomy overview](README.md) returns to the main section index.

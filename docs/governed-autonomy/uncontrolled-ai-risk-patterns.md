@@ -77,3 +77,9 @@ These patterns are warning signs that autonomy is escaping the process design.
 **Why it creates risk:** Governance becomes cleanup rather than design.
 
 **Governed Autonomy response:** Design controls into the process before increasing autonomy.
+
+## Read Next
+
+- [Operating Model](operating-model.md) defines the controls that mitigate these patterns.
+- [Case Study: GADD](case-study-gadd.md) shows these risks mitigated in one software-delivery process.
+- [Governed Autonomy overview](README.md) returns to the main section index.
