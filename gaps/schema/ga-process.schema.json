@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/awjreynolds/gadd/gaps/schema/ga-process.schema.json",
+  "title": "GAPS GA Process",
+  "description": "Exploratory Governed Autonomy Process Specification profile. This schema validates reference process shape; it is not a compliance, certification, executable workflow, or standards-export claim.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "status",
+    "formatWarning",
+    "standards_alignment",
+    "process",
+    "canonicalState",
+    "freshness",
+    "roles",
+    "autonomyVocabulary",
+    "lanes",
+    "governedAutonomyRiskPatterns",
+    "controlMappings",
+    "knownGaps"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["0.1"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["exploratory"]
+    },
+    "formatWarning": {
+      "type": "string"
+    },
+    "standards_alignment": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "posture",
+        "compatible_concepts",
+        "standard_aliases",
+        "gaps_extensions"
+      ],
+      "properties": {
+        "posture": {
+          "type": "string"
+        },
+        "compatible_concepts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["standard", "applies_to", "status"],
+            "properties": {
+              "standard": {
+                "type": "string"
+              },
+              "applies_to": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "standard_aliases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["concept", "aliases", "status"],
+            "properties": {
+              "concept": {
+                "type": "string"
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": ["standard", "term"],
+                  "properties": {
+                    "standard": {
+                      "type": "string"
+                    },
+                    "term": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "gaps_extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "name", "purpose", "scope"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "object"
+        }
+      }
+    },
+    "canonicalState": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["source", "projectionRule"],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "projectionRule": {
+          "type": "string"
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["reviewedAt", "driftPolicy"],
+      "properties": {
+        "reviewedAt": {
+          "type": "string"
+        },
+        "driftPolicy": {
+          "type": "string"
+        }
+      }
+    },
+    "roles": {
+      "type": "object"
+    },
+    "autonomyVocabulary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["tiers", "riskTiers", "gateTypes", "authorityPlanes"],
+      "properties": {
+        "tiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "assist",
+              "recommend",
+              "draft",
+              "execute_with_approval",
+              "execute_within_limits",
+              "autonomous_with_monitoring"
+            ]
+          }
+        },
+        "riskTiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "human_only"]
+          }
+        },
+        "gateTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["advisory", "validating", "blocking", "escalating"]
+          }
+        },
+        "authorityPlanes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["data_plane", "control_plane"]
+          }
+        }
+      }
+    },
+    "lanes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "purpose",
+          "autonomousResponsibilities",
+          "authority",
+          "evidence",
+          "gates"
+        ],
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "autonomousResponsibilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authority": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["plane", "autonomyTier", "riskTier", "allowed", "prohibited"],
+            "properties": {
+              "plane": {
+                "type": "string",
+                "enum": ["data_plane", "control_plane"]
+              },
+              "autonomyTier": {
+                "type": "string",
+                "enum": [
+                  "assist",
+                  "recommend",
+                  "draft",
+                  "execute_with_approval",
+                  "execute_within_limits",
+                  "autonomous_with_monitoring"
+                ]
+              },
+              "riskTier": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "human_only"]
+              },
+              "allowed": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "prohibited": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["input", "completion"],
+            "properties": {
+              "input": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "completion": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "gates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "id",
+                "gateType",
+                "approvalRole",
+                "approvalCondition",
+                "escalationCondition"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "gateType": {
+                  "type": "string",
+                  "enum": ["advisory", "validating", "blocking", "escalating"]
+                },
+                "approvalRole": {
+                  "type": "string"
+                },
+                "approvalCondition": {
+                  "type": "string"
+                },
+                "escalationCondition": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "governedAutonomyRiskPatterns": {
+      "type": "object"
+    },
+    "controlMappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "source",
+          "controlId",
+          "mappingStatus",
+          "implementationStatus",
+          "evidenceReferences"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "controlId": {
+            "type": "string"
+          },
+          "mappingStatus": {
+            "type": "string",
+            "enum": ["unmapped", "candidate", "reviewed"]
+          },
+          "implementationStatus": {
+            "type": "string"
+          },
+          "evidenceReferences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "knownGaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "summary"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
