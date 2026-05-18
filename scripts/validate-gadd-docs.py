@@ -23,8 +23,9 @@ EXPORTED_PNG = ROOT / "docs" / "assets" / "gadd-sdlc-workflow.png"
 
 REQUIRED_TEXT = {
     "README.md": [
-        "GADD is a governed autonomy methodology",
+        "GADD is a software-delivery methodology built on [Governed Autonomy]",
         "repo-local ledgers remain canonical workflow state",
+        "docs/governed-autonomy/README.md",
         "/gadd:next",
         "/gadd:triage",
         "/gadd:verify",
