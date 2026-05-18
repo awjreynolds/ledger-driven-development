@@ -41,6 +41,7 @@ npx skills add awjreynolds/gadd --all -y
 - `/gadd:archive` - Optionally archive already-closed local Work Item packages.
 - `/gaps:author` - Author or revise a GAPS process specification from an existing governed process.
 - `/gaps:validate` - Validate GAPS process specifications and implementation maps.
+- `/gaps:generate` - Generate reviewable skill-package skeletons from a GAPS process specification.
 
 ## Entry Paths
 

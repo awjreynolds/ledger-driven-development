@@ -50,14 +50,21 @@ gadd/work-items/_drafts/.gitkeep
 gadd/work-items/_archive/.gitkeep
 scripts/validate-gaps.py
 scripts/validate-gaps-implementation.py
+scripts/generate-gaps-skill-package.py
+tests/gaps/fixtures/tiny-process/ga-process.yml
+tests/gaps/test_generate_gaps_skill_package.py
 commands/gaps/author.md
 commands/gaps/author.toml
 commands/gaps/validate.md
 commands/gaps/validate.toml
+commands/gaps/generate.md
+commands/gaps/generate.toml
 skills/gaps-author/SKILL.md
 skills/gaps-author/agents/openai.yaml
 skills/gaps-validate/SKILL.md
 skills/gaps-validate/agents/openai.yaml
+skills/gaps-generate/SKILL.md
+skills/gaps-generate/agents/openai.yaml
 '
 
 for command in $commands; do
@@ -112,6 +119,7 @@ grep -q '"command": "/gadd:close"' agent-skills.json
 grep -q '"command": "/gadd:archive"' agent-skills.json
 grep -q '"command": "/gaps:author"' agent-skills.json
 grep -q '"command": "/gaps:validate"' agent-skills.json
+grep -q '"command": "/gaps:generate"' agent-skills.json
 grep -q '"pluginManifest": ".claude-plugin/plugin.json"' agent-skills.json
 grep -q '"extensionManifest": "gemini-extension.json"' agent-skills.json
 grep -q 'npx skills add awjreynolds/gadd' README.md
@@ -187,6 +195,7 @@ grep -q './commands/gadd/close.md' .claude-plugin/plugin.json
 grep -q './commands/gadd/archive.md' .claude-plugin/plugin.json
 grep -q './commands/gaps/author.md' .claude-plugin/plugin.json
 grep -q './commands/gaps/validate.md' .claude-plugin/plugin.json
+grep -q './commands/gaps/generate.md' .claude-plugin/plugin.json
 grep -q '"name": "gadd"' .claude-plugin/marketplace.json
 grep -q '"name": "gadd"' .claude-plugin/marketplace.json
 grep -q '"source": "./"' .claude-plugin/marketplace.json
@@ -201,16 +210,21 @@ grep -q '"/gadd:close"' gemini-extension.json
 grep -q '"/gadd:archive"' gemini-extension.json
 grep -q '"/gaps:author"' gemini-extension.json
 grep -q '"/gaps:validate"' gemini-extension.json
+grep -q '"/gaps:generate"' gemini-extension.json
 grep -q 'Repo-local ledger is canonical' GEMINI.md
 
 grep -q '/gaps:author' skills/gaps-author/SKILL.md
 grep -q '/gaps:validate' skills/gaps-validate/SKILL.md
+grep -q '/gaps:generate' skills/gaps-generate/SKILL.md
 grep -q 'Do not claim regulatory compliance' skills/gaps-author/SKILL.md
 grep -q 'Do not claim regulatory compliance' skills/gaps-validate/SKILL.md
+grep -q 'Do not claim regulatory compliance' skills/gaps-generate/SKILL.md
 grep -q 'gaps-author' commands/gaps/author.md
 grep -q 'gaps-validate' commands/gaps/validate.md
+grep -q 'gaps-generate' commands/gaps/generate.md
 grep -q 'gaps-author' commands/gaps/author.toml
 grep -q 'gaps-validate' commands/gaps/validate.toml
+grep -q 'gaps-generate' commands/gaps/generate.toml
 
 for command in $commands; do
   grep -q "/gadd:$command" "skills/gadd-$command/SKILL.md"
@@ -579,6 +593,8 @@ python3 scripts/run-gadd-level3.py --adapter scripted --tracker local --case app
 python3 scripts/validate-gadd-docs.py
 python3 scripts/validate-gaps.py
 python3 scripts/validate-gaps-implementation.py
+python3 -m unittest tests.gaps.test_generate_gaps_skill_package
+python3 scripts/generate-gaps-skill-package.py tests/gaps/fixtures/tiny-process/ga-process.yml --output-root /tmp/gaps-generator-check
 
 if grep -R -n -E 'Pocock|to-issues|to-prd|/tdd|/setup-matt|Superpowers|external TDD skill required|requires? an external .*skill' skills commands README.md CONTEXT.md docs/superpowers/specs/2026-05-12-local-ledger-mvp-design.md GEMINI.md agent-skills.json; then
   echo "GADD command package must not depend on external skills" >&2

@@ -17,10 +17,10 @@ The current surface is intentionally small:
 - `schema/implementation.schema.json` defines the exploratory implementation-map shape.
 - `../scripts/validate-gaps.py` validates reference processes against the schema and GAPS-specific semantic checks.
 - `../scripts/validate-gaps-implementation.py` validates implementation maps against process specs and repo files.
-- `/gaps:author` and `/gaps:validate` provide the first GAPS authoring and validation skills.
+- `/gaps:author`, `/gaps:validate`, and `/gaps:generate` provide the first GAPS authoring, validation, and skill-package generation skills.
 - This README explains the incubation model and boundaries.
 
-There is no GAPS generator, BPMN/CMMN/DMN/OSCAL exporter, or runtime target yet.
+There is no BPMN/CMMN/DMN/OSCAL exporter or runtime target yet.
 
 ## Relationship to existing standards
 
@@ -99,6 +99,24 @@ The validator checks every `gaps/examples/*/ga-process.yml` file against `gaps/s
 The implementation validator checks `gaps/examples/gadd/implementation.yml` against `gaps/examples/gadd/ga-process.yml` and the actual GADD package files.
 
 Validator success means the reference processes and implementation maps conform to this repository's current exploratory GAPS profile. It is not regulatory compliance, certification, proof of executable correctness, legal sufficiency, or a BPMN/CMMN/DMN/OSCAL export.
+
+## Generation
+
+Run:
+
+```bash
+python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml>
+```
+
+Generation is dry-run-first. By default it writes a reviewable package skeleton under `gaps/generated/<process-id>/` with skills, command adapters, manifest patch suggestions, an implementation map, and a validation checklist.
+
+Adopting generated files into package roots requires explicit write mode:
+
+```bash
+python3 scripts/generate-gaps-skill-package.py <path-to-ga-process.yml> --write --adopt-output
+```
+
+Generated output is a starting point for human process-owner review. It is not production-ready by default and does not claim regulatory compliance, certification, legal sufficiency, runtime execution, or standards export.
 
 ## Files
 
