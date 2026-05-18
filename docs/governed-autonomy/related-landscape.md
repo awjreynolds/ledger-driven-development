@@ -1,41 +1,29 @@
-# Related Landscape
+# Related landscape
 
-Governed Autonomy sits near several established and emerging disciplines. It should be understood as part of the broader AI transformation and business-process governance landscape, not as a replacement for those disciplines.
+Governed Autonomy isn't a new field. It overlaps heavily with several established and emerging ones, and it's most useful when read as a vocabulary for connecting them, rather than as a replacement for any of them.
 
-The position is deliberately modest: Governed Autonomy is a synthesis lens. It names the practical work of applying existing governance, process, risk, and operating-model disciplines to business processes where autonomous systems are beginning to perform work.
+The disciplines below all touch parts of the same problem. Governed Autonomy's contribution is making them operational together at the level of an actual business process where autonomous systems are doing work.
 
 ## Responsible AI
 
-Responsible AI focuses on values, safety, fairness, transparency, robustness, and accountability in AI systems.
+Responsible AI covers the values side: safety, fairness, transparency, robustness, accountability in AI systems. Those concerns are upstream of the question this work is trying to answer, which is how an autonomous system participates in a real process without dissolving human accountability inside it.
 
-Governed Autonomy builds on that concern but asks a process question: how does an autonomous system participate in a business process without dissolving human accountability?
+## AI governance and AI management systems
 
-## AI Governance And AI Management Systems
+AI governance and management-system frameworks (ISO/IEC 42001, NIST AI RMF, and similar) define organizational policies, roles, risk controls, monitoring, and improvement practices for AI as an organizational asset. Governed Autonomy assumes these exist, and works one level down: at the design of a specific process, where autonomy belongs in it, what boundaries it needs, and what evidence has to exist before delegation is safe.
 
-AI governance and AI management systems define organizational policies, roles, risk controls, monitoring, and improvement practices for AI.
+## Agentic AI governance
 
-Governed Autonomy operates at the process-design level. It asks where autonomy belongs, what boundaries it needs, and what evidence must exist for safe delegation.
+Agentic AI governance is the newer conversation specifically about systems that take actions through tools, workflows, and external services. There's strong agreement here: tool access alone is not a governance model. Authority, scope, escalation, evidence, and approval all have to be designed into the work, not assumed because the agent has credentials.
 
-## Agentic AI Governance
+## Agentic business process management
 
-Agentic AI governance focuses on AI systems that can take actions through tools, workflows, and external systems.
+Agentic BPM explores how AI agents can participate in, adapt, or coordinate business processes. Governed Autonomy is broadly compatible with this direction, with one emphasis: a process can become more autonomous and still has to remain governable. Those properties trade off against each other if no one's watching.
 
-Governed Autonomy treats action governance as a business-process design problem. Tool access is not enough; authority, scope, escalation, evidence, and approval must be designed into the work.
+## Business analysis and process improvement
 
-## Agentic Business Process Management
-
-Agentic business process management explores how AI agents can participate in, adapt, or coordinate business processes.
-
-Governed Autonomy is compatible with this direction, but it emphasizes accountable control. The process may become more autonomous, but it must not become less governable.
-
-## Business Analysis And Process Improvement
-
-Business analysis and process improvement provide the practical language of as-is process, to-be process, handoffs, decision rights, controls, measures, and outcomes.
-
-Governed Autonomy uses that language for AI transformation. It does not start with the model. It starts with the process.
+Business analysis and process improvement supply the practical vocabulary the rest of this depends on: as-is process, to-be process, handoffs, decision rights, controls, measures, outcomes. Governed Autonomy borrows that vocabulary directly. The starting point is the process, not the model.
 
 ## Distinction
 
-Governed Autonomy centers the business process as the unit of design. It asks how autonomous systems participate in a process without dissolving human accountability, evidence, escalation, and approval boundaries.
-
-Its useful contribution is not claiming that controls, decision rights, evidence, or escalation are new. Its contribution is making those ideas operational when AI systems can move from recommendation to action inside real processes.
+The unit of design here is the business process, and the question being asked is how autonomous systems participate in it without dissolving human accountability, evidence, escalation, and approval. Controls, decision rights, evidence, and escalation are not invented here. What's specific to this work is making them operational together once an AI system can move from recommendation to action inside a real process.

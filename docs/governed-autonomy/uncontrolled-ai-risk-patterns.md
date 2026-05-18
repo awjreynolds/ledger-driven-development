@@ -1,79 +1,63 @@
-# Uncontrolled AI Risk Patterns
+# Uncontrolled AI risk patterns
 
-Governed Autonomy exists because uncontrolled AI does not merely produce bad answers. It can alter business processes faster than organizations can inspect, explain, or control.
+Uncontrolled AI is rarely a problem of bad answers. The harder problem is that it can change how a business process actually runs, faster than the organization can see, explain, or correct.
 
 ![Uncontrolled AI compared with Governed Autonomy](assets/uncontrolled-ai-vs-governed-autonomy.svg)
 
-These patterns are warning signs that autonomy is escaping the process design.
+The patterns below are the recurring shapes that show up when autonomy starts escaping process design. Most teams will recognize at least three.
 
-## Chat As A Control Plane
+## Chat as a control plane
 
-**What it looks like:** Important process state, decisions, approvals, and evidence live inside a chat thread rather than a governed system of record.
+When process state (decisions, approvals, evidence, current status) lives in a chat thread, the organization loses the ability to see where things are. Recovery, audit, and handover all depend on scrolling, and there is no canonical record of who approved what. The fix is unglamorous: pick a durable system of record and treat chat as an interaction surface rather than the source of truth.
 
-**Why it creates risk:** The organization cannot reliably see current state, inspect evidence, recover context, or prove who approved what.
+## Unbounded delegation
 
-**Governed Autonomy response:** Define a durable source of truth for process state. Use chat as an interaction surface, not the control plane.
+The system goes from advising to acting, without anyone having drawn a line between the two. Tool access expands, execution rights expand, and no one wrote down where it should stop. A helpful assistant turns into an uncontrolled operator one Slack thread at a time. Boundaries (allowed actions, prohibited actions, escalation conditions, approval points) have to exist *before* the tools are wired up, not after the first incident.
 
-## Unbounded Delegation
+## Role collapse
 
-**What it looks like:** AI moves from advice to action without explicit limits on what it may do, where it may act, or when it must stop.
+*One AI session quietly becomes analyst, operator, designer, reviewer, approver, and auditor.*
 
-**Why it creates risk:** A helpful assistant becomes an uncontrolled operator.
+Separation of duties depends on those roles being held by different actors. When a single system proposes a change, executes it, signs off on the result, and writes the record, the controls that depended on independence are gone, even if no one announced their removal. AI can assist several roles. It cannot consolidate them.
 
-**Governed Autonomy response:** Define authority boundaries, prohibited actions, escalation conditions, and approval points before granting tool access or execution rights.
+## Evidence drift
 
-## Role Collapse
+**What it looks like:** Actions land faster than the rationale, source data, and checks behind them can be captured.
 
-**What it looks like:** One AI session silently becomes analyst, operator, designer, reviewer, approver, and auditor.
+**Why it creates risk:** Reviewers reconstruct after the fact instead of inspecting at the time. Audit collapses into guesswork.
 
-**Why it creates risk:** Separation of duties disappears. The same system that proposes an action can also approve and mark it complete.
+**Response:** Make evidence a required output of each governed step, not a downstream artifact.
 
-**Governed Autonomy response:** Preserve named roles and decision rights. AI may assist several roles, but it must not erase their accountability boundaries.
+## Approval theater
 
-## Evidence Drift
+**What it looks like:** A human clicks Approve on a large bundle of AI-generated work, without clear evidence, alternatives, risk summary, or scope boundary in front of them.
 
-**What it looks like:** Actions happen faster than evidence is captured. Rationale, source data, checks, and approvals are reconstructed after the fact.
+**Why it creates risk:** Oversight exists in form but not in substance, and the org gets the worst of both worlds: slow process *and* unchecked autonomy.
 
-**Why it creates risk:** Review becomes guesswork and auditability collapses.
+**Response:** Place approvals at meaningful transitions and give them the context required to be a real decision, not a signoff ritual.
 
-**Governed Autonomy response:** Make evidence a required output of each governed step.
+## Tool sprawl
 
-## Approval Theater
+Autonomous work touches a planning system, a ticketing system, a few documents, two dashboards, and a chat channel. Each of them has *some* of the truth. None of them holds the canonical state, and no one has been asked to decide which one should. Planning, execution, review, and reporting then drift away from each other in slow motion. Assigning canonical state (even arbitrarily, even temporarily) matters more than picking the "right" tool.
 
-**What it looks like:** Humans approve large bundles of AI-generated work without clear evidence, alternatives, risk summary, or scope boundary.
+## Accountability gaps
 
-**Why it creates risk:** Human oversight exists formally but not substantively.
+*When an AI-driven action causes harm or confusion, no named person can explain the decision or accept responsibility for correcting it.*
 
-**Governed Autonomy response:** Require approvals at meaningful transitions with enough context to support a real decision.
+This is what "the system did it" looks like in practice. Accountability has migrated from people and roles into an opaque execution path, usually without anyone deciding that this is what they wanted. Every delegated step needs a human role that owns it: owns the purpose, the outcome, and the cleanup.
 
-## Tool Sprawl
+## Scope creep at machine speed
 
-**What it looks like:** Autonomous work touches many systems, but no one can tell which system holds canonical process state.
+A narrow request expands sideways because the system infers adjacent tasks and just does them. The diff is bigger than the brief, the change touches systems that weren't in the conversation, and by the time anyone notices, the new behavior is in production. Scope, non-goals, stop conditions, and explicit boundary-reset triggers are not bureaucratic overhead here. They're the only thing keeping a five-minute request from turning into a three-day rollback.
 
-**Why it creates risk:** Planning, execution, review, and reporting drift apart.
+## Post-hoc governance
 
-**Governed Autonomy response:** Assign canonical state deliberately and treat other tools as projection or collaboration surfaces unless explicitly designed otherwise.
+*Controls show up after an AI workflow already exists and is already producing operational effects.*
 
-## Accountability Gaps
+By that point, governance is cleanup work, reverse-engineering policies onto a running system that grew without them. The earlier these controls land, the cheaper and more honest they are. Designing them in before autonomy increases is the only version of this that doesn't carry a debt.
 
-**What it looks like:** When an AI-driven action causes harm or confusion, no named owner can explain the decision or accept responsibility for correction.
+## Read next
 
-**Why it creates risk:** Accountability moves from people and roles to an opaque system.
-
-**Governed Autonomy response:** Keep a human role accountable for every delegated process step.
-
-## Scope Creep At Machine Speed
-
-**What it looks like:** A narrow request expands into broader operational change because the AI infers additional tasks and executes them.
-
-**Why it creates risk:** The organization loses control of change boundaries.
-
-**Governed Autonomy response:** Define scope, non-goals, stop conditions, and boundary-reset triggers.
-
-## Post-Hoc Governance
-
-**What it looks like:** Controls are added only after an AI workflow already exists and has started producing operational effects.
-
-**Why it creates risk:** Governance becomes cleanup rather than design.
-
-**Governed Autonomy response:** Design controls into the process before increasing autonomy.
+- [Operating model](operating-model.md) defines the controls that mitigate these patterns.
+- [Case study: GADD](case-study-gadd.md) shows these risks mitigated in one software-delivery process.
+- [Governed Autonomy overview](README.md) returns to the main section index.
