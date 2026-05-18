@@ -1,0 +1,437 @@
+schemaVersion: "0.1"
+status: exploratory
+formatWarning: "GAPS v0.1 is not stable. This file is a reference process, not a formal schema or compliance artifact."
+
+process:
+  id: gadd
+  name: Governed Autonomy for Software Delivery
+  purpose: >
+    Govern SDLC work from intake through triage, product scope, technical design,
+    planning, implementation, verification, closure, and optional archive cleanup.
+  scope:
+    includes:
+      - unclassified software-delivery intake
+      - product requirement discovery and approval
+      - repo-scoped software design
+      - implementation planning and decomposition
+      - bounded implementation
+      - verification and closure
+      - optional local archive cleanup
+    excludes:
+      - enterprise portfolio planning
+      - deployment operations
+      - long-term maintenance operations
+      - non-software business processes
+  standardsAlignment:
+    posture: "GAPS is a Governed Autonomy profile, not a replacement for BPMN, CMMN, DMN, or OSCAL."
+    compatibleConcepts:
+      - standard: bpmn
+        appliesTo:
+          - process states
+          - governed transitions
+          - phase gates
+        status: candidate
+      - standard: dmn
+        appliesTo:
+          - route decisions
+          - approval conditions
+          - triage state selection
+        status: candidate
+      - standard: oscal
+        appliesTo:
+          - control mappings
+          - evidence references
+          - implementation status
+        status: candidate
+    gapsExtensions:
+      - autonomy_tier
+      - authority_plane
+      - drift_freshness
+      - governed_autonomy_risk_patterns
+
+canonicalState:
+  source: repo-local-ledger
+  pathPattern: "gadd/work-items/**/ledger.yml"
+  relationshipToGaps:
+    gaProcessYml: "Describes the process type: roles, transitions, gates, evidence requirements, projections, and known gaps."
+    ledgerYml: "Records one Work Item's current execution state inside the GADD process."
+  projectionRule: "External systems are collaboration surfaces, not canonical workflow state."
+
+freshness:
+  reviewedAt: "2026-05-18"
+  implementedBy:
+    skillFiles:
+      - skills/gadd-setup/SKILL.md
+      - skills/gadd-next/SKILL.md
+      - skills/gadd-triage/SKILL.md
+      - skills/gadd-research/SKILL.md
+      - skills/gadd-scope/SKILL.md
+      - skills/gadd-elaborate/SKILL.md
+      - skills/gadd-refine/SKILL.md
+      - skills/gadd-approve/SKILL.md
+      - skills/gadd-design/SKILL.md
+      - skills/gadd-plan/SKILL.md
+      - skills/gadd-decompose/SKILL.md
+      - skills/gadd-implement/SKILL.md
+      - skills/gadd-verify/SKILL.md
+      - skills/gadd-close/SKILL.md
+      - skills/gadd-archive/SKILL.md
+    ledgerTemplates:
+      - skills/gadd-setup/assets/templates/work-item-ledger.yml
+  driftPolicy: >
+    If GADD skill behavior changes before this reference process is updated,
+    record a known gap in this file or create a follow-up Work Item. Do not
+    silently treat either artifact as authoritative when they disagree.
+
+roles:
+  process_owner:
+    label: Team or organization adopting GADD
+    decisionRights:
+      - adopt GADD for the repository
+      - set tracker and projection policy
+      - decide when GAPS should be extracted or generalized
+  product_authority:
+    label: Product Manager or equivalent product owner
+    decisionRights:
+      - approve product scope
+      - resolve product acceptance criteria
+      - approve Product Requirement boundaries
+  technical_authority:
+    label: EM, Tech Lead, Architect, or senior engineer
+    decisionRights:
+      - approve technical design readiness
+      - decide whether plan and decomposition are required
+      - resolve architectural trade-offs
+  operator:
+    label: Software Engineer or autonomous coding agent inside approved boundary
+    decisionRights:
+      - implement approved Work Items
+      - run tests and collect implementation evidence
+      - stop when approved boundaries are insufficient
+  reviewer:
+    label: Engineering reviewer or verifier
+    decisionRights:
+      - verify implementation evidence
+      - decide closure readiness
+      - identify verification gaps
+  approver:
+    label: Human approver
+    decisionRights:
+      - approve PRD, SDD, and plan gates
+      - approve external projection mutations
+      - approve closure
+  autonomous_system:
+    label: Agent executing bounded GADD skills
+    decisionRights:
+      - recommend routes
+      - draft artifacts
+      - execute bounded implementation only after approved boundary exists
+      - record evidence
+      - escalate when gates, scope, or evidence are insufficient
+
+autonomyVocabulary:
+  tiers:
+    - assist
+    - recommend
+    - draft
+    - execute_with_approval
+    - execute_within_limits
+    - autonomous_with_monitoring
+  riskTiers:
+    - low
+    - medium
+    - high
+    - human_only
+  gateTypes:
+    - advisory
+    - validating
+    - blocking
+    - escalating
+  authorityPlanes:
+    - data_plane
+    - control_plane
+
+lanes:
+  intake:
+    purpose: Normalize unclassified incoming work and route it safely.
+    skills:
+      - /gadd:triage
+      - /gadd:next
+    states:
+      - needs_info
+      - ready_for_implementation
+      - needs_sdd
+      - needs_prd
+      - blocked_on_human_decision
+      - duplicate
+      - out_of_scope
+      - not_gadd_work
+    autonomousResponsibilities:
+      - inspect source intake
+      - gather repository and GitNexus evidence where code reality matters
+      - recommend Work Item type and route
+      - draft triage outcome
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: medium
+      allowed:
+        - create or update local triage state
+        - draft external projection content
+      prohibited:
+        - mutate external issues without human approval
+        - route code-impacting work without GitNexus evidence or approved fallback
+    evidence:
+      input:
+        - source intake
+        - external issue state when provided
+        - repo evidence when relevant
+        - GitNexus evidence or approved fallback for code-impacting routes
+      completion:
+        - Work Item ledger
+        - triage approved outcome when route boundary is approved
+        - next command and next human action
+    gates:
+      - id: triage_route
+        gateType: validating
+        approvalRole: approver
+        approvalCondition: "Route boundary is approved when downstream work depends on triage outcome."
+        escalationCondition: "Information, evidence, or authority is insufficient for responsible routing."
+
+  product_requirement:
+    purpose: Establish product scope before technical design.
+    skills:
+      - /gadd:research
+      - /gadd:scope
+      - /gadd:elaborate
+      - /gadd:refine
+      - /gadd:approve
+    autonomousResponsibilities:
+      - gather sanitized product and repository evidence
+      - draft and refine PRD sections
+      - preserve product non-goals and unresolved questions
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: medium
+      allowed:
+        - draft research and PRD artifacts
+        - recommend readiness for approval
+      prohibited:
+        - approve product scope
+        - silently add product scope during design or implementation
+    evidence:
+      input:
+        - product trigger
+        - research where required
+        - repository context
+      completion:
+        - approved PRD
+        - ledger approval event
+    gates:
+      - id: prd_approval
+        gateType: blocking
+        approvalRole: product_authority
+        approvalCondition: "PRD is review-ready and explicitly approved through /gadd:approve."
+        escalationCondition: "Product goals, users, acceptance criteria, non-goals, or constraints remain unresolved."
+
+  technical_design:
+    purpose: Convert approved product or engineering boundary into repo-scoped design and implementation plan.
+    skills:
+      - /gadd:design
+      - /gadd:plan
+      - /gadd:decompose
+      - /gadd:approve
+    autonomousResponsibilities:
+      - inspect code and ADR context
+      - draft SDD
+      - draft implementation plan
+      - decompose approved plan into child Work Items
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: high
+      allowed:
+        - draft design and plan artifacts
+        - recommend implementation route
+      prohibited:
+        - approve SDD or plan
+        - change product boundary
+        - make external tracker mutations without human confirmation
+    evidence:
+      input:
+        - approved PRD or approved triage outcome
+        - code and ADR context
+        - GitNexus context when available and relevant
+      completion:
+        - approved SDD
+        - approved plan when required
+        - child Work Item ledgers when decomposed
+    gates:
+      - id: sdd_approval
+        gateType: blocking
+        approvalRole: technical_authority
+        approvalCondition: "SDD is approved through /gadd:approve."
+        escalationCondition: "Architecture, contract, data, security, privacy, or cross-repo questions remain unresolved."
+      - id: plan_approval
+        gateType: blocking
+        approvalRole: technical_authority
+        approvalCondition: "Plan is approved through /gadd:approve."
+        escalationCondition: "Sequencing, review load, or slice boundaries remain unclear."
+
+  implementation:
+    purpose: Execute approved Work Item boundaries with code, tests, docs impact, and evidence.
+    skills:
+      - /gadd:implement
+    autonomousResponsibilities:
+      - implement within approved boundary
+      - run tests and checks
+      - record implementation evidence
+      - stop when scope or authority boundary is insufficient
+    authority:
+      plane: data_plane
+      autonomyTier: execute_with_approval
+      riskTier: medium
+      allowed:
+        - edit repository files inside approved boundary
+        - run tests and local verification commands
+      prohibited:
+        - bypass PRD, SDD, or plan gates
+        - approve its own work for closure
+        - mutate external state without explicit confirmation
+    evidence:
+      input:
+        - ready Work Item
+        - approved triage, PRD, SDD, or plan boundary
+      completion:
+        - code diff or pull request
+        - tests and checks
+        - documentation impact evidence
+        - implementation ledger status
+    gates:
+      - id: implementation_boundary
+        gateType: blocking
+        approvalRole: approver
+        approvalCondition: "Implementation starts only after the owning approved boundary exists."
+        escalationCondition: "The implementation requires scope, design, or authority outside the approved boundary."
+
+  review_and_closure:
+    purpose: Verify implementation and apply human-approved closure.
+    skills:
+      - /gadd:verify
+      - /gadd:close
+      - /gadd:archive
+    autonomousResponsibilities:
+      - inspect implementation evidence
+      - draft verification report
+      - recommend closure readiness
+      - archive already closed local packages when requested
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: high
+      allowed:
+        - draft verification findings
+        - update local verification artifact
+        - archive closed Work Items when closure already exists
+      prohibited:
+        - close unverified work
+        - approve its own implementation
+        - claim closure without human approval
+    evidence:
+      input:
+        - implemented Work Item
+        - implementation evidence
+        - approved boundaries
+      completion:
+        - verification.md
+        - closure ledger event
+        - optional archive state
+    gates:
+      - id: verification
+        gateType: validating
+        approvalRole: reviewer
+        approvalCondition: "Verification evidence supports closure readiness."
+        escalationCondition: "Checks, evidence, docs impact, or approved boundary are insufficient."
+      - id: closure
+        gateType: blocking
+        approvalRole: approver
+        approvalCondition: "Human approves closure after verification readiness."
+        escalationCondition: "Closure would hide unresolved verification or external drift."
+
+controlPlaneActions:
+  - command: /gadd:setup
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Bootstraps configuration, templates, Work Item directories, and projection settings."
+  - command: /gadd:approve
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Promotes governed gates and updates canonical ledger state."
+  - command: /gadd:close
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Applies workflow closure."
+
+projections:
+  externalTrackers:
+    canonical: false
+    examples:
+      - GitHub Issues
+      - GitHub Pull Requests
+      - Linear
+      - Jira
+    rule: "Projection mutations require human confirmation and drift checks."
+
+governedAutonomyRiskPatterns:
+  chat_as_control_plane:
+    mitigation: "Repo-local ledger remains canonical."
+  unbounded_delegation:
+    mitigation: "Each skill has input gates, rules, stop conditions, and approved boundaries."
+  role_collapse:
+    mitigation: "Product, design, implementation, verification, and closure are separate lanes."
+  evidence_drift:
+    mitigation: "PRD, SDD, plan, implementation evidence, verification report, and ledger events record evidence."
+  approval_theater:
+    mitigation: "/gadd:approve approves specific PRD, SDD, and plan gates."
+  tool_sprawl:
+    mitigation: "External trackers are projections, not canonical state."
+  accountability_gaps:
+    mitigation: "Human roles own product, technical, review, and closure decisions."
+  scope_creep_at_machine_speed:
+    mitigation: "Approved boundaries and stop conditions force boundary resets."
+  post_hoc_governance:
+    mitigation: "GADD introduces gates before implementation and closure."
+
+controlMappings:
+  - source: NIST AI RMF
+    controlId: GOVERN
+    mappingStatus: candidate
+    implementationStatus: partial
+    evidenceReferences:
+      - docs/governed-autonomy/operating-model.md
+      - skills/gadd-approve/SKILL.md
+      - skills/gadd-verify/SKILL.md
+  - source: ISO/IEC 42001
+    controlId: Annex A
+    mappingStatus: unmapped
+    implementationStatus: unreviewed
+    evidenceReferences: []
+  - source: EU AI Act
+    controlId: Article 26
+    mappingStatus: unmapped
+    implementationStatus: not_applicable
+    evidenceReferences: []
+
+knownGaps:
+  - id: second-reference-process-missing
+    summary: "GAPS has only one reference process. Schema, validator, skills, and generation are blocked until an unlike process is modeled."
+  - id: formal-standards-export-not-designed
+    summary: "BPMN, DMN, and OSCAL compatibility is a posture, not an implemented export contract."
+  - id: field-origin-not-enforced
+    summary: "Standards origin is described in standardsAlignment, not enforced field-by-field in v0.1."
+  - id: regulatory-mapping-unreviewed
+    summary: "Control mappings are stubs and do not claim compliance, certification, or legal sufficiency."
