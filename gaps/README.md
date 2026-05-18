@@ -11,6 +11,7 @@ GAPS v0.1 is exploratory.
 The current v0.1 surface is intentionally small:
 
 - `examples/gadd/ga-process.yml` expresses GADD as the first reference process.
+- `examples/compliance-review/ga-process.yml` expresses a second, unlike casework reference process.
 - This README explains the incubation model and boundaries.
 
 There is no GAPS schema, validator, command suite, generator, or runtime target yet.
@@ -60,20 +61,13 @@ The reference process is acceptable when:
 
 Sparse but honest is better than a large file that invents structure GADD does not yet have.
 
-## Second reference process gate
+## Second reference process
 
-Before adding a schema, validator, GAPS skills, generation, or runtime emission, GAPS needs a second reference process that is intentionally unlike GADD.
+The second reference process is intentionally unlike GADD.
 
-Good candidates include:
-
-- compliance review
-- service-request case handling
-- procurement approval
-- incident response
-- public-sector casework
-
-The second process should stress adaptive flow, long-running state, statutory deadlines, named human identities, multiple authority levels, budget or resource gates, and event-driven escalation.
+The compliance review example stresses adaptive case flow, long-running state, statutory or policy deadlines, named human identities, multiple authority levels, budget or resource gates, and event-driven escalation.
 
 ## Files
 
 - `examples/gadd/ga-process.yml` - GADD as the first GAPS reference process.
+- `examples/compliance-review/ga-process.yml` - Compliance review casework as the second GAPS reference process.

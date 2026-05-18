@@ -1,0 +1,753 @@
+schemaVersion: "0.1"
+status: exploratory
+formatWarning: "GAPS v0.1 is not stable. This file is a reference process, not a compliance, certification, or legal sufficiency artifact."
+
+standards_alignment:
+  posture: "This compliance-review casework profile is compatible with CMMN, DMN, BPMN, and OSCAL concepts, but does not replace any standard or claim conformance."
+  compatible_concepts:
+    - standard: cmmn
+      applies_to:
+        - adaptive case stages
+        - event listeners
+        - discretionary tasks
+        - long-running case file state
+      status: candidate
+    - standard: dmn
+      applies_to:
+        - policy applicability decisions
+        - deadline route decisions
+        - authority threshold decisions
+        - resource gate decisions
+      status: candidate
+    - standard: bpmn
+      applies_to:
+        - externally triggered escalation events
+        - review handoffs
+        - approval gateways
+      status: candidate
+    - standard: oscal
+      applies_to:
+        - candidate control mappings
+        - assessment evidence references
+        - implementation status notes
+      status: candidate
+  standard_aliases:
+    - concept: case milestone
+      aliases:
+        - standard: cmmn
+          term: milestone
+        - standard: gaps
+          term: gate
+      status: candidate
+    - concept: policy decision
+      aliases:
+        - standard: dmn
+          term: decision
+        - standard: gaps
+          term: approvalCondition
+      status: name_review_pending
+    - concept: escalation event
+      aliases:
+        - standard: bpmn
+          term: signal or escalation event
+        - standard: gaps
+          term: escalationCondition
+      status: candidate
+    - concept: control mapping
+      aliases:
+        - standard: oscal
+          term: control-implementation mapping
+        - standard: gaps
+          term: controlMappings
+      status: candidate
+  gaps_extensions:
+    - autonomy_tier
+    - authority_plane
+    - named_human_accountability
+    - statutory_or_policy_deadline
+    - resource_gate
+    - event_driven_escalation
+    - governed_autonomy_risk_patterns
+
+process:
+  id: compliance_review_casework
+  name: Compliance Review Casework
+  purpose: >
+    Coordinate an adaptive compliance-review case from intake through scoping,
+    evidence collection, policy analysis, authority review, resource approval,
+    decision recording, monitoring, and closure while preserving named human
+    accountability.
+  scope:
+    includes:
+      - non-emergency compliance inquiries
+      - policy applicability reviews
+      - evidence requests and case correspondence
+      - deadline tracking
+      - budget or specialist resource approval
+      - authority escalation and decision recording
+      - post-decision monitoring and closure
+    excludes:
+      - legal advice
+      - formal regulatory submissions
+      - certification audits
+      - emergency enforcement action
+      - automated final determinations
+
+canonicalState:
+  source: case-management-ledger
+  pathPattern: "compliance-review/cases/{caseId}/case-record.yml"
+  relationshipToGaps:
+    gaProcessYml: "Describes the process type: roles, lanes, authority boundaries, deadline gates, evidence requirements, projections, and known gaps."
+    caseRecordYml: "Records one case's current state, named owners, deadline clocks, events, evidence references, decisions, and escalations."
+  projectionRule: "Email, ticketing, document stores, calendars, and dashboards are projections. The case-management ledger remains canonical for workflow state."
+
+freshness:
+  reviewedAt: "2026-05-18"
+  reviewCadence: quarterly
+  deadlineClocks:
+    statutoryResponse:
+      basis: "Example statutory or policy response clock; local policy must define the actual rule."
+      startEvent: intake_accepted
+      targetDays: 20
+      warningAtDaysRemaining: 5
+      ownerRole: case_owner
+    internalQualityReview:
+      basis: "Example internal quality review service level."
+      startEvent: draft_decision_ready
+      targetDays: 5
+      warningAtDaysRemaining: 2
+      ownerRole: senior_reviewer
+    resourceApproval:
+      basis: "Example resource decision service level."
+      startEvent: specialist_or_budget_requested
+      targetDays: 3
+      warningAtDaysRemaining: 1
+      ownerRole: budget_holder
+  driftPolicy: >
+    If policy text, named owner, case deadline, external projection, or evidence
+    location changes before this reference process is updated, record the drift
+    in the case record and escalate when the change affects authority, deadline,
+    or decision quality.
+
+roles:
+  requester:
+    label: Internal or external party requesting review
+    namedIdentities:
+      example: "Priya Shah, Procurement Lead"
+    decisionRights:
+      - provide source request and clarifications
+      - accept or dispute factual corrections
+  case_owner:
+    label: Named Compliance Case Officer
+    namedIdentities:
+      example: "Maya Chen, Compliance Case Officer"
+    authorityLevel: operational
+    decisionRights:
+      - accept intake for review
+      - maintain canonical case state
+      - request evidence
+      - recommend case route and draft decision
+  policy_specialist:
+    label: Named Policy Specialist
+    namedIdentities:
+      example: "Jon Bell, Data Policy Specialist"
+    authorityLevel: specialist
+    decisionRights:
+      - interpret internal policy applicability
+      - document policy options and unresolved ambiguity
+  senior_reviewer:
+    label: Named Senior Compliance Reviewer
+    namedIdentities:
+      example: "Asha Malik, Senior Compliance Reviewer"
+    authorityLevel: delegated_authority
+    decisionRights:
+      - validate review quality
+      - approve routine determinations inside delegated thresholds
+      - require rework or escalation
+  legal_or_statutory_contact:
+    label: Named Legal or Statutory Liaison
+    namedIdentities:
+      example: "Rowan Hughes, Legal Liaison"
+    authorityLevel: advisory
+    decisionRights:
+      - advise on legal risk flags
+      - identify where legal signoff is required
+      - block autonomous legal conclusions
+  budget_holder:
+    label: Named Budget or Resource Owner
+    namedIdentities:
+      example: "Elena Rossi, Operations Budget Holder"
+    authorityLevel: resource_authority
+    decisionRights:
+      - approve specialist time
+      - approve paid external review within local policy
+      - reject resource requests or set limits
+  accountable_director:
+    label: Named Accountable Director
+    namedIdentities:
+      example: "Tom Alvarez, Director of Compliance"
+    authorityLevel: executive
+    decisionRights:
+      - approve high-risk determinations
+      - accept residual operational risk
+      - direct escalation to executive governance
+  autonomous_system:
+    label: Casework assistant operating inside approved boundaries
+    authorityLevel: non-human-assistant
+    decisionRights:
+      - summarize records
+      - draft requests, options, and decision logs
+      - monitor deadline and event triggers
+      - recommend escalation
+      - stop when authority, policy, or evidence is insufficient
+
+autonomyVocabulary:
+  tiers:
+    - assist
+    - recommend
+    - draft
+    - execute_with_approval
+    - execute_within_limits
+    - autonomous_with_monitoring
+  riskTiers:
+    - low
+    - medium
+    - high
+    - human_only
+  gateTypes:
+    - advisory
+    - validating
+    - blocking
+    - escalating
+  authorityPlanes:
+    - data_plane
+    - control_plane
+
+lanes:
+  intake_and_case_opening:
+    purpose: Create a canonical case record, identify named owners, and start deadline clocks.
+    activities:
+      - classify request type
+      - assign named case owner
+      - check minimum information
+      - start statutory or policy deadline clock
+      - notify requester of accepted intake or missing information
+    states:
+      - new_request
+      - awaiting_minimum_information
+      - intake_accepted
+      - rejected_out_of_scope
+      - redirected_to_other_process
+    autonomousResponsibilities:
+      - extract intake facts from source request
+      - draft initial case summary
+      - recommend scope and missing-information list
+      - detect duplicate or related cases
+      - monitor intake clock and warning thresholds
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: medium
+      allowed:
+        - draft case record fields
+        - recommend intake acceptance or redirection
+        - prepare requester correspondence for approval
+      prohibited:
+        - accept legal sufficiency of a request
+        - assign final case ownership without human confirmation
+        - reject a request on statutory or legal grounds
+    evidence:
+      input:
+        - source request
+        - requester identity or organizational role
+        - related case search
+        - minimum-information checklist
+      completion:
+        - case-record.yml
+        - named case owner
+        - deadline clock start event
+        - intake route note
+    gates:
+      - id: intake_acceptance
+        gateType: validating
+        approvalRole: case_owner
+        approvalCondition: "Named case owner confirms scope, requester, minimum information, and deadline clock."
+        escalationCondition: "Request may trigger statutory, legal, executive, or emergency handling outside this process."
+      - id: deadline_clock_started
+        gateType: blocking
+        approvalRole: case_owner
+        approvalCondition: "Applicable statutory or policy deadline basis is recorded before substantive review starts."
+        escalationCondition: "Deadline basis is unclear, already breached, or disputed."
+
+  scoping_and_policy_route:
+    purpose: Decide which policy questions, authority thresholds, and case activities are in scope.
+    activities:
+      - identify applicable policies
+      - select adaptive case route
+      - set review questions
+      - identify authority thresholds
+      - schedule discretionary specialist tasks
+    states:
+      - policy_route_pending
+      - routine_review
+      - specialist_review_required
+      - senior_review_required
+      - director_decision_required
+      - paused_for_external_dependency
+    autonomousResponsibilities:
+      - map facts to candidate policy areas
+      - draft route options with assumptions
+      - flag authority thresholds and known ambiguities
+      - recommend discretionary tasks for the case plan
+    authority:
+      plane: data_plane
+      autonomyTier: recommend
+      riskTier: high
+      allowed:
+        - recommend policy route
+        - draft decision-tree inputs
+        - prepare questions for specialist review
+      prohibited:
+        - make binding policy interpretation
+        - downgrade authority level to avoid escalation
+        - remove named human accountability from the route
+    evidence:
+      input:
+        - accepted intake
+        - policy index
+        - threshold matrix
+        - previous related cases
+      completion:
+        - scoped review questions
+        - selected case route
+        - authority threshold note
+        - unresolved ambiguity register
+    gates:
+      - id: policy_route_validation
+        gateType: validating
+        approvalRole: policy_specialist
+        approvalCondition: "Policy specialist validates route, assumptions, and unresolved ambiguity register."
+        escalationCondition: "Policy ambiguity, precedent conflict, or high-impact requester consequences are identified."
+      - id: authority_threshold_check
+        gateType: escalating
+        approvalRole: senior_reviewer
+        approvalCondition: "Senior reviewer confirms whether delegated authority is sufficient."
+        escalationCondition: "Case crosses value, sensitivity, legal, reputational, vulnerable-person, or precedent thresholds."
+
+  evidence_collection:
+    purpose: Gather, validate, and preserve evidence needed for adaptive review activities.
+    activities:
+      - issue evidence request
+      - receive and index documents
+      - validate source reliability
+      - record gaps and contradictions
+      - request clarification
+      - preserve audit trail
+    states:
+      - evidence_requested
+      - awaiting_requester_response
+      - evidence_received
+      - evidence_gap_identified
+      - evidence_sufficient_for_draft
+      - overdue_response
+    autonomousResponsibilities:
+      - draft evidence request letters
+      - summarize received material
+      - identify missing documents and contradictions
+      - maintain evidence index
+      - watch response deadlines and event triggers
+    authority:
+      plane: data_plane
+      autonomyTier: execute_with_approval
+      riskTier: medium
+      allowed:
+        - send approved template requests
+        - update evidence index
+        - mark administrative response deadlines
+      prohibited:
+        - infer intent from missing evidence as a final finding
+        - alter source evidence
+        - close evidence gaps without named human review
+    evidence:
+      input:
+        - approved case scope
+        - evidence request template
+        - requester and third-party contacts
+        - document repository references
+      completion:
+        - evidence index
+        - source reliability notes
+        - evidence gap register
+        - response deadline log
+    gates:
+      - id: evidence_request_approval
+        gateType: advisory
+        approvalRole: case_owner
+        approvalCondition: "Case owner approves wording where request is routine and inside policy templates."
+        escalationCondition: "Evidence request may create legal risk, require sensitive data, or contact an external authority."
+      - id: evidence_sufficiency
+        gateType: validating
+        approvalRole: senior_reviewer
+        approvalCondition: "Evidence is sufficient to draft options or the residual gaps are explicitly accepted."
+        escalationCondition: "Evidence is contradictory, incomplete near deadline, or disputed by a named party."
+
+  resource_and_budget_control:
+    purpose: Control specialist time, external review spend, and review capacity before committing resources.
+    activities:
+      - estimate specialist effort
+      - request budget approval
+      - check capacity and deadline impact
+      - allocate named reviewer
+      - set resource limit
+    states:
+      - no_extra_resource_required
+      - specialist_or_budget_requested
+      - awaiting_resource_decision
+      - resource_approved_with_limits
+      - resource_declined
+      - capacity_escalation_required
+    autonomousResponsibilities:
+      - estimate effort range from case complexity
+      - draft resource request and rationale
+      - surface deadline impact of waiting
+      - track approved resource limits
+    authority:
+      plane: control_plane
+      autonomyTier: draft
+      riskTier: high
+      allowed:
+        - draft resource request
+        - recommend resource limits
+        - update case state after human resource decision
+      prohibited:
+        - approve spend
+        - allocate unavailable staff
+        - commit external reviewers
+        - obscure deadline risk created by resource delay
+    evidence:
+      input:
+        - scoped case route
+        - complexity estimate
+        - deadline clock
+        - capacity calendar
+        - budget threshold matrix
+      completion:
+        - resource decision
+        - approved limit or rejection reason
+        - named specialist allocation when approved
+        - deadline impact note
+    gates:
+      - id: budget_approval
+        gateType: blocking
+        approvalRole: budget_holder
+        approvalCondition: "Budget holder approves specialist time, paid review, or external support with explicit limits."
+        escalationCondition: "Resource delay threatens deadline, exceeds local limit, or would compromise review quality."
+      - id: capacity_escalation
+        gateType: escalating
+        approvalRole: accountable_director
+        approvalCondition: "Accountable director accepts capacity plan for deadline-critical or high-impact cases."
+        escalationCondition: "No reviewer capacity is available before statutory or policy deadline warning threshold."
+
+  analysis_and_draft_decision:
+    purpose: Convert evidence and policy route into review options, risk notes, and a draft determination.
+    activities:
+      - compare facts to policy criteria
+      - prepare options analysis
+      - record uncertainty and residual risk
+      - draft determination
+      - prepare requester response
+    states:
+      - analysis_in_progress
+      - awaiting_specialist_input
+      - draft_decision_ready
+      - rework_required
+      - high_risk_escalation_required
+    autonomousResponsibilities:
+      - draft fact chronology
+      - draft options table
+      - identify unsupported conclusions
+      - prepare reviewer briefing
+      - recommend risk tier and escalation route
+    authority:
+      plane: data_plane
+      autonomyTier: draft
+      riskTier: high
+      allowed:
+        - draft analysis artifacts
+        - summarize policy criteria
+        - recommend decision options
+      prohibited:
+        - issue final determination
+        - provide legal advice
+        - suppress uncertainty, dissent, or missing evidence
+        - self-approve generated analysis
+    evidence:
+      input:
+        - evidence index
+        - scoped review questions
+        - policy route validation
+        - resource decision
+        - specialist notes
+      completion:
+        - fact chronology
+        - options analysis
+        - draft determination
+        - residual risk note
+        - reviewer briefing
+    gates:
+      - id: specialist_input_check
+        gateType: blocking
+        approvalRole: policy_specialist
+        approvalCondition: "Required specialist input is complete or explicitly waived by the accountable human role."
+        escalationCondition: "Specialist input is unavailable and deadline or decision quality is at risk."
+      - id: draft_quality_review
+        gateType: validating
+        approvalRole: senior_reviewer
+        approvalCondition: "Draft analysis is traceable to evidence and separates facts, policy interpretation, and recommendations."
+        escalationCondition: "Draft contains unsupported findings, hidden assumptions, legal conclusions, or unowned residual risk."
+
+  authority_decision_and_communication:
+    purpose: Apply the correct human authority level, record the decision, and communicate outcome.
+    activities:
+      - confirm approval level
+      - record named approver
+      - approve or reject draft determination
+      - issue approved communication
+      - register follow-up obligations
+    states:
+      - awaiting_delegated_decision
+      - awaiting_director_decision
+      - approved_for_communication
+      - decision_issued
+      - decision_paused_by_event
+      - reopened_after_new_information
+    autonomousResponsibilities:
+      - prepare decision record
+      - verify named approver and authority level are present
+      - draft communication from approved determination
+      - monitor new-information and appeal events
+      - recommend reopening when triggering events occur
+    authority:
+      plane: control_plane
+      autonomyTier: execute_with_approval
+      riskTier: human_only
+      allowed:
+        - update canonical state after explicit human decision
+        - send approved communication through approved channel
+        - create follow-up task after approval
+      prohibited:
+        - make or imply final determination
+        - change approval level
+        - communicate unapproved findings
+        - close case while appeal or new-information event is unresolved
+    evidence:
+      input:
+        - draft determination
+        - authority threshold check
+        - named approver identity
+        - communication template
+        - deadline clock state
+      completion:
+        - decision record
+        - approval event
+        - issued communication
+        - follow-up obligation register
+    gates:
+      - id: final_authority_approval
+        gateType: blocking
+        approvalRole: senior_reviewer
+        approvalCondition: "Senior reviewer or higher authority records explicit decision and confirms delegated authority."
+        escalationCondition: "Authority threshold requires director, legal, board, or external authority involvement."
+      - id: high_risk_director_escalation
+        gateType: escalating
+        approvalRole: accountable_director
+        approvalCondition: "Director approves or redirects high-risk determination before communication."
+        escalationCondition: "Case affects precedent, public commitment, significant spend, statutory exposure, or high-impact individual outcome."
+      - id: communication_release
+        gateType: blocking
+        approvalRole: case_owner
+        approvalCondition: "Communication matches approved determination and required notices."
+        escalationCondition: "Requester disputes facts, new information arrives, deadline has breached, or communication channel is not approved."
+
+  monitoring_and_closure:
+    purpose: Monitor post-decision obligations, handle event-driven reopening, and close the case record.
+    activities:
+      - track commitments
+      - monitor appeal or new-information events
+      - confirm retention and evidence references
+      - close case
+      - schedule lessons review when needed
+    states:
+      - post_decision_monitoring
+      - awaiting_follow_up_action
+      - reopened
+      - closure_ready
+      - closed
+      - lessons_review_required
+    autonomousResponsibilities:
+      - monitor follow-up due dates
+      - detect event triggers from projections
+      - draft closure checklist
+      - recommend lessons review when controls or deadlines failed
+    authority:
+      plane: data_plane
+      autonomyTier: recommend
+      riskTier: medium
+      allowed:
+        - draft closure checklist
+        - recommend reopening
+        - maintain follow-up tracker
+      prohibited:
+        - delete case evidence
+        - close unresolved obligations
+        - ignore appeal, complaint, or new-information event
+    evidence:
+      input:
+        - decision record
+        - issued communication
+        - follow-up obligation register
+        - event log
+        - retention policy reference
+      completion:
+        - closure checklist
+        - closed case state
+        - lessons review note when required
+        - retained evidence index
+    gates:
+      - id: closure_validation
+        gateType: validating
+        approvalRole: case_owner
+        approvalCondition: "All obligations are complete, evidence references are retained, and no event trigger is unresolved."
+        escalationCondition: "Closure would leave an unresolved appeal, complaint, deadline breach, or unowned follow-up."
+      - id: lessons_review_trigger
+        gateType: advisory
+        approvalRole: senior_reviewer
+        approvalCondition: "Senior reviewer decides whether process learning is required."
+        escalationCondition: "Deadline breach, evidence failure, authority mismatch, or resource gate failure occurred."
+
+controlPlaneActions:
+  - command: open_case
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Creates canonical case state, assigns named human owner, and starts deadline clocks."
+  - command: change_authority_level
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Changes the human approval level required for case decision."
+  - command: approve_resource
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Commits budget, specialist capacity, or external review support."
+  - command: record_final_decision
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: human_only
+    reason: "Records the named human determination and decision authority."
+  - command: reopen_case
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Reactivates a closed or communication-ready case after appeal, complaint, deadline breach, or new information."
+  - command: close_case
+    authorityPlane: control_plane
+    autonomyTier: execute_with_approval
+    riskTier: high
+    reason: "Closes canonical case state after obligations, evidence retention, and event checks."
+
+projections:
+  externalSystems:
+    canonical: false
+    examples:
+      - shared mailbox
+      - case ticketing queue
+      - document management system
+      - deadline calendar
+      - management dashboard
+    rule: "Projection updates may support correspondence, reminders, and reporting, but the case-management ledger remains the workflow source of truth."
+  eventSources:
+    canonical: false
+    examples:
+      - requester reply
+      - new evidence uploaded
+      - appeal or complaint received
+      - deadline warning threshold reached
+      - deadline breach
+      - budget rejection
+      - reviewer unavailable
+      - policy update published
+    rule: "Event sources trigger review or escalation; they do not automatically change final case outcome."
+
+governedAutonomyRiskPatterns:
+  chat_as_control_plane:
+    mitigation: "Named case record and approval events remain canonical; chat summaries are non-canonical projections."
+  unbounded_delegation:
+    mitigation: "Autonomous work is limited to drafting, summarizing, monitoring, and approved administrative execution."
+  role_collapse:
+    mitigation: "Case owner, policy specialist, senior reviewer, budget holder, legal liaison, and director authority are separated."
+  evidence_drift:
+    mitigation: "Evidence index, source reliability notes, gap register, and event log are part of canonical case state."
+  approval_theater:
+    mitigation: "Decision gates require named human approver, authority level, approval condition, and escalation condition."
+  tool_sprawl:
+    mitigation: "Mailbox, tickets, documents, calendars, and dashboards are projections rather than independent workflow authorities."
+  accountability_gaps:
+    mitigation: "Named human identities are recorded for ownership, resource decisions, specialist input, and final authority."
+  deadline_blindness:
+    mitigation: "Deadline clocks, warning thresholds, breach events, and escalation gates are modeled explicitly."
+  budget_shadow_commitments:
+    mitigation: "Specialist time, paid review, and capacity commitments require budget holder or director gates."
+  machine_speed_policy_error:
+    mitigation: "Policy route and draft decision lanes require human validation before determination or communication."
+  event_suppression:
+    mitigation: "Appeal, complaint, new evidence, deadline, budget, capacity, and policy-update events trigger reopening or escalation checks."
+
+controlMappings:
+  - source: NIST AI RMF
+    controlId: GOVERN
+    mappingStatus: candidate
+    reviewStatus: unreviewed
+    evidenceReferences:
+      - case-record.yml
+      - authority-threshold-note
+      - approval-event-log
+    note: "Candidate mapping only; not an assertion of AI RMF implementation or compliance."
+  - source: ISO/IEC 42001
+    controlId: Annex A
+    mappingStatus: candidate
+    reviewStatus: unreviewed
+    evidenceReferences:
+      - autonomy-boundary-register
+      - human-approval-log
+    note: "Candidate mapping only; not an assertion of ISO/IEC 42001 certification or legal sufficiency."
+  - source: OSCAL
+    controlId: assessment-results
+    mappingStatus: reviewed
+    reviewStatus: process-owner-reviewed
+    evidenceReferences:
+      - controlMappings
+      - evidence.index
+      - decision.record
+    note: "Reviewed as a structural analogy for evidence references and statuses, not as an OSCAL export contract."
+  - source: Local compliance policy
+    controlId: deadline-and-delegation-matrix
+    mappingStatus: unmapped
+    reviewStatus: pending-policy-owner-review
+    evidenceReferences: []
+    note: "Placeholder for local policy mapping; no local policy compliance is claimed."
+
+knownGaps:
+  - id: no-local-policy-binding
+    summary: "This reference process names deadline and authority concepts but does not bind them to a real organization's policy text."
+  - id: no-legal-sufficiency-claim
+    summary: "Legal, statutory, regulatory, and certification sufficiency are explicitly out of scope."
+  - id: no-formal-cmmn-dmn-bpmn-oscal-export
+    summary: "Compatibility is a posture and vocabulary alignment, not an implemented export, validator, or runtime contract."
+  - id: named-identities-are-examples
+    summary: "Named human identities demonstrate accountability fields and must be replaced by actual accountable people in a real case process."
+  - id: deadline-rules-are-examples
+    summary: "Deadline clocks illustrate statutory or policy pressure but are not jurisdiction-specific rules."
+  - id: control-mappings-unvalidated
+    summary: "Control mappings are candidate, unmapped, or structurally reviewed references and do not claim compliance."
